@@ -1,0 +1,37 @@
+{
+  "name": "mip",
+  "version": "2.0.0",
+  "description": "mobile instant page",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "dev": "rollup -w -c build/rollup.config.js --environment TARGET:web-full-dev",
+    "build": "node build/build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mip-project/mip.git"
+  },
+  "keywords": [
+    "mip"
+  ],
+  "author": "sfe-sy@baidu.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mip-project/mip/issues"
+  },
+  "homepage": "https://github.com/mip-project/mip#readme",
+  "devDependencies": {
+    "he": "^1.1.1",
+    "rollup": "^0.58.2",
+    "rollup-plugin-alias": "^1.4.0",
+    "rollup-plugin-buble": "^0.19.2",
+    "rollup-plugin-commonjs": "^9.1.0",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-replace": "^2.0.0",
+    "uglify-js": "^3.3.22",
+    "zlib": "^1.0.5"
+  }
+}
