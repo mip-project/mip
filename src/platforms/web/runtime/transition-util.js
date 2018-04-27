@@ -54,15 +54,15 @@ export let animationEndEvent = 'animationend';
 if (hasTransition) {
 
     /* istanbul ignore if */
-    if (window.ontransitionend === undefined &&
-        window.onwebkittransitionend !== undefined
+    if (window.ontransitionend === undefined
+        && window.onwebkittransitionend !== undefined
     ) {
         transitionProp = 'WebkitTransition';
         transitionEndEvent = 'webkitTransitionEnd';
     }
 
-    if (window.onanimationend === undefined &&
-        window.onwebkitanimationend !== undefined
+    if (window.onanimationend === undefined
+        && window.onwebkitanimationend !== undefined
     ) {
         animationProp = 'WebkitAnimation';
         animationEndEvent = 'webkitAnimationEnd';
@@ -74,9 +74,7 @@ const raf = inBrowser
     ? window.requestAnimationFrame
         ? window.requestAnimationFrame.bind(window)
         : setTimeout
-    :
-
-    /* istanbul ignore next */ fn => fn();
+    : /* istanbul ignore next */ fn => fn();
 
 export function nextFrame(fn) {
     raf(() => {
@@ -116,17 +114,16 @@ export function whenTransitionEnds(
 
     const event = type === TRANSITION ? transitionEndEvent : animationEndEvent;
     let ended = 0;
-    const end = () => {
-        el.removeEventListener(event, onEnd);
-        cb();
-    };
     const onEnd = e => {
         if (e.target === el) {
             if (++ended >= propCount) {
                 end();
             }
         }
-
+    };
+    const end = () => {
+        el.removeEventListener(event, onEnd);
+        cb();
     };
     setTimeout(() => {
         if (ended < propCount) {
@@ -180,8 +177,8 @@ export function getTransitionInfo(el, expectedType) {
                 : animationDurations.length
             : 0;
     }
-    const hasTransform = type === TRANSITION &&
-    transformRE.test(styles[transitionProp + 'Property']);
+    const hasTransform = type === TRANSITION
+        && transformRE.test(styles[transitionProp + 'Property']);
     return {
         type,
         timeout,
@@ -194,12 +191,10 @@ function getTimeout(delays, durations) {
 
     /* istanbul ignore next */
     while (delays.length < durations.length) {
-        delays = delays.concat(delays);
+        delays = delays.concat(...delays);
     }
 
-    return Math.max.apply(null, durations.map((d, i) => {
-        return toMs(d) + toMs(delays[i]);
-    }));
+    return Math.max.apply(null, durations.map((d, i) => toMs(d) + toMs(delays[i])));
 }
 
 function toMs(s) {

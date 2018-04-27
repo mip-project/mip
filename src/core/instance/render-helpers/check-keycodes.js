@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable fecs-valid-jsdoc */
+
 import config from 'core/config';
 import {hyphenate} from 'shared/util';
 
@@ -22,9 +24,7 @@ export function checkKeyCodes(
         if (Array.isArray(keyCodes)) {
             return keyCodes.indexOf(eventKeyCode) === -1;
         }
-        else {
-            return keyCodes !== eventKeyCode;
-        }
+        return keyCodes !== eventKeyCode;
     }
     else if (eventKeyName) {
         return hyphenate(eventKeyName) !== key;

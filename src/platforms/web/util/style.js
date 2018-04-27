@@ -15,7 +15,7 @@ export const parseStyleText = cached(function (cssText) {
     const propertyDelimiter = /:(.+)/;
     cssText.split(listDelimiter).forEach(function (item) {
         if (item) {
-            var tmp = item.split(propertyDelimiter);
+            let tmp = item.split(propertyDelimiter);
             tmp.length > 1 && (res[tmp[0].trim()] = tmp[1].trim());
         }
 
@@ -49,6 +49,10 @@ export function normalizeStyleBinding(bindingStyle) {
 /**
  * parent component style should be after child's
  * so that parent component's style could override it
+ *
+ * @param {Object} vnode vnode object
+ * @param {boolen} checkChild if check child flag
+ * @return {Object} result
  */
 export function getStyle(vnode, checkChild) {
     const res = {};
@@ -65,7 +69,7 @@ export function getStyle(vnode, checkChild) {
         }
     }
 
-    if ( (styleData = normalizeStyleData(vnode.data)) ) {
+    if ((styleData = normalizeStyleData(vnode.data))) {
         extend(res, styleData);
     }
 

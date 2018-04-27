@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable fecs-valid-jsdoc */
+
 import {cloneVNode, cloneVNodes} from 'core/vdom/vnode';
 
 /**
@@ -40,7 +42,7 @@ export function markOnce(
     index,
     key
 ) {
-    markStatic(tree, `__once__${index}${key ? `_${key}` : ``}`, true);
+    markStatic(tree, `__once__${index}${key ? `_${key}` : ''}`, true);
     return tree;
 }
 

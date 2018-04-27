@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable fecs-valid-jsdoc */
+
 import {isObject, isDef} from 'core/util/index';
 
 /**
@@ -12,11 +14,11 @@ export function renderList(
     val,
     render
 ) {
-    let ret,
-        i,
-        l,
-        keys,
-        key;
+    let ret;
+    let i;
+    let l;
+    let keys;
+    let key;
     if (Array.isArray(val) || typeof val === 'string') {
         ret = new Array(val.length);
         for (i = 0, l = val.length; i < l; i++) {

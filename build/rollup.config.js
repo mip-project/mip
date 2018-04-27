@@ -1,3 +1,8 @@
+/**
+ * @file rollup config file
+ * @author sfe-sy@baidu.com
+ */
+
 const path = require('path');
 const buble = require('rollup-plugin-buble');
 const alias = require('rollup-plugin-alias');

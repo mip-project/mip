@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable no-console */
+
 import MIP from 'core/index';
 import config from 'core/config';
 import {extend, noop} from 'shared/util';
@@ -59,25 +61,24 @@ MIP.nextTick(() => {
         }
         else if (process.env.NODE_ENV !== 'production' && isChrome) {
             console[console.info ? 'info' : 'log'](
-                'Download the MIP Devtools extension for a better development experience:\n' +
-                'https://github.com/vuejs/mip-devtools'
+                'Download the MIP Devtools extension for a better development experience:\n'
+                + 'https://github.com/vuejs/mip-devtools'
             );
         }
     }
 
-    if (process.env.NODE_ENV !== 'production' &&
-        config.productionTip !== false &&
-        inBrowser && typeof console !== 'undefined'
+    if (process.env.NODE_ENV !== 'production'
+        && config.productionTip !== false
+        && inBrowser
+        && typeof console !== 'undefined'
     ) {
         console[console.info ? 'info' : 'log'](
-            `You are running MIP in development mode.
-` +
-            `Make sure to turn on production mode when deploying for production.
-` +
-            `See more tips at https://vuejs.org/guide/deployment.html`
+            'You are running MIP in development mode.\n'
+            + 'Make sure to turn on production mode when deploying for production.\n'
+            + 'See more tips at https://vuejs.org/guide/deployment.html\n'
         );
     }
 
 }, 0);
 
-export default MIP
+export default MIP;

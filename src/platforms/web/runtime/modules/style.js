@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable guard-for-in */
+
 import {getStyle, normalizeStyleBinding} from 'web/util/style';
 import {
     cached,
@@ -63,14 +65,14 @@ function updateStyle(oldVnode, vnode) {
     const data = vnode.data;
     const oldData = oldVnode.data;
 
-    if (isUndef(data.staticStyle) && isUndef(data.style) &&
-        isUndef(oldData.staticStyle) && isUndef(oldData.style)
+    if (isUndef(data.staticStyle) && isUndef(data.style)
+        && isUndef(oldData.staticStyle) && isUndef(oldData.style)
     ) {
         return;
     }
 
-    let cur,
-        name;
+    let cur;
+    let name;
     const el = vnode.elm;
     const oldStaticStyle = oldData.staticStyle;
     const oldStyleBinding = oldData.normalizedStyle || oldData.style || {};
@@ -101,11 +103,10 @@ function updateStyle(oldVnode, vnode) {
             // ie9 setting to null has no effect, must use empty string
             setProp(el, name, cur == null ? '' : cur);
         }
-
     }
 }
 
 export default {
     create: updateStyle,
     update: updateStyle
-}
+};

@@ -23,6 +23,7 @@ export default class VNode {
     // for SSR caching
     // functioanl scope id support
 
+    /* eslint-disable */
     constructor(
         tag,
         data,

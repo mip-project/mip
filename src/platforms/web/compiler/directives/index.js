@@ -10,4 +10,4 @@ export default {
     model,
     text,
     html
-}
+};

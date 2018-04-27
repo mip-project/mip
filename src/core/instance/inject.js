@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* global Reflect */
+
 import {warn} from '../util/index';
 import {hasSymbol} from 'core/util/env';
 import {defineReactive, observerState} from '../observer/index';
@@ -26,9 +28,9 @@ export function initInjections(vm) {
             if (process.env.NODE_ENV !== 'production') {
                 defineReactive(vm, key, result[key], () => {
                     warn(
-                        `Avoid mutating an injected value directly since the changes will be ` +
-                        `overwritten whenever the provided component re-renders. ` +
-                        `injection being mutated: "${key}"`,
+                        'Avoid mutating an injected value directly since the changes will be '
+                        + 'overwritten whenever the provided component re-renders. '
+                        + `injection being mutated: "${key}"`,
                         vm
                     );
                 });
@@ -46,11 +48,7 @@ export function resolveInject(inject, vm) {
         // inject is :any because flow is not smart enough to figure out cached
         const result = Object.create(null);
         const keys = hasSymbol
-            ? Reflect.ownKeys(inject).filter(key => {
-
-                /* istanbul ignore next */
-                return Object.getOwnPropertyDescriptor(inject, key).enumerable;
-            })
+            ? Reflect.ownKeys(inject).filter(key => Object.getOwnPropertyDescriptor(inject, key).enumerable)
             : Object.keys(inject);
 
         for (let i = 0; i < keys.length; i++) {

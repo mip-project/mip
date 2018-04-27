@@ -127,11 +127,11 @@ export function eventsMixin(MIP) {
             const lowerCaseEvent = event.toLowerCase();
             if (lowerCaseEvent !== event && vm._events[lowerCaseEvent]) {
                 tip(
-                    `Event "${lowerCaseEvent}" is emitted in component ` +
-                    `${formatComponentName(vm)} but the handler is registered for "${event}". ` +
-                    `Note that HTML attributes are case-insensitive and you cannot use ` +
-                    `v-on to listen to camelCase events when using in-DOM templates. ` +
-                    `You should probably use "${hyphenate(event)}" instead of "${event}".`
+                    `Event "${lowerCaseEvent}" is emitted in component `
+                    + `${formatComponentName(vm)} but the handler is registered for "${event}". `
+                    + 'Note that HTML attributes are case-insensitive and you cannot use '
+                    + 'v-on to listen to camelCase events when using in-DOM templates. '
+                    + `You should probably use "${hyphenate(event)}" instead of "${event}".`
                 );
             }
         }

@@ -22,8 +22,12 @@ import {
 
 export function initGlobalAPI(MIP) {
     // config
-    const configDef = {};
-    configDef.get = () => config;
+    const configDef = {
+        get() {
+            return config;
+        }
+    };
+    // configDef.get = () => config;
     if (process.env.NODE_ENV !== 'production') {
         configDef.set = () => {
             warn(

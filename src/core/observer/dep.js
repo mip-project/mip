@@ -47,12 +47,12 @@ export default class Dep {
 Dep.target = null;
 const targetStack = [];
 
-export function pushTarget(_target) {
+export function pushTarget($target) {
     if (Dep.target) {
         targetStack.push(Dep.target);
     }
 
-    Dep.target = _target;
+    Dep.target = $target;
 }
 
 export function popTarget() {

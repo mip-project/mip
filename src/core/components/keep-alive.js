@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable guard-for-in */
+
 import {isRegExp, remove} from 'shared/util';
 import {getFirstComponentChild} from 'core/vdom/helpers/index';
 
@@ -29,17 +31,16 @@ function pruneCache(keepAliveInstance, filter) {
     const {
         cache,
         keys,
-        _vnode
+        $vnode
     } = keepAliveInstance;
     for (const key in cache) {
         const cachedNode = cache[key];
         if (cachedNode) {
             const name = getComponentName(cachedNode.componentOptions);
             if (name && !filter(name)) {
-                pruneCacheEntry(cache, key, keys, _vnode);
+                pruneCacheEntry(cache, key, keys, $vnode);
             }
         }
-
     }
 }
 
@@ -97,8 +98,8 @@ export default {
             // check pattern
             const name = getComponentName(componentOptions);
             if (name && (
-                (this.include && !matches(this.include, name)) ||
-                (this.exclude && matches(this.exclude, name))
+                (this.include && !matches(this.include, name))
+                    || (this.exclude && matches(this.exclude, name))
                 )) {
                 return vnode;
             }
@@ -129,4 +130,4 @@ export default {
 
         return vnode;
     }
-}
+};

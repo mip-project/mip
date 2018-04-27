@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable guard-for-in, fecs-valid-jsdoc */
+
 import config from 'core/config';
 
 import {
@@ -37,9 +39,9 @@ export function bindObjectProps(
             let hash;
             for (const key in value) {
                 if (
-                    key === 'class' ||
-                    key === 'style' ||
-                    isReservedAttribute(key)
+                    key === 'class'
+                    || key === 'style'
+                    || isReservedAttribute(key)
                 ) {
                     hash = data;
                 }

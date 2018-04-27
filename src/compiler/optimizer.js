@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable fecs-valid-jsdoc */
+
 import {
     makeMap,
     isBuiltInTag,
@@ -41,8 +43,8 @@ export function optimize(root, options) {
 
 function genStaticKeys(keys) {
     return makeMap(
-        'type,tag,attrsList,attrsMap,plain,parent,children,attrs' +
-        (keys ? ',' + keys : '')
+        'type,tag,attrsList,attrsMap,plain,parent,children,attrs'
+        + (keys ? ',' + keys : '')
     );
 }
 
@@ -53,9 +55,9 @@ function markStatic(node) {
         // 1. components not able to mutate slot nodes
         // 2. static slot content fails for hot-reloading
         if (
-            !isPlatformReservedTag(node.tag) &&
-            node.tag !== 'slot' &&
-            node.attrsMap['inline-template'] == null
+            !isPlatformReservedTag(node.tag)
+            && node.tag !== 'slot'
+            && node.attrsMap['inline-template'] == null
         ) {
             return;
         }
@@ -90,16 +92,17 @@ function markStaticRoots(node, isInFor) {
         // For a node to qualify as a static root, it should have children that
         // are not just static text. Otherwise the cost of hoisting out will
         // outweigh the benefits and it's better off to just always render it fresh.
-        if (node.static && node.children.length && !(
-            node.children.length === 1 &&
-            node.children[0].type === 3
-            )) {
+        if (node.static
+            && node.children.length
+            && !(
+                node.children.length === 1
+                && node.children[0].type === 3
+            )
+        ) {
             node.staticRoot = true;
             return;
         }
-        else {
-            node.staticRoot = false;
-        }
+        node.staticRoot = false;
         if (node.children) {
             for (let i = 0, l = node.children.length; i < l; i++) {
                 markStaticRoots(node.children[i], isInFor || !!node.for);
@@ -124,12 +127,12 @@ function isStatic(node) {
     }
 
     return !!(node.pre || (
-    !node.hasBindings && // no dynamic bindings
-    !node.if && !node.for && // not v-if or v-for or v-else
-    !isBuiltInTag(node.tag) && // not a built-in
-    isPlatformReservedTag(node.tag) && // not a component
-    !isDirectChildOfTemplateFor(node) &&
-    Object.keys(node).every(isStaticKey)
+        !node.hasBindings // no dynamic bindings
+        && !node.if && !node.for // not v-if or v-for or v-else
+        && !isBuiltInTag(node.tag) // not a built-in
+        && isPlatformReservedTag(node.tag) // not a component
+        && !isDirectChildOfTemplateFor(node)
+        && Object.keys(node).every(isStaticKey)
     ));
 }
 

@@ -94,16 +94,17 @@ MIP.prototype.$mount = function (
 /**
  * Get outerHTML of elements, taking care
  * of SVG elements in IE as well.
+ *
+ * @param {Object} el element
+ * @return {string} htmlstring
  */
 function getOuterHTML(el) {
     if (el.outerHTML) {
         return el.outerHTML;
     }
-    else {
-        const container = document.createElement('div');
-        container.appendChild(el.cloneNode(true));
-        return container.innerHTML;
-    }
+    const container = document.createElement('div');
+    container.appendChild(el.cloneNode(true));
+    return container.innerHTML;
 }
 
 MIP.compile = compileToFunctions;

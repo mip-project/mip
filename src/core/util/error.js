@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable no-console */
+
 import config from '../config';
 import {warn} from './debug';
 import {inBrowser} from './env';
@@ -56,6 +58,6 @@ function logError(err, vm, info) {
         console.error(err);
     }
     else {
-        throw err
+        throw err;
     }
 }

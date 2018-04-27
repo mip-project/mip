@@ -85,23 +85,23 @@ const componentVNodeHooks = {
             }
             else {
                 activateChildComponent(componentInstance, true
-
-                /* direct */ );
+                    // direct
+                );
             }
         }
 
     },
 
     destroy(vnode) {
-        const {componentInstance} = vnode;
+        const componentInstance = vnode.componentInstance;
         if (!componentInstance._isDestroyed) {
             if (!vnode.data.keepAlive) {
                 componentInstance.$destroy();
             }
             else {
                 deactivateChildComponent(componentInstance, true
-
-                /* direct */ );
+                    // direct
+                );
             }
         }
 
@@ -216,6 +216,7 @@ export function createComponentInstanceForVnode(
     refElm
 ) {
     const vnodeComponentOptions = vnode.componentOptions;
+    /* eslint-disable */
     const options = {
         _isComponent: true,
         parent,
@@ -227,6 +228,7 @@ export function createComponentInstanceForVnode(
         _parentElm: parentElm || null,
         _refElm: refElm || null
     };
+    /* eslint-enable */
     // check inline-template render functions
     const inlineTemplate = vnode.data.inlineTemplate;
     if (isDef(inlineTemplate)) {

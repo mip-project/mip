@@ -31,7 +31,7 @@ function preTransformNode(el, options) {
         if (map['v-model'] && (map['v-bind:type'] || map[':type'])) {
             const typeBinding = getBindingAttr(el, 'type');
             const ifCondition = getAndRemoveAttr(el, 'v-if', true);
-            const ifConditionExtra = ifCondition ? `&&(${ifCondition})` : ``;
+            const ifConditionExtra = ifCondition ? `&&(${ifCondition})` : '';
             // 1. checkbox
             const branch0 = cloneASTElement(el);
             // process for on the main node
@@ -39,7 +39,7 @@ function preTransformNode(el, options) {
             addRawAttr(branch0, 'type', 'checkbox');
             processElement(branch0, options);
             branch0.processed = true; // prevent it from double-processed
-            branch0.if = `type==='checkbox'` + ifConditionExtra;
+            branch0.if = 'type===\'checkbox\'' + ifConditionExtra;
             addIfCondition(branch0, {
                 exp: branch0.if,
                 block: branch0
@@ -50,7 +50,7 @@ function preTransformNode(el, options) {
             addRawAttr(branch1, 'type', 'radio');
             processElement(branch1, options);
             addIfCondition(branch0, {
-                exp: `type==='radio'` + ifConditionExtra,
+                exp: 'type===\'radio\'' + ifConditionExtra,
                 block: branch1
             });
             // 3. other
@@ -78,4 +78,4 @@ function addRawAttr(el, name, value) {
 
 export default {
     preTransformNode
-}
+};

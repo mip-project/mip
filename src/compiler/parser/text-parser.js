@@ -26,8 +26,8 @@ export function parseText(
 
     const tokens = [];
     let lastIndex = tagRE.lastIndex = 0;
-    let match,
-        index;
+    let match;
+    let index;
     while ((match = tagRE.exec(text))) {
         index = match.index;
         // push text token

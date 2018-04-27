@@ -143,9 +143,9 @@ export function enter(vnode, toggleDisplay) {
         mergeVNodeHook(vnode.data.hook || (vnode.data.hook = {}), 'insert', () => {
             const parent = el.parentNode;
             const pendingNode = parent && parent._pending && parent._pending[vnode.key];
-            if (pendingNode &&
-                pendingNode.tag === vnode.tag &&
-                pendingNode.elm._leaveCb
+            if (pendingNode
+                && pendingNode.tag === vnode.tag
+                && pendingNode.elm._leaveCb
             ) {
                 pendingNode.elm._leaveCb();
             }
@@ -302,15 +302,15 @@ export function leave(vnode, rm) {
 function checkDuration(val, name, vnode) {
     if (typeof val !== 'number') {
         warn(
-            `<transition> explicit ${name} duration is not a valid number - ` +
-            `got ${JSON.stringify(val)}.`,
+            `<transition> explicit ${name} duration is not a valid number - `
+            + `got ${JSON.stringify(val)}.`,
             vnode.context
         );
     }
     else if (isNaN(val)) {
         warn(
-            `<transition> explicit ${name} duration is NaN - ` +
-            'the duration expression might be incorrect.',
+            `<transition> explicit ${name} duration is NaN - `
+            + 'the duration expression might be incorrect.',
             vnode.context
         );
     }
@@ -325,6 +325,9 @@ function isValidDuration(val) {
  * - a merged hook (invoker) with the original in .fns
  * - a wrapped component method (check ._length)
  * - a plain function (.length)
+ *
+ * @param {Function} fn callback
+ * @return {boolean|number} length
  */
 function getHookArgumentsLength(fn) {
     if (isUndef(fn)) {
@@ -340,16 +343,16 @@ function getHookArgumentsLength(fn) {
                 : invokerFns
         );
     }
-    else {
-        return (fn._length || fn.length) > 1;
-    }
+    return (fn._length || fn.length) > 1;
 }
 
+/* eslint-disable fecs-camelcase */
 function _enter(_, vnode) {
     if (vnode.data.show !== true) {
         enter(vnode);
     }
 }
+/* eslint-enable fecs-camelcase */
 
 export default inBrowser ? {
     create: _enter,
@@ -364,4 +367,4 @@ export default inBrowser ? {
             rm();
         }
     }
-} : {}
+} : {};

@@ -2,6 +2,9 @@
  * @file index.js
  * @author sfe-sy(sfe-sy@baidu.com)
  */
+
+/* eslint-disable fecs-valid-class-jsdoc */
+
 import MIP from './instance/index';
 import {initGlobalAPI} from './global-api/index';
 import {isServerRendering} from 'core/util/env';
@@ -22,4 +25,4 @@ Object.defineProperty(MIP.prototype, '$ssrContext', {
 
 MIP.version = '2.5.0';
 
-export default MIP
+export default MIP;

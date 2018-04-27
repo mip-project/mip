@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable no-console */
+
 /**
  * Virtual DOM patching algorithm based on Snabbdom by
  * Simon Friis Vindum (@paldepind)
@@ -38,17 +40,19 @@ const hooks = ['create', 'activate', 'update', 'remove', 'destroy'];
 
 function sameVnode(a, b) {
     return (
-        a.key === b.key && (
-        (
-        a.tag === b.tag &&
-        a.isComment === b.isComment &&
-        isDef(a.data) === isDef(b.data) &&
-        sameInputType(a, b)
-        ) || (
-        isTrue(a.isAsyncPlaceholder) &&
-        a.asyncFactory === b.asyncFactory &&
-        isUndef(b.asyncFactory.error)
-        )
+        a.key === b.key
+        && (
+            (
+                a.tag === b.tag
+                && a.isComment === b.isComment
+                && isDef(a.data) === isDef(b.data)
+                && sameInputType(a, b)
+            )
+            || (
+                isTrue(a.isAsyncPlaceholder)
+                && a.asyncFactory === b.asyncFactory
+                && isUndef(b.asyncFactory.error)
+            )
         )
     );
 }
@@ -65,8 +69,8 @@ function sameInputType(a, b) {
 }
 
 function createKeyToOldIdx(children, beginIdx, endIdx) {
-    let i,
-        key;
+    let i;
+    let key;
     const map = {};
     for (i = beginIdx; i <= endIdx; ++i) {
         key = children[i].key;
@@ -79,8 +83,8 @@ function createKeyToOldIdx(children, beginIdx, endIdx) {
 }
 
 export function createPatchFunction(backend) {
-    let i,
-        j;
+    let i;
+    let j;
     const cbs = {};
 
     const {modules, nodeOps} = backend;
@@ -134,22 +138,23 @@ export function createPatchFunction(backend) {
                 }
 
                 if (
-                    !inPre &&
-                    !vnode.ns &&
-                    !(
-                    config.ignoredElements.length &&
-                    config.ignoredElements.some(ignore => {
-                        return isRegExp(ignore)
-                            ? ignore.test(tag)
-                            : ignore === tag;
-                    })
-                    ) &&
-                    config.isUnknownElement(tag)
+                    !inPre
+                    && !vnode.ns
+                    && !(
+                        config.ignoredElements.length
+                        && config.ignoredElements.some(ignore => (
+                            isRegExp(ignore)
+                                ? ignore.test(tag)
+                                : ignore === tag
+                            )
+                        )
+                    )
+                    && config.isUnknownElement(tag)
                 ) {
                     warn(
-                        'Unknown custom element: <' + tag + '> - did you ' +
-                        'register the component correctly? For recursive components, ' +
-                        'make sure to provide the "name" option.',
+                        'Unknown custom element: <' + tag + '> - did you '
+                        + 'register the component correctly? For recursive components, '
+                        + 'make sure to provide the "name" option.',
                         vnode.context
                     );
                 }
@@ -161,7 +166,9 @@ export function createPatchFunction(backend) {
             setScope(vnode);
 
             /* istanbul ignore if */
+            /* eslint-disable */
             if (false) {
+            /* eslint-enable */
                 // in Weex, the default insertion order is parent-first.
                 // List items can be optimized to use children-first insertion
                 // with append="tree".
@@ -211,9 +218,13 @@ export function createPatchFunction(backend) {
         if (isDef(i)) {
             const isReactivated = isDef(vnode.componentInstance) && i.keepAlive;
             if (isDef(i = i.hook) && isDef(i = i.init)) {
-                i(vnode, false
-
-                    /* hydrating */ , parentElm, refElm);
+                i(
+                    vnode,
+                    false,
+                    // hydrating,
+                    parentElm,
+                    refElm
+                );
             }
 
             // after calling the init hook, if the vnode is a child component
@@ -340,10 +351,10 @@ export function createPatchFunction(backend) {
             }
         }
         // for slot content they should also get the scopeId from the host instance.
-        if (isDef(i = activeInstance) &&
-            i !== vnode.context &&
-            i !== vnode.functionalContext &&
-            isDef(i = i.$options._scopeId)
+        if (isDef(i = activeInstance)
+            && i !== vnode.context
+            && i !== vnode.functionalContext
+            && isDef(i = i.$options._scopeId)
         ) {
             nodeOps.setAttribute(vnode.elm, i, '');
         }
@@ -356,8 +367,8 @@ export function createPatchFunction(backend) {
     }
 
     function invokeDestroyHook(vnode) {
-        let i,
-            j;
+        let i;
+        let j;
         const data = vnode.data;
         if (isDef(data)) {
             if (isDef(i = data.hook) && isDef(i = i.destroy)) {
@@ -365,7 +376,7 @@ export function createPatchFunction(backend) {
             }
 
             for (i = 0; i < cbs.destroy.length; ++i) {
-                cbs.destroy[i](vnode)
+                cbs.destroy[i](vnode);
             }
         }
 
@@ -434,10 +445,10 @@ export function createPatchFunction(backend) {
         let newEndIdx = newCh.length - 1;
         let newStartVnode = newCh[0];
         let newEndVnode = newCh[newEndIdx];
-        let oldKeyToIdx,
-            idxInOld,
-            vnodeToMove,
-            refElm;
+        let oldKeyToIdx;
+        let idxInOld;
+        let vnodeToMove;
+        let refElm;
 
         // removeOnly is a special flag used only by <transition-group>
         // to ensure removed elements stay in correct relative positions
@@ -490,8 +501,8 @@ export function createPatchFunction(backend) {
                     /* istanbul ignore if */
                     if (process.env.NODE_ENV !== 'production' && !vnodeToMove) {
                         warn(
-                            'It seems there are duplicate keys that is causing an update error. ' +
-                            'Make sure each v-for item has a unique key.'
+                            'It seems there are duplicate keys that is causing an update error. '
+                            + 'Make sure each v-for item has a unique key.'
                         );
                     }
 
@@ -548,10 +559,10 @@ export function createPatchFunction(backend) {
         // note we only do this if the vnode is cloned -
         // if the new node is not cloned it means the render functions have been
         // reset by the hot-reload-api and we need to do a proper re-render.
-        if (isTrue(vnode.isStatic) &&
-            isTrue(oldVnode.isStatic) &&
-            vnode.key === oldVnode.key &&
-            (isTrue(vnode.isCloned) || isTrue(vnode.isOnce))
+        if (isTrue(vnode.isStatic)
+            && isTrue(oldVnode.isStatic)
+            && vnode.key === oldVnode.key
+            && (isTrue(vnode.isCloned) || isTrue(vnode.isOnce))
         ) {
             vnode.componentInstance = oldVnode.componentInstance;
             return;
@@ -567,7 +578,7 @@ export function createPatchFunction(backend) {
         const ch = vnode.children;
         if (isDef(data) && isPatchable(vnode)) {
             for (i = 0; i < cbs.update.length; ++i) {
-                cbs.update[i](oldVnode, vnode)
+                cbs.update[i](oldVnode, vnode);
             }
             if (isDef(i = data.hook) && isDef(i = i.update)) {
                 i(oldVnode, vnode);
@@ -645,9 +656,11 @@ export function createPatchFunction(backend) {
         } = vnode;
         if (isDef(data)) {
             if (isDef(i = data.hook) && isDef(i = i.init)) {
-                i(vnode, true
-
-                /* hydrating */ );
+                i(
+                    vnode,
+                    true,
+                    // hydrating
+                );
             }
 
             if (isDef(i = vnode.componentInstance)) {
@@ -669,14 +682,16 @@ export function createPatchFunction(backend) {
                         if (i !== elm.innerHTML) {
 
                             /* istanbul ignore if */
-                            if (process.env.NODE_ENV !== 'production' &&
-                                typeof console !== 'undefined' &&
-                                !bailed
+                            if (process.env.NODE_ENV !== 'production'
+                                && typeof console !== 'undefined'
+                                && !bailed
                             ) {
                                 bailed = true;
+                                /* eslint-disable */
                                 console.warn('Parent: ', elm);
                                 console.warn('server innerHTML: ', i);
                                 console.warn('client innerHTML: ', elm.innerHTML);
+                                /* eslint-enable */
                             }
 
                             return false;
@@ -699,13 +714,15 @@ export function createPatchFunction(backend) {
                         if (!childrenMatch || childNode) {
 
                             /* istanbul ignore if */
-                            if (process.env.NODE_ENV !== 'production' &&
-                                typeof console !== 'undefined' &&
-                                !bailed
+                            if (process.env.NODE_ENV !== 'production'
+                                && typeof console !== 'undefined'
+                                && !bailed
                             ) {
                                 bailed = true;
+                                /* eslint-disable */
                                 console.warn('Parent: ', elm);
                                 console.warn('Mismatching childNodes vs. VNodes: ', elm.childNodes, children);
+                                /* eslint-enable */
                             }
 
                             return false;
@@ -734,13 +751,11 @@ export function createPatchFunction(backend) {
     function assertNodeMatch(node, vnode) {
         if (isDef(vnode.tag)) {
             return (
-                vnode.tag.indexOf('mip-component') === 0 ||
-                vnode.tag.toLowerCase() === (node.tagName && node.tagName.toLowerCase())
+                vnode.tag.indexOf('mip-component') === 0
+                || vnode.tag.toLowerCase() === (node.tagName && node.tagName.toLowerCase())
             );
         }
-        else {
-            return node.nodeType === (vnode.isComment ? 8 : 3);
-        }
+        return node.nodeType === (vnode.isComment ? 8 : 3);
     }
 
     return function patch(oldVnode, vnode, hydrating, removeOnly, parentElm, refElm) {
@@ -783,11 +798,11 @@ export function createPatchFunction(backend) {
                         }
                         else if (process.env.NODE_ENV !== 'production') {
                             warn(
-                                'The client-side rendered virtual DOM tree is not matching ' +
-                                'server-rendered content. This is likely caused by incorrect ' +
-                                'HTML markup, for example nesting block-level elements inside ' +
-                                '<p>, or missing <tbody>. Bailing hydration and performing ' +
-                                'full client-side render.'
+                                'The client-side rendered virtual DOM tree is not matching '
+                                + 'server-rendered content. This is likely caused by incorrect '
+                                + 'HTML markup, for example nesting block-level elements inside '
+                                + '<p>, or missing <tbody>. Bailing hydration and performing '
+                                + 'full client-side render.'
                             );
                         }
                     }

@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable guard-for-in */
+
 const fnExpRE = /^\s*([\w$_]+|\([^)]*?\))\s*=>|^function\s*\(/;
 const simplePathRE = /^\s*[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*|\['.*?']|\[".*?"]|\[\d+]|\[[A-Za-z_$][\w$]*])*\s*$/;
 
@@ -27,14 +29,14 @@ const genGuard = condition => `if(${condition})return null;`;
 const modifierCode = {
     stop: '$event.stopPropagation();',
     prevent: '$event.preventDefault();',
-    self: genGuard(`$event.target !== $event.currentTarget`),
-    ctrl: genGuard(`!$event.ctrlKey`),
-    shift: genGuard(`!$event.shiftKey`),
-    alt: genGuard(`!$event.altKey`),
-    meta: genGuard(`!$event.metaKey`),
-    left: genGuard(`'button' in $event && $event.button !== 0`),
-    middle: genGuard(`'button' in $event && $event.button !== 1`),
-    right: genGuard(`'button' in $event && $event.button !== 2`)
+    self: genGuard('$event.target !== $event.currentTarget'),
+    ctrl: genGuard('!$event.ctrlKey'),
+    shift: genGuard('!$event.shiftKey'),
+    alt: genGuard('!$event.altKey'),
+    meta: genGuard('!$event.metaKey'),
+    left: genGuard('\'button\' in $event && $event.button !== 0'),
+    middle: genGuard('\'button\' in $event && $event.button !== 1'),
+    right: genGuard('\'button\' in $event && $event.button !== 2')
 };
 
 export function genHandlers(
@@ -46,13 +48,15 @@ export function genHandlers(
     for (const name in events) {
         const handler = events[name];
         // #5330: warn click.right, since right clicks do not actually fire click events.
-        if (process.env.NODE_ENV !== 'production' &&
-            name === 'click' &&
-            handler && handler.modifiers && handler.modifiers.right
+        if (process.env.NODE_ENV !== 'production'
+            && name === 'click'
+            && handler
+            && handler.modifiers
+            && handler.modifiers.right
         ) {
             warn(
-                `Use "contextmenu" instead of "click.right" since right clicks ` +
-                `do not actually fire "click" events.`
+                'Use "contextmenu" instead of "click.right" since right clicks '
+                + 'do not actually fire "click" events.'
             );
         }
 
@@ -81,47 +85,45 @@ function genHandler(
             ? handler.value
             : `function($event){${handler.value}}`; // inline statement
     }
-    else {
-        let code = '';
-        let genModifierCode = '';
-        const keys = [];
-        for (const key in handler.modifiers) {
-            if (modifierCode[key]) {
-                genModifierCode += modifierCode[key];
-                // left/right
-                if (keyCodes[key]) {
-                    keys.push(key);
-                }
-            }
-            else if (key === 'exact') {
-                const modifiers = (handler.modifiers);
-                genModifierCode += genGuard(
-                    ['ctrl', 'shift', 'alt', 'meta']
-                        .filter(keyModifier => !modifiers[keyModifier])
-                        .map(keyModifier => `$event.${keyModifier}Key`)
-                        .join('||')
-                );
-            }
-            else {
+    let code = '';
+    let genModifierCode = '';
+    const keys = [];
+    for (const key in handler.modifiers) {
+        if (modifierCode[key]) {
+            genModifierCode += modifierCode[key];
+            // left/right
+            if (keyCodes[key]) {
                 keys.push(key);
             }
         }
-        if (keys.length) {
-            code += genKeyFilter(keys);
+        else if (key === 'exact') {
+            const modifiers = (handler.modifiers);
+            genModifierCode += genGuard(
+                ['ctrl', 'shift', 'alt', 'meta']
+                    .filter(keyModifier => !modifiers[keyModifier])
+                    .map(keyModifier => `$event.${keyModifier}Key`)
+                    .join('||')
+            );
         }
-
-        // Make sure modifiers like prevent and stop get executed after key filtering
-        if (genModifierCode) {
-            code += genModifierCode;
+        else {
+            keys.push(key);
         }
-
-        const handlerCode = isMethodPath
-            ? handler.value + '($event)'
-            : isFunctionExpression
-                ? `(${handler.value})($event)`
-                : handler.value;
-        return `function($event){${code}${handlerCode}}`;
     }
+    if (keys.length) {
+        code += genKeyFilter(keys);
+    }
+
+    // Make sure modifiers like prevent and stop get executed after key filtering
+    if (genModifierCode) {
+        code += genModifierCode;
+    }
+
+    const handlerCode = isMethodPath
+        ? handler.value + '($event)'
+        : isFunctionExpression
+            ? `(${handler.value})($event)`
+            : handler.value;
+    return `function($event){${code}${handlerCode}}`;
 }
 
 function genKeyFilter(keys) {
@@ -136,9 +138,9 @@ function genFilterCode(key) {
 
     const code = keyCodes[key];
     return (
-        `_k($event.keyCode,` +
-        `${JSON.stringify(key)},` +
-        `${JSON.stringify(code)},` +
-        `$event.key)`
+        '_k($event.keyCode,'
+        + `${JSON.stringify(key)},`
+        + `${JSON.stringify(code)},`
+        + '$event.key)'
     );
 }

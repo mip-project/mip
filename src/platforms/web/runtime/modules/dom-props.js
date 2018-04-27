@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable guard-for-in */
+
 import {
     isDef,
     isUndef,
@@ -15,8 +17,8 @@ function updateDOMProps(oldVnode, vnode) {
         return;
     }
 
-    let key,
-        cur;
+    let key;
+    let cur;
     const elm = vnode.elm;
     const oldProps = oldVnode.data.domProps || {};
     let props = vnode.data.domProps || {};
@@ -72,10 +74,10 @@ function updateDOMProps(oldVnode, vnode) {
 
 function shouldUpdateValue(elm, checkVal) {
     return (!elm.composing && (
-        elm.tagName === 'OPTION' ||
-        isDirty(elm, checkVal) ||
-        isInputChanged(elm, checkVal)
-        ));
+        elm.tagName === 'OPTION'
+        || isDirty(elm, checkVal)
+        || isInputChanged(elm, checkVal)
+    ));
 }
 
 function isDirty(elm, checkVal) {
@@ -108,4 +110,4 @@ function isInputChanged(elm, newVal) {
 export default {
     create: updateDOMProps,
     update: updateDOMProps
-}
+};

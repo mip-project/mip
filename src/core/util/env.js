@@ -3,7 +3,7 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
-/* globals MessageChannel */
+/* globals MessageChannel, Symbol, Reflect, Set */
 
 import {handleError} from './error';
 
@@ -41,22 +41,22 @@ if (inBrowser) {
 
 // this needs to be lazy-evaled because MIP may be required before
 // mip-server-renderer can set MIP_ENV
-let _isServer;
+let $isServer;
 export const isServerRendering = () => {
-    if (_isServer === undefined) {
+    if ($isServer === undefined) {
 
         /* istanbul ignore if */
         if (!inBrowser && typeof global !== 'undefined') {
             // detect presence of mip-server-renderer and avoid
             // Webpack shimming the process
-            _isServer = global.process.env.MIP_ENV === 'server';
+            $isServer = global.process.env.MIP_ENV === 'server';
         }
         else {
-            _isServer = false;
+            $isServer = false;
         }
     }
 
-    return _isServer;
+    return $isServer;
 };
 
 // detect devtools
@@ -67,8 +67,8 @@ export function isNative(Ctor) {
     return typeof Ctor === 'function' && /native code/.test(Ctor.toString());
 }
 
-export const hasSymbol = typeof Symbol !== 'undefined' && isNative(Symbol) &&
-typeof Reflect !== 'undefined' && isNative(Reflect.ownKeys);
+export const hasSymbol = typeof Symbol !== 'undefined' && isNative(Symbol)
+&& typeof Reflect !== 'undefined' && isNative(Reflect.ownKeys);
 
 /**
  * Defer a task to execute it asynchronously.
@@ -102,11 +102,13 @@ export const nextTick = (function () {
             setImmediate(nextTickHandler);
         };
     }
-    else if (typeof MessageChannel !== 'undefined' && (
-        isNative(MessageChannel) ||
-        // PhantomJS
-        MessageChannel.toString() === '[object MessageChannelConstructor]'
-        )) {
+    else if (typeof MessageChannel !== 'undefined'
+        && (
+            isNative(MessageChannel)
+            // PhantomJS
+            || MessageChannel.toString() === '[object MessageChannelConstructor]'
+        )
+    ) {
         const channel = new MessageChannel();
         const port = channel.port2;
         channel.port1.onmessage = nextTickHandler;
@@ -132,7 +134,7 @@ export const nextTick = (function () {
     }
 
     return function queueNextTick(cb, ctx) {
-        let _resolve;
+        let $resolve;
         callbacks.push(() => {
             if (cb) {
                 try {
@@ -142,8 +144,8 @@ export const nextTick = (function () {
                     handleError(e, ctx, 'nextTick');
                 }
             }
-            else if (_resolve) {
-                _resolve(ctx);
+            else if ($resolve) {
+                $resolve(ctx);
             }
 
         });
@@ -155,23 +157,23 @@ export const nextTick = (function () {
         // $flow-disable-line
         if (!cb && typeof Promise !== 'undefined') {
             return new Promise((resolve, reject) => {
-                _resolve = resolve;
+                $resolve = resolve;
             });
         }
 
     };
 })();
 
-let _Set;
+let $Set;
 
 /* istanbul ignore if */ // $flow-disable-line
 if (typeof Set !== 'undefined' && isNative(Set)) {
     // use native Set when available.
-    _Set = Set;
+    $Set = Set;
 }
 else {
     // a non-standard Set polyfill that only works with primitive keys.
-    _Set = class Set {
+    $Set = class Set {
 
         constructor() {
             this.set = Object.create(null);
@@ -188,4 +190,4 @@ else {
     };
 }
 
-export { _Set };
+export {$Set};

@@ -19,66 +19,66 @@ export default ({
     optionMergeStrategies: Object.create(null),
 
     /**
-   * Whether to suppress warnings.
-   */
+     * Whether to suppress warnings.
+     */
     silent: false,
 
     /**
-   * Show production mode tip message on boot?
-   */
+     * Show production mode tip message on boot?
+     */
     productionTip: process.env.NODE_ENV !== 'production',
 
     /**
-   * Whether to enable devtools
-   */
+     * Whether to enable devtools
+     */
     devtools: process.env.NODE_ENV !== 'production',
 
     /**
-   * Whether to record perf
-   */
+     * Whether to record perf
+     */
     performance: false,
 
     /**
-   * Error handler for watcher errors
-   */
+     * Error handler for watcher errors
+     */
     errorHandler: null,
 
     /**
-   * Warn handler for watcher warns
-   */
+     * Warn handler for watcher warns
+     */
     warnHandler: null,
 
     /**
-   * Ignore certain custom elements
-   */
+     * Ignore certain custom elements
+     */
     ignoredElements: [],
 
     /**
-   * Custom user key aliases for v-on
-   */
+     * Custom user key aliases for v-on
+     */
     keyCodes: Object.create(null),
 
     /**
-   * Check if a tag is reserved so that it cannot be registered as a
-   * component. This is platform-dependent and may be overwritten.
-   */
+     * Check if a tag is reserved so that it cannot be registered as a
+     * component. This is platform-dependent and may be overwritten.
+     */
     isReservedTag: no,
 
     /**
-   * Check if an attribute is reserved so that it cannot be used as a component
-   * prop. This is platform-dependent and may be overwritten.
-   */
+     * Check if an attribute is reserved so that it cannot be used as a component
+     * prop. This is platform-dependent and may be overwritten.
+     */
     isReservedAttr: no,
 
     /**
-   * Check if a tag is an unknown element.
-   * Platform-dependent.
-   */
+     * Check if a tag is an unknown element.
+     * Platform-dependent.
+     */
     isUnknownElement: no,
 
     /**
-   * Get the namespace of an element
-   */
+     * Get the namespace of an element
+     */
     getTagNamespace: noop,
 
     /**
@@ -87,13 +87,14 @@ export default ({
     parsePlatformTagName: identity,
 
     /**
-   * Check if an attribute must be bound using property, e.g. value
-   * Platform-dependent.
-   */
+     * Check if an attribute must be bound using property, e.g. value
+     * Platform-dependent.
+     */
     mustUseProp: no,
 
+    /* eslint-disable */
     /**
-   * Exposed for legacy reasons
-   */
+     * Exposed for legacy reasons
+     */
     _lifecycleHooks: LIFECYCLE_HOOKS
-})
+});

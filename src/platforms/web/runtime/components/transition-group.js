@@ -110,10 +110,10 @@ export default {
         const body = document.body;
         const f = body.offsetHeight; // eslint-disable-line
 
-        children.forEach((c) => {
+        children.forEach(c => {
             if (c.data.moved) {
-                var el = c.elm;
-                var s = el.style;
+                let el = c.elm;
+                let s = el.style;
                 addTransitionClass(el, moveClass);
                 s.transform = s.WebkitTransform = s.transitionDuration = '';
                 el.addEventListener(transitionEndEvent, el._moveCb = function cb(e) {
@@ -149,7 +149,7 @@ export default {
             // is applied.
             const clone = el.cloneNode();
             if (el._transitionClasses) {
-                el._transitionClasses.forEach((cls) => {
+                el._transitionClasses.forEach(cls => {
                     removeClass(clone, cls);
                 });
             }
@@ -162,7 +162,7 @@ export default {
             return (this._hasMove = info.hasTransform);
         }
     }
-}
+};
 
 function callPendingCbs(c) {
 

@@ -66,9 +66,9 @@ export function lifecycleMixin(MIP) {
         if (!prevVnode) {
             // initial render
             vm.$el = vm.__patch__(
-                vm.$el, vnode, hydrating, false
-
-                /* removeOnly */ ,
+                vm.$el, vnode, hydrating,
+                false,
+                // removeOnly,
                 vm.$options._parentElm,
                 vm.$options._refElm
             );
@@ -168,12 +168,14 @@ export function mountComponent(
         if (process.env.NODE_ENV !== 'production') {
 
             /* istanbul ignore if */
-            if ((vm.$options.template && vm.$options.template.charAt(0) !== '#') ||
-                vm.$options.el || el) {
+            if ((vm.$options.template && vm.$options.template.charAt(0) !== '#')
+                || vm.$options.el
+                || el
+            ) {
                 warn(
-                    'You are using the runtime-only build of MIP where the template ' +
-                    'compiler is not available. Either pre-compile the templates into ' +
-                    'render functions, or use the compiler-included build.',
+                    'You are using the runtime-only build of MIP where the template '
+                    + 'compiler is not available. Either pre-compile the templates into '
+                    + 'render functions, or use the compiler-included build.',
                     vm
                 );
             }
@@ -242,10 +244,10 @@ export function updateChildComponent(
     // determine whether component has slot children
     // we need to do this before overwriting $options._renderChildren
     const hasChildren = !!(
-        renderChildren || // has new static slots
-        vm.$options._renderChildren || // has old static slots
-        parentVnode.data.scopedSlots || // has new scoped slots
-        vm.$scopedSlots !== emptyObject // has old scoped slots
+        renderChildren // has new static slots
+        || vm.$options._renderChildren // has old static slots
+        || parentVnode.data.scopedSlots // has new scoped slots
+        || vm.$scopedSlots !== emptyObject // has old scoped slots
     );
 
     vm.$options._parentVnode = parentVnode;

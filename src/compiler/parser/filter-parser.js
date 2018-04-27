@@ -14,11 +14,11 @@ export function parseFilters(exp) {
     let square = 0;
     let paren = 0;
     let lastFilterIndex = 0;
-    let c,
-        prev,
-        i,
-        expression,
-        filters;
+    let c;
+    let prev;
+    let i;
+    let expression;
+    let filters;
 
     for (i = 0; i < exp.length; i++) {
         prev = c;
@@ -44,10 +44,10 @@ export function parseFilters(exp) {
             }
         }
         else if (
-            c === 0x7C && // pipe
-            exp.charCodeAt(i + 1) !== 0x7C &&
-            exp.charCodeAt(i - 1) !== 0x7C &&
-            !curly && !square && !paren
+            c === 0x7C // pipe
+            && exp.charCodeAt(i + 1) !== 0x7C
+            && exp.charCodeAt(i - 1) !== 0x7C
+            && !curly && !square && !paren
         ) {
             if (expression === undefined) {
                 // first filter, end of expression
@@ -133,9 +133,7 @@ function wrapFilter(exp, filter) {
         // _f: resolveFilter
         return `_f("${filter}")(${exp})`;
     }
-    else {
-        const name = filter.slice(0, i);
-        const args = filter.slice(i + 1);
-        return `_f("${name}")(${exp},${args}`;
-    }
+    const name = filter.slice(0, i);
+    const args = filter.slice(i + 1);
+    return `_f("${name}")(${exp},${args}`;
 }

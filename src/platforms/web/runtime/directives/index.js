@@ -8,4 +8,4 @@ import show from './show';
 export default {
     model,
     show
-}
+};

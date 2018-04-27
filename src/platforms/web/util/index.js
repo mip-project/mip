@@ -11,6 +11,9 @@ export * from './element';
 
 /**
  * Query an element selector if it's not an element already.
+ *
+ * @param {Object} el element
+ * @return {any} any result
  */
 export function query(el) {
     if (typeof el === 'string') {
@@ -24,7 +27,5 @@ export function query(el) {
 
         return selected;
     }
-    else {
-        return el;
-    }
+    return el;
 }

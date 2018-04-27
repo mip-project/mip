@@ -19,12 +19,13 @@ function updateClass(oldVnode, vnode) {
     const data = vnode.data;
     const oldData = oldVnode.data;
     if (
-        isUndef(data.staticClass) &&
-        isUndef(data.class) && (
-        isUndef(oldData) || (
-        isUndef(oldData.staticClass) &&
-        isUndef(oldData.class)
-        )
+        isUndef(data.staticClass)
+        && isUndef(data.class)
+        && (
+            isUndef(oldData) || (
+                isUndef(oldData.staticClass)
+                && isUndef(oldData.class)
+            )
         )
     ) {
         return;
@@ -48,4 +49,4 @@ function updateClass(oldVnode, vnode) {
 export default {
     create: updateClass,
     update: updateClass
-}
+};

@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable fecs-valid-class-jsdoc, guard-for-in */
+
 import VNode from './vnode';
 import {createElement} from './create-element';
 import {resolveInject} from '../instance/inject';

@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable fecs-valid-jsdoc */
+
 /**
  * Cross-platform code generation for component v-model
  */
@@ -16,9 +18,9 @@ export function genComponentModel(
     const baseValueExpression = '$$v';
     let valueExpression = baseValueExpression;
     if (trim) {
-        valueExpression = `(typeof ${baseValueExpression} === 'string'` +
-            `? ${baseValueExpression}.trim()` +
-            `: ${baseValueExpression})`;
+        valueExpression = `(typeof ${baseValueExpression} === 'string'`
+            + `? ${baseValueExpression}.trim()`
+            + `: ${baseValueExpression})`;
     }
 
     if (number) {
@@ -45,9 +47,7 @@ export function genAssignmentCode(
     if (res.key === null) {
         return `${value}=${assignment}`;
     }
-    else {
-        return `$set(${res.exp}, ${res.key}, ${assignment})`;
-    }
+    return `$set(${res.exp}, ${res.key}, ${assignment})`;
 }
 
 /**
@@ -65,12 +65,12 @@ export function genAssignmentCode(
  *
  */
 
-let len,
-    str,
-    chr,
-    index,
-    expressionPos,
-    expressionEndPos;
+let len;
+let str;
+let chr;
+let index;
+let expressionPos;
+let expressionEndPos;
 
 export function parseModel(val) {
     len = val.length;
@@ -83,12 +83,10 @@ export function parseModel(val) {
                 key: '"' + val.slice(index + 1) + '"'
             };
         }
-        else {
-            return {
-                exp: val,
-                key: null
-            };
-        }
+        return {
+            exp: val,
+            key: null
+        };
     }
 
     str = val;

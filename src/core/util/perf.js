@@ -12,11 +12,11 @@ if (process.env.NODE_ENV !== 'production') {
 
     /* istanbul ignore if */
     if (
-        perf &&
-        perf.mark &&
-        perf.measure &&
-        perf.clearMarks &&
-        perf.clearMeasures
+        perf
+        && perf.mark
+        && perf.measure
+        && perf.clearMarks
+        && perf.clearMeasures
     ) {
         mark = tag => perf.mark(tag);
         measure = (name, startTag, endTag) => {

@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable no-console */
+
 import {parseFilters} from './parser/filter-parser';
 
 export function baseWarn(msg) {
@@ -49,12 +51,15 @@ export function addHandler(
 
     /* istanbul ignore if */
     if (
-        process.env.NODE_ENV !== 'production' && warn &&
-        modifiers && modifiers.prevent && modifiers.passive
+        process.env.NODE_ENV !== 'production'
+        && warn
+        && modifiers
+        && modifiers.prevent
+        && modifiers.passive
     ) {
         warn(
-            'passive and prevent can\'t be used together. ' +
-            'Passive handler can\'t prevent default event.'
+            'passive and prevent can\'t be used together. '
+            + 'Passive handler can\'t prevent default event.'
         );
     }
 
@@ -103,8 +108,8 @@ export function getBindingAttr(
     name,
     getStatic
 ) {
-    const dynamicValue = getAndRemoveAttr(el, ':' + name) ||
-    getAndRemoveAttr(el, 'v-bind:' + name);
+    const dynamicValue = getAndRemoveAttr(el, ':' + name)
+    || getAndRemoveAttr(el, 'v-bind:' + name);
     if (dynamicValue != null) {
         return parseFilters(dynamicValue);
     }

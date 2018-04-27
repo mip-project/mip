@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* global Symbol */
+
 import {
     warn,
     once,
@@ -17,8 +19,8 @@ import {createEmptyVNode} from 'core/vdom/vnode';
 
 function ensureCtor(comp, base) {
     if (
-        comp.__esModule ||
-        (hasSymbol && comp[Symbol.toStringTag] === 'Module')
+        comp.__esModule
+        || (hasSymbol && comp[Symbol.toStringTag] === 'Module')
     ) {
         comp = comp.default;
     }
@@ -72,7 +74,7 @@ export function resolveAsyncComponent(
             }
         };
 
-        const resolve = once((res) => {
+        const resolve = once(res => {
             // cache resolved
             factory.resolved = ensureCtor(res, baseCtor);
             // invoke callbacks only if this is not a synchronous resolve
@@ -85,9 +87,8 @@ export function resolveAsyncComponent(
 
         const reject = once(reason => {
             process.env.NODE_ENV !== 'production' && warn(
-                `Failed to resolve async component: ${String(factory)}` +
-                (reason ? `
-Reason: ${reason}` : '')
+                `Failed to resolve async component: ${String(factory)}`
+                + (reason ? `\nReason: ${reason}` : '')
             );
             if (isDef(factory.errorComp)) {
                 factory.error = true;

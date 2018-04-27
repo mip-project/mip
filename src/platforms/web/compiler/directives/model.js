@@ -20,9 +20,9 @@ export const RANGE_TOKEN = '__r';
 export default function model(
     el,
     dir,
-    _warn
+    $warn
 ) {
-    warn = _warn;
+    warn = $warn;
     const value = dir.value;
     const modifiers = dir.modifiers;
     const tag = el.tag;
@@ -33,9 +33,8 @@ export default function model(
         // value will throw an error.
         if (tag === 'input' && type === 'file') {
             warn(
-                `<${el.tag} v-model="${value}" type="file">:
-` +
-                `File inputs are read only. Use a v-on:change listener instead.`
+                `<${el.tag} v-model="${value}" type="file">:\n`
+                + 'File inputs are read only. Use a v-on:change listener instead.'
             );
         }
     }
@@ -64,10 +63,10 @@ export default function model(
     }
     else if (process.env.NODE_ENV !== 'production') {
         warn(
-            `<${el.tag} v-model="${value}">: ` +
-            `v-model is not supported on this element type. ` +
-            'If you are working with contenteditable, it\'s recommended to ' +
-            'wrap a library dedicated for that purpose inside a custom component.'
+            `<${el.tag} v-model="${value}">: `
+            + 'v-model is not supported on this element type. '
+            + 'If you are working with contenteditable, it\'s recommended to '
+            + 'wrap a library dedicated for that purpose inside a custom component.'
         );
     }
 
@@ -85,23 +84,24 @@ function genCheckboxModel(
     const trueValueBinding = getBindingAttr(el, 'true-value') || 'true';
     const falseValueBinding = getBindingAttr(el, 'false-value') || 'false';
     addProp(el, 'checked',
-        `Array.isArray(${value})` +
-        `?_i(${value},${valueBinding})>-1` + (
-        trueValueBinding === 'true'
-            ? `:(${value})`
-            : `:_q(${value},${trueValueBinding})`
-        )
+        `Array.isArray(${value})`
+        + `?_i(${value},${valueBinding})>-1`
+        + (
+            trueValueBinding === 'true'
+                ? `:(${value})`
+                : `:_q(${value},${trueValueBinding})`
+            )
     );
     addHandler(el, 'change',
-        `var $$a=${value},` +
-        '$$el=$event.target,' +
-        `$$c=$$el.checked?(${trueValueBinding}):(${falseValueBinding});` +
-        'if(Array.isArray($$a)){' +
-        `var $$v=${number ? '_n(' + valueBinding + ')' : valueBinding},` +
-        '$$i=_i($$a,$$v);' +
-        `if($$el.checked){$$i<0&&(${value}=$$a.concat([$$v]))}` +
-        `else{$$i>-1&&(${value}=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}` +
-        `}else{${genAssignmentCode(value, '$$c')}}`,
+        `var $$a=${value},`
+        + '$$el=$event.target,'
+        + `$$c=$$el.checked?(${trueValueBinding}):(${falseValueBinding});`
+        + 'if(Array.isArray($$a)){'
+        + `var $$v=${number ? '_n(' + valueBinding + ')' : valueBinding},`
+        + '$$i=_i($$a,$$v);'
+        + `if($$el.checked){$$i<0&&(${value}=$$a.concat([$$v]))}`
+        + `else{$$i>-1&&(${value}=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}`
+        + `}else{${genAssignmentCode(value, '$$c')}}`,
         null, true
     );
 }
@@ -124,10 +124,10 @@ function genSelect(
     modifiers
 ) {
     const number = modifiers && modifiers.number;
-    const selectedVal = `Array.prototype.filter` +
-        `.call($event.target.options,function(o){return o.selected})` +
-        `.map(function(o){var val = "_value" in o ? o._value : o.value;` +
-        `return ${number ? '_n(val)' : 'val'}})`;
+    const selectedVal = 'Array.prototype.filter'
+        + '.call($event.target.options,function(o){return o.selected})'
+        + '.map(function(o){var val = "_value" in o ? o._value : o.value;'
+        + `return ${number ? '_n(val)' : 'val'}})`;
 
     const assignment = '$event.target.multiple ? $$selectedVal : $$selectedVal[0]';
     let code = `var $$selectedVal = ${selectedVal};`;
@@ -155,7 +155,7 @@ function genDefaultModel(
 
     let valueExpression = '$event.target.value';
     if (trim) {
-        valueExpression = `$event.target.value.trim()`;
+        valueExpression = '$event.target.value.trim()';
     }
 
     if (number) {

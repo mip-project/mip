@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<!--htmlcs-disable-->
 <head>
     <meta charset="utf-8">
     <title>MIP.js tree view example</title>
     <style>
-        body {
-            font-family: Menlo, Consolas, monospace;
-            color: #444;
-        }
+    body {
+        font-family: Menlo, Consolas, monospace;
+        color: #444;
+    }
 
-        .item {
-            cursor: pointer;
-        }
+    .item {
+        cursor: pointer;
+    }
 
-        .bold {
-            font-weight: bold;
-        }
+    .bold {
+        font-weight: 800;
+    }
 
-        ul {
-            padding-left: 1em;
-            line-height: 1.5em;
-            list-style-type: dot;
-        }
+    ul {
+        padding-left: 1em;
+        line-height: 1.5;
+        list-style-type: dot;
+    }
     </style>
     <!-- Delete ".min" for console warnings in development -->
     <script src="../../dist/mip.js"></script>
@@ -38,7 +38,7 @@
                 <span v-if="isFolder">[{{open ? '-' : '+'}}]</span>
             </div>
             <ul v-show="open" v-if="isFolder">
-                <item class="item" v-for="model in model.children" :model="model">
+                <item class="item" v-for="(model, index) in model.children" :model="model" :key="index">
                 </item>
                 <li class="add" @click="addChild">+</li>
             </ul>

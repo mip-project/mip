@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable guard-for-in */
+
 import {
     warn,
     nextTick,
@@ -41,10 +43,10 @@ export function initRender(vm) {
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production') {
         defineReactive(vm, '$attrs', parentData && parentData.attrs || emptyObject, () => {
-            !isUpdatingChildComponent && warn(`$attrs is readonly.`, vm);
+            !isUpdatingChildComponent && warn('$attrs is readonly.', vm);
         }, true);
         defineReactive(vm, '$listeners', options._parentListeners || emptyObject, () => {
-            !isUpdatingChildComponent && warn(`$listeners is readonly.`, vm);
+            !isUpdatingChildComponent && warn('$listeners is readonly.', vm);
         }, true);
     }
     else {
@@ -63,7 +65,7 @@ export function renderMixin(MIP) {
 
     MIP.prototype._render = function () {
         const vm = this;
-        const {render, _parentVnode} = vm.$options;
+        const {render, $parentVnode} = vm.$options;
 
         if (vm._isMounted) {
             // if the parent didn't update, the slot nodes will be the ones from
@@ -72,25 +74,24 @@ export function renderMixin(MIP) {
                 const slot = vm.$slots[key];
                 if (slot._rendered) {
                     vm.$slots[key] = cloneVNodes(slot, true
-
-                    /* deep */ );
+                        // deep
+                    );
                 }
-
             }
         }
 
-        vm.$scopedSlots = (_parentVnode && _parentVnode.data.scopedSlots) || emptyObject;
+        vm.$scopedSlots = ($parentVnode && $parentVnode.data.scopedSlots) || emptyObject;
 
         // set parent vnode. this allows render functions to have access
         // to the data on the placeholder node.
-        vm.$vnode = _parentVnode;
+        vm.$vnode = $parentVnode;
         // render self
         let vnode;
         try {
             vnode = render.call(vm._renderProxy, vm.$createElement);
         }
         catch (e) {
-            handleError(e, vm, `render`);
+            handleError(e, vm, 'render');
             // return error render result,
             // or previous vnode to prevent render error causing blank component
 
@@ -101,7 +102,7 @@ export function renderMixin(MIP) {
                         vnode = vm.$options.renderError.call(vm._renderProxy, vm.$createElement, e);
                     }
                     catch (e) {
-                        handleError(e, vm, `renderError`);
+                        handleError(e, vm, 'renderError');
                         vnode = vm._vnode;
                     }
                 }
@@ -117,8 +118,8 @@ export function renderMixin(MIP) {
         if (!(vnode instanceof VNode)) {
             if (process.env.NODE_ENV !== 'production' && Array.isArray(vnode)) {
                 warn(
-                    'Multiple root nodes returned from render function. Render function ' +
-                    'should return a single root node.',
+                    'Multiple root nodes returned from render function. Render function '
+                    + 'should return a single root node.',
                     vm
                 );
             }
@@ -127,7 +128,7 @@ export function renderMixin(MIP) {
         }
 
         // set parent
-        vnode.parent = _parentVnode;
+        vnode.parent = $parentVnode;
         return vnode;
     };
 }
