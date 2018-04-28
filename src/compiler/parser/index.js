@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable fecs-valid-jsdoc */
+
 import he from 'he';
 import {parseHTML} from './html-parser';
 import {parseText} from './text-parser';
@@ -138,9 +140,9 @@ export function parse(
             if (isForbiddenTag(element) && !isServerRendering()) {
                 element.forbidden = true;
                 process.env.NODE_ENV !== 'production' && warn(
-                    'Templates should only be responsible for mapping the state to the ' +
-                    'UI. Avoid placing tags with side-effects in your templates, such as ' +
-                    `<${tag}>` + ', as they will not be parsed.'
+                    'Templates should only be responsible for mapping the state to the '
+                    + 'UI. Avoid placing tags with side-effects in your templates, such as '
+                    + `<${tag}>` + ', as they will not be parsed.'
                 );
             }
 
@@ -176,15 +178,15 @@ export function parse(
                 if (process.env.NODE_ENV !== 'production') {
                     if (el.tag === 'slot' || el.tag === 'template') {
                         warnOnce(
-                            `Cannot use <${el.tag}> as component root element because it may ` +
-                            'contain multiple nodes.'
+                            `Cannot use <${el.tag}> as component root element because it may `
+                            + 'contain multiple nodes.'
                         );
                     }
 
                     if (el.attrsMap.hasOwnProperty('v-for')) {
                         warnOnce(
-                            'Cannot use v-for on stateful component root element because ' +
-                            'it renders multiple elements.'
+                            'Cannot use v-for on stateful component root element because '
+                            + 'it renders multiple elements.'
                         );
                     }
                 }
@@ -206,9 +208,9 @@ export function parse(
                 }
                 else if (process.env.NODE_ENV !== 'production') {
                     warnOnce(
-                        `Component template should contain exactly one root element. ` +
-                        `If you are using v-if on multiple elements, ` +
-                        `use v-else-if to chain them instead.`
+                        'Component template should contain exactly one root element. '
+                        + 'If you are using v-if on multiple elements, '
+                        + 'use v-else-if to chain them instead.'
                     );
                 }
             }
@@ -263,7 +265,7 @@ export function parse(
                             'Component template requires a root element, rather than just text.'
                         );
                     }
-                    else if ( (text = text.trim()) ) {
+                    else if ((text = text.trim())) {
                         warnOnce(
                             `text "${text}" outside root element will be ignored.`
                         );
@@ -276,9 +278,9 @@ export function parse(
             // IE textarea placeholder bug
 
             /* istanbul ignore if */
-            if (isIE &&
-                currentParent.tag === 'textarea' &&
-                currentParent.attrsMap.placeholder === text
+            if (isIE
+                && currentParent.tag === 'textarea'
+                && currentParent.attrsMap.placeholder === text
             ) {
                 return;
             }
@@ -360,7 +362,7 @@ function processKey(el) {
     const exp = getBindingAttr(el, 'key');
     if (exp) {
         if (process.env.NODE_ENV !== 'production' && el.tag === 'template') {
-            warn(`<template> cannot be keyed. Place the key on real elements instead.`);
+            warn('<template> cannot be keyed. Place the key on real elements instead.');
         }
 
         el.key = exp;
@@ -377,7 +379,7 @@ function processRef(el) {
 
 export function processFor(el) {
     let exp;
-    if ( (exp = getAndRemoveAttr(el, 'v-for')) ) {
+    if ((exp = getAndRemoveAttr(el, 'v-for'))) {
         const inMatch = exp.match(forAliasRE);
         if (!inMatch) {
             process.env.NODE_ENV !== 'production' && warn(
@@ -433,8 +435,8 @@ function processIfConditions(el, parent) {
     }
     else if (process.env.NODE_ENV !== 'production') {
         warn(
-            `v-${el.elseif ? ('else-if="' + el.elseif + '"') : 'else'} ` +
-            `used on element <${el.tag}> without corresponding v-if.`
+            `v-${el.elseif ? ('else-if="' + el.elseif + '"') : 'else'} `
+            + `used on element <${el.tag}> without corresponding v-if.`
         );
     }
 }
@@ -445,16 +447,14 @@ function findPrevElement(children) {
         if (children[i].type === 1) {
             return children[i];
         }
-        else {
-            if (process.env.NODE_ENV !== 'production' && children[i].text !== ' ') {
-                warn(
-                    `text "${children[i].text.trim()}" between v-if and v-else(-if) ` +
-                    `will be ignored.`
-                );
-            }
-
-            children.pop();
+        if (process.env.NODE_ENV !== 'production' && children[i].text !== ' ') {
+            warn(
+                `text "${children[i].text.trim()}" between v-if and v-else(-if) `
+                + 'will be ignored.'
+            );
         }
+
+        children.pop();
     }
 }
 
@@ -478,9 +478,9 @@ function processSlot(el) {
         el.slotName = getBindingAttr(el, 'name');
         if (process.env.NODE_ENV !== 'production' && el.key) {
             warn(
-                '\`key\` does not work on <slot> because slots are abstract outlets ' +
-                'and can possibly expand into multiple elements. ' +
-                'Use the key on a wrapping element instead.'
+                '\`key\` does not work on <slot> because slots are abstract outlets '
+                + 'and can possibly expand into multiple elements. '
+                + 'Use the key on a wrapping element instead.'
             );
         }
     }
@@ -492,17 +492,17 @@ function processSlot(el) {
             /* istanbul ignore if */
             if (process.env.NODE_ENV !== 'production' && slotScope) {
                 warn(
-                    `the "scope" attribute for scoped slots have been deprecated and ` +
-                    `replaced by "slot-scope" since 2.5. The new "slot-scope" attribute ` +
-                    `can also be used on plain elements in addition to <template> to ` +
-                    `denote scoped slots.`,
+                    'the "scope" attribute for scoped slots have been deprecated and '
+                    + 'replaced by "slot-scope" since 2.5. The new "slot-scope" attribute '
+                    + 'can also be used on plain elements in addition to <template> to '
+                    + 'denote scoped slots.',
                     true
                 );
             }
 
             el.slotScope = slotScope || getAndRemoveAttr(el, 'slot-scope');
         }
-        else if ( (slotScope = getAndRemoveAttr(el, 'slot-scope')) ) {
+        else if ((slotScope = getAndRemoveAttr(el, 'slot-scope'))) {
             el.slotScope = slotScope;
         }
 
@@ -520,7 +520,7 @@ function processSlot(el) {
 
 function processComponent(el) {
     let binding;
-    if ( (binding = getBindingAttr(el, 'is')) ) {
+    if ((binding = getBindingAttr(el, 'is'))) {
         el.component = binding;
     }
 
@@ -531,13 +531,13 @@ function processComponent(el) {
 
 function processAttrs(el) {
     const list = el.attrsList;
-    let i,
-        l,
-        name,
-        rawName,
-        value,
-        modifiers,
-        isProp;
+    let i;
+    let l;
+    let name;
+    let rawName;
+    let value;
+    let modifiers;
+    let isProp;
     for (i = 0, l = list.length; i < l; i++) {
         name = rawName = list[i].name;
         value = list[i].value;
@@ -571,7 +571,7 @@ function processAttrs(el) {
                         addHandler(
                             el,
                             `update:${camelize(name)}`,
-                            genAssignmentCode(value, `$event`)
+                            genAssignmentCode(value, '$event')
                         );
                     }
                 }
@@ -610,10 +610,10 @@ function processAttrs(el) {
                 const expression = parseText(value, delimiters);
                 if (expression) {
                     warn(
-                        `${name}="${value}": ` +
-                        'Interpolation inside attributes has been removed. ' +
-                        'Use v-bind or the colon shorthand instead. For example, ' +
-                        'instead of <div id="{{ val }}">, use <div :id="val">.'
+                        `${name}="${value}": `
+                        + 'Interpolation inside attributes has been removed. '
+                        + 'Use v-bind or the colon shorthand instead. For example, '
+                        + 'instead of <div id="{{ val }}">, use <div :id="val">.'
                     );
                 }
             }
@@ -650,8 +650,8 @@ function makeAttrsMap(attrs) {
     const map = {};
     for (let i = 0, l = attrs.length; i < l; i++) {
         if (
-            process.env.NODE_ENV !== 'production' &&
-            map[attrs[i].name] && !isIE && !isEdge
+            process.env.NODE_ENV !== 'production'
+            && map[attrs[i].name] && !isIE && !isEdge
         ) {
             warn('duplicate attribute: ' + attrs[i].name);
         }
@@ -668,11 +668,14 @@ function isTextTag(el) {
 
 function isForbiddenTag(el) {
     return (
-        el.tag === 'style' ||
-        (el.tag === 'script' && (
-        !el.attrsMap.type ||
-        el.attrsMap.type === 'text/javascript'
-        ))
+        el.tag === 'style'
+        || (
+            el.tag === 'script'
+            && (
+                !el.attrsMap.type
+                || el.attrsMap.type === 'text/javascript'
+            )
+        )
     );
 }
 
@@ -694,18 +697,18 @@ function guardIESVGBug(attrs) {
 }
 
 function checkForAliasModel(el, value) {
-    let _el = el;
-    while (_el) {
-        if (_el.for && _el.alias === value) {
+    let $el = el;
+    while ($el) {
+        if ($el.for && $el.alias === value) {
             warn(
-                `<${el.tag} v-model="${value}">: ` +
-                `You are binding v-model directly to a v-for iteration alias. ` +
-                `This will not be able to modify the v-for source array because ` +
-                `writing to the alias is like modifying a function local variable. ` +
-                `Consider using an array of objects and use v-model on an object property instead.`
+                `<${el.tag} v-model="${value}">: `
+                + 'You are binding v-model directly to a v-for iteration alias. '
+                + 'This will not be able to modify the v-for source array because '
+                + 'writing to the alias is like modifying a function local variable. '
+                + 'Consider using an array of objects and use v-model on an object property instead.'
             );
         }
 
-        _el = _el.parent;
+        $el = $el.parent;
     }
 }

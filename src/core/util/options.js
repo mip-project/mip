@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable fecs-valid-jsdoc, guard-for-in */
+
 import config from '../config';
 import {warn} from './debug';
 import {nativeWatch} from './env';
@@ -37,8 +39,8 @@ if (process.env.NODE_ENV !== 'production') {
     strats.el = strats.propsData = function (parent, child, vm, key) {
         if (!vm) {
             warn(
-                `option "${key}" can only be used during instance ` +
-                'creation with the `new` keyword.'
+                `option "${key}" can only be used during instance `
+                + 'creation with the `new` keyword.'
             );
         }
 
@@ -54,9 +56,9 @@ function mergeData(to, from) {
         return to;
     }
 
-    let key,
-        toVal,
-        fromVal;
+    let key;
+    let toVal;
+    let fromVal;
     const keys = Object.keys(from);
     for (let i = 0; i < keys.length; i++) {
         key = keys[i];
@@ -115,9 +117,7 @@ export function mergeDataOrFn(
             if (instanceData) {
                 return mergeData(instanceData, defaultData);
             }
-            else {
-                return defaultData;
-            }
+            return defaultData;
         };
     }
 }
@@ -130,9 +130,9 @@ strats.data = function (
     if (!vm) {
         if (childVal && typeof childVal !== 'function') {
             process.env.NODE_ENV !== 'production' && warn(
-                'The "data" option should be a function ' +
-                'that returns a per-instance value in component ' +
-                'definitions.',
+                'The "data" option should be a function '
+                + 'that returns a per-instance value in component '
+                + 'definitions.',
                 vm
             );
 
@@ -183,9 +183,7 @@ function mergeAssets(
         process.env.NODE_ENV !== 'production' && assertObjectType(key, childVal, vm);
         return extend(res, childVal);
     }
-    else {
-        return res;
-    }
+    return res;
 }
 
 ASSET_TYPES.forEach(function (type) {
@@ -272,11 +270,11 @@ strats.provide = mergeDataOrFn;
 /**
  * Default strategy.
  */
-const defaultStrat = function (parentVal, childVal) {
+function defaultStrat(parentVal, childVal) {
     return childVal === undefined
         ? parentVal
         : childVal;
-};
+}
 
 /**
  * Validate component names
@@ -286,8 +284,8 @@ function checkComponents(options) {
         const lower = key.toLowerCase();
         if (isBuiltInTag(lower) || config.isReservedTag(lower)) {
             warn(
-                'Do not use built-in or reserved HTML elements as component ' +
-                'id: ' + key
+                'Do not use built-in or reserved HTML elements as component '
+                + 'id: ' + key
             );
         }
 
@@ -305,9 +303,9 @@ function normalizeProps(options, vm) {
     }
 
     const res = {};
-    let i,
-        val,
-        name;
+    let i;
+    let val;
+    let name;
     if (Array.isArray(props)) {
         i = props.length;
         while (i--) {
@@ -337,8 +335,8 @@ function normalizeProps(options, vm) {
     }
     else if (process.env.NODE_ENV !== 'production' && props) {
         warn(
-            `Invalid value for option "props": expected an Array or an Object, ` +
-            `but got ${toRawType(props)}.`,
+            'Invalid value for option "props": expected an Array or an Object, '
+            + `but got ${toRawType(props)}.`,
             vm
         );
     }
@@ -373,8 +371,8 @@ function normalizeInject(options, vm) {
     }
     else if (process.env.NODE_ENV !== 'production' && inject) {
         warn(
-            `Invalid value for option "inject": expected an Array or an Object, ` +
-            `but got ${toRawType(inject)}.`,
+            'Invalid value for option "inject": expected an Array or an Object, '
+            + `but got ${toRawType(inject)}.`,
             vm
         );
     }
@@ -399,8 +397,8 @@ function normalizeDirectives(options) {
 function assertObjectType(name, value, vm) {
     if (!isPlainObject(value)) {
         warn(
-            `Invalid value for option "${name}": expected an Object, ` +
-            `but got ${toRawType(value)}.`,
+            `Invalid value for option "${name}": expected an Object, `
+            + `but got ${toRawType(value)}.`,
             vm
         );
     }

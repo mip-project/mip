@@ -161,7 +161,5 @@ function dedupe(latest, extended, sealed) {
         }
         return res;
     }
-    else {
-        return latest;
-    }
+    return latest;
 }

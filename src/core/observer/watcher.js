@@ -3,15 +3,17 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+ /* eslint-disable fecs-valid-jsdoc */
+
 import {queueWatcher} from './scheduler';
-import Dep, {pushTarget, popTarget} from './dep';
+import {pushTarget, popTarget} from './dep';
 
 import {
     warn,
     remove,
     isObject,
     parsePath,
-    _Set as Set,
+    $Set as Set,
     handleError
 } from '../util/index';
 
@@ -62,9 +64,9 @@ export default class Watcher {
             if (!this.getter) {
                 this.getter = function () {};
                 process.env.NODE_ENV !== 'production' && warn(
-                    `Failed watching path: "${expOrFn}" ` +
-                    'Watcher only accepts simple dot-delimited paths. ' +
-                    'For full control, use a function instead.',
+                    `Failed watching path: "${expOrFn}" `
+                    + 'Watcher only accepts simple dot-delimited paths. '
+                    + 'For full control, use a function instead.',
                     vm
                 );
             }
@@ -75,8 +77,8 @@ export default class Watcher {
     }
 
     /**
-   * Evaluate the getter, and re-collect dependencies.
-   */
+     * Evaluate the getter, and re-collect dependencies.
+     */
     get() {
         pushTarget(this);
         let value;
@@ -89,7 +91,7 @@ export default class Watcher {
                 handleError(e, vm, `getter for watcher "${this.expression}"`);
             }
             else {
-                throw e
+                throw e;
             }
         }
         finally {
@@ -106,8 +108,8 @@ export default class Watcher {
     }
 
     /**
-   * Add a dependency to this directive.
-   */
+     * Add a dependency to this directive.
+     */
     addDep(dep) {
         const id = dep.id;
         if (!this.newDepIds.has(id)) {
@@ -120,8 +122,8 @@ export default class Watcher {
     }
 
     /**
-   * Clean up for dependency collection.
-   */
+     * Clean up for dependency collection.
+     */
     cleanupDeps() {
         let i = this.deps.length;
         while (i--) {
@@ -142,9 +144,9 @@ export default class Watcher {
     }
 
     /**
-   * Subscriber interface.
-   * Will be called when a dependency changes.
-   */
+     * Subscriber interface.
+     * Will be called when a dependency changes.
+     */
     update() {
 
         /* istanbul ignore else */
@@ -160,19 +162,19 @@ export default class Watcher {
     }
 
     /**
-   * Scheduler job interface.
-   * Will be called by the scheduler.
-   */
+     * Scheduler job interface.
+     * Will be called by the scheduler.
+     */
     run() {
         if (this.active) {
             const value = this.get();
             if (
-                value !== this.value ||
+                value !== this.value
                 // Deep watchers and watchers on Object/Arrays should fire even
                 // when the value is the same, because the value may
                 // have mutated.
-                isObject(value) ||
-                this.deep
+                || isObject(value)
+                || this.deep
             ) {
                 // set new value
                 const oldValue = this.value;
@@ -193,9 +195,9 @@ export default class Watcher {
     }
 
     /**
-   * Evaluate the value of the watcher.
-   * This only gets called for lazy watchers.
-   */
+     * Evaluate the value of the watcher.
+     * This only gets called for lazy watchers.
+     */
     evaluate() {
         this.value = this.get();
         this.dirty = false;
@@ -212,8 +214,8 @@ export default class Watcher {
     }
 
     /**
-   * Remove self from all dependencies' subscriber list.
-   */
+     * Remove self from all dependencies' subscriber list.
+     */
     teardown() {
         if (this.active) {
             // remove self from vm's watcher list
@@ -240,12 +242,12 @@ export default class Watcher {
 const seenObjects = new Set();
 function traverse(val) {
     seenObjects.clear();
-    _traverse(val, seenObjects);
+    $traverse(val, seenObjects);
 }
 
-function _traverse(val, seen) {
-    let i,
-        keys;
+function $traverse(val, seen) {
+    let i;
+    let keys;
     const isA = Array.isArray(val);
     if ((!isA && !isObject(val)) || !Object.isExtensible(val)) {
         return;
@@ -263,14 +265,14 @@ function _traverse(val, seen) {
     if (isA) {
         i = val.length;
         while (i--) {
-            _traverse(val[i], seen);
+            $traverse(val[i], seen);
         }
     }
     else {
         keys = Object.keys(val);
         i = keys.length;
         while (i--) {
-            _traverse(val[keys[i]], seen);
+            $traverse(val[keys[i]], seen);
         }
     }
 }

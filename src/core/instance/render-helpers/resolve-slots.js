@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable fecs-valid-jsdoc */
+
 /**
  * Runtime helper for resolving raw children VNodes into a slot object.
  */
@@ -26,8 +28,8 @@ export function resolveSlots(
 
         // named slots should only be respected if the vnode was rendered in the
         // same context.
-        if ((child.context === context || child.functionalContext === context) &&
-            data && data.slot != null
+        if ((child.context === context || child.functionalContext === context)
+            && data && data.slot != null
         ) {
             const name = child.data.slot;
             const slot = (slots[name] || (slots[name] = []));

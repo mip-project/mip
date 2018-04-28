@@ -79,7 +79,7 @@ export default {
         }
 
     }
-}
+};
 
 function setSelected(el, binding, vm) {
     actuallySetSelected(el, binding, vm);
@@ -97,8 +97,8 @@ function actuallySetSelected(el, binding, vm) {
     const isMultiple = el.multiple;
     if (isMultiple && !Array.isArray(value)) {
         process.env.NODE_ENV !== 'production' && warn(
-            `<select multiple v-model="${binding.expression}"> ` +
-            `expects an Array value for its binding, but got ${
+            `<select multiple v-model="${binding.expression}"> `
+            + `expects an Array value for its binding, but got ${
             Object.prototype.toString.call(value).slice(8, -1)
             }`,
             vm
@@ -106,8 +106,8 @@ function actuallySetSelected(el, binding, vm) {
         return;
     }
 
-    let selected,
-        option;
+    let selected;
+    let option;
     for (let i = 0, l = el.options.length; i < l; i++) {
         option = el.options[i];
         if (isMultiple) {

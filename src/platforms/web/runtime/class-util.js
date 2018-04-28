@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable fecs-valid-jsdoc */
+
 /**
  * Add class with compatibility for SVG since classList is not supported on
  * SVG elements in IE

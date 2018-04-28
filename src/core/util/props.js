@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable fecs-valid-jsdoc */
+
 import {warn} from './debug';
 import {observe, observerState} from '../observer/index';
 import {
@@ -64,18 +66,18 @@ function getPropDefaultValue(vm, prop, key) {
     // warn against non-factory defaults for Object & Array
     if (process.env.NODE_ENV !== 'production' && isObject(def)) {
         warn(
-            'Invalid default value for prop "' + key + '": ' +
-            'Props with type Object/Array must use a factory function ' +
-            'to return the default value.',
+            'Invalid default value for prop "' + key + '": '
+            + 'Props with type Object/Array must use a factory function '
+            + 'to return the default value.',
             vm
         );
     }
 
     // the raw prop value was also undefined from previous render,
     // return previous default value to avoid unnecessary watcher trigger
-    if (vm && vm.$options.propsData &&
-        vm.$options.propsData[key] === undefined &&
-        vm._props[key] !== undefined
+    if (vm && vm.$options.propsData
+        && vm.$options.propsData[key] === undefined
+        && vm._props[key] !== undefined
     ) {
         return vm._props[key];
     }
@@ -126,9 +128,9 @@ function assertProp(
 
     if (!valid) {
         warn(
-            `Invalid prop: type check failed for prop "${name}".` +
-            ` Expected ${expectedTypes.map(capitalize).join(', ')}` +
-            `, got ${toRawType(value)}.`,
+            `Invalid prop: type check failed for prop "${name}".`
+            + ` Expected ${expectedTypes.map(capitalize).join(', ')}`
+            + `, got ${toRawType(value)}.`,
             vm
         );
         return;

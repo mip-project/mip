@@ -44,10 +44,10 @@ export function createElement(
         normalizationType = ALWAYS_NORMALIZE;
     }
 
-    return _createElement(context, tag, data, children, normalizationType);
+    return $createElement(context, tag, data, children, normalizationType);
 }
 
-export function _createElement(
+export function $createElement(
     context,
     tag,
     data,
@@ -56,9 +56,8 @@ export function _createElement(
 ) {
     if (isDef(data) && isDef((data).__ob__)) {
         process.env.NODE_ENV !== 'production' && warn(
-            `Avoid using observed data object as vnode data: ${JSON.stringify(data)}
-` +
-            'Always create fresh vnode data objects in each render!',
+            `Avoid using observed data object as vnode data: ${JSON.stringify(data)}\n`
+            + 'Always create fresh vnode data objects in each render!',
             context
         );
         return createEmptyVNode();
@@ -75,23 +74,21 @@ export function _createElement(
     }
 
     // warn against non-primitive key
-    if (process.env.NODE_ENV !== 'production' &&
-        isDef(data) && isDef(data.key) && !isPrimitive(data.key)
+    if (process.env.NODE_ENV !== 'production'
+        && isDef(data) && isDef(data.key) && !isPrimitive(data.key)
     ) {
         warn(
-            'Avoid using non-primitive value as key, ' +
-            'use string/number value instead.',
+            'Avoid using non-primitive value as key, '
+            + 'use string/number value instead.',
             context
         );
     }
 
     // support single function children as default scoped slot
-    if (Array.isArray(children) &&
-        typeof children[0] === 'function'
-    ) {
+    if (Array.isArray(children) && typeof children[0] === 'function') {
         data = data || {};
         data.scopedSlots = {
-            default: children[0]
+            'default': children[0]
         };
         children.length = 0;
     }
@@ -103,8 +100,8 @@ export function _createElement(
         children = simpleNormalizeChildren(children);
     }
 
-    let vnode,
-        ns;
+    let vnode;
+    let ns;
     if (typeof tag === 'string') {
         let Ctor;
         ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag);
@@ -140,9 +137,7 @@ export function _createElement(
 
         return vnode;
     }
-    else {
-        return createEmptyVNode();
-    }
+    return createEmptyVNode();
 }
 
 function applyNS(vnode, ns, force) {

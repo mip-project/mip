@@ -22,8 +22,8 @@ export function initAssetRegisters(MIP) {
             if (process.env.NODE_ENV !== 'production') {
                 if (type === 'component' && config.isReservedTag(id)) {
                     warn(
-                        'Do not use built-in or reserved HTML elements as component ' +
-                        'id: ' + id
+                        'Do not use built-in or reserved HTML elements as component '
+                        + 'id: ' + id
                     );
                 }
             }

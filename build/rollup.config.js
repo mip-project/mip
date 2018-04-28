@@ -1,6 +1,6 @@
 /**
  * @file rollup.config.js
- * @author huanghuiquan (huanghuiquan@baidu.com)
+ * @author sfe-sy (sfe-sy@baidu.com)
  */
 
 const path = require('path');

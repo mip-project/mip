@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable no-console */
+
 import MIP from 'core/index';
 import config from 'core/config';
 import {extend, noop} from 'shared/util';
@@ -64,12 +66,13 @@ MIP.nextTick(() => {
 
     if (process.env.NODE_ENV !== 'production'
         && config.productionTip !== false
-        && inBrowser && typeof console !== 'undefined'
+        && inBrowser
+        && typeof console !== 'undefined'
     ) {
         console[console.info ? 'info' : 'log'](
-            'You are running MIP in development mode.'
-            + 'Make sure to turn on production mode when deploying for production.'
-            + 'See more tips at https://vuejs.org/guide/deployment.html'
+            'You are running MIP in development mode.\n'
+            + 'Make sure to turn on production mode when deploying for production.\n'
+            + 'See more tips at https://vuejs.org/guide/deployment.html\n'
         );
     }
 

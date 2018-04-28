@@ -21,10 +21,10 @@ function transformNode(el, options) {
             const expression = parseText(staticStyle, options.delimiters);
             if (expression) {
                 warn(
-                    `style="${staticStyle}": ` +
-                    'Interpolation inside attributes has been removed. ' +
-                    'Use v-bind or the colon shorthand instead. For example, ' +
-                    'instead of <div style="{{ val }}">, use <div :style="val">.'
+                    `style="${staticStyle}": `
+                    + 'Interpolation inside attributes has been removed. '
+                    + 'Use v-bind or the colon shorthand instead. For example, '
+                    + 'instead of <div style="{{ val }}">, use <div :style="val">.'
                 );
             }
         }
@@ -33,8 +33,8 @@ function transformNode(el, options) {
     }
 
     const styleBinding = getBindingAttr(el, 'style', false
-
-    /* getStatic */ );
+        // getStatic
+    );
     if (styleBinding) {
         el.styleBinding = styleBinding;
     }
@@ -57,4 +57,4 @@ export default {
     staticKeys: ['staticStyle'],
     transformNode,
     genData
-}
+};

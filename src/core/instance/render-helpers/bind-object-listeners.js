@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable guard-for-in */
+
 import {
     warn,
     extend,

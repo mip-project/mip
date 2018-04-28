@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable guard-for-in */
+
 import config from '../config';
 import Dep from '../observer/dep';
 import Watcher from '../observer/watcher';
@@ -64,8 +66,8 @@ export function initState(vm) {
     }
     else {
         observe(vm._data = {}, true
-
-        /* asRootData */ );
+            // asRootData
+        );
     }
     if (opts.computed) {
         initComputed(vm, opts.computed);
@@ -92,8 +94,7 @@ function initProps(vm, propsOptions) {
         /* istanbul ignore else */
         if (process.env.NODE_ENV !== 'production') {
             const hyphenatedKey = hyphenate(key);
-            if (isReservedAttribute(hyphenatedKey) ||
-                config.isReservedAttr(hyphenatedKey)) {
+            if (isReservedAttribute(hyphenatedKey) || config.isReservedAttr(hyphenatedKey)) {
                 warn(
                     `"${hyphenatedKey}" is a reserved attribute and cannot be used as component prop.`,
                     vm
@@ -103,10 +104,10 @@ function initProps(vm, propsOptions) {
             defineReactive(props, key, value, () => {
                 if (vm.$parent && !isUpdatingChildComponent) {
                     warn(
-                        `Avoid mutating a prop directly since the value will be ` +
-                        `overwritten whenever the parent component re-renders. ` +
-                        `Instead, use a data or computed property based on the prop's ` +
-                        `value. Prop being mutated: "${key}"`,
+                        'Avoid mutating a prop directly since the value will be '
+                        + 'overwritten whenever the parent component re-renders. '
+                        + 'Instead, use a data or computed property based on the prop\'s '
+                        + `value. Prop being mutated: "${key}"`,
                         vm
                     );
                 }
@@ -120,7 +121,7 @@ function initProps(vm, propsOptions) {
         // during MIP.extend(). We only need to proxy props defined at
         // instantiation here.
         if (!(key in vm)) {
-            proxy(vm, `_props`, key);
+            proxy(vm, '_props', key);
         }
 
     }
@@ -135,8 +136,8 @@ function initData(vm) {
     if (!isPlainObject(data)) {
         data = {};
         process.env.NODE_ENV !== 'production' && warn(
-            'data functions should return an object:\n' +
-            'https://vuejs.org/v2/guide/components.html#data-Must-Be-a-Function',
+            'data functions should return an object:\n'
+            + 'https://vuejs.org/v2/guide/components.html#data-Must-Be-a-Function',
             vm
         );
     }
@@ -159,20 +160,20 @@ function initData(vm) {
 
         if (props && hasOwn(props, key)) {
             process.env.NODE_ENV !== 'production' && warn(
-                `The data property "${key}" is already declared as a prop. ` +
-                `Use prop default value instead.`,
+                `The data property "${key}" is already declared as a prop. `
+                + 'Use prop default value instead.',
                 vm
             );
         }
         else if (!isReserved(key)) {
-            proxy(vm, `_data`, key);
+            proxy(vm, '_data', key);
         }
 
     }
     // observe data
     observe(data, true
-
-    /* asRootData */ );
+        // asRootData
+    );
 }
 
 function getData(data, vm) {
@@ -180,7 +181,7 @@ function getData(data, vm) {
         return data.call(vm, vm);
     }
     catch (e) {
-        handleError(e, vm, `data()`);
+        handleError(e, vm, 'data()');
         return {};
     }
 }
@@ -254,8 +255,8 @@ export function defineComputed(
             ? userDef.set
             : noop;
     }
-    if (process.env.NODE_ENV !== 'production' &&
-        sharedPropertyDefinition.set === noop) {
+    if (process.env.NODE_ENV !== 'production'
+        && sharedPropertyDefinition.set === noop) {
         sharedPropertyDefinition.set = function () {
             warn(
                 `Computed property "${key}" was assigned to but it has no setter.`,
@@ -291,8 +292,8 @@ function initMethods(vm, methods) {
         if (process.env.NODE_ENV !== 'production') {
             if (methods[key] == null) {
                 warn(
-                    `Method "${key}" has an undefined value in the component definition. ` +
-                    `Did you reference the function correctly?`,
+                    `Method "${key}" has an undefined value in the component definition. `
+                    + 'Did you reference the function correctly?',
                     vm
                 );
             }
@@ -306,8 +307,8 @@ function initMethods(vm, methods) {
 
             if ((key in vm) && isReserved(key)) {
                 warn(
-                    `Method "${key}" conflicts with an existing MIP instance method. ` +
-                    `Avoid defining component methods that start with _ or $.`
+                    `Method "${key}" conflicts with an existing MIP instance method. `
+                    + 'Avoid defining component methods that start with _ or $.'
                 );
             }
         }
@@ -353,23 +354,24 @@ export function stateMixin(MIP) {
     // when using Object.defineProperty, so we have to procedurally build up
     // the object here.
     const dataDef = {};
+    const propsDef = {};
     dataDef.get = function () {
         return this._data;
     };
-    const propsDef = {};
     propsDef.get = function () {
         return this._props;
     };
+
     if (process.env.NODE_ENV !== 'production') {
         dataDef.set = function (newData) {
             warn(
-                'Avoid replacing instance root $data. ' +
-                'Use nested data properties instead.',
+                'Avoid replacing instance root $data. '
+                + 'Use nested data properties instead.',
                 this
             );
         };
         propsDef.set = function () {
-            warn(`$props is readonly.`, this);
+            warn('$props is readonly.', this);
         };
     }
 

@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-diable */
+
 import {emptyNode} from 'core/vdom/patch';
 import {resolveAsset, handleError} from 'core/util/index';
 import {mergeVNodeHook} from 'core/vdom/helpers/index';
@@ -13,15 +15,15 @@ export default {
     destroy: function unbindDirectives(vnode) {
         updateDirectives(vnode, emptyNode);
     }
-}
+};
 
 function updateDirectives(oldVnode, vnode) {
     if (oldVnode.data.directives || vnode.data.directives) {
-        _update(oldVnode, vnode);
+        $update(oldVnode, vnode);
     }
 }
 
-function _update(oldVnode, vnode) {
+function $update(oldVnode, vnode) {
     const isCreate = oldVnode === emptyNode;
     const isDestroy = vnode === emptyNode;
     const oldDirs = normalizeDirectives(oldVnode.data.directives, oldVnode.context);
@@ -30,9 +32,9 @@ function _update(oldVnode, vnode) {
     const dirsWithInsert = [];
     const dirsWithPostpatch = [];
 
-    let key,
-        oldDir,
-        dir;
+    let key;
+    let oldDir;
+    let dir;
     for (key in newDirs) {
         oldDir = oldDirs[key];
         dir = newDirs[key];
@@ -97,8 +99,8 @@ function normalizeDirectives(
         return res;
     }
 
-    let i,
-        dir;
+    let i;
+    let dir;
     for (i = 0; i < dirs.length; i++) {
         dir = dirs[i];
         if (!dir.modifiers) {

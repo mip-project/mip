@@ -3,6 +3,8 @@
  * @author huanghuiquan (huanghuiquan@baidu.com)
  */
 
+/* eslint-disable */
+
 const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');

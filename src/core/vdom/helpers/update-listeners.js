@@ -3,10 +3,12 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable guard-for-in */
+
 import {warn} from 'core/util/index';
 import {cached, isUndef} from 'shared/util';
 
-const normalizeEvent = cached((name) => {
+const normalizeEvent = cached(name => {
     const passive = name.charAt(0) === '&';
     name = passive ? name.slice(1) : name;
     const once = name.charAt(0) === '~'; // Prefixed last, checked first
@@ -46,10 +48,10 @@ export function updateListeners(
     remove,
     vm
 ) {
-    let name,
-        cur,
-        old,
-        event;
+    let name;
+    let cur;
+    let old;
+    let event;
     for (name in on) {
         cur = on[name];
         old = oldOn[name];
@@ -71,7 +73,6 @@ export function updateListeners(
             old.fns = cur;
             on[name] = old;
         }
-
     }
     for (name in oldOn) {
         if (isUndef(on[name])) {

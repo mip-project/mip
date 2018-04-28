@@ -19,7 +19,7 @@ export default {
     destroy(vnode) {
         registerRef(vnode, true);
     }
-}
+};
 
 export function registerRef(vnode, isRemoval) {
     const key = vnode.data.ref;

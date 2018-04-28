@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable guard-for-in, fecs-valid-class-jsdoc */
+
 import {ASSET_TYPES} from 'shared/constants';
 import {
     warn,
@@ -21,11 +23,8 @@ export function initExtend(MIP) {
     MIP.cid = 0;
     let cid = 1;
 
-    /**
-   * Class inheritance
-   */
-    MIP.extend = function (extendOptions) {
-        extendOptions = extendOptions || {};
+    MIP.extend = function (extendOptions = {}) {
+        // extendOptions = extendOptions || {};
         const Super = this;
         const SuperId = Super.cid;
         const cachedCtors = extendOptions._Ctor || (extendOptions._Ctor = {});
@@ -37,9 +36,9 @@ export function initExtend(MIP) {
         if (process.env.NODE_ENV !== 'production') {
             if (!/^[a-zA-Z][\w-]*$/.test(name)) {
                 warn(
-                    'Invalid component name: "' + name + '". Component names ' +
-                    'can only contain alphanumeric characters and the hyphen, ' +
-                    'and must start with a letter.'
+                    'Invalid component name: "' + name + '". Component names '
+                    + 'can only contain alphanumeric characters and the hyphen, '
+                    + 'and must start with a letter.'
                 );
             }
         }

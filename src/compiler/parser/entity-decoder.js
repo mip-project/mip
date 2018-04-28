@@ -11,4 +11,4 @@ export default {
         decoder.innerHTML = html;
         return decoder.textContent;
     }
-}
+};

@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable fecs-valid-jsdoc */
+
 import config from '../config';
 import {callHook, activateChildComponent} from '../instance/lifecycle';
 
@@ -40,8 +42,8 @@ function resetSchedulerState() {
  */
 function flushSchedulerQueue() {
     flushing = true;
-    let watcher,
-        id;
+    let watcher;
+    let id;
 
     // Sort queue before flush.
     // This ensures that:
@@ -68,7 +70,7 @@ function flushSchedulerQueue() {
                     'You may have an infinite update loop ' + (
                     watcher.user
                         ? `in watcher with expression "${watcher.expression}"`
-                        : `in a component render function.`
+                        : 'in a component render function.'
                     ),
                     watcher.vm
                 );
@@ -123,8 +125,8 @@ function callActivatedHooks(queue) {
     for (let i = 0; i < queue.length; i++) {
         queue[i]._inactive = true;
         activateChildComponent(queue[i], true
-
-        /* true */ );
+            // true
+        );
     }
 }
 

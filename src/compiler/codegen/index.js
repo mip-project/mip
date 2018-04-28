@@ -21,7 +21,7 @@ export class CodegenState {
         this.dataGenFns = pluckModuleFunction(options.modules, 'genData');
         this.directives = extend(extend({}, baseDirectives), options.directives);
         const isReservedTag = options.isReservedTag || no;
-        this.maybeComponent = (el) => !isReservedTag(el.tag);
+        this.maybeComponent = el => !isReservedTag(el.tag);
         this.onceId = 0;
         this.staticRenderFns = [];
     }
@@ -58,28 +58,26 @@ export function genElement(el, state) {
     else if (el.tag === 'slot') {
         return genSlot(el, state);
     }
-    else {
-        // component or element
-        let code;
-        if (el.component) {
-            code = genComponent(el.component, el, state);
-        }
-        else {
-            const data = el.plain ? undefined : genData(el, state);
-
-            const children = el.inlineTemplate ? null : genChildren(el, state, true);
-            code = `_c('${el.tag}'${
-            data ? `,${data}` : '' // data
-            }${
-            children ? `,${children}` : '' // children
-            })`;
-        }
-        // module transforms
-        for (let i = 0; i < state.transforms.length; i++) {
-            code = state.transforms[i](el, code);
-        }
-        return code;
+    // component or element
+    let code;
+    if (el.component) {
+        code = genComponent(el.component, el, state);
     }
+    else {
+        const data = el.plain ? undefined : genData(el, state);
+
+        const children = el.inlineTemplate ? null : genChildren(el, state, true);
+        code = `_c('${el.tag}'${
+        data ? `,${data}` : '' // data
+        }${
+        children ? `,${children}` : '' // children
+        })`;
+    }
+    // module transforms
+    for (let i = 0; i < state.transforms.length; i++) {
+        code = state.transforms[i](el, code);
+    }
+    return code;
 }
 
 // hoist static sub-trees out
@@ -108,16 +106,14 @@ function genOnce(el, state) {
         }
         if (!key) {
             process.env.NODE_ENV !== 'production' && state.warn(
-                `v-once can only be used inside v-for that is keyed. `
+                'v-once can only be used inside v-for that is keyed. '
             );
             return genElement(el, state);
         }
 
         return `_o(${genElement(el, state)},${state.onceId++},${key})`;
     }
-    else {
-        return genStatic(el, state);
-    }
+    return genStatic(el, state);
 }
 
 export function genIf(
@@ -148,9 +144,7 @@ function genIfConditions(
             genIfConditions(conditions, state, altGen, altEmpty)
             }`;
     }
-    else {
-        return `${genTernaryExp(condition.block)}`;
-    }
+    return `${genTernaryExp(condition.block)}`;
 
     // v-if with v-once should generate code like (a)?_m(0):_m(1)
     function genTernaryExp(el) {
@@ -173,27 +167,26 @@ export function genFor(
     const iterator1 = el.iterator1 ? `,${el.iterator1}` : '';
     const iterator2 = el.iterator2 ? `,${el.iterator2}` : '';
 
-    if (process.env.NODE_ENV !== 'production' &&
-        state.maybeComponent(el) &&
-        el.tag !== 'slot' &&
-        el.tag !== 'template' &&
-        !el.key
+    if (process.env.NODE_ENV !== 'production'
+        && state.maybeComponent(el)
+        && el.tag !== 'slot'
+        && el.tag !== 'template'
+        && !el.key
     ) {
         state.warn(
-            `<${el.tag} v-for="${alias} in ${exp}">: component lists rendered with ` +
-            `v-for should have explicit keys. ` +
-            `See https://vuejs.org/guide/list.html#key for more info.`,
+            `<${el.tag} v-for="${alias} in ${exp}">: component lists rendered with `
+            + 'v-for should have explicit keys. '
+            + 'See https://vuejs.org/guide/list.html#key for more info.',
             true
-
-            /* tip */
+            // tip
         );
     }
 
     el.forProcessed = true; // avoid recursion
-    return `${altHelper || '_l'}((${exp}),` +
-        `function(${alias}${iterator1}${iterator2}){` +
-        `return ${(altGen || genElement)(el, state)}` +
-        '})';
+    return `${altHelper || '_l'}((${exp}),`
+        + `function(${alias}${iterator1}${iterator2}){`
+        + `return ${(altGen || genElement)(el, state)}`
+        + '})';
 }
 
 export function genData(el, state) {
@@ -217,12 +210,12 @@ export function genData(el, state) {
     }
 
     if (el.refInFor) {
-        data += `refInFor:true,`;
+        data += 'refInFor:true,';
     }
 
     // pre
     if (el.pre) {
-        data += `pre:true,`;
+        data += 'pre:true,';
     }
 
     // record original tag name for components using "is" attribute
@@ -305,10 +298,10 @@ function genDirectives(el, state) {
 
     let res = 'directives:[';
     let hasRuntime = false;
-    let i,
-        l,
-        dir,
-        needRuntime;
+    let i;
+    let l;
+    let dir;
+    let needRuntime;
     for (i = 0, l = dirs.length; i < l; i++) {
         dir = dirs[i];
         needRuntime = true;
@@ -358,11 +351,9 @@ function genScopedSlots(
     slots,
     state
 ) {
-    return `scopedSlots:_u([${
-        Object.keys(slots).map(key => {
-            return genScopedSlot(key, slots[key], state);
-        }).join(',')
-        }])`;
+    return `scopedSlots:_u([
+        ${Object.keys(slots).map(key => genScopedSlot(key, slots[key], state)).join(',')}
+    ])`;
 }
 
 function genScopedSlot(
@@ -374,8 +365,8 @@ function genScopedSlot(
         return genForScopedSlot(key, el, state);
     }
 
-    const fn = `function(${String(el.slotScope)}){` +
-        `return ${el.tag === 'template'
+    const fn = `function(${String(el.slotScope)}){`
+        + `return ${el.tag === 'template'
             ? el.if
                 ? `${el.if}?${genChildren(el, state) || 'undefined'}:undefined`
                 : genChildren(el, state) || 'undefined'
@@ -394,10 +385,10 @@ function genForScopedSlot(
     const iterator1 = el.iterator1 ? `,${el.iterator1}` : '';
     const iterator2 = el.iterator2 ? `,${el.iterator2}` : '';
     el.forProcessed = true; // avoid recursion
-    return `_l((${exp}),` +
-        `function(${alias}${iterator1}${iterator2}){` +
-        `return ${genScopedSlot(key, el, state)}` +
-        '})';
+    return `_l((${exp}),`
+        + `function(${alias}${iterator1}${iterator2}){`
+        + `return ${genScopedSlot(key, el, state)}`
+        + '})';
 }
 
 export function genChildren(
@@ -411,10 +402,10 @@ export function genChildren(
     if (children.length) {
         const el = children[0];
         // optimize single v-for
-        if (children.length === 1 &&
-            el.for &&
-            el.tag !== 'template' &&
-            el.tag !== 'slot'
+        if (children.length === 1
+            && el.for
+            && el.tag !== 'template'
+            && el.tag !== 'slot'
         ) {
             return (altGenElement || genElement)(el, state);
         }
@@ -444,14 +435,16 @@ function getNormalizationType(
             continue;
         }
 
-        if (needsNormalization(el) ||
-            (el.ifConditions && el.ifConditions.some(c => needsNormalization(c.block)))) {
+        if (needsNormalization(el)
+            || (el.ifConditions && el.ifConditions.some(c => needsNormalization(c.block)))
+        ) {
             res = 2;
             break;
         }
 
-        if (maybeComponent(el) ||
-            (el.ifConditions && el.ifConditions.some(c => maybeComponent(c.block)))) {
+        if (maybeComponent(el)
+            || (el.ifConditions && el.ifConditions.some(c => maybeComponent(c.block)))
+        ) {
             res = 1;
         }
 
@@ -471,9 +464,7 @@ function genNode(node, state) {
     if (node.type === 3 && node.isComment) {
         return genComment(node);
     }
-    else {
-        return genText(node);
-    }
+    return genText(node);
 }
 
 export function genText(text) {
@@ -494,7 +485,7 @@ function genSlot(el, state) {
     const attrs = el.attrs && `{${el.attrs.map(a => `${camelize(a.name)}:${a.value}`).join(',')}}`;
     const bind = el.attrsMap['v-bind'];
     if ((attrs || bind) && !children) {
-        res += `,null`;
+        res += ',null';
     }
 
     if (attrs) {

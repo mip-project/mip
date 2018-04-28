@@ -33,7 +33,7 @@ export function createCompileToFunctionFn(compile) {
             catch (e) {
                 if (e.toString().match(/unsafe-eval|CSP/)) {
                     warn(
-                        'It seems you are using the standalone build of mip.js in an '
+                        'It seems you are using the standalone build of MIP.js in an '
                         + 'environment with Content Security Policy that prohibits unsafe-eval. '
                         + 'The template compiler cannot work in this environment. Consider '
                         + 'relaxing the policy to allow unsafe-eval or pre-compiling your '
@@ -58,7 +58,7 @@ export function createCompileToFunctionFn(compile) {
         if (process.env.NODE_ENV !== 'production') {
             if (compiled.errors && compiled.errors.length) {
                 warn(
-                    `Error compiling template:\n\n${template}\n\n`
+                    `Error compiling template:\n${template}`
                     + compiled.errors.map(e => `- ${e}`).join('\n') + '\n',
                     vm
                 );
@@ -69,13 +69,11 @@ export function createCompileToFunctionFn(compile) {
             }
         }
 
-        const fnGenErrors = [];
         // turn code into functions
+        const fnGenErrors = [];
         const res = {
             render: createFunction(compiled.render, fnGenErrors),
-            staticRenderFns: compiled.staticRenderFns.map(
-                code => createFunction(code, fnGenErrors)
-            )
+            staticRenderFns: compiled.staticRenderFns.map(code => createFunction(code, fnGenErrors))
         };
 
         // check function generation errors.
@@ -86,8 +84,8 @@ export function createCompileToFunctionFn(compile) {
         if (process.env.NODE_ENV !== 'production') {
             if ((!compiled.errors || !compiled.errors.length) && fnGenErrors.length) {
                 warn(
-                    'Failed to generate render function:'
-                    + fnGenErrors.map(({err, code}) => `${err.toString()} in ${code}`).join('\n'),
+                    'Failed to generate render function:\n'
+                    + fnGenErrors.map(({err, code}) => `${err.toString()} in\n${code}`).join('\n'),
                     vm
                 );
             }

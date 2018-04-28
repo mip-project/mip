@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable guard-for-in */
+
 // Provides transition support for a single element/component.
 // supports transition mode (out-in / in-out)
 
@@ -43,9 +45,7 @@ function getRealChild(vnode) {
     if (compOptions && compOptions.Ctor.options.abstract) {
         return getRealChild(getFirstComponentChild(compOptions.children));
     }
-    else {
-        return vnode;
-    }
+    return vnode;
 }
 
 export function extractTransitionData(comp) {
@@ -97,7 +97,7 @@ export default {
         }
 
         // filter out text nodes (possible whitespaces)
-        children = children.filter((c) => c.tag || isAsyncPlaceholder(c));
+        children = children.filter(c => c.tag || isAsyncPlaceholder(c));
 
         /* istanbul ignore if */
         if (!children.length) {
@@ -107,8 +107,8 @@ export default {
         // warn multiple elements
         if (process.env.NODE_ENV !== 'production' && children.length > 1) {
             warn(
-                '<transition> can only be used on a single element. Use ' +
-                '<transition-group> for lists.',
+                '<transition> can only be used on a single element. Use '
+                + '<transition-group> for lists.',
                 this.$parent
             );
         }
@@ -116,8 +116,8 @@ export default {
         const mode = this.mode;
 
         // warn invalid mode
-        if (process.env.NODE_ENV !== 'production' &&
-            mode && mode !== 'in-out' && mode !== 'out-in'
+        if (process.env.NODE_ENV !== 'production'
+            && mode && mode !== 'in-out' && mode !== 'out-in'
         ) {
             warn(
                 'invalid <transition> mode: ' + mode,
@@ -169,10 +169,10 @@ export default {
         }
 
         if (
-            oldChild &&
-            oldChild.data &&
-            !isSameChild(child, oldChild) &&
-            !isAsyncPlaceholder(oldChild)
+            oldChild
+            && oldChild.data
+            && !isSameChild(child, oldChild)
+            && !isAsyncPlaceholder(oldChild)
         ) {
             // replace old child transition data with fresh one
             // important for dynamic transitions!
@@ -206,4 +206,4 @@ export default {
 
         return rawChild;
     }
-}
+};

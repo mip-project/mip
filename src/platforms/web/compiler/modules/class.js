@@ -17,10 +17,10 @@ function transformNode(el, options) {
         const expression = parseText(staticClass, options.delimiters);
         if (expression) {
             warn(
-                `class="${staticClass}": ` +
-                'Interpolation inside attributes has been removed. ' +
-                'Use v-bind or the colon shorthand instead. For example, ' +
-                'instead of <div class="{{ val }}">, use <div :class="val">.'
+                `class="${staticClass}": `
+                + 'Interpolation inside attributes has been removed. '
+                + 'Use v-bind or the colon shorthand instead. For example, '
+                + 'instead of <div class="{{ val }}">, use <div :class="val">.'
             );
         }
     }
@@ -29,9 +29,11 @@ function transformNode(el, options) {
         el.staticClass = JSON.stringify(staticClass);
     }
 
-    const classBinding = getBindingAttr(el, 'class', false
+    const classBinding = getBindingAttr(
+        el, 'class', false
+        // getStatic
+    );
 
-    /* getStatic */ );
     if (classBinding) {
         el.classBinding = classBinding;
     }
@@ -54,4 +56,4 @@ export default {
     staticKeys: ['staticClass'],
     transformNode,
     genData
-}
+};

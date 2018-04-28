@@ -8,10 +8,10 @@ import {dirRE, onRE} from './parser/index';
 // these keywords should not appear inside expressions, but operators like
 // typeof, instanceof and in are allowed
 const prohibitedKeywordRE = new RegExp('\\b' + (
-    'do,if,for,let,new,try,var,case,else,with,await,break,catch,class,const,' +
-    'super,throw,while,yield,delete,export,import,return,switch,default,' +
-    'extends,finally,continue,debugger,function,arguments'
-        ).split(',').join('\\b|\\b') + '\\b');
+    'do,if,for,let,new,try,var,case,else,with,await,break,catch,class,const,'
+    + 'super,throw,while,yield,delete,export,import,return,switch,default,'
+    + 'extends,finally,continue,debugger,function,arguments'
+    ).split(',').join('\\b|\\b') + '\\b');
 
 // these unary operators should not be used as property/method names
 const unaryOperatorsRE = new RegExp('\\b' + (
@@ -69,8 +69,8 @@ function checkEvent(exp, text, errors) {
     const keywordMatch = stipped.match(unaryOperatorsRE);
     if (keywordMatch && stipped.charAt(keywordMatch.index - 1) !== '$') {
         errors.push(
-            `avoid using JavaScript unary operator as property name: ` +
-            `"${keywordMatch[0]}" in expression ${text.trim()}`
+            'avoid using JavaScript unary operator as property name: '
+            + `"${keywordMatch[0]}" in expression ${text.trim()}`
         );
     }
 
@@ -98,21 +98,15 @@ function checkExpression(exp, text, errors) {
         const keywordMatch = exp.replace(stripStringRE, '').match(prohibitedKeywordRE);
         if (keywordMatch) {
             errors.push(
-                `avoid using JavaScript keyword as property name: ` +
-                `"${keywordMatch[0]}"
-  Raw expression: ${text.trim()}`
+                'avoid using JavaScript keyword as property name: '
+                + `"${keywordMatch[0]}"\n  Raw expression: ${text.trim()}`
             );
         }
         else {
             errors.push(
-                `invalid expression: ${e.message} in
-
-` +
-                `    ${exp}
-
-` +
-                `  Raw expression: ${text.trim()}
-`
+                `invalid expression: ${e.message} in\n`
+                + `    ${exp}\n`
+                + `  Raw expression: ${text.trim()}\n`
             );
         }
     }

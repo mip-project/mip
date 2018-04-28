@@ -3,11 +3,6 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
-/*
- * not type checking this file because flow doesn't play well with
- * dynamically accessing methods on Array prototype
- */
-
 import {def} from '../util/index';
 
 const arrayProto = Array.prototype;

@@ -34,7 +34,9 @@ function add(
 ) {
     if (once) {
         const oldHandler = handler;
+        /* eslint-disable fecs-camelcase */
         const _target = target; // save current target element in closure
+        /* eslint-enable fecs-camelcase */
         handler = function (ev) {
             const res = arguments.length === 1
                 ? oldHandler(ev)
@@ -59,7 +61,9 @@ function remove(
     event,
     handler,
     capture,
+    /* eslint-disable fecs-camelcase */
     _target
+    /* eslint-enable fecs-camelcase */
 ) {
     (_target || target).removeEventListener(event, handler, capture);
 }
@@ -79,4 +83,4 @@ function updateDOMListeners(oldVnode, vnode) {
 export default {
     create: updateDOMListeners,
     update: updateDOMListeners
-}
+};

@@ -2,6 +2,9 @@
  * @file index.js
  * @author sfe-sy(sfe-sy@baidu.com)
  */
+
+/* eslint-disable fecs-valid-class-jsdoc */
+
 import {initMixin} from './init';
 import {stateMixin} from './state';
 import {renderMixin} from './render';
@@ -10,7 +13,9 @@ import {lifecycleMixin} from './lifecycle';
 import {warn} from '../util/index';
 
 function MIP(options) {
-    if (process.env.NODE_ENV !== 'production' && !(this instanceof MIP)) {
+    if (process.env.NODE_ENV !== 'production'
+        && !(this instanceof MIP)
+    ) {
         warn('MIP is a constructor and should be called with the `new` keyword');
     }
 

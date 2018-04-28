@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable fecs-valid-jsdoc, guard-for-in */
+
 // these helpers produces better vm code in JS engines due to their
 // explicitness and function inlining
 export function isUndef(v) {
@@ -21,12 +23,17 @@ export function isFalse(v) {
     return v === false;
 }
 
-// Check if value is primitive
+/**
+ * Check if value is primitive
+ *
+ * @param {any} value value
+ * @return {boolean} result
+ */
 export function isPrimitive(value) {
     return (
-        typeof value === 'string' ||
-        typeof value === 'number' ||
-        typeof value === 'boolean'
+        typeof value === 'string'
+        || typeof value === 'number'
+        || typeof value === 'boolean'
     );
 }
 
@@ -42,10 +49,10 @@ export function isObject(obj) {
 /**
  * Get the raw type string of a value e.g. [object Object]
  */
-const _toString = Object.prototype.toString;
+const $toString = Object.prototype.toString;
 
 export function toRawType(value) {
-    return _toString.call(value).slice(8, -1);
+    return $toString.call(value).slice(8, -1);
 }
 
 /**
@@ -53,11 +60,11 @@ export function toRawType(value) {
  * for plain JavaScript objects.
  */
 export function isPlainObject(obj) {
-    return _toString.call(obj) === '[object Object]';
+    return $toString.call(obj) === '[object Object]';
 }
 
 export function isRegExp(v) {
-    return _toString.call(v) === '[object RegExp]';
+    return $toString.call(v) === '[object RegExp]';
 }
 
 /**
@@ -141,34 +148,28 @@ export function hasOwn(obj, key) {
  */
 export function cached(fn) {
     const cache = Object.create(null);
-    return (function cachedFn(str) {
+    return function cachedFn(str) {
         const hit = cache[str];
         return hit || (cache[str] = fn(str));
-    });
+    };
 }
 
 /**
  * Camelize a hyphen-delimited string.
  */
 const camelizeRE = /-(\w)/g;
-export const camelize = cached((str) => {
-    return str.replace(camelizeRE, (_, c) => c ? c.toUpperCase() : '');
-});
+export const camelize = cached(str => str.replace(camelizeRE, (_, c) => (c ? c.toUpperCase() : '')));
 
 /**
  * Capitalize a string.
  */
-export const capitalize = cached((str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-});
+export const capitalize = cached(str => str.charAt(0).toUpperCase() + str.slice(1));
 
 /**
  * Hyphenate a camelCase string.
  */
 const hyphenateRE = /\B([A-Z])/g;
-export const hyphenate = cached((str) => {
-    return str.replace(hyphenateRE, '-$1').toLowerCase();
-});
+export const hyphenate = cached(str => str.replace(hyphenateRE, '-$1').toLowerCase());
 
 /**
  * Simple bind, faster than native
@@ -190,8 +191,7 @@ export function bind(fn, ctx) {
 /**
  * Convert an Array-like object to a real Array.
  */
-export function toArray(list, start) {
-    start = start || 0;
+export function toArray(list, start = 0) {
     let i = list.length - start;
     const ret = new Array(i);
     while (i--) {
@@ -203,9 +203,9 @@ export function toArray(list, start) {
 /**
  * Mix properties into target object.
  */
-export function extend(to, _from) {
-    for (const key in _from) {
-        to[key] = _from[key];
+export function extend(to, $from) {
+    for (const key in $from) {
+        to[key] = $from[key];
     }
     return to;
 }
@@ -240,15 +240,13 @@ export const no = (a, b, c) => false;
 /**
  * Return same value
  */
-export const identity = (_) => _;
+export const identity = _ => _;
 
 /**
  * Generate a static keys string from compiler modules.
  */
 export function genStaticKeys(modules) {
-    return modules.reduce((keys, m) => {
-        return keys.concat(m.staticKeys || []);
-    }, []).join(',');
+    return modules.reduce((keys, m) => keys.concat(m.staticKeys || []), []).join(',');
 }
 
 /**
@@ -267,22 +265,15 @@ export function looseEqual(a, b) {
             const isArrayA = Array.isArray(a);
             const isArrayB = Array.isArray(b);
             if (isArrayA && isArrayB) {
-                return a.length === b.length && a.every((e, i) => {
-                        return looseEqual(e, b[i]);
-                    });
+                return a.length === b.length && a.every((e, i) => looseEqual(e, b[i]));
             }
             else if (!isArrayA && !isArrayB) {
                 const keysA = Object.keys(a);
                 const keysB = Object.keys(b);
-                return keysA.length === keysB.length && keysA.every(key => {
-                        return looseEqual(a[key], b[key]);
-                    });
+                return keysA.length === keysB.length && keysA.every(key => looseEqual(a[key], b[key]));
             }
-            else {
-
-                /* istanbul ignore next */
-                return false;
-            }
+            /* istanbul ignore next */
+            return false;
         }
         catch (e) {
 

@@ -7,7 +7,7 @@
  * Not type-checking this file because it's mostly vendor code.
  */
 
-/*!
+/**
  * HTML Parser By John Resig (ejohn.org)
  * Modified by Juriy "kangax" Zaytsev
  * Original code by Erik Arvidsson, Mozilla Public License
@@ -58,14 +58,15 @@ function decodeAttr(value, shouldDecodeNewlines) {
     return value.replace(re, match => decodingMap[match]);
 }
 
+/* eslint-disable fecs-max-statements */
 export function parseHTML(html, options) {
     const stack = [];
     const expectHTML = options.expectHTML;
     const isUnaryTag = options.isUnaryTag || no;
     const canBeLeftOpenTag = options.canBeLeftOpenTag || no;
     let index = 0;
-    let last,
-        lastTag;
+    let last;
+    let lastTag;
     while (html) {
         last = html;
         // Make sure we're not in a plaintext content element like script/style
@@ -124,16 +125,17 @@ export function parseHTML(html, options) {
                 }
             }
 
-            let text,
-                rest,
-                next;
+            let text;
+            let rest;
+            let next;
+
             if (textEnd >= 0) {
                 rest = html.slice(textEnd);
                 while (
-                    !endTag.test(rest) &&
-                    !startTagOpen.test(rest) &&
-                    !comment.test(rest) &&
-                    !conditionalComment.test(rest)
+                    !endTag.test(rest)
+                    && !startTagOpen.test(rest)
+                    && !comment.test(rest)
+                    && !conditionalComment.test(rest)
                 ) {
                     // < in plain text, be forgiving and treat it as text
                     next = rest.indexOf('<', 1);
@@ -160,7 +162,8 @@ export function parseHTML(html, options) {
         else {
             let endTagLength = 0;
             const stackedTag = lastTag.toLowerCase();
-            const reStackedTag = reCache[stackedTag] || (reCache[stackedTag] = new RegExp('([\\s\\S]*?)(</' + stackedTag + '[^>]*>)', 'i'));
+            const reStackedTag = reCache[stackedTag]
+                || (reCache[stackedTag] = new RegExp('([\\s\\S]*?)(</' + stackedTag + '[^>]*>)', 'i'));
             const rest = html.replace(reStackedTag, function (all, text, endTag) {
                 endTagLength = endTag.length;
                 if (!isPlainTextElement(stackedTag) && stackedTag !== 'noscript') {
@@ -212,8 +215,8 @@ export function parseHTML(html, options) {
                 start: index
             };
             advance(start[0].length);
-            let end,
-                attr;
+            let end;
+            let attr;
             while (!(end = html.match(startTagClose)) && (attr = html.match(attribute))) {
                 advance(attr[0].length);
                 match.attrs.push(attr);
@@ -283,8 +286,8 @@ export function parseHTML(html, options) {
     }
 
     function parseEndTag(tagName, start, end) {
-        let pos,
-            lowerCasedTagName;
+        let pos;
+        let lowerCasedTagName;
         if (start == null) {
             start = index;
         }
@@ -314,9 +317,9 @@ export function parseHTML(html, options) {
         if (pos >= 0) {
             // Close all the open elements, up the stack
             for (let i = stack.length - 1; i >= pos; i--) {
-                if (process.env.NODE_ENV !== 'production' &&
-                    (i > pos || !tagName) &&
-                    options.warn
+                if (process.env.NODE_ENV !== 'production'
+                    && (i > pos || !tagName)
+                    && options.warn
                 ) {
                     options.warn(
                         `tag <${stack[i].tag}> has no matching end tag.`

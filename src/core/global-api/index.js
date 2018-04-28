@@ -27,6 +27,7 @@ export function initGlobalAPI(MIP) {
             return config;
         }
     };
+    // configDef.get = () => config;
     if (process.env.NODE_ENV !== 'production') {
         configDef.set = () => {
             warn(

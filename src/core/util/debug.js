@@ -3,6 +3,8 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
+/* eslint-disable no-console */
+
 import config from '../config';
 import {noop} from 'shared/util';
 
@@ -57,8 +59,8 @@ if (process.env.NODE_ENV !== 'production') {
         }
 
         return (
-            (name ? `<${classify(name)}>` : '<Anonymous>') +
-            (file && includeFile !== false ? ` at ${file}` : '')
+            (name ? `<${classify(name)}>` : '<Anonymous>')
+            + (file && includeFile !== false ? ` at ${file}` : '')
         );
     };
 
@@ -100,19 +102,15 @@ if (process.env.NODE_ENV !== 'production') {
                 vm = vm.$parent;
             }
             return '\n\nfound in\n\n' + tree
-                    .map((vm, i) => `${
-                        i === 0 ? '---> ' : repeat(' ', 5 + i * 2)
-                        }${
-                        Array.isArray(vm)
-                            ? `${formatComponentName(vm[0])}... (${vm[1]} recursive calls)`
-                            : formatComponentName(vm)
-                        }`)
-                    .join('\n');
+                .map((vm, i) => `${
+                    i === 0 ? '---> ' : repeat(' ', 5 + i * 2)
+                    }${
+                    Array.isArray(vm)
+                        ? `${formatComponentName(vm[0])}... (${vm[1]} recursive calls)`
+                        : formatComponentName(vm)
+                    }`)
+                .join('\n');
         }
-        else {
-            return `
-
-(found in ${formatComponentName(vm)})`;
-        }
+        return `\n(found in ${formatComponentName(vm)})`;
     };
 }

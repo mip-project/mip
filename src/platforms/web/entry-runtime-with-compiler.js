@@ -88,12 +88,17 @@ MIP.prototype.$mount = function (el, hydrating) {
     return mount.call(this, el, hydrating);
 };
 
-// 获取元素的 html 字符串
+/**
+ * Get outerHTML of elements, taking care
+ * of SVG elements in IE as well.
+ *
+ * @param {Object} el element
+ * @return {string} htmlstring
+ */
 function getOuterHTML(el) {
     if (el.outerHTML) {
         return el.outerHTML;
     }
-
     const container = document.createElement('div');
     container.appendChild(el.cloneNode(true));
     return container.innerHTML;

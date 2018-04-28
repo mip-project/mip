@@ -11,4 +11,4 @@ export default {
     on,
     bind,
     cloak: noop
-}
+};
