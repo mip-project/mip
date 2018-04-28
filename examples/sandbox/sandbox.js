@@ -1,8 +1,9 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory() :
-    typeof define === 'function' && define.amd ? define(factory) :
-    (factory());
-}(this, (function () { 'use strict';
+        typeof define === 'function' && define.amd ? define(factory) :
+            (factory());
+}(this, (function () {
+    'use strict';
 
     /**
      * @file sandbox.js 提供组件内部使用的沙盒环境，主要用于隔离全局环境和限制部分API能力
@@ -85,7 +86,8 @@
 
         /* eslint-disable fecs-use-for-of */
         for (let key in obj) {
-        /* eslint-enable fecs-use-for-of */
+
+            /* eslint-enable fecs-use-for-of */
             if (exclude.indexOf(key) === -1) {
                 properties[key] = {
                     get() {
@@ -93,10 +95,12 @@
                         if (isFun(value)) {
                             return value.bind(obj);
                         }
+
                         return value;
                     }
                 };
             }
+
         }
 
         Object.defineProperties(newObj, properties);
@@ -134,8 +138,10 @@
         return function (fn, delay, ...args) {
 
             if (!isFun(fn)) {
+
                 /* eslint-disable no-console */
                 console.warn(`${type}请使用函数作参数`);
+
                 /* eslint-enable no-console */
                 return;
             }

@@ -1,12 +1,19 @@
+/**
+ * @file index.js
+ * @author sfe-sy (sfe-sy@baidu.com)
+ */
+
 import registerCustomElement from './utils/register-custom-element';
 import createVueInstance from './utils/create-vueInstance';
-import { getProps, convertAttributeValue } from './utils/props';
-import { camelize } from './utils/helpers';
+import {getProps, convertAttributeValue} from './utils/props';
+import {camelize} from './utils/helpers';
 
 function install(Vue) {
     Vue.customElement = function vueCustomElement(tag, componentDefinition, options = {}) {
         const isAsyncComponent = typeof componentDefinition === 'function';
-        const optionsProps = isAsyncComponent && { props: options.props || [] };
+        const optionsProps = isAsyncComponent && {
+            props: options.props || []
+        };
         const props = getProps(isAsyncComponent ? optionsProps : componentDefinition);
         // register Custom Element
         const CustomElement = registerCustomElement(tag, {
@@ -16,20 +23,24 @@ function install(Vue) {
 
             connectedCallback() {
                 const asyncComponentPromise = isAsyncComponent && componentDefinition();
-                const isAsyncComponentPromise = asyncComponentPromise && asyncComponentPromise.then && typeof asyncComponentPromise.then === 'function';
+                const isAsyncComponentPromise = asyncComponentPromise
+                    && asyncComponentPromise.then
+                    && typeof asyncComponentPromise.then === 'function';
 
                 typeof options.connectedCallback === 'function' && options.connectedCallback.call(this);
 
                 if (isAsyncComponent && !isAsyncComponentPromise) {
                     throw new Error(`Async component ${tag} do not returns Promise`);
                 }
+
                 if (!this.__detached__) {
                     if (isAsyncComponentPromise) {
-                        asyncComponentPromise.then((lazyLoadedComponent) => {
+                        asyncComponentPromise.then(lazyLoadedComponent => {
                             const lazyLoadedComponentProps = getProps(lazyLoadedComponent);
                             createVueInstance(this, Vue, lazyLoadedComponent, lazyLoadedComponentProps, options);
                         });
-                    } else {
+                    }
+                    else {
                         createVueInstance(this, Vue, componentDefinition, props, options);
                     }
                 }
@@ -52,22 +63,26 @@ function install(Vue) {
                         delete this.__vue_custom_element__;
                         delete this.__vue_custom_element_props__;
                     }
+
                 }, options.destroyTimeout || 3000);
             },
 
             /**
              * When attribute changes we should update Vue instance
-             * @param name
-             * @param oldVal
-             * @param value
+             *
+             * @param {string} name prop name
+             * @param {any} oldValue old prop value
+             * @param {any} value new prop value
              */
             attributeChangedCallback(name, oldValue, value) {
                 if (this.__vue_custom_element__ && typeof value !== 'undefined') {
                     const nameCamelCase = camelize(name);
-                    typeof options.attributeChangedCallback === 'function' && options.attributeChangedCallback.call(this, name, oldValue, value);
+                    typeof options.attributeChangedCallback === 'function'
+                        && options.attributeChangedCallback.call(this, name, oldValue, value);
                     const type = this.__vue_custom_element_props__.types[nameCamelCase];
                     this.__vue_custom_element__[nameCamelCase] = convertAttributeValue(value, type);
                 }
+
             },
 
             observedAttributes: props.hyphenate,

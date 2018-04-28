@@ -42,6 +42,7 @@ window.MIP.customElement('mip-tree', {
             if (this.isFolder) {
                 this.open = !this.open;
             }
+
         },
         changeType() {
             if (!this.isFolder) {
@@ -49,6 +50,7 @@ window.MIP.customElement('mip-tree', {
                 this.addChild();
                 this.open = true;
             }
+
         },
         addChild() {
             this.model.children.push({

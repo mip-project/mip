@@ -1,7 +1,14 @@
-function isES2015() {
-  if (typeof Symbol === 'undefined' || typeof Reflect === 'undefined') return false;
+/**
+ * @file is-es2015.js
+ * @author sfe-sy (sfe-sy@baidu.com)
+ */
 
-  return true;
+function isES2015() {
+    if (typeof Symbol === 'undefined' || typeof Reflect === 'undefined') {
+        return false;
+    }
+
+    return true;
 }
 
 export default isES2015();

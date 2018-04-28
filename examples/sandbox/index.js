@@ -23,4 +23,3 @@ console.log(
     'document.write: ', document.write, '\n',
     'document.writeln: ', document.writeln
 );
-

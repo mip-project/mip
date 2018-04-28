@@ -17,4 +17,3 @@ registerComponents(Vue);
 export function customElement(tag, componentDefinition, options = {}) {
     Vue.customElement(tag, componentDefinition, options);
 }
-

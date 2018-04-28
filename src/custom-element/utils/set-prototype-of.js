@@ -8,7 +8,9 @@
 Object.setPrototypeOf = Object.setPrototypeOf || setPrototypeOf;
 
 function setPrototypeOf(obj, proto) {
+    /* eslint-disable */
     obj.__proto__ = proto;
+    /* eslint-disable */
     return obj;
 }
 
