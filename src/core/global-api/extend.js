@@ -98,7 +98,7 @@ export function initExtend(MIP) {
 function initProps(Comp) {
     const props = Comp.options.props;
     for (const key in props) {
-        proxy(Comp.prototype, `_props`, key);
+        proxy(Comp.prototype, '_props', key);
     }
 }
 

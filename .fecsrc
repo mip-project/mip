@@ -1,0 +1,20 @@
+{
+    "eslint": {
+        "env": {
+            "node": true,
+            "browser": true
+        },
+
+        "globals": {
+            "console": true,
+            "require": true
+        },
+
+        "rules": {
+            "no-var": "off",
+            "no-console": 0,
+            "fecs-no-require": "off",
+            "fecs-prefer-async-await": "off"
+        }
+    }
+}

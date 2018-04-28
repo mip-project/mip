@@ -41,10 +41,7 @@ extend(MIP.options.components, platformComponents);
 MIP.prototype.__patch__ = inBrowser ? patch : noop;
 
 // public mount method
-MIP.prototype.$mount = function (
-    el,
-    hydrating
-) {
+MIP.prototype.$mount = function (el, hydrating) {
     el = el && inBrowser ? query(el) : undefined;
     return mountComponent(this, el, hydrating);
 };
@@ -59,25 +56,23 @@ MIP.nextTick(() => {
         }
         else if (process.env.NODE_ENV !== 'production' && isChrome) {
             console[console.info ? 'info' : 'log'](
-                'Download the MIP Devtools extension for a better development experience:\n' +
-                'https://github.com/vuejs/mip-devtools'
+                'Download the MIP Devtools extension for a better development experience:\n'
+                + 'https://github.com/vuejs/mip-devtools'
             );
         }
     }
 
-    if (process.env.NODE_ENV !== 'production' &&
-        config.productionTip !== false &&
-        inBrowser && typeof console !== 'undefined'
+    if (process.env.NODE_ENV !== 'production'
+        && config.productionTip !== false
+        && inBrowser && typeof console !== 'undefined'
     ) {
         console[console.info ? 'info' : 'log'](
-            `You are running MIP in development mode.
-` +
-            `Make sure to turn on production mode when deploying for production.
-` +
-            `See more tips at https://vuejs.org/guide/deployment.html`
+            'You are running MIP in development mode.'
+            + 'Make sure to turn on production mode when deploying for production.'
+            + 'See more tips at https://vuejs.org/guide/deployment.html'
         );
     }
 
 }, 0);
 
-export default MIP
+export default MIP;

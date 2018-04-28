@@ -18,10 +18,7 @@ const idToTemplate = cached(id => {
 });
 
 const mount = MIP.prototype.$mount;
-MIP.prototype.$mount = function (
-    el,
-    hydrating
-) {
+MIP.prototype.$mount = function (el, hydrating) {
     el = el && query(el);
 
     /* istanbul ignore if */
@@ -91,19 +88,15 @@ MIP.prototype.$mount = function (
     return mount.call(this, el, hydrating);
 };
 
-/**
- * Get outerHTML of elements, taking care
- * of SVG elements in IE as well.
- */
+// 获取元素的 html 字符串
 function getOuterHTML(el) {
     if (el.outerHTML) {
         return el.outerHTML;
     }
-    else {
-        const container = document.createElement('div');
-        container.appendChild(el.cloneNode(true));
-        return container.innerHTML;
-    }
+
+    const container = document.createElement('div');
+    container.appendChild(el.cloneNode(true));
+    return container.innerHTML;
 }
 
 MIP.compile = compileToFunctions;

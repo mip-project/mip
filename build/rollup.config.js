@@ -1,9 +1,14 @@
+/**
+ * @file rollup.config.js
+ * @author huanghuiquan (huanghuiquan@baidu.com)
+ */
+
 const path = require('path');
 const buble = require('rollup-plugin-buble');
 const alias = require('rollup-plugin-alias');
-const cjs = require('rollup-plugin-commonjs');
+// const cjs = require('rollup-plugin-commonjs');
 const replace = require('rollup-plugin-replace');
-const node = require('rollup-plugin-node-resolve');
+// const node = require('rollup-plugin-node-resolve');
 const version = process.env.VERSION || require('../package.json').version;
 const aliases = require('./alias');
 

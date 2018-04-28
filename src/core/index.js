@@ -14,12 +14,11 @@ Object.defineProperty(MIP.prototype, '$isServer', {
 
 Object.defineProperty(MIP.prototype, '$ssrContext', {
     get() {
-
         /* istanbul ignore next */
         return this.$vnode && this.$vnode.ssrContext;
     }
 });
 
-MIP.version = '2.5.0';
+MIP.version = '__VERSION__';
 
-export default MIP
+export default MIP;

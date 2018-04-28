@@ -10,9 +10,7 @@ import {lifecycleMixin} from './lifecycle';
 import {warn} from '../util/index';
 
 function MIP(options) {
-    if (process.env.NODE_ENV !== 'production' &&
-        !(this instanceof MIP)
-    ) {
+    if (process.env.NODE_ENV !== 'production' && !(this instanceof MIP)) {
         warn('MIP is a constructor and should be called with the `new` keyword');
     }
 
@@ -25,4 +23,4 @@ eventsMixin(MIP);
 lifecycleMixin(MIP);
 renderMixin(MIP);
 
-export default MIP
+export default MIP;

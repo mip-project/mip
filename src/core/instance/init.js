@@ -25,8 +25,8 @@ export function initMixin(MIP) {
         // a uid
         vm._uid = uid++;
 
-        let startTag,
-            endTag;
+        let startTag;
+        let endTag;
 
         /* istanbul ignore if */
         if (process.env.NODE_ENV !== 'production' && config.performance && mark) {

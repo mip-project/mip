@@ -21,9 +21,7 @@ export function isFalse(v) {
     return v === false;
 }
 
-/**
- * Check if value is primitive
- */
+// Check if value is primitive
 export function isPrimitive(value) {
     return (
         typeof value === 'string' ||

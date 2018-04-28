@@ -9,10 +9,7 @@ import {createCompileToFunctionFn} from './to-function';
 
 export function createCompilerCreator(baseCompile) {
     return function createCompiler(baseOptions) {
-        function compile(
-            template,
-            options
-        ) {
+        function compile(template, options) {
             const finalOptions = Object.create(baseOptions);
             const errors = [];
             const tips = [];

@@ -66,9 +66,8 @@ export function lifecycleMixin(MIP) {
         if (!prevVnode) {
             // initial render
             vm.$el = vm.__patch__(
-                vm.$el, vnode, hydrating, false
-
-                /* removeOnly */ ,
+                vm.$el, vnode, hydrating,
+                /* removeOnly */ false,
                 vm.$options._parentElm,
                 vm.$options._refElm
             );
@@ -157,23 +156,19 @@ export function lifecycleMixin(MIP) {
     };
 }
 
-export function mountComponent(
-    vm,
-    el,
-    hydrating
-) {
+export function mountComponent(vm, el, hydrating) {
     vm.$el = el;
     if (!vm.$options.render) {
         vm.$options.render = createEmptyVNode;
         if (process.env.NODE_ENV !== 'production') {
 
             /* istanbul ignore if */
-            if ((vm.$options.template && vm.$options.template.charAt(0) !== '#') ||
-                vm.$options.el || el) {
+            if ((vm.$options.template && vm.$options.template.charAt(0) !== '#')
+                || vm.$options.el || el) {
                 warn(
-                    'You are using the runtime-only build of MIP where the template ' +
-                    'compiler is not available. Either pre-compile the templates into ' +
-                    'render functions, or use the compiler-included build.',
+                    'You are using the runtime-only build of MIP where the template '
+                    + 'compiler is not available. Either pre-compile the templates into '
+                    + 'render functions, or use the compiler-included build.',
                     vm
                 );
             }
@@ -300,7 +295,6 @@ function isInInactiveTree(vm) {
         if (vm._inactive) {
             return true;
         }
-
     }
     return false;
 }
