@@ -5,7 +5,11 @@
 
 /* eslint-disable */
 
-import './set-prototype-of'; // polyfill for older browsers (IE < 11) that do not support Object.setPrototypeOf needed by Webpack's transpiled ES2015 "class", even if it's not directly used
+/* polyfill for older browsers (IE < 11)
+ * that do not support Object.setPrototypeOf needed by Webpack's transpiled ES2015 "class"
+ * even if it's not directly used
+ */
+import './set-prototype-of';
 import isES2015 from './is-es2015';
 
 export default function registerCustomElement(tag, options = {}) {

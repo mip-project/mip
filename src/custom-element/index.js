@@ -82,7 +82,6 @@ function install(Vue) {
                     const type = this.__vue_custom_element_props__.types[nameCamelCase];
                     this.__vue_custom_element__[nameCamelCase] = convertAttributeValue(value, type);
                 }
-
             },
 
             observedAttributes: props.hyphenate,

@@ -8,7 +8,8 @@ import {camelize, hyphenate} from './helpers';
 // Number and Boolean props are treated as strings
 // We should convert it so props will behave as intended
 // Conversion can be overwritted by prop validation (https://vuejs.org/v2/guide/components-props.html#Prop-Validation)
-export function convertAttributeValue(value, overrideType) {
+export function convertAttributeValue(attr, overrideType, element) {
+    let value = attr.value;
     let propsValue = value;
     const isBoolean = ['true', 'false'].indexOf(value) > -1;
     const valueParsed = parseFloat(propsValue, 10);
@@ -24,7 +25,17 @@ export function convertAttributeValue(value, overrideType) {
         propsValue = valueParsed;
     }
 
-    return propsValue;
+    // compatible: for let props recive object data
+    let temp = propsValue;
+    try {
+        temp = JSON.parse(propsValue);
+    }
+    catch (e) {}
+
+    // hide the data attribute
+    element.removeAttribute(attr.name);
+
+    return temp;
 }
 
 function extractProps(collection, props) {
@@ -42,7 +53,6 @@ function extractProps(collection, props) {
             if (collection[camelCaseProp] && collection[camelCaseProp].type) {
                 props.types[prop] = [].concat(collection[camelCaseProp].type)[0];
             }
-
         }
     }
 }
@@ -114,7 +124,7 @@ export function getPropsData(element, componentDefinition, props) {
         }
 
         propsData[propCamelCase] = propValue instanceof Attr
-            ? convertAttributeValue(propValue.value, type)
+            ? convertAttributeValue(propValue, type, element)
             : propValue;
     });
 

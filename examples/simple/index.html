@@ -32,22 +32,24 @@
 
     <!-- item template -->
     <script type="text/x-template" id="item-template">
-        <div :class="{bold: isFolder}" @click="toggle" @dblclick="changeType">
-            {{model.name}}
-            <span v-if="isFolder">[{{open ? '-' : '+'}}]</span>
-        </div>
-        <ul v-show="open" v-if="isFolder">
-            <item class="item" v-for="(model, index) in model.children" :model="model" :key="index">
-            </item>
-            <li class="add" @click="addChild">+</li>
-        </ul>
+        <li>
+            <div :class="{bold: isFolder}" @click="toggle" @dblclick="changeType">
+                {{model.name}}
+                <span v-if="isFolder">[{{open ? '-' : '+'}}]</span>
+            </div>
+            <ul v-show="open" v-if="isFolder">
+                <item class="item" v-for="(model, index) in model.children" :model="model" :key="index">
+                </item>
+                <li class="add" @click="addChild">+</li>
+            </ul>
+        </li>
     </script>
 
     <p>(You can double click on an item to turn it into a folder.)</p>
 
     <!-- the demo root element -->
     <ul id="demo">
-        <mip-item class="item" :model="treeData"></mip-item>
+        <item class="item" :model="treeData"></item>
     </ul>
 
     <!-- demo code -->

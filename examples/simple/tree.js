@@ -51,7 +51,7 @@ var data = {
 };
 
 // define the item component
-MIP.customElement('mip-item', {
+MIP.component('item', {
     template: '#item-template',
     props: {
         model: Object

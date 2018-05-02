@@ -7,6 +7,11 @@ import {getPropsData, reactiveProps} from './props';
 import {getSlots} from './slots';
 import {customEmit} from './custom-event';
 
+/**
+ * set <script type="application/json"> data to props
+ *
+ * @param {HTMLElement} element HTMLElement
+ */
 function setDataToProp(element) {
     let dataElement = element.querySelector('script[type*=json]');
     if (dataElement) {
@@ -15,6 +20,7 @@ function setDataToProp(element) {
             propsData = JSON.parse(dataElement.innerHTML) || {};
         }
         catch (err) {
+            console.warn(dataElement, 'content should be a valid JSON string!');
             propsData = {};
         }
 
@@ -124,9 +130,11 @@ export default function createVueInstance(element, Vue, componentDefinition, pro
             rootElement = options.beforeCreateVueInstance(rootElement) || rootElement;
         }
 
+        /* eslint-disable */
         // Define the Vue constructor to manage the element
         element.__vue_custom_element__ = new Vue(rootElement);
         element.__vue_custom_element_props__ = props;
+        /* eslint-enable */
 
         if (options.shadow && options.shadowCss && element.shadowRoot) {
             const style = document.createElement('style');
