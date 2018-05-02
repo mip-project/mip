@@ -13,10 +13,7 @@ export function initAssetRegisters(MIP) {
      * Create asset registration methods.
      */
     ASSET_TYPES.forEach(type => {
-        MIP[type] = function (
-            id,
-            definition
-        ) {
+        MIP[type] = function (id, definition) {
             if (!definition) {
                 return this.options[type + 's'][id];
             }

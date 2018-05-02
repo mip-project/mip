@@ -19,11 +19,7 @@ function createFunction(code, errors) {
 export function createCompileToFunctionFn(compile) {
     const cache = Object.create(null);
 
-    return function compileToFunctions(
-        template,
-        options,
-        vm
-    ) {
+    return function compileToFunctions(template, options, vm) {
         options = extend({}, options);
         const warn = options.warn || baseWarn;
         delete options.warn;
@@ -44,7 +40,6 @@ export function createCompileToFunctionFn(compile) {
                         + 'templates into render functions.'
                     );
                 }
-
             }
         }
 

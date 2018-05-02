@@ -43,10 +43,7 @@ extend(MIP.options.components, platformComponents);
 MIP.prototype.__patch__ = inBrowser ? patch : noop;
 
 // public mount method
-MIP.prototype.$mount = function (
-    el,
-    hydrating
-) {
+MIP.prototype.$mount = function (el, hydrating) {
     el = el && inBrowser ? query(el) : undefined;
     return mountComponent(this, el, hydrating);
 };

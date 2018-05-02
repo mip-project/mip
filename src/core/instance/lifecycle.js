@@ -157,11 +157,7 @@ export function lifecycleMixin(MIP) {
     };
 }
 
-export function mountComponent(
-    vm,
-    el,
-    hydrating
-) {
+export function mountComponent(vm, el, hydrating) {
     vm.$el = el;
     if (!vm.$options.render) {
         vm.$options.render = createEmptyVNode;
@@ -302,7 +298,6 @@ function isInInactiveTree(vm) {
         if (vm._inactive) {
             return true;
         }
-
     }
     return false;
 }
