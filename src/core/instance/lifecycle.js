@@ -341,6 +341,27 @@ export function deactivateChildComponent(vm, direct) {
 
 export function callHook(vm, hook) {
     const handlers = vm.$options[hook];
+
+    if (hook === 'beforeMount') {
+        let asyncDataHandler = vm.$options.asyncData;
+        let syncDataHandler = vm.$options.syncData;
+        let initStateHandler = vm.$options.initState;
+
+        // if in spider/SSR env (@TODO: get spider's UA)
+        let isSpider = false;
+        if (!isSpider && asyncDataHandler) {
+            asyncDataHandler.call(vm);
+        }
+
+        if (syncDataHandler) {
+            syncDataHandler.call(vm);
+        }
+
+        if (initStateHandler) {
+            initStateHandler.call(vm);
+        }
+    }
+
     if (handlers) {
         for (let i = 0, j = handlers.length; i < j; i++) {
             try {
