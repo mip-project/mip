@@ -18,10 +18,7 @@ const idToTemplate = cached(id => {
 });
 
 const mount = MIP.prototype.$mount;
-MIP.prototype.$mount = function (
-    el,
-    hydrating
-) {
+MIP.prototype.$mount = function (el, hydrating) {
     el = el && query(el);
 
     /* istanbul ignore if */

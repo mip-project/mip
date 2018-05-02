@@ -1,6 +1,15 @@
 {
     "presets": [
-        "es2015"
+        [
+            "env",
+            {
+                "modules": false
+            }
+        ]
+    ],
+    "plugins": [
+        "transform-custom-element-classes",
+        "external-helpers"
     ],
     "ignore": [
         "dist/*.js"

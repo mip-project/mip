@@ -4,7 +4,7 @@
  */
 
 const path = require('path');
-const buble = require('rollup-plugin-buble');
+const buble = require('rollup-plugin-babel');
 const alias = require('rollup-plugin-alias');
 const cjs = require('rollup-plugin-commonjs');
 const replace = require('rollup-plugin-replace');
@@ -30,17 +30,35 @@ const builds = {
         dest: resolve('dist/mip.js'),
         format: 'umd',
         env: 'development',
-        alias: {he: './entity-decoder'},
-        banner
+        alias: {
+            he: './entity-decoder'
+        },
+        banner,
+        plugins: [
+            node({
+                jsNext: true,
+                main: true,
+                browser: true
+            }),
+            cjs()
+        ]
     },
     'web-full-esm': {
         entry: resolve('web/entry-runtime-with-compiler.js'),
         dest: resolve('dist/mip.esm.js'),
-        format: 'es',
+        format: 'umd',
         alias: {
             he: './entity-decoder'
         },
-        banner
+        banner,
+        plugins: [
+            node({
+                jsNext: true,
+                main: true,
+                browser: true
+            }),
+            cjs()
+        ]
     }
 };
 

@@ -13,6 +13,8 @@ const uglify = require('uglify-js');
 
 let builds = require('./rollup.config').getAllBuilds();
 
+console.log(builds);
+
 build(builds);
 
 function build(builds) {
