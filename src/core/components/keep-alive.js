@@ -31,14 +31,16 @@ function pruneCache(keepAliveInstance, filter) {
     const {
         cache,
         keys,
-        $vnode
+        /* eslint-disable */
+        _vnode
+        /* eslint-enable */
     } = keepAliveInstance;
     for (const key in cache) {
         const cachedNode = cache[key];
         if (cachedNode) {
             const name = getComponentName(cachedNode.componentOptions);
             if (name && !filter(name)) {
-                pruneCacheEntry(cache, key, keys, $vnode);
+                pruneCacheEntry(cache, key, keys, _vnode);
             }
         }
     }

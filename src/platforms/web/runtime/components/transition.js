@@ -73,7 +73,7 @@ function placeholder(h, rawChild) {
 }
 
 function hasParentTransition(vnode) {
-    while ((vnode = vnode.parent)) {
+    while (vnode && (vnode = vnode.parent)) {
         if (vnode.data.transition) {
             return true;
         }
@@ -97,7 +97,7 @@ export default {
         }
 
         // filter out text nodes (possible whitespaces)
-        children = children.filter(c => c.tag || isAsyncPlaceholder(c));
+        children = children.filter(c => (c.tag || isAsyncPlaceholder(c)));
 
         /* istanbul ignore if */
         if (!children.length) {
@@ -173,6 +173,8 @@ export default {
             && oldChild.data
             && !isSameChild(child, oldChild)
             && !isAsyncPlaceholder(oldChild)
+            // #6687 component root is a comment node
+            && !(oldChild.componentInstance && oldChild.componentInstance._vnode.isComment)
         ) {
             // replace old child transition data with fresh one
             // important for dynamic transitions!
@@ -193,9 +195,7 @@ export default {
                 }
 
                 let delayedLeave;
-                const performLeave = () => {
-                    delayedLeave();
-                };
+                let performLeave = () => delayedLeave();
                 mergeVNodeHook(data, 'afterEnter', performLeave);
                 mergeVNodeHook(data, 'enterCancelled', performLeave);
                 mergeVNodeHook(oldData, 'delayLeave', leave => {
