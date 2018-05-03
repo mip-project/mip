@@ -10,9 +10,11 @@ import {camelize, hyphenate} from './helpers';
 // Conversion can be overwritted by prop validation (https://vuejs.org/v2/guide/components-props.html#Prop-Validation)
 export function convertAttributeValue(value, overrideType, attr, element) {
     let propsValue = value;
-    const isBoolean = ['true', 'false'].indexOf(value) > -1;
-    const valueParsed = parseFloat(propsValue, 10);
-    const isNumber = !isNaN(valueParsed) && isFinite(propsValue) && !('' + propsValue).match(/^0+[^.]\d*$/g);
+    let isBoolean = ['true', 'false'].indexOf(value) > -1;
+    let valueParsed = parseFloat(propsValue, 10);
+    let isNumber = !isNaN(valueParsed)
+        && isFinite(propsValue)
+        && !('' + propsValue).match(/^0+[^.]\d*$/g);
 
     if (overrideType && overrideType !== Boolean) {
         propsValue = overrideType(value);
@@ -40,13 +42,13 @@ export function convertAttributeValue(value, overrideType, attr, element) {
 function extractProps(collection, props) {
     if (collection && collection.length) {
         collection.forEach(prop => {
-            const camelCaseProp = camelize(prop);
+            let camelCaseProp = camelize(prop);
             props.camelCase.indexOf(camelCaseProp) === -1 && props.camelCase.push(camelCaseProp);
         });
     }
     else if (collection && typeof collection === 'object') {
-        for (const prop in collection) { // eslint-disable-line no-restricted-syntax, guard-for-in
-            const camelCaseProp = camelize(prop);
+        for (let prop in collection) { // eslint-disable-line no-restricted-syntax, guard-for-in
+            let camelCaseProp = camelize(prop);
             props.camelCase.indexOf(camelCaseProp) === -1 && props.camelCase.push(camelCaseProp);
 
             if (collection[camelCaseProp] && collection[camelCaseProp].type) {
@@ -58,29 +60,25 @@ function extractProps(collection, props) {
 
 // Extract props from component definition, no matter if it's array or object
 export function getProps(componentDefinition = {}) {
-    const props = {
+    let props = {
         camelCase: [],
         hyphenate: [],
         types: {}
     };
 
     if (componentDefinition.mixins) {
-        componentDefinition.mixins.forEach(mixin => {
-            extractProps(mixin.props, props);
-        });
+        componentDefinition.mixins.forEach(mixin => extractProps(mixin.props, props));
     }
 
-    if (componentDefinition.extends && componentDefinition.extends.props) {
-        const parentProps = componentDefinition.extends.props;
-
+    if (componentDefinition.extends
+        && componentDefinition.extends.props
+    ) {
+        let parentProps = componentDefinition.extends.props;
         extractProps(parentProps, props);
     }
 
     extractProps(componentDefinition.props, props);
-
-    props.camelCase.forEach(prop => {
-        props.hyphenate.push(hyphenate(prop));
-    });
+    props.camelCase.forEach(prop => props.hyphenate.push(hyphenate(prop)));
 
     return props;
 }
@@ -96,12 +94,17 @@ export function reactiveProps(element, props) {
                 return this.__vue_custom_element__[name];
             },
             set(value) {
-                if ((typeof value === 'object' || typeof value === 'function') && this.__vue_custom_element__) {
-                    const propName = props.camelCase[index];
+                if (
+                    (typeof value === 'object'
+                        || typeof value === 'function'
+                    )
+                    && this.__vue_custom_element__
+                ) {
+                    let propName = props.camelCase[index];
                     this.__vue_custom_element__[propName] = value;
                 }
                 else {
-                    const type = props.types[props.camelCase[index]];
+                    let type = props.types[props.camelCase[index]];
                     this.setAttribute(props.hyphenate[index], convertAttributeValue(value, type));
                 }
             }
@@ -111,13 +114,31 @@ export function reactiveProps(element, props) {
 
 // In root Vue instance we should initialize props as 'propsData'.
 export function getPropsData(element, componentDefinition, props) {
-    const propsData = componentDefinition.propsData || {};
+    let propsData = componentDefinition.propsData || {};
+    let dataElement = element.querySelector('script[type*=json]');
+
+    // if there is a script data in custom element
+    if (dataElement) {
+        let scriptData;
+        try {
+            scriptData = JSON.parse(dataElement.innerHTML) || {};
+        }
+        catch (err) {
+            console.warn(dataElement, 'Content should be a valid JSON string!');
+            scriptData = {};
+        }
+
+        element && element.removeChild(dataElement);
+        propsData = Object.assign({}, propsData, scriptData);
+    }
 
     props.hyphenate.forEach((name, index) => {
-        const propCamelCase = props.camelCase[index];
-        const propValue = element.attributes[name] || element[propCamelCase];
-
+        let propCamelCase = props.camelCase[index];
         let type = null;
+        let propValue = element.attributes[name]
+            || element[propCamelCase]
+            || propsData[name];
+
         if (props.types[propCamelCase]) {
             type = props.types[propCamelCase];
         }

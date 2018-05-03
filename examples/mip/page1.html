@@ -17,7 +17,6 @@
         src="https://ss1.baidu.com/-4o3dSag_xI4khGko9WTAnF6hhy/super/pic/item/9922720e0cf3d7ca37c2e33efe1fbe096b63a946.jpg"
         width="200"
     ></mip-img>
-    <mip-img-buildin></mip-img-buildin> 
     <mip-tree>
         <script type="application/json">
             {
@@ -69,19 +68,23 @@
         </script>
         <div> -------- {{ model.name }} </div>
     </mip-tree>
+    <!-- mip-template 机制只适合无交互纯展示的逻辑 -->
     <mip-template>
+        <!-- mip-template 的数据根字段必须为 `data` -->
         <script type="application/json">
             {
-                "obj": {
-                    "name": "Earth"
-                },
-                "name": "World",
-                "age": 12
+                "data": {
+                    "obj": {
+                        "name": "Earth"
+                    },
+                    "name": "World",
+                    "age": 12
+                }
             }
         </script>
-        <template>
-            hello again, {{ name }}
-        </template>
+        <div v-if="data.age > 10">
+            hello from mip-template, {{ data.name }}
+        </div>
     </mip-template>
     <script src="../../dist/mip.js"></script>
     <script src="./mip-tree.js"></script>

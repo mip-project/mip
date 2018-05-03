@@ -7,39 +7,18 @@ import {getPropsData, reactiveProps} from './props';
 import {getSlots} from './slots';
 import {customEmit} from './custom-event';
 
-/**
- * set <script type="application/json"> data to props
- *
- * @param {HTMLElement} element HTMLElement
- */
-function setDataToProp(element) {
-    let dataElement = element.querySelector('script[type*=json]');
-    if (dataElement) {
-        let propsData;
-        try {
-            propsData = JSON.parse(dataElement.innerHTML) || {};
-        }
-        catch (err) {
-            console.warn(dataElement, 'Content should be a valid JSON string!');
-            propsData = {};
-        }
-
-        element && element.removeChild(dataElement);
-        setTimeout(() => {
-            Object.keys(propsData).forEach(prop => {
-                element[prop] = propsData[prop];
-            });
-        }, 0);
-    }
-}
-
 export default function createVueInstance(element, Vue, componentDefinition, props, options) {
     if (!element.__vue_custom_element__) {
-        const ComponentDefinition = Vue.util.extend({}, componentDefinition);
-        const propsData = getPropsData(element, ComponentDefinition, props);
-        const vueVersion = (Vue.version && parseInt(Vue.version.split('.')[0], 10)) || 0;
+        let ComponentDefinition = Vue.util.extend({}, componentDefinition);
+        let propsData = getPropsData(element, ComponentDefinition, props);
 
-        setDataToProp(element);
+        // for mip-template syntax
+        if (element && element.tagName.toLowerCase() === 'mip-template') {
+            ComponentDefinition.template
+                = `<div class="mip-template-wrap">${element.innerHTML}</div>`;
+        }
+
+        let vueVersion = (Vue.version && parseInt(Vue.version.split('.')[0], 10)) || 0;
 
         // Auto event handling based on $emit
         function beforeCreate() { // eslint-disable-line no-inner-declarations
@@ -62,14 +41,14 @@ export default function createVueInstance(element, Vue, componentDefinition, pro
         let rootElement;
 
         if (vueVersion >= 2) {
-            const elementOriginalChildren = element.cloneNode(true).childNodes; // clone hack due to IE compatibility
+            let elementOriginalChildren = element.cloneNode(true).childNodes; // clone hack due to IE compatibility
             // Vue 2+
             rootElement = {
                 propsData,
                 props: props.camelCase,
                 computed: {
                     reactiveProps() {
-                        const reactivePropsList = {};
+                        let reactivePropsList = {};
                         props.camelCase.forEach(prop => {
                             reactivePropsList[prop] = this[prop];
                         });
@@ -80,7 +59,7 @@ export default function createVueInstance(element, Vue, componentDefinition, pro
 
                 /* eslint-disable */
                 render(createElement) {
-                    const data = {
+                    let data = {
                         props: this.reactiveProps
                     };
 
@@ -102,7 +81,7 @@ export default function createVueInstance(element, Vue, componentDefinition, pro
         else {
             // Fallback for older Vue versions
             rootElement = ComponentDefinition;
-            const propsWithDefault = {};
+            let propsWithDefault = {};
             Object.keys(propsData)
                 .forEach(prop => {
                     propsWithDefault[prop] = {
@@ -112,7 +91,7 @@ export default function createVueInstance(element, Vue, componentDefinition, pro
             rootElement.props = propsWithDefault;
         }
 
-        const elementInnerHtml = vueVersion >= 2
+        let elementInnerHtml = vueVersion >= 2
             ? '<div></div>'
             : `<div>${element.innerHTML}</div>`.replace(/vue-slot=/g, 'slot=');
         if (options.shadow && element.shadowRoot) {
@@ -137,7 +116,7 @@ export default function createVueInstance(element, Vue, componentDefinition, pro
         /* eslint-enable */
 
         if (options.shadow && options.shadowCss && element.shadowRoot) {
-            const style = document.createElement('style');
+            let style = document.createElement('style');
             style.type = 'text/css';
             style.appendChild(document.createTextNode(options.shadowCss));
 

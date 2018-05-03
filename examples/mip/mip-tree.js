@@ -16,7 +16,7 @@ MIP.customElement('mip-tree', {
                 <mip-tree
                     class="item"
                     v-for="(item, index) in model.children"
-                    :model="displayData(item)"
+                    :model="stringify(item)"
                     :key="index"
                 ></mip-tree>
                 <li class="add" @click="addChild">+</li>
@@ -61,7 +61,7 @@ MIP.customElement('mip-tree', {
             });
         },
 
-        displayData(data) {
+        stringify(data) {
             return JSON.stringify(data);
         }
     }

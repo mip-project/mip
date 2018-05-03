@@ -5,12 +5,11 @@
 
 import mipImg from './mip-img';
 import mipText from './mip-text';
-import mipTemplate from './mip-template';
 
 function install(MIP) {
     MIP.customElement('mip-img', mipImg);
     MIP.customElement('mip-text', mipText);
-    MIP.customElement('mip-template', mipTemplate);
+    MIP.customElement('mip-template', {props: ['data']});
 }
 
 export default install;
