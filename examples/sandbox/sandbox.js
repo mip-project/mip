@@ -210,25 +210,14 @@
 
     var sandbox = new Sandbox();
 
-    // (function fn() {
-    //     let sandbox = new Sandbox();
-    //     let {window, document} = sandbox;
-    //     let {
-    //         alert,
-    //         close,
-    //         confirm,
-    //         prompt,
-    //         eval
-    //     } = window;
-    //     console.log(window, document, window.document, alert, close, confirm, prompt, eval)
-    // })();
-
     let {window: window$1, document: document$1} = sandbox;
     let {
         alert,
         close,
         confirm,
         prompt,
+        setTimeout,
+        setInterval
         // eval // eval打包不给通过
     } = window$1;
 
@@ -246,5 +235,18 @@
         'document.write: ', document$1.write, '\n',
         'document.writeln: ', document$1.writeln
     );
+
+    setTimeout(function () {
+        console.log('我是setTimeout中使用的this：', this);
+    });
+
+    let interval = setInterval(function () {
+        console.log('我是setInterval中使用的this：', this);
+    }, 1000);
+
+    setTimeout(function () {
+        console.log('清除interval任务');
+        clearInterval(interval);
+    }, 2000);
 
 })));
