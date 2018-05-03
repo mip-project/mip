@@ -57,10 +57,10 @@ MIP.nextTick(() => {
             devtools.emit('init', MIP);
         }
         else if (process.env.NODE_ENV !== 'production' && isChrome) {
-            console[console.info ? 'info' : 'log'](
-                'Download the MIP Devtools extension for a better development experience:\n'
-                + 'https://github.com/vuejs/mip-devtools'
-            );
+            // console[console.info ? 'info' : 'log'](
+            //     'Download the MIP Devtools extension for a better development experience:\n'
+            //     + 'https://github.com/vuejs/mip-devtools'
+            // );
         }
     }
 

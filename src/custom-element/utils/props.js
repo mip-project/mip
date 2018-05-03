@@ -9,12 +9,12 @@ import {camelize, hyphenate} from './helpers';
 // We should convert it so props will behave as intended
 // Conversion can be overwritted by prop validation (https://vuejs.org/v2/guide/components-props.html#Prop-Validation)
 export function convertAttributeValue(value, overrideType, attr, element) {
-    let propsValue = value;
+    let propsValue = `${value}`;
     let isBoolean = ['true', 'false'].indexOf(value) > -1;
     let valueParsed = parseFloat(propsValue, 10);
     let isNumber = !isNaN(valueParsed)
         && isFinite(propsValue)
-        && !('' + propsValue).match(/^0+[^.]\d*$/g);
+        && propsValue.match(/^0+[^.]\d*$/g);
 
     if (overrideType && overrideType !== Boolean) {
         propsValue = overrideType(value);

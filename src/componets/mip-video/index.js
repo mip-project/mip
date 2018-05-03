@@ -1,6 +1,6 @@
 /**
  * @file index.js
- * @author huanghuiquan (huanghuiquan@baidu.com)
+ * @author mj(zoumiaojiang@gmail.com)
  */
 
 let template = `

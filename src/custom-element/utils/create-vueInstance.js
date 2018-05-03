@@ -14,8 +14,7 @@ export default function createVueInstance(element, Vue, componentDefinition, pro
 
         // for mip-template syntax
         if (element && element.tagName.toLowerCase() === 'mip-template') {
-            ComponentDefinition.template
-                = `<div class="mip-template-wrap">${element.innerHTML}</div>`;
+            ComponentDefinition.template = `<div class="mip-template-wrap">${element.innerHTML}</div>`;
         }
 
         let vueVersion = (Vue.version && parseInt(Vue.version.split('.')[0], 10)) || 0;

@@ -4,11 +4,17 @@
  */
 
 import mipImg from './mip-img';
-import mipText from './mip-text';
+import mipIframe from './mip-iframe';
+import mipVideo from './mip-video';
+import mipCarousel from './mip-carousel';
+import mipPix from './mip-pix';
 
 function install(MIP) {
     MIP.customElement('mip-img', mipImg);
-    MIP.customElement('mip-text', mipText);
+    MIP.customElement('mip-iframe', mipIframe);
+    MIP.customElement('mip-pix', mipPix);
+    MIP.customElement('mip-carousel', mipCarousel);
+    MIP.customElement('mip-video', mipVideo);
     MIP.customElement('mip-template', {props: ['data']});
 }
 

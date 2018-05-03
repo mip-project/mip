@@ -3,7 +3,6 @@
  * @author sfe-sy (sfe-sy@baidu.com)
  */
 
-
 export default function customEvent(eventName, detail) {
     const params = {bubbles: false, cancelable: false, detail};
     let event;
