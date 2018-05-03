@@ -8,8 +8,6 @@
 import MIP from './instance/index';
 import {initGlobalAPI} from './global-api/index';
 import {isServerRendering} from 'core/util/env';
-import registerCustomElement from '../custom-element/index';
-import buildInComponents from '../componets/index';
 
 initGlobalAPI(MIP);
 
@@ -25,11 +23,5 @@ Object.defineProperty(MIP.prototype, '$ssrContext', {
 });
 
 MIP.version = '__VERSION__';
-
-// 内置初始化 custom element 机制
-MIP.use(registerCustomElement);
-
-// 植入内置的 MIP 组件
-buildInComponents(MIP);
 
 export default MIP;

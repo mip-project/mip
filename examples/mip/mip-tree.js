@@ -21,6 +21,7 @@ MIP.customElement('mip-tree', {
                 ></mip-tree>
                 <li class="add" @click="addChild">+</li>
             </ul>
+            <slot></slot>
         </li>
     `,
     props: {
@@ -36,16 +37,6 @@ MIP.customElement('mip-tree', {
             open: false
         };
     },
-    // mounted() {
-    //     let temp = this.mode;
-    //     try {
-    //         temp = JSON.parse(this.model);
-    //     }
-    //     catch (e) {}
-
-    //     MIP.set(this.model.name, temp.name);
-    //     MIP.set(this.model.children, temp.children);
-    // },
     computed: {
         isFolder: function () {
             return this.model.children && this.model.children.length;

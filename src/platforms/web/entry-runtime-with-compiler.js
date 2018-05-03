@@ -11,6 +11,8 @@ import MIP from './runtime/index';
 import {query} from './util/index';
 import {shouldDecodeNewlines} from './util/compat';
 import {compileToFunctions} from './compiler/index';
+import customElement from '../../custom-element/index';
+import customElementBuildInComponents from '../../componets/index';
 
 const idToTemplate = cached(id => {
     const el = query(id);
@@ -105,5 +107,8 @@ function getOuterHTML(el) {
 }
 
 MIP.compile = compileToFunctions;
+
+MIP.use(customElement);
+MIP.use(customElementBuildInComponents);
 
 export default MIP;

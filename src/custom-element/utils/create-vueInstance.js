@@ -20,11 +20,11 @@ function setDataToProp(element) {
             propsData = JSON.parse(dataElement.innerHTML) || {};
         }
         catch (err) {
-            console.warn(dataElement, 'content should be a valid JSON string!');
+            console.warn(dataElement, 'Content should be a valid JSON string!');
             propsData = {};
         }
 
-        element.removeChild(dataElement);
+        element && element.removeChild(dataElement);
         setTimeout(() => {
             Object.keys(propsData).forEach(prop => {
                 element[prop] = propsData[prop];

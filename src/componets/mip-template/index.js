@@ -4,10 +4,18 @@
  */
 
 let template = `
-    <div></div>
+    <div class="mip-template-wrap">
+        hello, {{ name }}, {{ age }}, {{ obj.name }}
+        <slot></slot>
+    </div>
 `;
 
 export default {
     template,
-    props: []
+
+    props: ['name', 'age', 'obj'],
+
+    created() {
+        console.log('-------', this.name);
+    }
 };

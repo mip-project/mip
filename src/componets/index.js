@@ -7,8 +7,10 @@ import mipImg from './mip-img';
 import mipText from './mip-text';
 import mipTemplate from './mip-template';
 
-export default function register(MIP) {
-    MIP.customElement('mip-img-buildin', mipImg);
-    MIP.customElement('mip-text-buildin', mipText);
+function install(MIP) {
+    MIP.customElement('mip-img', mipImg);
+    MIP.customElement('mip-text', mipText);
     MIP.customElement('mip-template', mipTemplate);
 }
+
+export default install;
