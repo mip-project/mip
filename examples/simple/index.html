@@ -38,8 +38,8 @@
                 <span v-if="isFolder">[{{open ? '-' : '+'}}]</span>
             </div>
             <ul v-show="open" v-if="isFolder">
-                <item class="item" v-for="(model, index) in model.children" :model="model" :key="index">
-                </item>
+                <mip-item class="item" v-for="(model, index) in model.children" :model="stringify(model)" :key="index">
+                </mip-item>
                 <li class="add" @click="addChild">+</li>
             </ul>
         </li>
@@ -49,7 +49,56 @@
 
     <!-- the demo root element -->
     <ul id="demo">
-        <item class="item" :model="treeData"></item>
+        <mip-item class="item">
+            <script type="application/json">
+                {
+                    "model": {
+                        "name": "My Tree",
+                        "children": [
+                            {
+                                "name": "hello"
+                            },
+                            {
+                                "name": "wat"
+                            },
+                            {
+                                "name": "child folder",
+                                "children": [
+                                    {
+                                        "name": "child folder",
+                                        "children": [
+                                            {
+                                                "name": "hello"
+                                            },
+                                            {
+                                                "name": "wat"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "name": "hello"
+                                    },
+                                    {
+                                        "name": "wat"
+                                    },
+                                    {
+                                        "name": "child folder",
+                                        "children": [
+                                            {
+                                                "name": "hello"
+                                            },
+                                            {
+                                                "name": "wat"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            </script>
+        </mip-item>
     </ul>
 
     <!-- demo code -->
