@@ -3,9 +3,9 @@
  * @author sfe
  */
 
-/* global MIP */
+/* global mip */
 
-MIP.customElement('mip-slide', {
+mip.customElement('mip-slide', {
     template: `
         <div>
             <transition name="fade">

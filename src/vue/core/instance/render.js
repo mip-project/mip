@@ -3,7 +3,7 @@
  * @author sfe-sy(sfe-sy@baidu.com)
  */
 
-/* eslint-disable guard-for-in */
+/* eslint-disable guard-for-in, fecs-camelcase */
 
 import {
     warn,
@@ -65,7 +65,7 @@ export function renderMixin(MIP) {
 
     MIP.prototype._render = function () {
         const vm = this;
-        const {render, $parentVnode} = vm.$options;
+        const {render, _parentVnode} = vm.$options;
 
         if (vm._isMounted) {
             // if the parent didn't update, the slot nodes will be the ones from
@@ -80,11 +80,11 @@ export function renderMixin(MIP) {
             }
         }
 
-        vm.$scopedSlots = ($parentVnode && $parentVnode.data.scopedSlots) || emptyObject;
+        vm.$scopedSlots = (_parentVnode && _parentVnode.data.scopedSlots) || emptyObject;
 
         // set parent vnode. this allows render functions to have access
         // to the data on the placeholder node.
-        vm.$vnode = $parentVnode;
+        vm.$vnode = _parentVnode;
         // render self
         let vnode;
         try {
@@ -128,7 +128,7 @@ export function renderMixin(MIP) {
         }
 
         // set parent
-        vnode.parent = $parentVnode;
+        vnode.parent = _parentVnode;
         return vnode;
     };
 }

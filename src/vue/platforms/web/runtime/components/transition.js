@@ -73,7 +73,7 @@ function placeholder(h, rawChild) {
 }
 
 function hasParentTransition(vnode) {
-    while (vnode && (vnode = vnode.parent)) {
+    while ((vnode = vnode.parent)) {
         if (vnode.data.transition) {
             return true;
         }
