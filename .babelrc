@@ -1,6 +1,11 @@
 {
     "presets": [
-        "vue-app",
+        [
+            "env",
+            {
+                "modules": false
+            }
+        ],
         "flow-vue"
     ],
     "plugins": [
