@@ -1,4 +1,4 @@
-import sandbox from '../../src/core/util/sandbox';
+import sandbox from '../../src/core/core/util/sandbox';
 
 let {window, document} = sandbox;
 let {

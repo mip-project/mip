@@ -3,9 +3,9 @@
  * @author sfe
  */
 
-/* global MIP */
+/* global mip */
 
-MIP.customElement('mip-cambrian', {
+mip.customElement('mip-cambrian', {
     template: `
         <div>
             <slot></slot>

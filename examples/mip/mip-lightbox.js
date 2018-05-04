@@ -5,7 +5,7 @@
 
 /* global MIP */
 
-MIP.customElement('mip-lightbox', {
+MIP.mip.customElement('mip-lightbox', {
     template: `
         <div>
             <slot></slot>

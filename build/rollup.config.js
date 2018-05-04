@@ -26,7 +26,7 @@ const resolve = p => {
 const builds = {
     // Runtime+compiler development build (Browser)
     'web-full-dev': {
-        entry: resolve('src/mip.js'),
+        entry: resolve('src/index.js'),
         dest: resolve('dist/mip.js'),
         format: 'umd',
         env: 'development',
@@ -44,7 +44,7 @@ const builds = {
         ]
     },
     'web-full-esm': {
-        entry: resolve('src/mip.js'),
+        entry: resolve('src/index.js'),
         dest: resolve('dist/mip.esm.js'),
         format: 'umd',
         alias: {
@@ -78,7 +78,7 @@ function genConfig(name) {
             file: opts.dest,
             format: opts.format,
             banner: opts.banner,
-            name: opts.moduleName || 'MIP'
+            name: opts.moduleName || 'mip'
         }
     };
 

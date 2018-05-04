@@ -3,9 +3,9 @@
  * @author sfe
  */
 
-/* global MIP */
+/* global mip */
 
-MIP.customElement('mip-ad', {
+mip.customElement('mip-ad', {
     template: `
         <div>
             <slot></slot>

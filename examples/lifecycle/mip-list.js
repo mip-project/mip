@@ -5,7 +5,7 @@
 
 /* global MIP */
 
-MIP.customElement('mip-list', {
+MIP.mip.customElement('mip-list', {
     template: `
         <div class="mip-list">
             <div class="mip-list-item" v-for="item in list">

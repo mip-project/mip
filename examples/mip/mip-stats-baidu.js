@@ -3,9 +3,9 @@
  * @author sfe
  */
 
-/* global MIP */
+/* global mip */
 
-MIP.customElement('mip-stats-baidu', {
+mip.customElement('mip-stats-baidu', {
     template: `
         <div>
             <slot></slot>

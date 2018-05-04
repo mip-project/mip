@@ -1,14 +1,15 @@
 {
-  "name": "mip",
+  "name": "mip-element",
   "version": "2.0.0",
   "description": "mobile instant page",
-  "main": "index.js",
+  "main": "dist/mip.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
     "dev": "rollup -w -c build/rollup.config.js --environment TARGET:web-full-dev",
     "build": "node build/build.js",
+    "prepublish": "fecs ./src",
     "sandbox": "rollup examples/sandbox/index.js --o examples/sandbox/sandbox.js --f umd && open examples/sandbox/index.html"
   },
   "repository": {
