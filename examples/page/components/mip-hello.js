@@ -4,7 +4,7 @@
  */
 
 /* global MIP */
-MIP.customElement('mip-hello', {
+mip.customElement('mip-hello', {
     template: '<h2>{{text}}</h2>',
     props: ['text']
 });

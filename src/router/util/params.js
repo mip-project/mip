@@ -1,18 +1,11 @@
-/* @flow */
+
 
 import { warn } from './warn'
 import Regexp from 'path-to-regexp'
 
-// $flow-disable-line
-const regexpCompileCache: {
-  [key: string]: Function
-} = Object.create(null)
+const regexpCompileCache = Object.create(null)
 
-export function fillParams (
-  path: string,
-  params: ?Object,
-  routeMsg: string
-): string {
+export function fillParams (path, params, routeMsg) {
   try {
     const filler =
       regexpCompileCache[path] ||

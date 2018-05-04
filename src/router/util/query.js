@@ -1,4 +1,4 @@
-/* @flow */
+
 
 import { warn } from './warn'
 
@@ -15,11 +15,7 @@ const encode = str => encodeURIComponent(str)
 
 const decode = decodeURIComponent
 
-export function resolveQuery (
-  query: ?string,
-  extraQuery: Dictionary<string> = {},
-  _parseQuery: ?Function
-): Dictionary<string> {
+export function resolveQuery (query, extraQuery = {}, _parseQuery) {
   const parse = _parseQuery || parseQuery
   let parsedQuery
   try {
@@ -34,7 +30,7 @@ export function resolveQuery (
   return parsedQuery
 }
 
-function parseQuery (query: string): Dictionary<string> {
+function parseQuery (query) {
   const res = {}
 
   query = query.trim().replace(/^(\?|#|&)/, '')
@@ -62,7 +58,7 @@ function parseQuery (query: string): Dictionary<string> {
   return res
 }
 
-export function stringifyQuery (obj: Dictionary<string>): string {
+export function stringifyQuery (obj) {
   const res = obj ? Object.keys(obj).map(key => {
     const val = obj[key]
 

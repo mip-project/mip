@@ -1,4 +1,4 @@
-/* @flow */
+
 
 import { inBrowser } from './dom'
 import { saveScrollPosition } from './scroll'
@@ -23,9 +23,9 @@ const Time = inBrowser && window.performance && window.performance.now
   ? window.performance
   : Date
 
-let _key: string = genKey()
+let _key = genKey()
 
-function genKey (): string {
+function genKey () {
   return Time.now().toFixed(3)
 }
 
@@ -33,11 +33,11 @@ export function getStateKey () {
   return _key
 }
 
-export function setStateKey (key: string) {
+export function setStateKey (key) {
   _key = key
 }
 
-export function pushState (url?: string, replace?: boolean) {
+export function pushState (url, replace) {
   saveScrollPosition()
   // try...catch the pushState call to get around Safari
   // DOM Exception 18 where it limits to 100 pushState calls
@@ -54,6 +54,6 @@ export function pushState (url?: string, replace?: boolean) {
   }
 }
 
-export function replaceState (url?: string) {
+export function replaceState (url) {
   pushState(url, true)
 }

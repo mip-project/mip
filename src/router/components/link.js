@@ -1,17 +1,13 @@
-/* @flow */
+
 
 import { createRoute, isSameRoute, isIncludedRoute } from '../util/route'
-import { _MIP } from '../install'
-
-// work around weird flow bug
-const toTypes: Array<Function> = [String, Object]
-const eventTypes: Array<Function> = [String, Array]
+import { _Vue } from '../install'
 
 export default {
   name: 'MipLink',
   props: {
     to: {
-      type: toTypes,
+      type: [String, Object],
       required: true
     },
     tag: {
@@ -24,11 +20,11 @@ export default {
     activeClass: String,
     exactActiveClass: String,
     event: {
-      type: eventTypes,
+      type: [String, Array],
       default: 'click'
     }
   },
-  render (h: Function) {
+  render (h) {
     const router = this.$router
     const current = this.$route
     const { location, route, href } = router.resolve(this.to, current, this.append)
@@ -75,7 +71,7 @@ export default {
       on[this.event] = handler
     }
 
-    const data: any = {
+    const data = {
       class: classes
     }
 
@@ -88,7 +84,7 @@ export default {
       if (a) {
         // in case the <a> is a static node
         a.isStatic = false
-        const extend = _MIP.util.extend
+        const extend = _Vue.util.extend
         const aData = a.data = extend({}, a.data)
         aData.on = on
         const aAttrs = a.data.attrs = extend({}, a.data.attrs)

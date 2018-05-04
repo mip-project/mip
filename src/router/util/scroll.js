@@ -1,6 +1,5 @@
-/* @flow */
 
-import type Router from '../index'
+
 import { assert } from './warn'
 import { getStateKey, setStateKey } from './push-state'
 
@@ -17,12 +16,7 @@ export function setupScroll () {
   })
 }
 
-export function handleScroll (
-  router: Router,
-  to: Route,
-  from: Route,
-  isPop: boolean
-) {
+export function handleScroll (router, to, from, isPop) {
   if (!router.app) {
     return
   }
@@ -47,7 +41,7 @@ export function handleScroll (
 
     if (typeof shouldScroll.then === 'function') {
       shouldScroll.then(shouldScroll => {
-        scrollToPosition((shouldScroll: any), position)
+        scrollToPosition((shouldScroll), position)
       }).catch(err => {
         if (process.env.NODE_ENV !== 'production') {
           assert(false, err.toString())
@@ -69,15 +63,15 @@ export function saveScrollPosition () {
   }
 }
 
-function getScrollPosition (): ?Object {
+function getScrollPosition () {
   const key = getStateKey()
   if (key) {
     return positionStore[key]
   }
 }
 
-function getElementPosition (el: Element, offset: Object): Object {
-  const docEl: any = document.documentElement
+function getElementPosition (el, offset) {
+  const docEl = document.documentElement
   const docRect = docEl.getBoundingClientRect()
   const elRect = el.getBoundingClientRect()
   return {
@@ -86,25 +80,25 @@ function getElementPosition (el: Element, offset: Object): Object {
   }
 }
 
-function isValidPosition (obj: Object): boolean {
+function isValidPosition (obj) {
   return isNumber(obj.x) || isNumber(obj.y)
 }
 
-function normalizePosition (obj: Object): Object {
+function normalizePosition (obj) {
   return {
     x: isNumber(obj.x) ? obj.x : window.pageXOffset,
     y: isNumber(obj.y) ? obj.y : window.pageYOffset
   }
 }
 
-function normalizeOffset (obj: Object): Object {
+function normalizeOffset (obj) {
   return {
     x: isNumber(obj.x) ? obj.x : 0,
     y: isNumber(obj.y) ? obj.y : 0
   }
 }
 
-function isNumber (v: any): boolean {
+function isNumber (v) {
   return typeof v === 'number'
 }
 

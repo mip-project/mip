@@ -1,4 +1,4 @@
-/* @flow */
+
 
 import { install } from './install'
 import { START } from './util/route'
@@ -11,26 +11,9 @@ import { supportsPushState } from './util/push-state'
 
 import { HTML5History } from './history/html5'
 
-import type { Matcher } from './create-matcher'
-
 export default class MIPRouter {
-  static install: () => void;
-  static version: string;
 
-  app: any;
-  apps: Array<any>;
-  ready: boolean;
-  readyCbs: Array<Function>;
-  options: RouterOptions;
-  mode: string;
-  history: HashHistory | HTML5History | AbstractHistory;
-  matcher: Matcher;
-  fallback: boolean;
-  beforeHooks: Array<?NavigationGuard>;
-  resolveHooks: Array<?NavigationGuard>;
-  afterHooks: Array<?AfterNavigationHook>;
-
-  constructor (options: RouterOptions = {}) {
+  constructor (options) {
     this.app = null
     this.apps = []
     options.base = '/';
@@ -44,22 +27,18 @@ export default class MIPRouter {
     this.history = new HTML5History(this, '/')
   }
 
-  match (
-    raw: RawLocation,
-    current?: Route,
-    redirectedFrom?: Location
-  ): Route {
+  match (raw, current, redirectedFrom) {
     return this.matcher.match(raw, current, redirectedFrom)
   }
 
-  get currentRoute (): ?Route {
+  get currentRoute () {
     return this.history && this.history.current
   }
 
-  init (app: any /* MIP component instance */) {
+  init (app /* Vue component instance */) {
     process.env.NODE_ENV !== 'production' && assert(
       install.installed,
-      `not installed. Make sure to call \`MIP.use(MIPRouter)\` ` +
+      `not installed. Make sure to call \`mip.Vue.use(MIPRouter)\` ` +
       `before creating root instance.`
     )
 
@@ -85,35 +64,35 @@ export default class MIPRouter {
     })
   }
 
-  beforeEach (fn: Function): Function {
+  beforeEach (fn) {
     return registerHook(this.beforeHooks, fn)
   }
 
-  beforeResolve (fn: Function): Function {
+  beforeResolve (fn) {
     return registerHook(this.resolveHooks, fn)
   }
 
-  afterEach (fn: Function): Function {
+  afterEach (fn) {
     return registerHook(this.afterHooks, fn)
   }
 
-  onReady (cb: Function, errorCb?: Function) {
+  onReady (cb, errorCb) {
     this.history.onReady(cb, errorCb)
   }
 
-  onError (errorCb: Function) {
+  onError (errorCb) {
     this.history.onError(errorCb)
   }
 
-  push (location: RawLocation, onComplete?: Function, onAbort?: Function) {
+  push (location, onComplete, onAbort) {
     this.history.push(location, onComplete, onAbort)
   }
 
-  replace (location: RawLocation, onComplete?: Function, onAbort?: Function) {
+  replace (location, onComplete, onAbort) {
     this.history.replace(location, onComplete, onAbort)
   }
 
-  go (n: number) {
+  go (n) {
     this.history.go(n)
   }
 
@@ -125,8 +104,8 @@ export default class MIPRouter {
     this.go(1)
   }
 
-  getMatchedComponents (to?: RawLocation | Route): Array<any> {
-    const route: any = to
+  getMatchedComponents (to) {
+    const route = to
       ? to.matched
         ? to
         : this.resolve(to).route
@@ -141,18 +120,7 @@ export default class MIPRouter {
     }))
   }
 
-  resolve (
-    to: RawLocation,
-    current?: Route,
-    append?: boolean
-  ): {
-    location: Location,
-    route: Route,
-    href: string,
-    // for backwards compat
-    normalizedTo: Location,
-    resolved: Route
-  } {
+  resolve (to, current, append) {
     const location = normalizeLocation(
       to,
       current || this.history.current,
@@ -173,7 +141,7 @@ export default class MIPRouter {
     }
   }
 
-  addRoutes (routes: Array<RouteConfig>) {
+  addRoutes (routes) {
     this.matcher.addRoutes(routes)
     if (this.history.current !== START) {
       this.history.transitionTo(this.history.getCurrentLocation())
@@ -181,7 +149,7 @@ export default class MIPRouter {
   }
 }
 
-function registerHook (list: Array<any>, fn: Function): Function {
+function registerHook (list, fn) {
   list.push(fn)
   return () => {
     const i = list.indexOf(fn)
@@ -189,7 +157,7 @@ function registerHook (list: Array<any>, fn: Function): Function {
   }
 }
 
-function createHref (base: string, fullPath: string, mode) {
+function createHref (base, fullPath, mode) {
   var path = mode === 'hash' ? '#' + fullPath : fullPath
   return base ? cleanPath(base + '/' + path) : path
 }
@@ -197,6 +165,6 @@ function createHref (base: string, fullPath: string, mode) {
 MIPRouter.install = install
 MIPRouter.version = '__VERSION__'
 
-if (inBrowser && window.MIP) {
-  window.MIP.use(MIPRouter);
+if (inBrowser && window.mip) {
+  window.mip.Vue.use(MIPRouter);
 }

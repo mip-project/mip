@@ -1,6 +1,5 @@
-/* @flow */
 
-import type Router from '../index'
+
 import { History } from './base'
 import { cleanPath } from '../util/path'
 import { START } from '../util/route'
@@ -8,7 +7,7 @@ import { setupScroll, handleScroll } from '../util/scroll'
 import { pushState, replaceState, supportsPushState } from '../util/push-state'
 
 export class HTML5History extends History {
-  constructor (router: Router, base: ?string) {
+  constructor (router, base) {
     super(router, base)
 
     const expectScroll = router.options.scrollBehavior
@@ -37,11 +36,11 @@ export class HTML5History extends History {
     })
   }
 
-  go (n: number) {
+  go (n) {
     window.history.go(n)
   }
 
-  push (location: RawLocation, onComplete?: Function, onAbort?: Function) {
+  push (location, onComplete, onAbort) {
     const { current: fromRoute } = this
     this.transitionTo(location, route => {
       pushState(cleanPath(this.base + route.fullPath))
@@ -50,7 +49,7 @@ export class HTML5History extends History {
     }, onAbort)
   }
 
-  replace (location: RawLocation, onComplete?: Function, onAbort?: Function) {
+  replace (location, onComplete, onAbort) {
     const { current: fromRoute } = this
     this.transitionTo(location, route => {
       replaceState(cleanPath(this.base + route.fullPath))
@@ -59,19 +58,19 @@ export class HTML5History extends History {
     }, onAbort)
   }
 
-  ensureURL (push?: boolean) {
+  ensureURL (push) {
     if (getLocation(this.base) !== this.current.fullPath) {
       const current = cleanPath(this.base + this.current.fullPath)
       push ? pushState(current) : replaceState(current)
     }
   }
 
-  getCurrentLocation (): string {
+  getCurrentLocation () {
     return getLocation(this.base)
   }
 }
 
-export function getLocation (base: string): string {
+export function getLocation (base) {
   let path = window.location.pathname
   if (base && path.indexOf(base) === 0) {
     path = path.slice(base.length)

@@ -1,13 +1,13 @@
 import View from './components/view'
 import Link from './components/link'
 
-export let _MIP
+export let _Vue
 
-export function install (MIP) {
-  if (install.installed && _MIP === MIP) return
+export function install (Vue) {
+  if (install.installed && _Vue === Vue) return
   install.installed = true
 
-  _MIP = MIP
+  _Vue = Vue
 
   const isDef = v => v !== undefined
 
@@ -18,13 +18,13 @@ export function install (MIP) {
     }
   }
 
-  MIP.mixin({
+  Vue.mixin({
     beforeCreate () {
       if (isDef(this.$options.router)) {
         this._routerRoot = this
         this._router = this.$options.router
         this._router.init(this)
-        MIP.util.defineReactive(this, '_route', this._router.history.current)
+        Vue.util.defineReactive(this, '_route', this._router.history.current)
       } else {
         this._routerRoot = (this.$parent && this.$parent._routerRoot) || this
       }
@@ -35,18 +35,18 @@ export function install (MIP) {
     }
   })
 
-  Object.defineProperty(MIP.prototype, '$router', {
+  Object.defineProperty(Vue.prototype, '$router', {
     get () { return this._routerRoot._router }
   })
 
-  Object.defineProperty(MIP.prototype, '$route', {
+  Object.defineProperty(Vue.prototype, '$route', {
     get () { return this._routerRoot._route }
   })
 
-  MIP.component('MipView', View);
-  MIP.component('MipLink', Link)
+  Vue.component('MipView', View);
+  Vue.component('MipLink', Link)
 
-  const strats = MIP.config.optionMergeStrategies
+  const strats = Vue.config.optionMergeStrategies
   // use the same hook merging strategy for route hooks
   strats.beforeRouteEnter = strats.beforeRouteLeave = strats.beforeRouteUpdate = strats.created
 }
