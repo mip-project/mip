@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
 <!--htmlcs-disable-->
+<!DOCTYPE html>
+<html mip>
 <head>
     <meta charset="utf-8">
-    <title>MIP asyncData example</title>
+    <title>MIP event triger demo</title>
     <meta name="apple-touch-fullscreen" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
@@ -11,10 +11,15 @@
 </head>
 
 <body>
-    <mip-list></mip-list>
-    <!-- demo code -->
+    <mip-data>
+        <script type="application/json">
+            {
+                "clicked": false
+            }
+        </script>
+    </mip-data>
+    <span m-bind:data-clicked="clicked" on="tap:MIP.setData({clicked:!m.clicked})">click me</span>
     <script src="../../dist/mip.js"></script>
-    <script src="./mip-list.js"></script>
+    <script src="./mip-bind.js"></script>
 </body>
-
 </html>

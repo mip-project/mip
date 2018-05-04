@@ -26,7 +26,7 @@ const resolve = p => {
 const builds = {
     // Runtime+compiler development build (Browser)
     'web-full-dev': {
-        entry: resolve('web/entry-runtime-with-compiler.js'),
+        entry: resolve('src/mip.js'),
         dest: resolve('dist/mip.js'),
         format: 'umd',
         env: 'development',
@@ -44,7 +44,7 @@ const builds = {
         ]
     },
     'web-full-esm': {
-        entry: resolve('web/entry-runtime-with-compiler.js'),
+        entry: resolve('src/mip.js'),
         dest: resolve('dist/mip.esm.js'),
         format: 'umd',
         alias: {

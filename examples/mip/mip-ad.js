@@ -12,7 +12,6 @@ MIP.customElement('mip-ad', {
         </div>
     `,
     props: {
-        src: String,
-        alt: String
+        name: String
     }
 });

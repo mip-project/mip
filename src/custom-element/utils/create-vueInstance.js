@@ -72,11 +72,11 @@ export default function createVueInstance(element, Vue, componentDefinition, pro
                 /* eslint-enable */
             };
         }
-        else if (vueVersion === 1) {
-            // Fallback for Vue 1.x
-            rootElement = ComponentDefinition;
-            rootElement.propsData = propsData;
-        }
+        // else if (vueVersion === 1) {
+        //     // Fallback for Vue 1.x
+        //     rootElement = ComponentDefinition;
+        //     rootElement.propsData = propsData;
+        // }
         else {
             // Fallback for older Vue versions
             rootElement = ComponentDefinition;

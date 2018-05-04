@@ -3,9 +3,7 @@
 <html mip>
 <head>
     <meta charset="utf-8">
-    <title>红烧肉</title>
-    <meta name="keywords" content="红烧肉,红烧肉的做法,红烧肉的家常做法,红烧肉怎么做红烧肉怎么做好吃,红烧肉的最正宗做法,传统红烧肉">
-    <meta name="description" content="红烧肉的家常做法与步骤图文详解">
+    <title>MIP tree demo</title>
     <meta name="apple-touch-fullscreen" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
@@ -13,10 +11,6 @@
 </head>
 
 <body>
-    <mip-img
-        src="https://ss1.baidu.com/-4o3dSag_xI4khGko9WTAnF6hhy/super/pic/item/9922720e0cf3d7ca37c2e33efe1fbe096b63a946.jpg"
-        width="200"
-    ></mip-img>
     <mip-tree>
         <script type="application/json">
             {
@@ -66,26 +60,7 @@
                 }
             }
         </script>
-        <div> -------- {{ model.name }} </div>
     </mip-tree>
-    <!-- mip-template 机制只适合无交互纯展示的逻辑 -->
-    <mip-template>
-        <!-- mip-template 的数据根字段必须为 `data` -->
-        <script type="application/json">
-            {
-                "data": {
-                    "obj": {
-                        "name": "Earth"
-                    },
-                    "name": "World",
-                    "age": 12
-                }
-            }
-        </script>
-        <div v-if="data.age > 10">
-            hello from mip-template, {{ data.name }}
-        </div>
-    </mip-template>
     <script src="../../dist/mip.js"></script>
     <script src="./mip-tree.js"></script>
 </body>
