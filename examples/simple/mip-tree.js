@@ -3,10 +3,10 @@
  * @author sfe
  */
 
-/* global MIP */
+/* global mip */
 
 // define the item component
-MIP.customElement('mip-item', {
+mip.customElement('mip-item', {
     template: '#item-template',
     props: {
         model: {
@@ -34,7 +34,7 @@ MIP.customElement('mip-item', {
         },
         changeType() {
             if (!this.isFolder) {
-                MIP.set(this.model, 'children', []);
+                mip.Vue.set(this.model, 'children', []);
                 this.addChild();
                 this.open = true;
             }

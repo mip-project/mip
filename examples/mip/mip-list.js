@@ -3,13 +3,24 @@
  * @author mj(zoumiaojiang@gmail.com)
  */
 
-/* global MIP */
+/* global mip */
 
-MIP.mip.customElement('mip-list', {
+mip.customElement('mip-list', {
     template: `
         <div class="mip-list-wrap">
+            <div
+                class="mip-tr"
+                v-for="(item, index) in items"
+                :key="index"
+            >{{ renderItem(item) }}</div>
             <slot></slot>
         </div>
     `,
-    props: ['items']
+    props: ['items'],
+    methods: {
+        renderItem(item) {
+            console.log(this.$el, item);
+            // use mustache render data
+        }
+    }
 });

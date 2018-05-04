@@ -10,11 +10,9 @@ import customElementBuildInComponents from './componets/index';
 Vue.use(customElement);
 Vue.use(customElementBuildInComponents);
 
-let mip = {};
-
-mip.Element = Vue;
-
-// short name of customElement
-mip.customElement = Vue.customElement;
+let mip = {
+    Vue,
+    customElement: Vue.customElement
+};
 
 export default mip;

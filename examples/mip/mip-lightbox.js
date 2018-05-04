@@ -3,9 +3,9 @@
  * @author sfe
  */
 
-/* global MIP */
+/* global mip */
 
-MIP.mip.customElement('mip-lightbox', {
+mip.customElement('mip-lightbox', {
     template: `
         <div>
             <slot></slot>
