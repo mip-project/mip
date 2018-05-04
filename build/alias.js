@@ -15,5 +15,6 @@ module.exports = {
     web: resolve('src/vue/platforms/web'),
     // server: resolve('src/server'),
     // entries: resolve('src/entries'),
-    sfc: resolve('src/vue/sfc')
+    sfc: resolve('src/vue/sfc'),
+    deps: resolve('deps')
 };
