@@ -1,24 +1,18 @@
-/* @flow */
 
-import type MIPRouter from '../index'
+
 import { stringifyQuery } from './query'
 
 const trailingSlashRE = /\/?$/
 
-export function createRoute (
-  record: ?RouteRecord,
-  location: Location,
-  redirectedFrom?: ?Location,
-  router?: MIPRouter
-): Route {
+export function createRoute (record, location, redirectedFrom, router) {
   const stringifyQuery = router && router.options.stringifyQuery
 
-  let query: any = location.query || {}
+  let query = location.query || {}
   try {
     query = clone(query)
   } catch (e) {}
 
-  const route: Route = {
+  const route = {
     name: location.name || (record && record.name),
     meta: (record && record.meta) || {},
     path: location.path || '/',
@@ -53,7 +47,7 @@ export const START = createRoute(null, {
   path: '/'
 })
 
-function formatMatch (record: ?RouteRecord): Array<RouteRecord> {
+function formatMatch (record) {
   const res = []
   while (record) {
     res.unshift(record)
@@ -65,12 +59,12 @@ function formatMatch (record: ?RouteRecord): Array<RouteRecord> {
 function getFullPath (
   { path, query = {}, hash = '' },
   _stringifyQuery
-): string {
+) {
   const stringify = _stringifyQuery || stringifyQuery
   return (path || '/') + stringify(query) + hash
 }
 
-export function isSameRoute (a: Route, b: ?Route): boolean {
+export function isSameRoute (a, b) {
   if (b === START) {
     return a === b
   } else if (!b) {
@@ -93,7 +87,7 @@ export function isSameRoute (a: Route, b: ?Route): boolean {
   }
 }
 
-function isObjectEqual (a = {}, b = {}): boolean {
+function isObjectEqual (a = {}, b = {}) {
   // handle null value #1566
   if (!a || !b) return a === b
   const aKeys = Object.keys(a)
@@ -112,7 +106,7 @@ function isObjectEqual (a = {}, b = {}): boolean {
   })
 }
 
-export function isIncludedRoute (current: Route, target: Route): boolean {
+export function isIncludedRoute (current, target) {
   return (
     current.path.replace(trailingSlashRE, '/').indexOf(
       target.path.replace(trailingSlashRE, '/')
@@ -122,7 +116,7 @@ export function isIncludedRoute (current: Route, target: Route): boolean {
   )
 }
 
-function queryIncludes (current: Dictionary<string>, target: Dictionary<string>): boolean {
+function queryIncludes (current, target) {
   for (const key in target) {
     if (!(key in current)) {
       return false

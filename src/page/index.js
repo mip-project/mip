@@ -3,8 +3,6 @@
  * @author wangyisheng@baidu.com (wangyisheng)
  */
 
-import MIP from 'mip';
-import MIPRouter from '@/router/src/index';
 import axios from 'axios';
 
 import * as util from './util';
@@ -17,14 +15,13 @@ const template = `<div id="${CONTAINER_ID}">`
     // + '<transition><div v-if="MIPRouterTitle">Hello</div></transition>'
 + '</div>';
 
-const start = function () {
-    // Configure MIP
-    MIP.use(MIPRouter);
-    MIP.config.ignoredElements = [
+const start = function (mip) {
+    // Configure mip
+    mip.Vue.config.ignoredElements = [
       /^mip-/
     ];
 
-    // Create MIP container
+    // Create mip container
     util.createContainer(CONTAINER_ID);
 
     // Build routes
@@ -38,32 +35,43 @@ const start = function () {
     }];
 
     // Create router instance and register onMatchMiss hook (add dynamic routes)
-    const router = new MIPRouter({routes});
-    router.onMatchMiss = async function (to, from, next) {
+    const router = new mip.Router({routes});
+    router.onMatchMiss = function (to, from, next) {
         // add current loaded components
         util.addLoadedComponents();
 
-        let response = await axios.get(to.path);
-        let targetHTML = response.data;
+        const dealSuccess = () => {
+            router.addRoutes([{
+                path: to.path,
+                component: {
+                    template: util.getMIPContent(targetHTML)
+                }
+            }]);
+            router.app.MIPRouterTitle = util.getMIPTitle(targetHTML);
+            console.log(util.getMIPTitle(targetHTML))
 
-        let newComponents = util.getNewComponents(targetHTML);
-        if (newComponents.length !== 0) {
-            await util.loadScripts(newComponents);
-        }
+            next();
+        };
+        const dealError = err => {
+            // TODO
+            console.log(err, 'in onMatchMiss');
+        };
 
-        router.addRoutes([{
-            path: to.path,
-            component: {
-                template: util.getMIPContent(targetHTML)
+        axios.get(to.path).then(response => {
+            let targetHTML = response.data;
+
+            let newComponents = util.getNewComponents(targetHTML);
+            if (newComponents.length !== 0) {
+                util.loadScripts(newComponents).then(dealSuccess, dealError);
             }
-        }]);
-        router.app.MIPRouterTitle = util.getMIPTitle(targetHTML);
-
-        next();
+            else {
+                dealSuccess();
+            }
+        }, dealError);
     }
 
-    // Create MIP instance
-    new MIP({
+    // Create mip instance
+    new mip.Vue({
         router,
         el: `#${CONTAINER_ID}`,
         template,

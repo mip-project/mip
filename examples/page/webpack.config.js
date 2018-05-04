@@ -37,12 +37,12 @@ module.exports = {
     ]
   },
 
-  resolve: {
-    alias: {
-      '@': path.join(__dirname, '../../src/'),
-      'mip': path.join(__dirname, 'mip.js')
-    }
-  },
+  // resolve: {
+  //   alias: {
+  //     '@': path.join(__dirname, '../../src/'),
+  //     'mip': path.join(__dirname, 'mip.js')
+  //   }
+  // },
 
   externals: {
     mip: 'MIP'

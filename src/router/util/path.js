@@ -1,10 +1,6 @@
-/* @flow */
 
-export function resolvePath (
-  relative: string,
-  base: string,
-  append?: boolean
-): string {
+
+export function resolvePath (relative, base, append) {
   const firstChar = relative.charAt(0)
   if (firstChar === '/') {
     return relative
@@ -42,11 +38,7 @@ export function resolvePath (
   return stack.join('/')
 }
 
-export function parsePath (path: string): {
-  path: string;
-  query: string;
-  hash: string;
-} {
+export function parsePath (path) {
   let hash = ''
   let query = ''
 
@@ -69,6 +61,6 @@ export function parsePath (path: string): {
   }
 }
 
-export function cleanPath (path: string): string {
+export function cleanPath (path) {
   return path.replace(/\/\//g, '/')
 }

@@ -1,9 +1,9 @@
-/* @flow */
 
-import { _MIP } from '../install'
+
+import { _Vue } from '../install'
 import { warn, isError } from './warn'
 
-export function resolveAsyncComponents (matched: Array<RouteRecord>): Function {
+export function resolveAsyncComponents (matched) {
   return (to, from, next) => {
     let hasAsync = false
     let pending = 0
@@ -12,7 +12,7 @@ export function resolveAsyncComponents (matched: Array<RouteRecord>): Function {
     flatMapComponents(matched, (def, _, match, key) => {
       // if it's a function and doesn't have cid attached,
       // assume it's an async component resolve function.
-      // we are not using MIP's default async resolving mechanism because
+      // we are not using Vue's default async resolving mechanism because
       // we want to halt the navigation until the incoming component has been
       // resolved.
       if (typeof def === 'function' && def.cid === undefined) {
@@ -26,7 +26,7 @@ export function resolveAsyncComponents (matched: Array<RouteRecord>): Function {
           // save resolved on async factory in case it's used elsewhere
           def.resolved = typeof resolvedDef === 'function'
             ? resolvedDef
-            : _MIP.extend(resolvedDef)
+            : _Vue.extend(resolvedDef)
           match.components[key] = resolvedDef
           pending--
           if (pending <= 0) {
@@ -55,7 +55,7 @@ export function resolveAsyncComponents (matched: Array<RouteRecord>): Function {
           if (typeof res.then === 'function') {
             res.then(resolve, reject)
           } else {
-            // new syntax in MIP 2.3
+            // new syntax in Vue 2.3
             const comp = res.component
             if (comp && typeof comp.then === 'function') {
               comp.then(resolve, reject)
@@ -69,10 +69,7 @@ export function resolveAsyncComponents (matched: Array<RouteRecord>): Function {
   }
 }
 
-export function flatMapComponents (
-  matched: Array<RouteRecord>,
-  fn: Function
-): Array<?Function> {
+export function flatMapComponents (matched, fn) {
   return flatten(matched.map(m => {
     return Object.keys(m.components).map(key => fn(
       m.components[key],
@@ -82,7 +79,7 @@ export function flatMapComponents (
   }))
 }
 
-export function flatten (arr: Array<any>): Array<any> {
+export function flatten (arr) {
   return Array.prototype.concat.apply([], arr)
 }
 

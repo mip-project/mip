@@ -3,9 +3,9 @@
  * @author sfe
  */
 
-/* global MIP */
+/* global mip */
 
-MIP.customElement('mip-tree', {
+mip.customElement('mip-tree', {
     template: `
         <li>
             <div :class="{ bold: isFolder }" @click="toggle" @dblclick="changeType">
@@ -16,11 +16,12 @@ MIP.customElement('mip-tree', {
                 <mip-tree
                     class="item"
                     v-for="(item, index) in model.children"
-                    :model="displayData(item)"
+                    :model="stringify(item)"
                     :key="index"
                 ></mip-tree>
                 <li class="add" @click="addChild">+</li>
             </ul>
+            <slot></slot>
         </li>
     `,
     props: {
@@ -36,16 +37,6 @@ MIP.customElement('mip-tree', {
             open: false
         };
     },
-    // mounted() {
-    //     let temp = this.mode;
-    //     try {
-    //         temp = JSON.parse(this.model);
-    //     }
-    //     catch (e) {}
-
-    //     MIP.set(this.model.name, temp.name);
-    //     MIP.set(this.model.children, temp.children);
-    // },
     computed: {
         isFolder: function () {
             return this.model.children && this.model.children.length;
@@ -59,7 +50,7 @@ MIP.customElement('mip-tree', {
         },
         changeType: function () {
             if (!this.isFolder) {
-                MIP.set(this.model, 'children', []);
+                mip.Vue.set(this.model, 'children', []);
                 this.addChild();
                 this.open = true;
             }
@@ -70,7 +61,7 @@ MIP.customElement('mip-tree', {
             });
         },
 
-        displayData(data) {
+        stringify(data) {
             return JSON.stringify(data);
         }
     }

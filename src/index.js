@@ -12,7 +12,10 @@ import util from './util';
 import 'fetch-jsonp';
 import 'deps/fetch';
 
+import Router from './router/index'
+import page from './page/index'
 
+Vue.use(Router);
 Vue.use(customElement);
 Vue.use(customElementBuildInComponents);
 
@@ -22,7 +25,10 @@ let mip = {
     util,
     // 当前是否在 iframe 中
     isIframed: window === top,
-    standalone: window === top
+    standalone: window === top,
+    Router
 };
+
+// page.start(mip);
 
 export default mip;

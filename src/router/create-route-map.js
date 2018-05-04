@@ -1,25 +1,16 @@
-/* @flow */
+
 
 import Regexp from 'path-to-regexp'
 import { cleanPath } from './util/path'
 import { assert, warn } from './util/warn'
 
-export function createRouteMap (
-  routes: Array<RouteConfig>,
-  oldPathList?: Array<string>,
-  oldPathMap?: Dictionary<RouteRecord>,
-  oldNameMap?: Dictionary<RouteRecord>
-): {
-  pathList: Array<string>;
-  pathMap: Dictionary<RouteRecord>;
-  nameMap: Dictionary<RouteRecord>;
-} {
+export function createRouteMap (routes, oldPathList, oldPathMap, oldNameMap) {
   // the path list is used to control path matching priority
-  const pathList: Array<string> = oldPathList || []
+  const pathList = oldPathList || []
   // $flow-disable-line
-  const pathMap: Dictionary<RouteRecord> = oldPathMap || Object.create(null)
+  const pathMap = oldPathMap || Object.create(null)
   // $flow-disable-line
-  const nameMap: Dictionary<RouteRecord> = oldNameMap || Object.create(null)
+  const nameMap = oldNameMap || Object.create(null)
 
   routes.forEach(route => {
     addRouteRecord(pathList, pathMap, nameMap, route)
@@ -41,14 +32,7 @@ export function createRouteMap (
   }
 }
 
-function addRouteRecord (
-  pathList: Array<string>,
-  pathMap: Dictionary<RouteRecord>,
-  nameMap: Dictionary<RouteRecord>,
-  route: RouteConfig,
-  parent?: RouteRecord,
-  matchAs?: string
-) {
+function addRouteRecord (pathList, pathMap, nameMap, route, parent, matchAs) {
   const { path, name } = route
   if (process.env.NODE_ENV !== 'production') {
     assert(path != null, `"path" is required in a route configuration.`)
@@ -59,7 +43,7 @@ function addRouteRecord (
     )
   }
 
-  const pathToRegexpOptions: PathToRegexpOptions = route.pathToRegexpOptions || {}
+  const pathToRegexpOptions = route.pathToRegexpOptions || {}
   const normalizedPath = normalizePath(
     path,
     parent,
@@ -70,7 +54,7 @@ function addRouteRecord (
     pathToRegexpOptions.sensitive = route.caseSensitive
   }
 
-  const record: RouteRecord = {
+  const record = {
     path: normalizedPath,
     regex: compileRouteRegex(normalizedPath, pathToRegexpOptions),
     components: route.components || { default: route.component },
@@ -151,10 +135,10 @@ function addRouteRecord (
   }
 }
 
-function compileRouteRegex (path: string, pathToRegexpOptions: PathToRegexpOptions): RouteRegExp {
+function compileRouteRegex (path, pathToRegexpOptions) {
   const regex = Regexp(path, [], pathToRegexpOptions)
   if (process.env.NODE_ENV !== 'production') {
-    const keys: any = Object.create(null)
+    const keys = Object.create(null)
     regex.keys.forEach(key => {
       warn(!keys[key.name], `Duplicate param keys in route with path: "${path}"`)
       keys[key.name] = true
@@ -163,7 +147,7 @@ function compileRouteRegex (path: string, pathToRegexpOptions: PathToRegexpOptio
   return regex
 }
 
-function normalizePath (path: string, parent?: RouteRecord, strict?: boolean): string {
+function normalizePath (path, parent, strict) {
   if (!strict) path = path.replace(/\/$/, '')
   if (path[0] === '/') return path
   if (parent == null) return path

@@ -1,18 +1,12 @@
-/* @flow */
 
-import type MIPRouter from '../index'
+
 import { parsePath, resolvePath } from './path'
 import { resolveQuery } from './query'
 import { fillParams } from './params'
 import { warn } from './warn'
 
-export function normalizeLocation (
-  raw: RawLocation,
-  current: ?Route,
-  append: ?boolean,
-  router: ?MIPRouter
-): Location {
-  let next: Location = typeof raw === 'string' ? { path: raw } : raw
+export function normalizeLocation (raw, current, append, router) {
+  let next = typeof raw === 'string' ? { path: raw } : raw
   // named target
   if (next.name || next._normalized) {
     return next
@@ -22,7 +16,7 @@ export function normalizeLocation (
   if (!next.path && next.params && current) {
     next = assign({}, next)
     next._normalized = true
-    const params: any = assign(assign({}, current.params), next.params)
+    const params = assign(assign({}, current.params), next.params)
     if (current.name) {
       next.name = current.name
       next.params = params
