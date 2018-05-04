@@ -208,7 +208,7 @@ let proto = EventEmitter.prototype = {
     'once one',
     'trigger fire emit'
 ].forEach(function (value) {
-    let value = value.split(' ');
+    value = value.split(' ');
     for (let i = 1; i < value.length; i++) {
         proto[value[i]] = proto[value[0]];
     }

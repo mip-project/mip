@@ -30,7 +30,15 @@ const start = function (mip) {
         // TODO 参数？
         path: window.location.pathname,
         component: {
-            template: util.getMIPContent()
+            template: util.getMIPContent(),
+            data() {
+                return {
+                    MIPRouterTitle
+                };
+            },
+            beforeRouteEnter(to, from, next) {
+                next(vm => document.title = vm.$parent.MIPRouterTitle = vm.MIPRouterTitle);
+            }
         }
     }];
 
@@ -40,15 +48,22 @@ const start = function (mip) {
         // add current loaded components
         util.addLoadedComponents();
 
-        const dealSuccess = () => {
+        const dealSuccess = (targetHTML) => {
+            let MIPRouterTitle = util.getMIPTitle(targetHTML);
             router.addRoutes([{
                 path: to.path,
                 component: {
-                    template: util.getMIPContent(targetHTML)
+                    template: util.getMIPContent(targetHTML),
+                    data() {
+                        return {
+                            MIPRouterTitle
+                        };
+                    },
+                    beforeRouteEnter(to, from, componentNext) {
+                        componentNext(vm => document.title = vm.$parent.MIPRouterTitle = vm.MIPRouterTitle);
+                    }
                 }
             }]);
-            router.app.MIPRouterTitle = util.getMIPTitle(targetHTML);
-            console.log(util.getMIPTitle(targetHTML))
 
             next();
         };
@@ -62,10 +77,10 @@ const start = function (mip) {
 
             let newComponents = util.getNewComponents(targetHTML);
             if (newComponents.length !== 0) {
-                util.loadScripts(newComponents).then(dealSuccess, dealError);
+                util.loadScripts(newComponents).then(() => dealSuccess(targetHTML), dealError);
             }
             else {
-                dealSuccess();
+                dealSuccess(targetHTML);
             }
         }, dealError);
     }
@@ -75,8 +90,10 @@ const start = function (mip) {
         router,
         el: `#${CONTAINER_ID}`,
         template,
-        data: {
-            MIPRouterTitle
+        data() {
+            return {
+                MIPRouterTitle
+            }
         }
     });
 }

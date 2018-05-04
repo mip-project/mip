@@ -3,12 +3,6 @@
  * @author wangyisheng@baidu.com (wangyisheng)
  */
 
-body {
-    font-family: Menlo, Consolas, monospace;
-    color: #444;
-    margin: 0;
-}
-
 #mip-router__header {
     height: 44px;
     padding: 0 17px;
