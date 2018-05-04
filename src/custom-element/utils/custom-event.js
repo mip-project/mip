@@ -3,6 +3,8 @@
  * @author sfe-sy (sfe-sy@baidu.com)
  */
 
+/* eslint-disable */
+
 export default function customEvent(eventName, detail) {
     const params = {bubbles: false, cancelable: false, detail};
     let event;

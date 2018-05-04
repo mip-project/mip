@@ -4,7 +4,7 @@
  */
 
 const path = require('path');
-const buble = require('rollup-plugin-babel');
+const babel = require('rollup-plugin-babel');
 const alias = require('rollup-plugin-alias');
 const cjs = require('rollup-plugin-commonjs');
 const replace = require('rollup-plugin-replace');
@@ -71,7 +71,7 @@ function genConfig(name) {
             replace({
                 __VERSION__: version
             }),
-            buble(),
+            babel(),
             alias(Object.assign({}, aliases, opts.alias))
         ].concat(opts.plugins || []),
         output: {

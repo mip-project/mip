@@ -1,7 +1,11 @@
 {
     "presets": [
-        "vue-app",
-        "flow-vue"
+        [
+            "env",
+            {
+                "modules": false
+            }
+        ]
     ],
     "plugins": [
         "transform-custom-element-classes",

@@ -42,11 +42,11 @@ function updateAttrs(oldVnode, vnode) {
     }
 
     for (key in attrs) {
-            cur = attrs[key];
-            old = oldAttrs[key];
-            if (old !== cur) {
-                setAttr(elm, key, cur);
-            }
+        cur = attrs[key];
+        old = oldAttrs[key];
+        if (old !== cur) {
+            setAttr(elm, key, cur);
+        }
     }
     // #4391: in IE9, setting type can reset value for input[type=radio]
     // #6666: IE/Edge forces progress value down to 1 before setting a max
