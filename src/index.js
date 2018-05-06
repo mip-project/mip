@@ -5,7 +5,7 @@
 
 import Vue from './vue/platforms/web/entry-runtime-with-compiler';
 import customElement from './custom-element/index';
-import customElementBuildInComponents from './componets/index';
+import customElementBuildInComponents from './components/index';
 // import util from './util';
 
 // fetch polyfill and fetch-jsonp
