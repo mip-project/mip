@@ -9,6 +9,7 @@ const alias = require('rollup-plugin-alias');
 const cjs = require('rollup-plugin-commonjs');
 const replace = require('rollup-plugin-replace');
 const node = require('rollup-plugin-node-resolve');
+const async = require('rollup-plugin-async');
 const less = require('rollup-plugin-less');
 const version = process.env.VERSION || require('../package.json').version;
 const aliases = require('./alias');
@@ -75,6 +76,7 @@ function genConfig(name) {
             less({
                 output: resolve('dist/mip.css')
             }),
+            async(),
             babel(),
             alias(Object.assign({}, aliases, opts.alias))
         ]),
@@ -82,8 +84,7 @@ function genConfig(name) {
             file: opts.dest,
             format: opts.format,
             banner: opts.banner,
-            name: opts.moduleName || 'mip',
-            strict: false // DELETE ME when cssjson problem solved. @ck
+            name: opts.moduleName || 'mip'
         }
     };
 
