@@ -82,8 +82,7 @@ function genConfig(name) {
             file: opts.dest,
             format: opts.format,
             banner: opts.banner,
-            name: opts.moduleName || 'mip',
-            strict: false // DELETE ME when cssjson problem solved. @ck
+            name: opts.moduleName || 'mip'
         }
     };
 
