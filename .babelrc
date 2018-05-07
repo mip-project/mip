@@ -3,8 +3,12 @@
         [
             "env",
             {
-                "targets": { "ie": 9, "uglify": true },
-                "modules": false
+                "targets": {
+                    "ie": 9,
+                    "uglify": true
+                },
+                "modules": false,
+                "exclude": ["transform-regenerator"]
             }
         ]
     ],

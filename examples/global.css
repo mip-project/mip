@@ -1,0 +1,36 @@
+/**
+ * @file global stylesheet
+ * @author wangyisheng@baidu.com (wangyisheng)
+ */
+
+#mip-router__header {
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 140;
+    height: 44px;
+    padding: 0 17px;
+    line-height: 44px;
+    font-size: 16px;
+    text-align: center;
+    border-bottom: 1px solid #eee
+}
+
+#mip-router__view {
+    position: absolute;
+    top: 44px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    -webkit-overflow-scrolling: touch;
+    background: white;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity .5s;
+}
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}

@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "rollup -wm -c build/rollup.config.js --environment TARGET:web-full-dev",
-    "dev:page": "node examples/page/server.js",
+    "dev:page": "node examples/server.js",
     "build": "node build/build.js",
     "sandbox": "rollup examples/sandbox/index.js --o examples/sandbox/sandbox.js --f umd && open examples/sandbox/index.html"
   },
@@ -25,6 +25,10 @@
     "url": "https://github.com/mip-project/mip/issues"
   },
   "homepage": "https://github.com/mip-project/mip#readme",
+  "dependencies": {
+    "fetch-jsonp": "^1.1.3",
+    "rollup-plugin-async": "^1.2.0"
+  },
   "devDependencies": {
     "axios": "^0.18.0",
     "babel-core": "^6.24.1",

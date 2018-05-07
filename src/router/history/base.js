@@ -44,9 +44,7 @@ export class History {
   }
 
   transitionTo (location, onComplete, onAbort, fromMissHook) {
-    // console.log('transitionTo')
     const route = this.router.match(location, this.current)
-    // console.log(route);
     // add router.onMatchMiss hook
     if (!fromMissHook
       && route.matched.length === 0
