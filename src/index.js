@@ -14,11 +14,11 @@ import 'deps/fetch';
 
 import Router from './router/index';
 import page from './page/index';
-import Store from './vuex/index';
+import Vuex from './vuex/index';
 
-Vue.use(Store);
+Vue.use(Vuex);
 /* global storeData */
-let store = new Store.Store(storeData);
+let store = new Vuex.Store(storeData);
 
 Vue.use(Router);
 Vue.use(customElement, store);
@@ -32,7 +32,7 @@ let mip = {
     isIframed: window === top,
     standalone: window === top,
     Router,
-    Store
+    Store: Vuex
 };
 
 page.start(mip, store);
