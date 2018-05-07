@@ -40,6 +40,9 @@ export default function createRouter({RouterConstructor}) {
 
     // Create router instance and register onMatchMiss hook (add dynamic routes)
     const router = new RouterConstructor({routes});
+
+    util.initHistory({base: router.options.base});
+
     router.onMatchMiss = async function(to, from, next) {
         // add current loaded components
         util.addLoadedComponents();
@@ -61,6 +64,15 @@ export default function createRouter({RouterConstructor}) {
             console.log(err, 'in onMatchMiss');
         }
     };
+
+    router.beforeEach((to, from, next) => {
+        if (router.app) {
+            let effect = util.isForward(to, from) ? 'slide-left' : 'slide-right';
+            router.app.pageTransitionType = 'slide';
+            router.app.pageTransitionEffect = effect;
+        }
+        next();
+    });
 
     return router;
 }

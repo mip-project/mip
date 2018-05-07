@@ -80,7 +80,7 @@ export function getMIPContent(rawContent) {
     processMIPStyle(scope, rawContent);
 
     // Create a root node
-    return `<div id="${MIP_VIEW_ID}" class="${scope}">${rawResult}</div>`;
+    return `<div id="${MIP_VIEW_ID}" class="mip-appshell-router-view ${scope}">${rawResult}</div>`;
 }
 
 export function processMIPStyle(scope, rawContent) {
