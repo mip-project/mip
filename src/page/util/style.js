@@ -7,7 +7,7 @@ import cssParser from 'css-json-converter';
 
 export function generateScope() {
     return '_' + Math.random().toString(36).substr(2, 9);
-}
+};
 
 export function getScopedStyles(classname, rawCss) {
     if (!rawCss || !classname) {
@@ -19,6 +19,7 @@ export function getScopedStyles(classname, rawCss) {
     }
 
     let scopedCss = {};
+    rawCss = normalize(rawCss);
     doScoping(classname, cssParser.toJSON(rawCss), scopedCss);
 
     return cssParser.toCSS(scopedCss).replace(/[\n\r\t]/g, '');
@@ -54,6 +55,10 @@ function doScoping(classname, cssJson, scopedCss) {
                 }
         }
     });
+}
+
+function normalize(rawCss) {
+    return rawCss.replace(/(;)?(})?[\n\t\s]*(})/g, (...args) => (typeof args[2] === 'undefined' ? ';' : args[2]) + args[3]);
 }
 
 function isEmptyObj(obj) {
