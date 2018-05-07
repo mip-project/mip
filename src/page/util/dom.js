@@ -45,8 +45,6 @@ export function getMIPContent(rawContent) {
     let rawResult;
     let scope = generateScope();
 
-    // TODO replace style with scope
-
     if (!rawContent) {
         let tmpArr = [];
         let removeNode = [];
@@ -77,6 +75,9 @@ export function getMIPContent(rawContent) {
                 });
         }
     }
+
+    // Process styles
+    processMIPStyle(scope, rawContent);
 
     // Create a root node
     return `<div id="${MIP_VIEW_ID}" class="${scope}">${rawResult}</div>`;

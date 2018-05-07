@@ -10,6 +10,7 @@ const cjs = require('rollup-plugin-commonjs');
 const replace = require('rollup-plugin-replace');
 const node = require('rollup-plugin-node-resolve');
 const async = require('rollup-plugin-async');
+const less = require('rollup-plugin-less');
 const version = process.env.VERSION || require('../package.json').version;
 const aliases = require('./alias');
 
@@ -71,6 +72,9 @@ function genConfig(name) {
         plugins: (opts.plugins || []).concat([
             replace({
                 __VERSION__: version
+            }),
+            less({
+                output: resolve('dist/mip.css')
             }),
             async(),
             babel(),

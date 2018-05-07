@@ -11,7 +11,7 @@ import createAppShell from './create-appshell';
 
 const CONTAINER_ID = constants.MIP_CONTAINER_ID;
 
-const start = function ({Vue, Router}) {
+const start = function ({Vue, Router}, store) {
     // Configure mip
     Vue.config.ignoredElements = [
       /^mip-/
@@ -27,7 +27,7 @@ const start = function ({Vue, Router}) {
     createAppShell({
         VueConstructor: Vue,
         router,
-        // store TODO: store
+        store
     });
 }
 

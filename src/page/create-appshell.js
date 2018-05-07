@@ -13,11 +13,12 @@ const template = `
     </transition>
 </div>`;
 
-export default function createAppShell({VueConstructor, router}) {
+export default function createAppShell({VueConstructor, router, store}) {
     new VueConstructor({
         router,
         el: `#${CONTAINER_ID}`,
         template,
+        store,
         data() {
             return {
                 MIPRouterTitle: ''
