@@ -14,6 +14,10 @@ export function getScopedStyles(classname, rawCss) {
         return '';
     }
 
+    if (!classname.startsWith('.')) {
+        classname = '.' + classname;
+    }
+
     let scopedCss = {};
     doScoping(classname, cssParser.toJSON(rawCss), scopedCss);
 
