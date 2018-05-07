@@ -1,5 +1,7 @@
 import axios from 'axios';
 import * as util from './util';
+import {MIP_ERROR_ROUTE_PATH} from './const';
+import ErrorPage from './vue-components/error-page';
 
 /**
  * extract route object from current DOM tree or raw HTML.
@@ -29,19 +31,26 @@ function getRoute(rawHTML, routeOptions = {}) {
     }, routeOptions);
 };
 
-export default function createRouter({RouterConstructor}) {
+export default function createRouter({Router, pageTransitionType}) {
+    const needSlideTransition = pageTransitionType === 'slide';
 
     // Build routes
     let routes = [
         getRoute(undefined, {
             path: window.location.pathname
-        })
+        }),
+        {
+            path: MIP_ERROR_ROUTE_PATH,
+            component: ErrorPage
+        }
     ];
 
     // Create router instance and register onMatchMiss hook (add dynamic routes)
-    const router = new RouterConstructor({routes});
+    const router = new Router({routes});
 
-    util.initHistory({base: router.options.base});
+    if (needSlideTransition) {
+        util.initHistory({base: router.options.base});
+    }
 
     router.onMatchMiss = async function(to, from, next) {
         // add current loaded components
@@ -60,15 +69,23 @@ export default function createRouter({RouterConstructor}) {
             ]);
             next();
         }
-        catch (err) {
-            console.log(err, 'in onMatchMiss');
+        catch (error) {
+            // redirect to error page
+            next({
+                path: MIP_ERROR_ROUTE_PATH,
+                params: {
+                    error
+                }
+            });
         }
     };
 
     router.beforeEach((to, from, next) => {
         if (router.app) {
-            let effect = util.isForward(to, from) ? 'slide-left' : 'slide-right';
-            router.app.pageTransitionType = 'slide';
+            let effect = needSlideTransition ?
+                (util.isForward(to, from) ? 'slide-left' : 'slide-right')
+                : pageTransitionType;
+            router.app.pageTransitionType = pageTransitionType;
             router.app.pageTransitionEffect = effect;
         }
         next();

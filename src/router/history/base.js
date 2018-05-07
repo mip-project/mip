@@ -49,7 +49,9 @@ export class History {
     if (!fromMissHook
       && route.matched.length === 0
       && typeof this.router.onMatchMiss === 'function') {
-      const next = () => this.transitionTo(location, onComplete, onAbort, true);
+      const next = (redirectRoute) => {
+          this.transitionTo(redirectRoute || location, onComplete, onAbort, true);
+      };
       this.router.onMatchMiss(route, this.current, next);
       return;
     }
