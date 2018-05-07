@@ -1,5 +1,6 @@
 src/router
 src/page
+deps
 build
 dist
 examples

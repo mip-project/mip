@@ -68,7 +68,7 @@ function genConfig(name) {
     const config = {
         input: opts.entry,
         external: opts.external,
-        plugins: [
+        plugins: (opts.plugins || []).concat([
             replace({
                 __VERSION__: version
             }),
@@ -77,7 +77,7 @@ function genConfig(name) {
             }),
             babel(),
             alias(Object.assign({}, aliases, opts.alias))
-        ].concat(opts.plugins || []),
+        ]),
         output: {
             file: opts.dest,
             format: opts.format,
