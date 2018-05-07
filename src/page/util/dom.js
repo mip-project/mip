@@ -114,7 +114,7 @@ export function processMIPStyle(scope, rawContent) {
                 let innerMatch = styleStr.match(reg);
 
                 if (innerMatch && innerMatch[1]) {
-                    rawStyle += innerMatch[1].replace(/}/g, ';}');
+                    rawStyle += innerMatch[1];
                 }
 
                 rawContent = rawContent.replace(styleStr, '');
