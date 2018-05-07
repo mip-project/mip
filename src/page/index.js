@@ -15,7 +15,7 @@ const template = `<div id="${CONTAINER_ID}">`
     // + '<transition><div v-if="MIPRouterTitle">Hello</div></transition>'
 + '</div>';
 
-const start = function (mip) {
+const start = function (mip, store) {
     // Configure mip
     mip.Vue.config.ignoredElements = [
       /^mip-/
@@ -88,6 +88,7 @@ const start = function (mip) {
     // Create mip instance
     new mip.Vue({
         router,
+        store,
         el: `#${CONTAINER_ID}`,
         template,
         data() {

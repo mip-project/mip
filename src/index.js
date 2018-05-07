@@ -12,11 +12,16 @@ import customElementBuildInComponents from './components/index';
 import 'fetch-jsonp';
 import 'deps/fetch';
 
-import Router from './router/index'
-import page from './page/index'
+import Router from './router/index';
+import page from './page/index';
+import Store from './vuex/index';
+
+Vue.use(Store);
+/* global storeData */
+let store = new Store.Store(storeData);
 
 Vue.use(Router);
-Vue.use(customElement);
+Vue.use(customElement, store);
 Vue.use(customElementBuildInComponents);
 
 let mip = {
@@ -26,9 +31,10 @@ let mip = {
     // 当前是否在 iframe 中
     isIframed: window === top,
     standalone: window === top,
-    Router
+    Router,
+    Store
 };
 
-page.start(mip);
+page.start(mip, store);
 
 export default mip;

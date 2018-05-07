@@ -22,12 +22,16 @@ mip.customElement('mip-item', {
         };
     },
     computed: {
+        ...mip.Store.mapState('test', ['count']),
         isFolder() {
             return this.model.children && this.model.children.length;
         }
     },
     methods: {
+        ...mip.Store.mapMutations('test', ['addCount']),
         toggle() {
+            this.addCount();
+            console.log(this.count);
             if (this.isFolder) {
                 this.open = !this.open;
             }
