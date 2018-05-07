@@ -3,6 +3,7 @@
         [
             "env",
             {
+                "targets": { "ie": 9, "uglify": true },
                 "modules": false
             }
         ]

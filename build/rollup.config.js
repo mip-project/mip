@@ -9,6 +9,7 @@ const alias = require('rollup-plugin-alias');
 const cjs = require('rollup-plugin-commonjs');
 const replace = require('rollup-plugin-replace');
 const node = require('rollup-plugin-node-resolve');
+const async = require('rollup-plugin-async');
 const version = process.env.VERSION || require('../package.json').version;
 const aliases = require('./alias');
 
@@ -71,6 +72,7 @@ function genConfig(name) {
             replace({
                 __VERSION__: version
             }),
+            async(),
             babel(),
             alias(Object.assign({}, aliases, opts.alias))
         ]),
