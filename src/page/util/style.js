@@ -3,7 +3,7 @@
  * @author qiusiqi@baidu.com (qiusiqi)
  */
 
-import cssParser from 'cssjson';
+import cssParser from 'css-json-converter';
 
 export function generateScope() {
     return '_' + Math.random().toString(36).substr(2, 9);
