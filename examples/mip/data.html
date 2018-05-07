@@ -8,6 +8,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <style>
+    [data-clicked="true"] {
+        background: #f00;
+    }
+    </style>
 </head>
 
 <body>
@@ -18,7 +23,9 @@
             }
         </script>
     </mip-data>
-    <span m-bind:data-clicked="clicked" on="tap:MIP.setData({clicked:!m.clicked})">click me</span>
+    <span
+        m-bind:data-clicked="clicked"
+        on="tap:MIP.setData({clicked:!m.clicked})">click me</span>
     <script src="../../dist/mip.js"></script>
     <script src="./mip-bind.js"></script>
 </body>

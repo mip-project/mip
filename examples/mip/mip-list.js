@@ -1,9 +1,13 @@
 /**
- * @file mip-list demo
+ * @file mip-list demo for compatible mip 1.0
  * @author mj(zoumiaojiang@gmail.com)
  */
 
 /* global mip */
+
+function mockMustacheRender(template, data) {
+    return template.replace(/\{\{(\w+)\}\}/g, item => data[RegExp.$1]);
+}
 
 mip.customElement('mip-list', {
     template: `
@@ -12,15 +16,34 @@ mip.customElement('mip-list', {
                 class="mip-tr"
                 v-for="(item, index) in items"
                 :key="index"
-            >{{ renderItem(item) }}</div>
+                v-html="tdContents[index]"
+            ></div>
             <slot></slot>
         </div>
     `,
     props: ['items'],
-    methods: {
-        renderItem(item) {
-            console.log(this.$el, item);
-            // use mustache render data
+    data() {
+        return {
+            tdContents: []
+        };
+    },
+
+    mounted() {
+        let me = this;
+        let templateStr = '';
+        let template = this.$el.querySelector('template');
+
+        if (template) {
+            templateStr = template.innerHTML;
+            template.remove();
+        }
+
+        if (templateStr) {
+            this.items.forEach((item, index) => {
+                // This place, you can use real mustache lib
+                let content = mockMustacheRender(templateStr, item);
+                mip.Vue.set(me.tdContents, index, content);
+            });
         }
     }
 });

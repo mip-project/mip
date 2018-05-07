@@ -6,6 +6,7 @@
 import Vue from './vue/platforms/web/entry-runtime-with-compiler';
 import customElement from './custom-element/index';
 import customElementBuildInComponents from './componets/index';
+import './styles/mip.less';
 
 Vue.use(customElement);
 Vue.use(customElementBuildInComponents);

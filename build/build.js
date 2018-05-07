@@ -5,13 +5,18 @@
 
 /* eslint-disable */
 
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 const zlib = require('zlib');
 const rollup = require('rollup');
 const uglify = require('uglify-js');
 
 let builds = require('./rollup.config').getAllBuilds();
+let distPath = path.resolve(__dirname, '..', 'dist');
+
+if (!fs.existsSync(distPath)) {
+    fs.mkdirp(distPath);
+}
 
 build(builds);
 
