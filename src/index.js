@@ -18,7 +18,7 @@ import Vuex from './vuex/index';
 
 Vue.use(Vuex);
 /* global storeData */
-let store = new Vuex.Store(storeData);
+let store = new Vuex.Store(window.storeData || {});
 
 Vue.use(Router);
 Vue.use(customElement, store);
