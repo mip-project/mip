@@ -37,7 +37,8 @@ const windowExcludeKey = [
     // 特殊型
     'document',
     'setTimeout',
-    'setInterval'
+    'setInterval',
+    'self'
 ];
 
 /**
@@ -149,6 +150,8 @@ function timeoutFun(type, self) {
 function processWindowObj(win) {
     // 将document对象指向自定义的document
     win.document = this.document;
+    // 将self指向自定义的window
+    win.self = win;
 
     // 处理setTimeout
     win.setTimeout = timeoutFun('setTimeout', win);

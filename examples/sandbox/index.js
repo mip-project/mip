@@ -9,9 +9,12 @@
         setInterval,
         eval
     } = window;
+    let self = window;
 
     console.log(
+        '在沙盒环境中使用一下属性/API的取值如下：', '\n',
         'window: ', window, '\n',
+        'self: ', self, '\n',
         'document: ', document, '\n',
         'window.document: ', window.document, '\n',
         'alert: ', alert, '\n',
