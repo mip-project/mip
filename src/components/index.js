@@ -9,13 +9,33 @@ import mipVideo from './mip-video';
 import mipCarousel from './mip-carousel';
 import mipPix from './mip-pix';
 
-function install(MIP) {
-    MIP.customElement('mip-img', mipImg);
-    MIP.customElement('mip-iframe', mipIframe);
-    MIP.customElement('mip-pix', mipPix);
-    MIP.customElement('mip-carousel', mipCarousel);
-    MIP.customElement('mip-video', mipVideo);
-    MIP.customElement('mip-template', {props: ['data']});
+function install(Vue) {
+    Vue.__customElements__ = [
+        {
+            tag: 'mip-img',
+            component: mipImg
+        },
+        {
+            tag: 'mip-iframe',
+            component: mipIframe
+        },
+        {
+            tag: 'mip-pix',
+            component: mipPix
+        },
+        {
+            tag: 'mip-carousel',
+            component: mipCarousel
+        },
+        {
+            tag: 'mip-video',
+            component: mipVideo
+        },
+        {
+            tag: 'mip-template',
+            component: {props: ['data']}
+        }
+    ];
 }
 
 export default install;
