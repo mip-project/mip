@@ -9,13 +9,13 @@ import util from '../../util';
 export default {
     template: `
         <div
-            class="image-from-mip-component"
+            class="mip-img"
             :style="{
                 width: computedWidth,
             }"
         >
             <div
-                class="image-from-mip-component-inner"
+                class="mip-img-inner"
                 :style="{
                     height: wrapperHeight,
                     paddingBottom: computedHeightWidthRatio
