@@ -8,7 +8,7 @@ function getScrollInfo() {
     return {
         scrollTop: document.body.scrollTop || document.documentElement.scrollTop,
         scrollLeft: document.body.scrollLeft || document.documentElement.scrollLeft
-    }
+    };
 }
 
 function getOffset(ele) {
@@ -25,7 +25,7 @@ function getOffset(ele) {
     return {
         top: top - scrollTop,
         left: left - scrollLeft
-    }
+    };
 }
 
 export default {

@@ -12,12 +12,14 @@
  *
  * import sandbox from 'sandbox';
  * let {window, document} = sandbox;
+ * let self = window;
  * let {
  *     alert,
  *     close,
  *     confirm,
  *     prompt,
- *     eval
+ *     setTimeout,
+ *     setInterval
  * } = window;
  *
  */
