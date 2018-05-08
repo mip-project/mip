@@ -3,7 +3,7 @@
  * @author sekiyika(pengxing@baidu.com)
  */
 
-'use strict';
+/* eslint-disable fecs-camelcase, fecs-valid-constructor */
 
 /**
  * For determining whether a string is splitted by space or not.
@@ -197,9 +197,7 @@ let proto = EventEmitter.prototype = {
      * @param {string} name Event name
      * @param {Function} handler Event handler
      */
-    _bindEventCallback(name, handler) {
-
-    }
+    _bindEventCallback(name, handler) {}
 };
 
 [
@@ -225,7 +223,7 @@ let keys = Object.keys(proto);
 /**
  * Mix EventEmitter's prototype into target object
  *
- * @param {Object} obj
+ * @param {Object} obj obj
  * @return {Object}
  */
 EventEmitter.mixin = function (obj) {

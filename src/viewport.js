@@ -24,7 +24,7 @@ let viewport = {
      *
      * @return {number}
      */
-    getScrollTop: function () {
+    getScrollTop() {
         return rect.getScrollTop();
     },
 
@@ -33,7 +33,7 @@ let viewport = {
      *
      * @return {number}
      */
-    getScrollLeft: function () {
+    getScrollLeft() {
         return rect.getScrollLeft();
     },
 
@@ -42,7 +42,7 @@ let viewport = {
      *
      * @param {number} top The target scrollTop
      */
-    setScrollTop: function (top) {
+    setScrollTop(top) {
         rect.setScrollTop(top);
     },
 
@@ -51,7 +51,7 @@ let viewport = {
      *
      * @return {number}
      */
-    getWidth: function () {
+    getWidth() {
         return win.innerWidth || docElem.clientWidth;
     },
 
@@ -60,7 +60,7 @@ let viewport = {
      *
      * @return {number}
      */
-    getHeight: function () {
+    getHeight() {
         return win.innerHeight || docElem.clientHeight;
     },
 
@@ -69,7 +69,7 @@ let viewport = {
      *
      * @return {number}
      */
-    getScrollWidth: function () {
+    getScrollWidth() {
         return rect.getScrollWidth();
     },
 
@@ -78,7 +78,7 @@ let viewport = {
      *
      * @return {number}
      */
-    getScrollHeight: function () {
+    getScrollHeight() {
         return rect.getScrollHeight();
     },
 
@@ -87,7 +87,7 @@ let viewport = {
      *
      * @return {Object}
      */
-    getRect: function () {
+    getRect() {
         return rect.get(
             this.getScrollLeft(),
             this.getScrollTop(),
@@ -99,16 +99,18 @@ let viewport = {
 /**
  * 触发 scroll 事件
  */
-let scrollEvent = fn.throttle(function (event) {
-    this.trigger('scroll', event);
-}, 1000 / 60);
+let scrollEvent = fn.throttle(
+    event => this.trigger('scroll', event),
+    1000 / 60
+);
 
 /**
  * 触发 changed 事件
  */
-let changedEvent = fn.throttle(function (event) {
-    this.trigger('changed', event);
-}, 200);
+let changedEvent = fn.throttle(
+    event => this.trigger('changed', event),
+    200
+);
 
 /**
  * 滚动事件回调

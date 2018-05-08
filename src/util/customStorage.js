@@ -5,7 +5,7 @@
 
 'use strict';
 
-const fn = require('./fn');
+import fn from './fn';
 
 /**
  * Type of storage
@@ -96,7 +96,7 @@ function parseJson(str) {
  * @return {string} error message
  */
 function getErrorMess(code, name) {
-    var mess;
+    let mess;
     switch (code) {
         case eCode.siteExceed:
             mess = 'storage space need less than 4k';
@@ -262,11 +262,13 @@ LocalStorage.prototype._setLocalStorage = function (key, value, expire, callback
     }
     else {
         let size = value.length / 1024.0 / 1024.0;
+        /* eslint-disable */
         for (let k in lsCache) {
             if (lsCache[k]) {
                 size += lsCache[k].length / 1024.0 / 1024.0;
             }
         }
+        /* eslint-enable */
         if (size > 5.0) {
             callback && callback(eCode.lsExceed, mess);
             throw mess;
@@ -286,7 +288,7 @@ LocalStorage.prototype.get = function (name) {
         return;
     }
 
-    var result;
+    let result;
     if (this._isCachePage()) {
         let ls = this._getLocalStorage();
         if (ls && ls[name]) {

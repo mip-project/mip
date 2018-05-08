@@ -5,7 +5,7 @@
 
 'use strict';
 
-const fn = require('../fn');
+import fn from '../fn';
 
 // Save native functions.
 const create = Object.create;
@@ -115,7 +115,9 @@ function Recognizer(gesture) {
     this.conflictList = {};
 }
 
+/* eslint-disable */
 fn.extend(Recognizer.prototype, {
+/* eslint-enable */
     /**
      * Recognizer name.
      * @type {string}
@@ -149,7 +151,7 @@ fn.extend(Recognizer.prototype, {
      *
      * @param {Object} data data
      */
-    recognize: function (data) {
+    recognize(data) {
         let eventState = data.eventState;
         if (eventState === 'start' && this._state === STATE_HOLD) {
             this._state = STATE_START;
@@ -176,7 +178,7 @@ fn.extend(Recognizer.prototype, {
      *
      * @return {boolean}
      */
-    isState: function () {
+    isState() {
         let args = arguments;
         for (let i = 0; i < args.length; i++) {
             let st = typeof args[i] === 'string' ? STATE_NUMBER[args[i]] : args[i];
@@ -193,7 +195,7 @@ fn.extend(Recognizer.prototype, {
      * @param {string|number} st st
      * @return {number}
      */
-    setState: function (st) {
+    setState(st) {
         st = typeof st === 'string' ? STATE_NUMBER[st] : st;
         if (st > 0 && st < 6) {
             this._state = st;
@@ -206,7 +208,7 @@ fn.extend(Recognizer.prototype, {
      *
      * @return {boolean}
      */
-    emitCheck: function () {
+    emitCheck() {
         if (this._state === STATE_START || this._state === STATE_HOLD) {
             return false;
         }
@@ -227,7 +229,7 @@ fn.extend(Recognizer.prototype, {
      * @param {Object} data data
      * @return {number}
      */
-    process: function (data) {
+    process(data) {
         return this._state;
     },
 
@@ -236,14 +238,14 @@ fn.extend(Recognizer.prototype, {
      *
      * @param {Object} data data
      */
-    emit: function (data) {
+    emit(data) {
         // emtting
     },
 
     /**
      * Reset the recognizer.
      */
-    reset: function () {
+    reset() {
     },
 
     /**
@@ -251,7 +253,7 @@ fn.extend(Recognizer.prototype, {
      *
      * @return {number}
      */
-    hold: function () {
+    hold() {
         return this._state = STATE_HOLD;
     },
 
@@ -260,7 +262,7 @@ fn.extend(Recognizer.prototype, {
      *
      * @param {Object} data data
      */
-    trigger: function (data) {
+    trigger(data) {
         this.gesture.trigger(data.type, data.event, data);
     }
 });
@@ -426,7 +428,7 @@ TapRecognizer.prototype = fn.extend(create(Recognizer.prototype), {
      * @override
      * @param {*} data data
      */
-    process: function (data) {
+    process(data) {
         if (data.deltaTime > this.time || data.distance > this.moveRange || data.pointers.length > 1) {
             this.reset();
             return this.hold();
@@ -461,7 +463,7 @@ TapRecognizer.prototype = fn.extend(create(Recognizer.prototype), {
     /**
      * @override
      */
-    reset: function () {
+    reset() {
         this.preTime = null;
         this.count = 0;
         this._state = STATE_START;
@@ -471,7 +473,7 @@ TapRecognizer.prototype = fn.extend(create(Recognizer.prototype), {
     /**
      * @override
      */
-    emit: function () {
+    emit() {
         if (this._state === STATE_END) {
             let data = this._data;
             let eventData = create(data);
@@ -555,7 +557,7 @@ SwipeRecognizer.prototype = fn.extend(create(Recognizer.prototype), {
     /**
      * @override
      */
-    process: function (data) {
+    process(data) {
         if (data.pointers.length > 1 || data.deltaTime > this.duration) {
             return STATE_HOLD;
         }
@@ -569,7 +571,7 @@ SwipeRecognizer.prototype = fn.extend(create(Recognizer.prototype), {
     /**
      * @override
      */
-    emit: function (data) {
+    emit(data) {
         if (this._state === STATE_END) {
             let dataSwipe = create(data);
             dataSwipe.type = 'swipe';

@@ -3,8 +3,6 @@
  * @author sekiyika(pengxing@baidu.com)
  */
 
-'use strict';
-
 import fn from './fn';
 import hash from './hash';
 import dom from './dom/dom';
@@ -85,7 +83,7 @@ function parseCacheUrl(url) {
  */
 function getOriginalUrl() {
     let parsedUrl = parseCacheUrl(window.location.href);
-    if(parsedUrl == window.location.href) {
+    if (parsedUrl === window.location.href) {
         // 直接打开 MIP 页
         return parsedUrl;
     }

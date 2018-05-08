@@ -12,10 +12,6 @@ let camelReg = /(?:(^-)|-)+(.)?/g;
  */
 let supportElement = document.createElement('div');
 
-/**
- * Prefix type for browsers.
- * @const
- */
 const PREFIX_TYPE = ['webkit', 'moz', 'ms', 'o', 'Webkit', 'Moz', 'O'];
 
 /**
@@ -25,6 +21,7 @@ let prefixCache = {};
 
 /**
  * Make sure a property is supported by adding prefix.
+ *
  * @param {string} property A property to be checked
  * @return {string} the property or its prefixed version
  */
@@ -35,12 +32,14 @@ function prefixProperty(property) {
     if (prefixCache[property]) {
         return prefixCache[property];
     }
+    let prop;
     if (!(property in supportElement.style)) {
         for (let i = 0; i < PREFIX_TYPE.length; i++) {
-            let prefixedProp = PREFIX_TYPE[i] +
-                property.charAt(0).toUpperCase() + property.slice(1);
+            let prefixedProp = PREFIX_TYPE[i]
+                + property.charAt(0).toUpperCase()
+                + property.slice(1);
             if (prefixedProp in supportElement.style) {
-                let prop = prefixedProp;
+                prop = prefixedProp;
                 break;
             }
         }
@@ -48,11 +47,6 @@ function prefixProperty(property) {
     return prefixCache[property] = prop || property;
 }
 
-/**
- * Regular expression of checking a string whether has a unit.
- *
- * @const
- */
 const UNIT_REG = /^\d+([a-zA-Z]+)/;
 
 /**
@@ -99,7 +93,7 @@ function unitProperty(property, value) {
 export default function css(elements, property, value) {
     if (!property || !elements) {
         return elements;
-    };
+    }
     if (elements.length && elements[0]) {
         if (property && value !== undefined) {
             for (let i = 0; i < elements.length; i++) {
@@ -107,20 +101,19 @@ export default function css(elements, property, value) {
                 css(element, property, value);
             }
             return elements;
-        } else {
-            let ret = [];
-            for (let i = 0; i < elements.length; i++) {
-                ret.push(css(elements[i], property));
-            }
-            return ret;
         }
+        let ret = [];
+        for (let i = 0; i < elements.length; i++) {
+            ret.push(css(elements[i], property));
+        }
+        return ret;
     }
     if (!elements.nodeType) {
         return elements;
     }
     let element = elements;
     if (typeof property !== 'string' || value !== undefined) {
-        var prop;
+        let prop;
         if (typeof property === 'string') {
             prop = prefixProperty(property);
             element.style[prop] = unitProperty(prop, value);
@@ -134,8 +127,6 @@ export default function css(elements, property, value) {
         }
         return element;
     }
-    else {
-        property = prefixProperty(property);
-        return element.style[property] || document.defaultView.getComputedStyle(element)[property];
-    }
+    property = prefixProperty(property);
+    return element.style[property] || document.defaultView.getComputedStyle(element)[property];
 }

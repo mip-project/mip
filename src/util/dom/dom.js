@@ -67,7 +67,7 @@ let closest = docElem.closest
  * @param {HTMLElement} child child node
  * @return {boolean}
  */
-var contains = docElem.contains
+let contains = docElem.contains
     ? function (element, child) {
         return element && element.contains(child);
     }
@@ -150,12 +150,12 @@ function create(str) {
  * @param {Function} cb callback
  */
 function waitDocumentReady(cb) {
-    if (!!document.body) {
+    if (document.body) {
         cb();
         return;
     }
     let interval = window.setInterval(function () {
-        if (!!document.body) {
+        if (document.body) {
             window.clearInterval(interval);
             cb();
         }

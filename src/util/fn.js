@@ -8,19 +8,21 @@
 /**
  * Throttle a function.
  *
- * @param {Function} fn
+ * @param {Function} fn fn
  * @param {number} delay The run time interval
  * @return {Function}
  */
 function throttle(fn, delay) {
-    let context, args, timerId;
+    let context;
+    let args;
+    let timerId;
     let execTime = 0;
     !delay && (delay = 10);
     function exec() {
         timerId = 0;
         execTime = Date.now();
         fn.apply(context, args);
-    };
+    }
     return function () {
         let delta = Date.now() - execTime;
         context = this;
@@ -28,15 +30,17 @@ function throttle(fn, delay) {
         clearTimeout(timerId);
         if (delta >= delay) {
             exec();
-        } else {
+        }
+        else {
             timerId = setTimeout(exec, delay - delta);
         }
-    }
+    };
 }
 
 /**
  * Get all values of an object.
- * @param {Object} obj
+ *
+ * @param {Object} obj obj
  * @return {Array}
  */
 function values(obj) {
@@ -51,18 +55,21 @@ function values(obj) {
 
 /**
  * Return an object is a plain object or not.
- * @param {Object} obj
+ *
+ * @param {Object} obj obj
  * @return {boolean}
  */
 function isPlainObject(obj) {
-    return !!obj && 'object' === typeof obj && Object.getPrototypeOf(obj) == Object.prototype;
+    return !!obj && 'object' === typeof obj && Object.getPrototypeOf(obj) === Object.prototype;
 }
 
+/* eslint-disable fecs-camelcase */
 /**
  * Extend an object to another object.
+ *
  * @inner
- * @param {Object} target
- * @param {Object} source
+ * @param {Object} target target
+ * @param {Object} source source
  * @param {boolean} deep Extend deeply
  */
 function _extend(target, source, deep) {
@@ -70,14 +77,17 @@ function _extend(target, source, deep) {
         if (deep) {
             if (isPlainObject(source[key])) {
                 !isPlainObject(target[key]) && (target[key] = {});
-            } else if (Array.isArray(source[key])) {
+            }
+            else if (Array.isArray(source[key])) {
                 !Array.isArray(target[key]) && (target[key] = []);
-            } else {
+            }
+            else {
                 source[key] !== undefined && (target[key] = source[key]);
                 continue;
             }
             _extend(target[key], source[key], deep);
-        } else if (source[key] !== undefined) {
+        }
+        else if (source[key] !== undefined) {
             target[key] = source[key];
         }
     }
@@ -85,7 +95,8 @@ function _extend(target, source, deep) {
 
 /**
  * Extend some objects to an object.
- * @param {Object} target
+ *
+ * @param {Object} target target
  * @return {Object}
  */
 function extend(target) {
@@ -103,10 +114,11 @@ function extend(target) {
 
 /**
  * Pick some attributes from an object.
- * @param {Object} obj
+ *
+ * @param {Object} obj obj
  * @return {Object}
  */
-function pick(obj/*, key1, key2 or [keys] */) {
+function pick(obj) {
     let keys = arguments[1];
     let result = {};
     if (!Array.isArray(keys)) {
@@ -146,7 +158,8 @@ function del(obj, key) {
     }
     try {
         delete obj[key];
-    } catch (e) {
+    }
+    catch (e) {
         obj[key] = undefined;
     }
 }
@@ -166,11 +179,11 @@ function hasTouch() {
  * Whether pageUrl is mip cache url.
  *
  * @param {string} pageUrl - current page url.
- * @return {Boolean} isCacheUrl.
+ * @return {boolean} isCacheUrl.
  */
 function isCacheUrl(pageUrl) {
     return /mipcache.bdstatic.com/.test(pageUrl)
-        ||  /^(\/\/|http:\/\/|https:\/\/)[A-Za-z0-9]{1,}-.*.mipcdn.com\/c\//.test(pageUrl);
+        || /^(\/\/|http:\/\/|https:\/\/)[A-Za-z0-9]{1,}-.*.mipcdn.com\/c\//.test(pageUrl);
 }
 
 export default {

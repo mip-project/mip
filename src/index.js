@@ -7,7 +7,7 @@ import './styles/mip.less';
 import Vue from './vue/platforms/web/entry-runtime-with-compiler';
 import customElement from './custom-element/index';
 import customElementBuildInComponents from './components/index';
-// import util from './util';
+import util from './util';
 
 // fetch polyfill and fetch-jsonp
 import 'fetch-jsonp';
@@ -31,7 +31,7 @@ let mip = {
     customElement(tag, component) {
         Vue.__customElements__.push({tag, component});
     },
-    // util,
+    util,
     // 当前是否在 iframe 中
     isIframed: window === top,
     standalone: window === top,

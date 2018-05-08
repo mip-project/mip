@@ -3,18 +3,12 @@
  * @author sekiyika(pengxing@baidu.com)
  */
 
-'use strict';
-
 /**
  * Platform class
  *
  * @class
  */
 class Platform {
-
-    /**
-     * @constructor
-     */
     constructor() {
         // system
         this.isIos = false;
@@ -45,7 +39,8 @@ class Platform {
     _matchOs() {
         if (/iPhone|iPad|iPod/i.test(this._ua())) {
             this.isIos = true;
-        } else if (/Android/i.test(this._ua())) {
+        }
+        else if (/Android/i.test(this._ua())) {
             this.isAndroid = true;
         }
     }
@@ -54,33 +49,46 @@ class Platform {
      * Judge browser type
      */
     _matchBrowser() {
-        var uaArray = this._ua().split('Mobile');
-        var apps = uaArray && uaArray.length > 1 ? uaArray[1] : null;
+        let uaArray = this._ua().split('Mobile');
+        let apps = uaArray && uaArray.length > 1 ? uaArray[1] : null;
 
         if (/\bmicromessenger\/([\d.]+)/i.test(apps)) {
             this.isWechatApp = true;
-        } else if (/baiduboxapp/i.test(apps)) {
+        }
+        else if (/baiduboxapp/i.test(apps)) {
             this.isBaiduApp = true;
-        } else if (/weibo/i.test(apps)) {
+        }
+        else if (/weibo/i.test(apps)) {
             this.isWeiboApp = true;
-        } else if (/\sQQ/i.test(apps)) {
+        }
+        else if (/\sQQ/i.test(apps)) {
             this.isQQApp = true;
-        } else if (/UCBrowser/i.test(this._ua())) {
+        }
+        else if (/UCBrowser/i.test(this._ua())) {
             this.isUc = true;
-        } else if (/baidubrowser/i.test(this._ua())) {
+        }
+        else if (/baidubrowser/i.test(this._ua())) {
             this.isBaidu = true;
-        } else if (/qqbrowser\/([0-9.]+)/i.test(this._ua())) {
+        }
+        else if (/qqbrowser\/([0-9.]+)/i.test(this._ua())) {
             this.isQQ = true;
-        } else if (!/android/i.test(this._ua()) &&
-            /\bversion\/([0-9.]+(?: beta)?)(?: mobile(?:\/[a-z0-9]+)?)? safari\//i.test(this._ua())) {
+        }
+        else if (!/android/i.test(this._ua())
+            && /\bversion\/([0-9.]+(?: beta)?)(?: mobile(?:\/[a-z0-9]+)?)? safari\//i.test(this._ua())
+        ) {
             this.isSafari = true;
-        } else if (/(?:Chrome|CrMo|CriOS)\/([0-9]{1,2}\.[0-9]\.[0-9]{3,4}\.[0-9]+)/i.test(this._ua()) &&
-            !/samsung/i.test(this._ua())) {
+        }
+        else if (/(?:Chrome|CrMo|CriOS)\/([0-9]{1,2}\.[0-9]\.[0-9]{3,4}\.[0-9]+)/i.test(this._ua())
+            && !/samsung/i.test(this._ua())
+        ) {
             this.isChrome = true;
-        } else if (/(firefox|FxiOS+)\/([0-9.ab]+)/i.test(this._ua())) {
+        }
+        else if (/(firefox|FxiOS+)\/([0-9.ab]+)/i.test(this._ua())) {
             this.isFireFox = true;
-        } else if (/android/i.test(this._ua()) &&
-            /Android[\s\_\-\/i686]?[\s\_\-\/](\d+[\.\-\_]\d+[\.\-\_]?\d*)/i.test(this._ua())) {
+        }
+        else if (/android/i.test(this._ua())
+            && /Android[\s\_\-\/i686]?[\s\_\-\/](\d+[\.\-\_]\d+[\.\-\_]?\d*)/i.test(this._ua())
+        ) {
             this.isAdr = true;
         }
     }
@@ -91,9 +99,11 @@ class Platform {
     _matchEngine() {
         if (/\b(?:msie |ie |trident\/[0-9].*rv[ :])([0-9.]+)/i.test(this._ua())) {
             this.isTrident = true;
-        } else if (/\brv:([\d\w.]+).*\bgecko\/(\d+)/i.test(this._ua())) {
+        }
+        else if (/\brv:([\d\w.]+).*\bgecko\/(\d+)/i.test(this._ua())) {
             this.isGecko = true;
-        } else if (/\bapplewebkit[\/]?([0-9.+]+)/i.test(this._ua())) {
+        }
+        else if (/\bapplewebkit[\/]?([0-9.+]+)/i.test(this._ua())) {
             this.isWebkit = true;
         }
     }
@@ -104,37 +114,38 @@ class Platform {
      * @return {string}
      */
     getOsVersion() {
-        var osVersion;
-        var result;
+        let osVersion;
+        let result;
         if (this.isAndroid()) {
             result = /Android ([\.\_\d]+)/.exec(this._ua()) || /Android\/([\d.]+)/.exec(this._ua());
             if (result && result.length > 1) {
                 osVersion = result[1];
             }
-        } else if (this.isIos()) {
+        }
+        else if (this.isIos()) {
             result = /OS (\d+)_(\d+)_?(\d+)?/.exec(this._appVersion());
             if (result && result.length > 3) {
                 osVersion = result[1] + '.' + result[2] + '.' + (result[3] | 0);
             }
         }
         return osVersion;
-    };
+    }
 
     /**
      * Wrap engine, browser, engine varible to function
      */
     _wrapFun() {
-        var self = this;
-        for (var key in self) {
+        let self = this;
+        for (let key in self) {
             if (self.hasOwnProperty(key) && typeof self[key] !== 'function') {
-                var handle = function (key) {
+                let handle = function (key) {
                     return key;
                 }.bind(null, self[key]);
                 self[key] = handle;
             }
         }
         self.needSpecialScroll = self.isIos() && window !== top;
-    };
+    }
 
     /**
      * Get user agent
@@ -143,7 +154,7 @@ class Platform {
      */
     _ua() {
         return navigator.userAgent;
-    };
+    }
 
     /**
      * Get app version
@@ -152,7 +163,7 @@ class Platform {
      */
     _appVersion() {
         return navigator.appVersion;
-    };
+    }
 
 
     /**
@@ -167,7 +178,7 @@ class Platform {
         this._wrapFun();
 
         return this;
-    };
+    }
 
     /**
      * empty fn

@@ -7,11 +7,12 @@
 
 /**
  * Creates the properly configured style element.
+ *
  * @param {Document} doc doc
  * @param {Element|ShadowRoot} cssRoot css root
  * @param {string} cssText css text
- * @param {boolean} isRuntimeCss is runtime css
  * @param {string} name name
+ * @param {boolean} isRuntimeCss is runtime css
  * @return {Element}
 */
 function insertStyleElement(doc, cssRoot, cssText, name, isRuntimeCss) {
@@ -30,9 +31,6 @@ function insertStyleElement(doc, cssRoot, cssText, name, isRuntimeCss) {
     return style;
 }
 
-/**
- * Insert the styleElement in the root element after a element or at the start.
- */
 function insertAfterOrAtStart(styleRoot, styleElement, afterElement) {
     if (afterElement) {
         if (afterElement.nextSibling) {

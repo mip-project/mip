@@ -7,15 +7,7 @@
 
 import dom from './dom';
 
-/**
- * Event delegator
- *
- * @param {HTMLElement} element The parent node
- * @param {string} selector
- * @param {string} event Event name
- * @param {Function} handler
- * @param {boolean} capture
- */
+
 function delegate(element, selector, event, handler, capture) {
     capture = !!capture;
     function eventHandler(event) {
@@ -24,11 +16,13 @@ function delegate(element, selector, event, handler, capture) {
         if (parent) {
             handler.call(parent, event);
         }
-    };
+    }
     element.addEventListener(event, eventHandler, capture);
     return function () {
         element.removeEventListener(event, eventHandler);
+        /* eslint-disable */
         eventHandler = element = handler = null;
+        /* eslint-enable */
     };
 }
 
@@ -43,6 +37,7 @@ specialEvents.click = specialEvents.mousedown = specialEvents.mouseup = specialE
 
 /**
  * Create a event object to dispatch
+ *
  * @param {string} type Event name
  * @param {?Object} data Custom data
  * @return {Event}
