@@ -30,6 +30,14 @@ const start = function ({Vue, Router}, store) {
         router,
         store
     });
+
+    // @TODO 看看还有啥好办法控制 mip 和 组件的执行顺序不。
+    window.onload = function () {
+        Vue.__customElements__.forEach(element => {
+            console.log(element);
+            Vue.customElement(element.tag, element.component);
+        });
+    };
 }
 
 export default {
