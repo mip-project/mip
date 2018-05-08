@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" mip>
+<!--htmlcs-disable-->
+<head>
+    <title>MIP Page Tree</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="../../dist/mip.css">
+    <style mip-custom>
+    .link {
+        text-align: center;
+        margin-top: 20px;
+        display: block;
+    }
+    </style>
+</head>
+
+<body>
+    <p>This is Page#2, using different component (mip-tree)</p>
+    <mip-tree>
+        <script type="application/json">
+            {"model":{"name":"My Tree","children":[{"name":"hello"},{"name":"wat"},{"name":"child folder","children":[{"name":"child folder","children":[{"name":"hello"},{"name":"wat"}]},{"name":"hello"},{"name":"wat"},{"name":"child folder","children":[{"name":"hello"},{"name":"wat"}]}]}]}}
+        </script>
+    </mip-tree>
+    <mip-link to="./index.html" class="link">Back to Index</mip-link>
+
+    <script src="../../dist/mip.js"></script>
+    <script src="./components/mip-tree.js"></script>
+</body>
+
+</html>

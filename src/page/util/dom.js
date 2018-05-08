@@ -42,7 +42,7 @@ export function getMIPTitle(rawContent) {
         }
     }
     else {
-        let match = rawContent.match(/<title>([\s\S]+)<\/title>/);
+        let match = rawContent.match(/<title>([\s\S]+)<\/title>/i);
         if (match) {
             title = match[1];
         }
@@ -52,10 +52,8 @@ export function getMIPTitle(rawContent) {
 }
 
 export function getMIPContent(rawContent) {
-    let rawResult;
     let scope = generateScope();
-
-    rawContent = addVPre(rawContent);
+    let rawResult = addVPre(rawContent);
 
     if (!rawContent) {
         let tmpArr = [];
@@ -74,11 +72,11 @@ export function getMIPContent(rawContent) {
         rawResult = tmpArr.join('');
     }
     else {
-        let match = rawContent.match(/<body>([\s\S]+)<\/body>/);
+        let match = rawResult.match(/<\bbody\b.*>([\s\S]+)<\/body>/i);
 
         if (match) {
-            rawResult = match[1].replace(/<mip-shell[\s\S]+?<\/mip-shell>/g, '')
-                .replace(/<script[\s\S]+?<\/script>/g, function (scriptTag) {
+            rawResult = match[1].replace(/<mip-shell[\s\S]+?<\/mip-shell>/ig, '')
+                .replace(/<script[\s\S]+?<\/script>/ig, function (scriptTag) {
                     if (scriptTag.indexOf('application/json') !== -1) {
                         return scriptTag;
                     }
@@ -89,7 +87,7 @@ export function getMIPContent(rawContent) {
     }
 
     // Process styles
-    processMIPStyle(scope, rawContent);
+    processMIPStyle(scope, rawResult);
 
     // Create a root node
     return `<div id="${MIP_VIEW_ID}" class="mip-appshell-router-view ${scope}">${rawResult}</div>`;
@@ -116,7 +114,7 @@ function addVPre(rawContent) {
         addVPreInner(document.body);
     }
     else {
-        return rawContent.replace(/<mip-[^>]+/g, function (match) {
+        return rawContent.replace(/<mip-[^>]+/ig, function (match) {
             if (match.indexOf('mip-link') !== -1
                 || match.indexOf('mip-view') !== -1) {
                 return match;
