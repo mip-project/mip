@@ -10,6 +10,16 @@ import {
     MIP_CONTENT_IGNORE_TAG_LIST
 } from '../const';
 
+export function isMIP(rawContent) {
+    // In fact this 'if' will not be executed
+    // Once a page references 'mip.js' as script, it must be (or will be treated as) a MIP page.
+    if (!rawContent) {
+        return document.querySelector('html').getAttribute('mip') !== null;
+    }
+
+    return /<html[^>]+?\bmip\b/.test(rawContent);
+}
+
 export function createContainer (containerId) {
     let oldContainer = document.querySelector(`#${containerId}`);
     if (!oldContainer) {
@@ -32,7 +42,7 @@ export function getMIPTitle(rawContent) {
         }
     }
     else {
-        let match = rawContent.match(/<title>([\s\S]+)<\/title>/);
+        let match = rawContent.match(/<title>([\s\S]+)<\/title>/i);
         if (match) {
             title = match[1];
         }
@@ -42,8 +52,8 @@ export function getMIPTitle(rawContent) {
 }
 
 export function getMIPContent(rawContent) {
-    let rawResult;
     let scope = generateScope();
+    let rawResult = addVPre(rawContent);
 
     if (!rawContent) {
         let tmpArr = [];
@@ -62,11 +72,11 @@ export function getMIPContent(rawContent) {
         rawResult = tmpArr.join('');
     }
     else {
-        let match = rawContent.match(/<body>([\s\S]+)<\/body>/);
+        let match = rawResult.match(/<\bbody\b.*>([\s\S]+)<\/body>/i);
 
         if (match) {
-            rawResult = match[1].replace(/<mip-shell[\s\S]+?<\/mip-shell>/g, '')
-                .replace(/<script[\s\S]+?<\/script>/g, function (scriptTag) {
+            rawResult = match[1].replace(/<mip-shell[\s\S]+?<\/mip-shell>/ig, '')
+                .replace(/<script[\s\S]+?<\/script>/ig, function (scriptTag) {
                     if (scriptTag.indexOf('application/json') !== -1) {
                         return scriptTag;
                     }
@@ -77,10 +87,42 @@ export function getMIPContent(rawContent) {
     }
 
     // Process styles
-    processMIPStyle(scope, rawContent);
+    processMIPStyle(scope, rawResult);
 
     // Create a root node
     return `<div id="${MIP_VIEW_ID}" class="mip-appshell-router-view ${scope}">${rawResult}</div>`;
+}
+
+// Add v-pre for each <mip-*>
+// These tags should be rendered by Custom Element, rather than Vue.
+function addVPre(rawContent) {
+    if (!rawContent) {
+        let addVPreInner = function (node) {
+            let tagName = node.tagName.toLowerCase();
+            if (/^mip-/.test(tagName)) {
+                if (tagName !== 'mip-link' && tagName !== 'mip-view') {
+                    node.setAttribute('v-pre', '');
+                }
+                return;
+            }
+
+            for (let i = 0; i < node.children.length; i++) {
+                addVPreInner(node.children[i]);
+            }
+        }
+
+        addVPreInner(document.body);
+    }
+    else {
+        return rawContent.replace(/<mip-[^>]+/ig, function (match) {
+            if (match.indexOf('mip-link') !== -1
+                || match.indexOf('mip-view') !== -1) {
+                return match;
+            }
+
+            return match + ' v-pre';
+        });
+    }
 }
 
 export function processMIPStyle(scope, rawContent) {
