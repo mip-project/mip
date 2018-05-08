@@ -1,12 +1,12 @@
 /**
- * @file mip-data
+ * @file mip-store
  * @author sfe
  */
 
 /* global mip */
 
-mip.customElement('mip-data', {
-    template: '<!-- mip-data -->',
+mip.customElement('mip-store', {
+    template: '<!-- mip-store -->',
     props: {
         src: String,
         model: {
