@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html mip>
+
+<head>
+    <meta charset="utf-8">
+    <title>Store 示例</title>
+    <meta name="keywords" content="vue,mip,store">
+    <meta name="description" content="mip-store">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <link rel="stylesheet" href="../../dist/mip.css">
+</head>
+
+<body mip-cloak>
+    <mip-store>
+        <script type="application/json">
+            {
+                "model": {
+                    "users": [
+                        "sfe",
+                        "sz",
+                        "sh"
+                    ],
+                    "group": {
+                        "info": {
+                            "name": "sfe",
+                            "start": 2014
+                        },
+                        "future": "far"
+                    },
+                    "contacts": []
+                }
+            }
+        </script>
+    </mip-store>
+    <mip-store src="./testdata.json"></mip-store>
+    <mip-hello></mip-hello>
+    <mip-contacts></mip-contacts>
+    <!-- <mip-init></mip-init> -->
+
+    <script src="./storeData.js"></script>
+    <script src="../../dist/mip.js"></script>
+    <script src="./components/mip-store.js"></script>
+    <script src="./components/mip-hello.js"></script>
+    <script src="./components/mip-contacts.js"></script>
+    <!-- <script src="./components/mip-init.js"></script> -->
+</body>

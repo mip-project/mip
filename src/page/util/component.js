@@ -69,7 +69,7 @@ export function getNewComponents(targetHTML) {
 
 // Load components by names
 // Some components need additional template. Find them and append it. See https://github.com/mip-project/mip/issues/14
-export function loadScripts(components) {
+export async function loadScripts(components) {
     function loadScript(src) {
         return new Promise((resolve, reject) => {
             let script = document.createElement('script');
@@ -81,11 +81,7 @@ export function loadScripts(components) {
         });
     }
 
-    return new Promise((resolve, reject) => {
-        Promise.all(components.map(com => loadScript(componentsSrcMap[com]))).then(() => {
-            addLoadedComponents(components);
-            resolve();
-        });
-    });
+    await Promise.all(components.map(com => loadScript(componentsSrcMap[com])));
 
+    addLoadedComponents(components);
 }
