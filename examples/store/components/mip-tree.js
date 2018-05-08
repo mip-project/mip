@@ -32,30 +32,30 @@ mip.customElement('mip-tree', {
             type: Object
         }
     },
-    data: function () {
+    data() {
         return {
             open: false
         };
     },
     computed: {
-        isFolder: function () {
+        isFolder() {
             return this.model.children && this.model.children.length;
         }
     },
     methods: {
-        toggle: function () {
+        toggle() {
             if (this.isFolder) {
                 this.open = !this.open;
             }
         },
-        changeType: function () {
+        changeType() {
             if (!this.isFolder) {
                 mip.Vue.set(this.model, 'children', []);
                 this.addChild();
                 this.open = true;
             }
         },
-        addChild: function () {
+        addChild() {
             this.model.children.push({
                 name: 'new stuff'
             });

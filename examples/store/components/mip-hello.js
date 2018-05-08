@@ -3,14 +3,14 @@
  * @author wangyisheng@baidu.com (wangyisheng)
  */
 
-/* global MIP */
+/* global mip */
 mip.customElement('mip-hello', {
     template: '<h2 @click="getData">click me to get contacts data</h2>',
     methods: {
         ...mip.Store.mapMutations('global', ['setData']),
 
         getData() {
-            fetch("/examples/store/testdata2.json", {
+            fetch('/examples/store/testdata2.json', {
                 credentials: 'include'
             }).then(res => {
                 if (res.ok) {

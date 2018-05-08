@@ -3,7 +3,7 @@
  * @author wangyisheng@baidu.com (wangyisheng)
  */
 
-/* global MIP */
+/* global mip */
 mip.customElement('mip-contacts', {
     template: `
         <div>

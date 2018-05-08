@@ -13,6 +13,7 @@ const async = require('rollup-plugin-async');
 const less = require('rollup-plugin-less');
 const version = process.env.VERSION || require('../package.json').version;
 const aliases = require('./alias');
+const fs = require('fs-extra');
 
 const banner = '/* mip */';
 
@@ -65,6 +66,10 @@ const builds = {
 };
 
 function genConfig(name) {
+    let distPath = path.resolve(__dirname, '..', 'dist');
+    if (!fs.existsSync(distPath)) {
+        fs.mkdirp(distPath);
+    }
     const opts = builds[name];
     const config = {
         input: opts.entry,

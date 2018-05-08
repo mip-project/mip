@@ -5,6 +5,8 @@
 
 /* global mip */
 
+let count = 0;
+
 mip.customElement('mip-init', {
     template: `
         <div>
@@ -28,18 +30,27 @@ mip.customElement('mip-init', {
         return {
             namespace: 'mip/init',
             module: {
-                state: () => ({
-                    moduleName: 'mipInit',
-                    tabs: [{
-                        name: 'tab1'
-                    },
-                    {
-                        name: tabs2
-                    }]
-                }),
+                state() {
+                    return {
+                        moduleName: 'mipInit',
+                        tabs: [
+                            {
+                                name: 'tab1'
+                            },
+                            {
+                                name: 'tab2'
+                            }
+                        ]
+                    };
+                },
                 mutations: {
-                    changeName(state, name) {
+                    ['CHANGE_NAME'](state, name) {
                         state.moduleName = name;
+                    }
+                },
+                actions: {
+                    changeName({commit}, name) {
+                        commit('CHANGE_NAME', name + (count++));
                     }
                 },
                 getters: {
@@ -48,10 +59,16 @@ mip.customElement('mip-init', {
                     }
                 }
             }
-        }
+        };
     },
     computed: {
         ...mip.Store.mapState('mip/init', ['moduleName']),
         ...mip.Store.mapGetters('mip/init', ['tabNames'])
+    },
+
+    methods: {
+        ...mip.Store.mapActions('mip/init', [
+            'changeName'
+        ])
     }
 });

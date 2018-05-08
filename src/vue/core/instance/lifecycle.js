@@ -345,7 +345,6 @@ export function callHook(vm, hook) {
     if (hook === 'beforeMount') {
         let asyncDataHandler = vm.$options.asyncData;
         let syncDataHandler = vm.$options.syncData;
-        let initStateHandler = vm.$options.initState;
 
         // if in spider/SSR env (@TODO: get spider's UA)
         let isSpider = false;
@@ -355,10 +354,6 @@ export function callHook(vm, hook) {
 
         if (syncDataHandler) {
             syncDataHandler.call(vm);
-        }
-
-        if (initStateHandler) {
-            initStateHandler.call(vm);
         }
     }
 
