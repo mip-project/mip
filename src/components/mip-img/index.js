@@ -4,29 +4,7 @@
  * @author zhangzhiqiang37(zhiqiangzhang37@163.com)
  */
 
-function getScrollInfo() {
-    return {
-        scrollTop: document.body.scrollTop || document.documentElement.scrollTop,
-        scrollLeft: document.body.scrollLeft || document.documentElement.scrollLeft
-    };
-}
-
-function getOffset(ele) {
-    let top = 0;
-    let left = 0;
-    let {scrollLeft, scrollTop} = getScrollInfo();
-
-    while (ele.offsetParent) {
-        top += ele.offsetTop;
-        left += ele.offsetLeft;
-        ele = ele.offsetParent;
-    }
-
-    return {
-        top: top - scrollTop,
-        left: left - scrollLeft
-    };
-}
+import util from '../../util';
 
 export default {
     template: `
@@ -44,13 +22,13 @@ export default {
                 }"
             >
                 <img
-                    :src="src"
+                    :src="imgSrc"
                     :usemap="usemap"
                     :title="title"
                     :sizes="sizes"
                     :ismap="ismap"
                     :alt="alt"
-                    :srcset="srcset"
+                    :srcset="imgSrcset"
                     ref="img"
                     @click="popupShow"
                     :style="{
@@ -72,9 +50,9 @@ export default {
                 ></div>
                 <img
                     :class="{'mip-img-popup-innerimg': placeImg}"
-                    :src="src"
+                    :src="imgSrc"
                     :sizes="sizes"
-                    :srcset="srcset"
+                    :srcset="imgSrcset"
                     :style="{
                         width: computedWidth,
                         height: computedHeight,
@@ -144,11 +122,24 @@ export default {
 
         popupVal() {
             return this.popup !== undefined;
+        },
+
+        imgSrc() {
+            return util.makeCacheUrl(this.src, 'img');
+        },
+
+        imgSrcset() {
+            let imgSrcset = this.srcset;
+
+            if (imgSrcset) {
+                let reg = /[\w-/]+\.(jpg|jpeg|png|gif|webp|bmp|tiff) /g;
+                let srcArr = imgSrcset.replace(reg, function (url) {
+                    return util.makeCacheUrl(url, 'img');
+                });
+                return srcArr;
+            }
+
         }
-    },
-
-    mounted() {
-
     },
 
     methods: {
@@ -164,7 +155,7 @@ export default {
                 return;
             }
 
-            let {left, top} = getOffset(img);
+            let {left, top} = img.getBoundingClientRect();
             this.showPopup = true;
             this.popupImgLeft = `${left}px`;
             this.popupImgTop = `${top}px`;
