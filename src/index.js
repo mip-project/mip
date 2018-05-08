@@ -16,24 +16,28 @@ import 'deps/fetch';
 import Router from './router/index';
 import page from './page/index';
 import Vuex from './vuex/index';
+import sandbox from './util/sandbox';
 
 Vue.use(Vuex);
 /* global storeData */
 let store = new Vuex.Store(window.storeData || {});
 
-Vue.use(Router);
 Vue.use(customElement, store);
 Vue.use(customElementBuildInComponents);
+Vue.use(Router);
 
 let mip = {
     Vue,
-    customElement: Vue.customElement,
+    customElement(tag, component) {
+        Vue.__customElements__.push({tag, component});
+    },
     // util,
     // 当前是否在 iframe 中
     isIframed: window === top,
     standalone: window === top,
     Router,
-    Store: Vuex
+    Store: Vuex,
+    sandbox
 };
 
 page.start(mip, store);
