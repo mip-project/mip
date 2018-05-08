@@ -16,6 +16,7 @@ import 'deps/fetch';
 import Router from './router/index';
 import page from './page/index';
 import Vuex from './vuex/index';
+import sandbox from './util/sandbox';
 
 Vue.use(Vuex);
 /* global storeData */
@@ -35,7 +36,8 @@ let mip = {
     isIframed: window === top,
     standalone: window === top,
     Router,
-    Store: Vuex
+    Store: Vuex,
+    sandbox
 };
 
 page.start(mip, store);
