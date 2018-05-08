@@ -53,7 +53,6 @@ export default function createRouter({Router, pageTransitionType}) {
     }
 
     router.onMatchMiss = async function(to, from, next) {
-        console.log('onMatchMiss')
         // add current loaded components
         util.addLoadedComponents();
 
