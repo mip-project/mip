@@ -32,7 +32,10 @@ const start = function ({Vue, Router}, store) {
     });
 
     window.onload = function () {
+        // Register all customElements after page(Vue) load
         Vue.__customElements__.forEach(element => Vue.customElement(element.tag, element.component));
+        // Make proceeding registery directly
+        mip.customElement = Vue.customElement;
     };
 }
 

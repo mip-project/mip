@@ -56,6 +56,9 @@ export function getMIPContent(rawContent) {
     let rawResult = addVPre(rawContent);
 
     if (!rawContent) {
+        // Process scoped styles
+        processMIPStyle(scope);
+
         let tmpArr = [];
         let removeNode = [];
         for (let i = 0; i < document.body.children.length; i++) {
@@ -72,6 +75,9 @@ export function getMIPContent(rawContent) {
         rawResult = tmpArr.join('');
     }
     else {
+        // Process scoped styles
+        processMIPStyle(scope, rawContent);
+
         let match = rawResult.match(/<\bbody\b.*>([\s\S]+)<\/body>/i);
 
         if (match) {
@@ -85,9 +91,6 @@ export function getMIPContent(rawContent) {
                 });
         }
     }
-
-    // Process styles
-    processMIPStyle(scope, rawResult);
 
     // Create a root node
     return `<div id="${MIP_VIEW_ID}" class="mip-appshell-router-view ${scope}">${rawResult}</div>`;
@@ -158,14 +161,9 @@ export function processMIPStyle(scope, rawContent) {
                 if (innerMatch && innerMatch[1]) {
                     rawStyle += innerMatch[1];
                 }
-
-                rawContent = rawContent.replace(styleStr, '');
             });
 
-            let scopedStyles = `<style mip-custom>${getScopedStyles(scope, rawStyle)}</style></head>`;
-            rawContent = rawContent.replace('</head>', scopedStyles);
+            document.querySelector('style[mip-custom]').innerHTML += getScopedStyles(scope, rawStyle);
         }
     }
-
-    return rawContent;
 }

@@ -1,5 +1,6 @@
 (function () {
     let {window, document} = mip.sandbox;
+    let self = window;
     let {
         alert,
         close,
@@ -7,18 +8,18 @@
         prompt,
         setTimeout,
         setInterval,
-        eval
     } = window;
 
     console.log(
+        '在沙盒环境中使用一下属性/API的取值如下：', '\n',
         'window: ', window, '\n',
+        'self: ', self, '\n',
         'document: ', document, '\n',
         'window.document: ', window.document, '\n',
         'alert: ', alert, '\n',
         'close: ', close, '\n',
         'confirm: ', confirm, '\n',
         'prompt: ', prompt, '\n',
-        'eval: ', eval, '\n',
         'document.createElement: ', document.createElement, '\n',
         'document.createElementNS: ', document.createElementNS, '\n',
         'document.write: ', document.write, '\n',
