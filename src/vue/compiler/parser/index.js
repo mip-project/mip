@@ -320,7 +320,7 @@ export function parse(
 }
 
 function processPre(el) {
-    if (getAndRemoveAttr(el, 'v-pre') != null) {
+    if (/^mip\-/.test(el.tag) || getAndRemoveAttr(el, 'v-pre') != null) {
         el.pre = true;
     }
 }
