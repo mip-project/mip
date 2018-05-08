@@ -55,10 +55,15 @@ export default function createRouter({RouterConstructor}) {
                     path: to.path
                 })
             ]);
+
             next();
         }
         catch (err) {
             console.log(err, 'in onMatchMiss');
+            // next({
+            //     path: '/error',
+            //     replace: true
+            // })
         }
     };
 

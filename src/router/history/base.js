@@ -49,7 +49,20 @@ export class History {
     if (!fromMissHook
       && route.matched.length === 0
       && typeof this.router.onMatchMiss === 'function') {
-      const next = () => this.transitionTo(location, onComplete, onAbort, true);
+      const next = (to) => {
+        if (typeof to === 'string' ||
+            (typeof to === 'object'
+                && typeof to.path === 'string')) {
+          onAbort && onAbort();
+
+          if (typeof to === 'object' && to.replace) {
+            this.replace(to)
+          } else {
+            this.push(to)
+          }
+        }
+        this.transitionTo(location, onComplete, onAbort, true);
+      }
       this.router.onMatchMiss(route, this.current, next);
       return;
     }

@@ -81,6 +81,7 @@ export function getMIPContent(rawContent) {
 
     // Create a root node
     return `<div id="${MIP_VIEW_ID}" class="${scope}">${rawResult}</div>`;
+    // return `<div id="${MIP_VIEW_ID}" class="${scope}"
 }
 
 export function processMIPStyle(scope, rawContent) {
