@@ -56,11 +56,12 @@ export class History {
           onAbort && onAbort();
 
           if (typeof to === 'object' && to.replace) {
-            this.replace(to)
+            this.replace(to);
           } else {
-            this.push(to)
+            this.push(to);
           }
         }
+
         this.transitionTo(location, onComplete, onAbort, true);
       }
       this.router.onMatchMiss(route, this.current, next);

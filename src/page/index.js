@@ -21,11 +21,12 @@ const start = function ({Vue, Router}, store) {
     util.createContainer(CONTAINER_ID);
 
     const router = createRouter({
-        RouterConstructor: Router
+        Router,
+        pageTransitionType: 'slide'
     });
 
     createAppShell({
-        VueConstructor: Vue,
+        Vue,
         router,
         store
     });

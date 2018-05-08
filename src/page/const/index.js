@@ -9,3 +9,4 @@ export const MIP_CONTENT_IGNORE_TAG_LIST = [
     'script',
     'mip-shell'
 ];
+export const MIP_ERROR_ROUTE_PATH = '/mip-error';

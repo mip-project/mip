@@ -80,7 +80,7 @@ export function getMIPContent(rawContent) {
     processMIPStyle(scope, rawContent);
 
     // Create a root node
-    return `<div id="${MIP_VIEW_ID}" class="${scope}">${rawResult}</div>`;
+    return `<div id="${MIP_VIEW_ID}" class="mip-appshell-router-view ${scope}">${rawResult}</div>`;
     // return `<div id="${MIP_VIEW_ID}" class="${scope}"
 }
 
@@ -115,7 +115,7 @@ export function processMIPStyle(scope, rawContent) {
                 let innerMatch = styleStr.match(reg);
 
                 if (innerMatch && innerMatch[1]) {
-                    rawStyle += innerMatch[1].replace(/}/g, ';}');
+                    rawStyle += innerMatch[1];
                 }
 
                 rawContent = rawContent.replace(styleStr, '');
