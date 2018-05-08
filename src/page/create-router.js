@@ -58,6 +58,13 @@ export default function createRouter({Router, pageTransitionType}) {
 
         try {
             let {data: targetHTML} = await axios.get(to.path);
+
+            // see whether it's a MIP page
+            if (!util.isMIP(targetHTML)) {
+                window.location.href = to.path;
+                return;
+            }
+
             let newComponents = util.getNewComponents(targetHTML);
             if (newComponents.length !== 0) {
                 await util.loadScripts(newComponents);
@@ -72,7 +79,6 @@ export default function createRouter({Router, pageTransitionType}) {
         }
         catch (error) {
             // redirect to error page
-            console.log(error, 'in onMatchMiss')
             next({
                 path: MIP_ERROR_ROUTE_PATH,
                 params: {
