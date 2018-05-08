@@ -14,7 +14,7 @@
 </head>
 
 <body mip-cloak>
-    <mip-data>
+    <mip-store>
         <script type="application/json">
             {
                 "model": {
@@ -34,14 +34,16 @@
                 }
             }
         </script>
-    </mip-data>
-    <mip-data src="./testdata.json"></mip-data>
+    </mip-store>
+    <mip-store src="./testdata.json"></mip-store>
     <mip-hello></mip-hello>
     <mip-contacts></mip-contacts>
+    <!-- <mip-init></mip-init> -->
 
     <script src="./storeData.js"></script>
     <script src="../../dist/mip.js"></script>
-    <script src="./components/mip-data.js"></script>
+    <script src="./components/mip-store.js"></script>
     <script src="./components/mip-hello.js"></script>
     <script src="./components/mip-contacts.js"></script>
+    <!-- <script src="./components/mip-init.js"></script> -->
 </body>
