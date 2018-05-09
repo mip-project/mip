@@ -1,5 +1,13 @@
 mip-video {
     background: #000;
+    font-size: 0;
+    .mip-video {
+        display: inline-block;
+    }
+    .mip-video-inner {
+        background: @placeholder-bg;
+        position: relative;
+    }
     .mip-video-playbtn {
         display: inline-block;
         width: 60px;
@@ -9,8 +17,7 @@ mip-video {
         position: absolute;
         left: 50%;
         top: 50%;
-        margin-left: -32px;
-        margin-top: -32px;
+        transform: translate(-50%, -50%);
         background-color: rgba(0, 0, 0, 0.3);
         -webkit-tap-highlight-color: rbga(0, 0, 0, 0.3);
         tap-highlight-color: rbga(0, 0, 0, 0.3);
@@ -27,7 +34,13 @@ mip-video {
         }
     }
     .mip-video-poster {
-        min-height: 150px;
-        background: #333;
+        height: 100%;
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
     }
 }
