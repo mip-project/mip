@@ -12,14 +12,15 @@
  *
  * import sandbox from 'sandbox';
  * let {window, document} = sandbox;
- * let self = window;
  * let {
  *     alert,
  *     close,
  *     confirm,
  *     prompt,
  *     setTimeout,
- *     setInterval
+ *     setInterval,
+ *     self,
+ *     top
  * } = window;
  *
  */
@@ -40,7 +41,8 @@ const windowExcludeKey = [
     'document',
     'setTimeout',
     'setInterval',
-    'self'
+    'self',
+    'top'
 ];
 
 /**
@@ -160,6 +162,13 @@ function processWindowObj(win) {
 
     // 处理setInterval
     win.setInterval = timeoutFun('setInterval', win);
+
+    if (top === window) {
+        win.top = win;
+    }
+    else {
+        win.top = window.top;
+    }
 }
 
 /**

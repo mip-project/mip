@@ -3,9 +3,15 @@
  * @author sekiyika(pengxing@baidu.com)
  */
 
+/* eslint-disable fecs-valid-jsdoc */
+
 'use strict';
 
-import {EventEmitter, rect, fn, platform} from './util';
+import EventEmitter from './event-emitter';
+import rect from './dom/rect';
+import fn from './fn';
+import platform from './platform';
+
 // import fixedElement from './fixed-element';
 
 
