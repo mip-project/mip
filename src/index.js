@@ -15,16 +15,14 @@ import 'deps/fetch';
 
 import Router from './router/index';
 import page from './page/index';
+import createRouter from './page/create-router';
 import Vuex from './vuex/index';
 import sandbox from './util/sandbox';
 
+Vue.use(Router);
 Vue.use(Vuex);
 /* global storeData */
 let store = new Vuex.Store(window.storeData || {});
-
-Vue.use(customElement, store);
-Vue.use(customElementBuildInComponents);
-Vue.use(Router);
 
 let mip = {
     Vue,
@@ -40,6 +38,10 @@ let mip = {
     sandbox
 };
 
-page.start(mip, store);
+const router = createRouter(Router);
+page.start(mip, store, router);
+
+Vue.use(customElement, store, router);
+Vue.use(customElementBuildInComponents);
 
 export default mip;

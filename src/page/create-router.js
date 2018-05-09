@@ -31,7 +31,10 @@ function getRoute(rawHTML, routeOptions = {}) {
     }, routeOptions);
 };
 
-export default function createRouter({Router, pageTransitionType}) {
+export default function createRouter(Router) {
+    // let pageTransitionType = store.state.global.pageTransitionType;
+    let pageTransitionType = 'slide';
+    // console.log(store.state.global, store.state)
     const needSlideTransition = pageTransitionType === 'slide';
 
     // Build routes

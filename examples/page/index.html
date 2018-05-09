@@ -10,10 +10,10 @@
     <style mip-custom>
         p {
             font-size: 1.5em;
+            margin: 0 30px;
         }
-        .logo {
-            margin: 0 auto;
-            display: block;
+        .main-image {
+            text-align: center;
         }
         .link {
             text-align: center;
@@ -24,11 +24,9 @@
     <link rel="stylesheet" href="../../dist/mip.css">
 </head>
 <body mip-cloak>
-    <mip-img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg" width="300" height="300" class="logo"></mip-img>
-    <mip-link class="link" to="./tree.html">Go to Tree</mip-link>
-    <mip-link class="link" to="./data.html">Go to Data</mip-link>
-    <mip-link class="link" to="./not-mip.html">Go to Not MIP</mip-link>
-    <mip-link class="link" to="/not/exists">Go to Not Exists</mip-link>
+    <div class="main-image">
+        <mip-img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg" width="300" height="300" class="logo"></mip-img>
+    </div>
 
     <br><br>
     <p>
@@ -36,26 +34,23 @@
 Reliable - Load instantly and never show the downasaur, even in uncertain network conditions.
 Fast - Respond quickly to user interactions with silky smooth animations and no janky scrolling.
     </p>
-    <p>
-    Progressive Web Apps are user experiences that have the reach of the web, and are:
-Reliable - Load instantly and never show the downasaur, even in uncertain network conditions.
-Fast - Respond quickly to user interactions with silky smooth animations and no janky scrolling.
-    </p>
-    <p>
-    Progressive Web Apps are user experiences that have the reach of the web, and are:
-Reliable - Load instantly and never show the downasaur, even in uncertain network conditions.
-Fast - Respond quickly to user interactions with silky smooth animations and no janky scrolling.
-    </p>
-    <p>
-    Progressive Web Apps are user experiences that have the reach of the web, and are:
-Reliable - Load instantly and never show the downasaur, even in uncertain network conditions.
-Fast - Respond quickly to user interactions with silky smooth animations and no janky scrolling.
-    </p>
-    <p>
-    Progressive Web Apps are user experiences that have the reach of the web, and are:
-Reliable - Load instantly and never show the downasaur, even in uncertain network conditions.
-Fast - Respond quickly to user interactions with silky smooth animations and no janky scrolling.
-    </p>
+
+    <mip-link class="link" to="./tree.html">Go to Tree</mip-link>
+    <mip-link class="link" to="./data.html">Go to Data</mip-link>
+    <mip-link class="link" to="./not-mip.html">Go to Not MIP</mip-link>
+    <mip-link class="link" to="/not/exists">Go to Not Exists</mip-link>
+
+    <mip-store>
+        <script type="application/json">
+            {
+                "model": {
+                    "icon": "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg",
+                    "pageTransitionType": "slide"
+                }
+            }
+        </script>
+    </mip-store>
 
     <script src="../../dist/mip.js"></script>
+    <script src="./components/mip-store.js"></script>
 </body>
