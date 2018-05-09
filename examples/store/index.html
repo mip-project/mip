@@ -40,6 +40,11 @@
     <mip-contacts></mip-contacts>
     <mip-init></mip-init>
 
+    <script>
+        window.addEventListener('global-store-registered', function () {
+            console.log('mip-store registered');
+        });
+    </script>
     <script src="./storeData.js"></script>
     <script src="../../dist/mip.js"></script>
     <script src="./components/mip-store.js"></script>
