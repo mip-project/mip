@@ -4,7 +4,8 @@
  */
 
 let template = `
-    <div class="mip-carousel-wrap">
+    <div class="mip-carousel">
+        <slot></slot>
     </div>
 `;
 
