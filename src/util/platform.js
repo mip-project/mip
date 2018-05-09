@@ -73,12 +73,14 @@ class Platform {
         else if (/qqbrowser\/([0-9.]+)/i.test(this._ua())) {
             this.isQQ = true;
         }
-        else if (!/android/i.test(this._ua())
+        else if (
+            !/android/i.test(this._ua())
             && /\bversion\/([0-9.]+(?: beta)?)(?: mobile(?:\/[a-z0-9]+)?)? safari\//i.test(this._ua())
         ) {
             this.isSafari = true;
         }
-        else if (/(?:Chrome|CrMo|CriOS)\/([0-9]{1,2}\.[0-9]\.[0-9]{3,4}\.[0-9]+)/i.test(this._ua())
+        else if (
+            /(?:Chrome|CrMo|CriOS)\/([0-9]{1,2}\.[0-9]\.[0-9]{3,4}\.[0-9]+)/i.test(this._ua())
             && !/samsung/i.test(this._ua())
         ) {
             this.isChrome = true;
@@ -86,7 +88,8 @@ class Platform {
         else if (/(firefox|FxiOS+)\/([0-9.ab]+)/i.test(this._ua())) {
             this.isFireFox = true;
         }
-        else if (/android/i.test(this._ua())
+        else if (
+            /android/i.test(this._ua())
             && /Android[\s\_\-\/i686]?[\s\_\-\/](\d+[\.\-\_]\d+[\.\-\_]?\d*)/i.test(this._ua())
         ) {
             this.isAdr = true;
@@ -183,7 +186,9 @@ class Platform {
     /**
      * empty fn
      */
-    start() {}
+    start() {
+        this._start();
+    }
 }
 
 export default new Platform();

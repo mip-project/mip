@@ -9,8 +9,7 @@
   "scripts": {
     "dev": "rollup -w -c build/rollup.config.js --environment TARGET:web-full-dev",
     "dev:page": "node examples/server.js",
-    "build": "node build/build.js",
-    "sandbox": "rollup examples/sandbox/index.js --o examples/sandbox/sandbox.js --f umd && open examples/sandbox/index.html"
+    "build": "node build/build.js"
   },
   "repository": {
     "type": "git",

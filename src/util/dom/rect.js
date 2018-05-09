@@ -5,7 +5,6 @@
 
 'use strict';
 
-// let platform = require('../utils/platform').start();
 import platform from '../platform';
 
 // Save the native object or method.
