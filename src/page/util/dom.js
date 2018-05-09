@@ -106,7 +106,15 @@ function addVPre(rawContent) {
                 if (tagName !== 'mip-link' && tagName !== 'mip-view') {
                     node.setAttribute('v-pre', '');
                 }
-                return;
+            }
+            // for prevent vue to render mustache template of MIP1.0
+            if (tagName === 'template' && node.getAttribute('type') === 'mip-mustache') {
+                let div = document.createElement('div');
+                div.setAttribute('type', 'mip-mustache');
+                div.className = 'mip-hidden';
+                div.innerHTML = node.innerHTML;
+                node.parentNode.appendChild(div);
+                node.remove(node);
             }
 
             for (let i = 0; i < node.children.length; i++) {
@@ -124,7 +132,12 @@ function addVPre(rawContent) {
             }
 
             return match + ' v-pre';
-        });
+        }).replace(
+            /(<template.+?type\s*?=\s*(["'])mip-mustache\1.*?>)[\s\S]*?(<\/template>)/ig,
+            function (match) {
+                return match.replace(/template/ig, 'div');
+            }
+        );
     }
 }
 

@@ -31,7 +31,7 @@ mip.customElement('mip-list', {
     mounted() {
         let me = this;
         let templateStr = '';
-        let template = this.$el.querySelector('template');
+        let template = this.$el.querySelector('[type="mip-mustache"]');
 
         if (template) {
             templateStr = template.innerHTML;
