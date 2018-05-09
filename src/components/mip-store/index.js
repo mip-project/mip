@@ -59,6 +59,13 @@ mip.customElement('mip-store', {
                 },
                 namespaced: true
             });
+
+            this.eventEmit();
+        },
+
+        eventEmit() {
+            let globalStoreRegisteredEvent = mip.util.event.create('global-store-registered');
+            document.dispatchEvent(globalStoreRegisteredEvent);
         }
     }
 });
