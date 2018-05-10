@@ -152,7 +152,7 @@ let viewer = {
         }, false);
 
         // istanbul ignore next
-        event.delegate(document, 'input', 'change', function (e) {
+        event.delegate(document, 'input', 'change', function (event) {
             eventAction.execute('change', event.target, event);
         });
     },

@@ -15,7 +15,7 @@ $ cnpm install # npm install
 # watch and auto re-build dist/mip.js
 $ npm run dev
 ```
-监控代码改动并编译代码到 `dist/mip.js`，可通过 `open example/simple/index.html` 预览效果
+监控代码改动并编译代码到 `dist/mip.js`，可通过 `open examples/simple/index.html` 预览效果
 
 ```sh
 # build all dist files, including npm packages

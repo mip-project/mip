@@ -8,7 +8,10 @@
 import util from '../../util';
 
 export default {
-    template: '<!-- mip-store -->',
+    // template: '<!-- mip-store -->',
+    render() {
+        return null;
+    },
     props: {
         src: String,
         model: {
@@ -62,12 +65,12 @@ export default {
                 namespaced: true
             });
 
-            this.eventEmit();
-        },
-
-        eventEmit() {
-            let globalStoreRegisteredEvent = util.event.create('global-store-registered');
-            document.dispatchEvent(globalStoreRegisteredEvent);
+            // this.eventEmit();
         }
+
+        // eventEmit() {
+        //     let globalStoreRegisteredEvent = util.event.create('global-store-registered');
+        //     document.dispatchEvent(globalStoreRegisteredEvent);
+        // }
     }
 };

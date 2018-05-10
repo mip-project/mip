@@ -1,19 +1,13 @@
 /**
- * @file Hash Function. Support hash get function
- * @author zhangzhiqiang(zhiqiangzhang37@163.com)
+ * @file event-action.js
+ * @author huanghuiquan (huanghuiquan@baidu.com)
  */
-
-/* global mip */
-/* eslint-disable fecs-valid-jsdoc */
-
-'use strict';
 
 import fn from './fn';
 import dom from './dom/dom';
 
 /**
  * Regular for parsing params.
- *
  * @const
  * @inner
  * @type {RegExp}
@@ -22,7 +16,6 @@ const PARSE_REG = /^(\w+):([\w-]+)\.([\w-$]+)(?:\(([^\)]+)\))?$/;
 
 /**
  * Regular for checking elements.
- *
  * @const
  * @inner
  * @type {RegExp}
@@ -31,7 +24,6 @@ const CHECK_REG = /^mip-/;
 
 /**
  * Key list of picking options.
- *
  * @const
  * @inner
  * @type {Array}
@@ -41,39 +33,24 @@ const OPTION_KEYS = ['executeEventAction', 'parse', 'checkTarget', 'getTarget', 
 /**
  * MIP does not support external JavaScript, so we provide EventAction to trigger events between elements.
  * TODO: refactor
- *
  * @class
  * @param {?Object} opt Options
  */
-function EventAction(opt) {
-    opt && fn.extend(this, fn.pick(opt, OPTION_KEYS));
-    this.installAction();
-}
+class EventAction {
+    constructor(opt) {
+        opt && fn.extend(this, fn.pick(opt, OPTION_KEYS));
+        this.attr = 'on';
+        this.globalTargets = {};
 
-EventAction.prototype = {
-
-    constructor: EventAction,
-
-    /**
-     * Attribute name to trigger events.
-     *
-     * @type {string}
-     */
-    attr: 'on',
-
-    /**
-     * Attribute name to trigger events.
-     *
-     * @type {string}
-     */
-    globalTargets: {},
+        this.installAction();
+    }
 
     /**
      * Install global action. such as on=tap:MIP.setData
      */
     installAction() {
         this.addGlobalTarget('MIP', this.handleMIPTarget);
-    },
+    }
 
     /**
      * Handle global action
@@ -81,37 +58,35 @@ EventAction.prototype = {
      * @param {Object} action event action
      */
     handleMIPTarget(action) {
-        // istanbul ignore next
+        /* istanbul ignore next */
         if (!action) {
             return;
         }
         switch (action.handler) {
             case 'setData':
-                mip.setData(action, 1);
+                MIP.setData(action, 1);
                 break;
             case '$set':
-                mip.$set(action, 1);
+                MIP.$set(action, 1);
                 break;
         }
-    },
+    }
 
     /**
      * Add global target in order to event
-     *
      * @param {string} name
      * @param {Function} handler
      */
     addGlobalTarget(name, handler) {
-        // istanbul ignore next
+        /* istanbul ignore next */
         if (!name) {
             return;
         }
         this.globalTargets[name] = handler;
-    },
+    }
 
     /**
      * Execute the event-action.
-     *
      * @param {string} type The event's type
      * @param {HTMLElement} target The source element of native event.
      * @param {Event} nativeEvent The native event.
@@ -121,6 +96,7 @@ EventAction.prototype = {
             return;
         }
         let attr;
+        let parent;
         let attrSelector = '[' + this.attr + ']';
         do {
             if (attr = target.getAttribute(this.attr)) {
@@ -132,27 +108,25 @@ EventAction.prototype = {
             }
             target = dom.closest(target, attrSelector);
         } while (target);
-    },
+    }
 
     /**
      * Ensure the target element is a MIPElement
-     *
      * @param {HTMLElement} target
      * @return {boolean}
      */
     checkTarget(target) {
         return target && target.tagName && CHECK_REG.test(target.tagName.toLowerCase());
-    },
+    }
 
     /**
      * Get the target element by ID
-     *
      * @param {string} id
      * @return {HTMLElement}
      */
     getTarget(id) {
         return document.getElementById(id);
-    },
+    }
 
     /**
      * Excute the 'executeEventAction' of a MIPElement.
@@ -162,13 +136,13 @@ EventAction.prototype = {
      */
     executeEventAction(action, target) {
         target.executeEventAction && target.executeEventAction(action);
-    },
+    }
 
     /**
      * Excute the parsed actions.
      *
      * @private
-     * @param {Array.<Object>} actions
+     * @param {Array.<Object>} actions event action
      */
     _execute(actions) {
         for (let i = 0; i < actions.length; i++) {
@@ -183,15 +157,13 @@ EventAction.prototype = {
                 this.executeEventAction(action, target);
             }
         }
-    },
+    }
 
     /**
      * Parse the action string.
      *
-     * @param {string} actionString actionString
-     * @param {string} type type
-     * @param {Object} nativeEvent nativeEvent
-     * @retrun {Array.<Object>} result
+     * @param {string} actionString action name string
+     * @return {Array.<Object>}
      */
     parse(actionString, type, nativeEvent) {
         if (typeof actionString !== 'string') {
@@ -213,6 +185,7 @@ EventAction.prototype = {
         }
         return result;
     }
-};
+
+}
 
 export default EventAction;

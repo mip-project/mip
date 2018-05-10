@@ -15,7 +15,8 @@
     "plugins": [
         "transform-custom-element-classes",
         "external-helpers",
-        "syntax-dynamic-import"
+        "syntax-dynamic-import",
+        "transform-object-rest-spread"
     ],
     "ignore": [
         "dist/*.js"

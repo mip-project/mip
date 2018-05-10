@@ -11,6 +11,7 @@ const replace = require('rollup-plugin-replace');
 const node = require('rollup-plugin-node-resolve');
 const async = require('rollup-plugin-async');
 const less = require('rollup-plugin-less');
+const vue = require('rollup-plugin-vue2');
 const version = process.env.VERSION || require('../package.json').version;
 const aliases = require('./alias');
 const fs = require('fs-extra');
@@ -78,6 +79,7 @@ function genConfig(name) {
             replace({
                 __VERSION__: version
             }),
+            vue({ css: false }),
             less({
                 output: resolve('dist/mip.css')
             }),
