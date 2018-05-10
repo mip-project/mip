@@ -8,6 +8,8 @@ import mipIframe from './mip-iframe';
 import mipVideo from './mip-video';
 import mipCarousel from './mip-carousel';
 import mipPix from './mip-pix';
+import mipData from './mip-bind';
+
 
 function install(Vue) {
     Vue.__customElements__ = [
@@ -34,6 +36,10 @@ function install(Vue) {
         {
             tag: 'mip-template',
             component: {props: ['data']}
+        },
+        {
+            tag: 'mip-data',
+            component: mipData
         }
     ];
 }

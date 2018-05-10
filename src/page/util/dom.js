@@ -54,7 +54,6 @@ export function getMIPTitle(rawContent) {
 export function getMIPContent(rawContent) {
     let scope = generateScope();
     let rawResult = addVPre(rawContent);
-
     if (!rawContent) {
         // Process scoped styles
         processMIPStyle(scope);

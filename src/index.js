@@ -6,7 +6,7 @@
 import './styles/mip.less';
 import Vue from './vue/platforms/web/entry-runtime-with-compiler';
 import customElement from './custom-element/index';
-import customElementBuildInComponents from './components/index';
+import customElementBuildInComponents from './components';
 import util from './util';
 
 // fetch polyfill and fetch-jsonp
@@ -17,6 +17,9 @@ import Router from './router/index';
 import page from './page/index';
 import Vuex from './vuex/index';
 import sandbox from './util/sandbox';
+import viewer from './viewer';
+
+viewer.init();
 
 Vue.use(Vuex);
 /* global storeData */
