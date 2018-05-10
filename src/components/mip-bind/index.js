@@ -6,7 +6,9 @@
 import Bind from './bind';
 
 export default {
-    template: '<div></div>',
+    render() {
+        return null;
+    },
     created() {
         this.bind = new Bind();
         this.postMessage(this.$root.$options.propsData);

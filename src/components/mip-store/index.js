@@ -5,8 +5,6 @@
 
 /* global mip */
 
-import util from '../../util';
-
 export default {
     // template: '<!-- mip-store -->',
     render() {
@@ -39,16 +37,12 @@ export default {
                 credentials: 'include'
             }).then(res => {
                 if (res.ok) {
-                    res.json().then(data => {
-                        this.register(data);
-                    });
+                    res.json().then(data => this.register(data));
                 }
                 else {
                     console.error('Fetch request failed!');
                 }
-            }).catch(function (e) {
-                console.error(e);
-            });
+            }).catch(console.error);
         },
 
         register(data) {

@@ -7,7 +7,13 @@ import {getPropsData, reactiveProps} from './props';
 import {getSlots} from './slots';
 import {customEmit} from './custom-event';
 
-export default function createVueInstance(element, Vue, store, router, componentDefinition, props, options) {
+export default function createVueInstance(
+    element,
+    {Vue, store, router},
+    componentDefinition,
+    props,
+    options
+) {
     if (!element.__vue_custom_element__ && !element.hasAttribute('vce-ready')) {
         let ComponentDefinition = Vue.util.extend({}, componentDefinition);
         let propsData = getPropsData(element, ComponentDefinition, props);

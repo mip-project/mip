@@ -5,8 +5,6 @@
 
 /* eslint-disable fecs-valid-jsdoc, fecs-camelcase */
 
-'use strict';
-
 import event from './dom/event';
 import css from './dom/css';
 import Gesture from './gesture';

@@ -75,11 +75,11 @@ function genConfig(name) {
     const config = {
         input: opts.entry,
         external: opts.external,
-        plugins: (opts.plugins || []).concat([
+        plugins: (opts.plugins || []).concat(...[
             replace({
                 __VERSION__: version
             }),
-            vue({ css: false }),
+            vue({css: false}),
             less({
                 output: resolve('dist/mip.css')
             }),

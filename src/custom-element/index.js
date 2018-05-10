@@ -37,11 +37,23 @@ function install(Vue, store, router) {
                     if (isAsyncComponentPromise) {
                         asyncComponentPromise.then(lazyLoadedComponent => {
                             const lazyLoadedComponentProps = getProps(lazyLoadedComponent);
-                            createVueInstance(this, Vue, store, router, lazyLoadedComponent, lazyLoadedComponentProps, options);
+                            createVueInstance(
+                                this,
+                                {Vue, store, router},
+                                lazyLoadedComponent,
+                                lazyLoadedComponentProps,
+                                options
+                            );
                         });
                     }
                     else {
-                        createVueInstance(this, Vue, store, router, componentDefinition, props, options);
+                        createVueInstance(
+                            this,
+                            {Vue, store, router},
+                            componentDefinition,
+                            props,
+                            options
+                        );
                     }
                 }
 

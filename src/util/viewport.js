@@ -5,8 +5,6 @@
 
 /* eslint-disable fecs-valid-jsdoc */
 
-'use strict';
-
 import EventEmitter from './event-emitter';
 import rect from './dom/rect';
 import fn from './fn';
@@ -105,18 +103,16 @@ let viewport = {
 /**
  * 触发 scroll 事件
  */
-let scrollEvent = fn.throttle(
-    event => this.trigger('scroll', event),
-    1000 / 60
-);
+let scrollEvent = fn.throttle(function (event) {
+    this.trigger('scroll', event);
+}, 1000 / 60);
 
 /**
  * 触发 changed 事件
  */
-let changedEvent = fn.throttle(
-    event => this.trigger('changed', event),
-    200
-);
+let changedEvent = fn.throttle(function (event) {
+    this.trigger('changed', event);
+}, 200);
 
 /**
  * 滚动事件回调
