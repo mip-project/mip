@@ -5,8 +5,6 @@
 
 import Compile from './compile';
 import Observer from './observer';
-import debug from 'debug';
-let log = debug('mip-bind');
 
 /* global MIP */
 window.MIP = {};
@@ -22,13 +20,9 @@ class Bind {
         // from=0 called by html attributes
         // from=1 refers the method called by mip.js
         MIP.setData = function (action, from) {
-            log('MIP.setData ', action, from);
-
             me._bindTarget(false, action, from);
         };
         MIP.$set = function (action, from) {
-            log('MIP.$set ', action, from);
-
             me._bindTarget(true, action, from);
         };
     }
@@ -58,10 +52,8 @@ class Bind {
     // Bind event for post message when fetch data returned, then compile dom again
     _bindEvent() {
         let me = this;
-        log('addEventListener: message');
 
         window.addEventListener('message', function (event) {
-            log('get event: message', event);
 
             let loc = me._win.location;
             let domain = loc.protocol + '//' + loc.host;
@@ -76,8 +68,6 @@ class Bind {
     }
 
     start() {
-        log('start.');
-
         // require mip data extension runtime
         // require('./mip-data');
         this._dataSource = {
