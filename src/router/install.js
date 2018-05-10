@@ -1,5 +1,5 @@
 import View from './components/view'
-import Link from './components/link'
+// import Link from './components/link'
 
 export let _Vue
 
@@ -44,7 +44,7 @@ export function install (Vue) {
   })
 
   Vue.component('MipView', View);
-  Vue.component('MipLink', Link)
+  // Vue.component('MipLink', Link)
 
   const strats = Vue.config.optionMergeStrategies
   // use the same hook merging strategy for route hooks

@@ -7,7 +7,7 @@ import {getPropsData, reactiveProps} from './props';
 import {getSlots} from './slots';
 import {customEmit} from './custom-event';
 
-export default function createVueInstance(element, Vue, store, componentDefinition, props, options) {
+export default function createVueInstance(element, Vue, store, router, componentDefinition, props, options) {
     if (!element.__vue_custom_element__ && !element.hasAttribute('vce-ready')) {
         let ComponentDefinition = Vue.util.extend({}, componentDefinition);
         let propsData = getPropsData(element, ComponentDefinition, props);
@@ -109,6 +109,7 @@ export default function createVueInstance(element, Vue, store, componentDefiniti
         }
 
         rootElement.store = store;
+        rootElement.router = router;
 
         /* eslint-disable */
         // Define the Vue constructor to manage the element

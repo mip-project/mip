@@ -5,8 +5,13 @@
 
 /* global mip */
 
-mip.customElement('mip-store', {
-    template: '<!-- mip-store -->',
+import util from '../../util';
+
+export default {
+    // template: '<!-- mip-store -->',
+    render() {
+        return null;
+    },
     props: {
         src: String,
         model: {
@@ -60,12 +65,12 @@ mip.customElement('mip-store', {
                 namespaced: true
             });
 
-            this.eventEmit();
-        },
-
-        eventEmit() {
-            let globalStoreRegisteredEvent = mip.util.event.create('global-store-registered');
-            document.dispatchEvent(globalStoreRegisteredEvent);
+            // this.eventEmit();
         }
+
+        // eventEmit() {
+        //     let globalStoreRegisteredEvent = util.event.create('global-store-registered');
+        //     document.dispatchEvent(globalStoreRegisteredEvent);
+        // }
     }
-});
+};

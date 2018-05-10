@@ -8,7 +8,7 @@ import createVueInstance from './utils/create-vueInstance';
 import {getProps, convertAttributeValue} from './utils/props';
 import {camelize} from './utils/helpers';
 
-function install(Vue, store) {
+function install(Vue, store, router) {
     Vue.customElement = function vueCustomElement(tag, componentDefinition, options = {}) {
         const isAsyncComponent = typeof componentDefinition === 'function';
         const optionsProps = isAsyncComponent && {
@@ -37,11 +37,11 @@ function install(Vue, store) {
                     if (isAsyncComponentPromise) {
                         asyncComponentPromise.then(lazyLoadedComponent => {
                             const lazyLoadedComponentProps = getProps(lazyLoadedComponent);
-                            createVueInstance(this, Vue, store, lazyLoadedComponent, lazyLoadedComponentProps, options);
+                            createVueInstance(this, Vue, store, router, lazyLoadedComponent, lazyLoadedComponentProps, options);
                         });
                     }
                     else {
-                        createVueInstance(this, Vue, store, componentDefinition, props, options);
+                        createVueInstance(this, Vue, store, router, componentDefinition, props, options);
                     }
                 }
 

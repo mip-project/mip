@@ -5,13 +5,11 @@
 
 import * as util from './util';
 import * as constants from './const';
-
-import createRouter from './create-router';
-import createAppShell from './create-appshell';
+import AppShell from './vue-components/AppShell.vue';
 
 const CONTAINER_ID = constants.MIP_CONTAINER_ID;
 
-const start = function ({Vue, Router}, store) {
+const start = function ({Vue}, store, router) {
     // Configure mip
     Vue.config.ignoredElements = [
       /^mip-/
@@ -20,22 +18,13 @@ const start = function ({Vue, Router}, store) {
     // Create mip container
     util.createContainer(CONTAINER_ID);
 
-    const router = createRouter({
-        Router,
-        pageTransitionType: 'slide'
-    });
-
-    createAppShell({
-        Vue,
-        router,
-        store
-    });
-
     window.onload = function () {
-        // Register all customElements after page(Vue) load
-        Vue.__customElements__.forEach(element => Vue.customElement(element.tag, element.component));
-        // Make proceeding registery directly
-        mip.customElement = Vue.customElement;
+        new Vue({
+            ...AppShell,
+            router,
+            store,
+            el: `#${CONTAINER_ID}`,
+        });
     };
 }
 
