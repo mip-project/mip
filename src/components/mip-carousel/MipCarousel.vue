@@ -441,6 +441,7 @@ mip-carousel a {
     transition: transform ease .3s;
     &>* {
         position: relative;
+        flex: 1;
     }
 }
 .mip-carousel-slideBox {

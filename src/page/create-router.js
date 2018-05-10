@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as util from './util';
-import {MIP_ERROR_ROUTE_PATH} from './const';
+import {MIP_ERROR_ROUTE_PATH, MIP_CONTAINER_ID} from './const';
 import ErrorPage from './vue-components/error-page';
 // import RouterView from './vue-components/RouterView.vue';
 
@@ -11,9 +11,9 @@ import ErrorPage from './vue-components/error-page';
  * @param {Object?} routeOptions route's options
  * @return {Object} routeObject
  */
-function getRoute(rawHTML, routeOptions = {}) {
+function getRoute(rawHTML, routeOptions = {}, options) {
     let MIPRouterTitle = util.getMIPTitle(rawHTML);
-    let mipContent = util.getMIPContent(rawHTML);
+    let {mipContent, scope} = util.getMIPContent(rawHTML);
 
     return Object.assign({
         component: {
@@ -32,6 +32,16 @@ function getRoute(rawHTML, routeOptions = {}) {
             beforeRouteEnter(to, from, next) {
                 next(vm => {
                     document.title = vm.$parent.MIPRouterTitle = vm.MIPRouterTitle;
+                    // set scope
+                    vm.$el.setAttribute(scope, '');
+                    if (options) {
+                        vm.$parent.MIPRouterIcon = options.icon;
+                        let pageTransitionType = options.pageTransitionType || 'fade';
+                        vm.$parent.pageTransitionType = pageTransitionType;
+                        vm.$parent.pageTransitionEffect = pageTransitionType === 'slide' ?
+                            (util.isForward(to, from) ? 'slide-left' : 'slide-right')
+                            : pageTransitionType;
+                    }
                 });
             }
         }
@@ -39,15 +49,15 @@ function getRoute(rawHTML, routeOptions = {}) {
 };
 
 export default function createRouter(Router) {
-    // let pageTransitionType = store.state.global.pageTransitionType;
-    let pageTransitionType = 'slide';
-    // console.log(store.state.global, store.state)
-    const needSlideTransition = pageTransitionType === 'slide';
+    let MIPConfig = util.getMIPConfig();
 
     // Build routes
     let routes = [
         getRoute(undefined, {
             path: window.location.pathname
+        }, {
+            pageTransitionType: MIPConfig.pageTransitionType,
+            icon: MIPConfig.icon
         }),
         {
             path: MIP_ERROR_ROUTE_PATH,
@@ -58,7 +68,7 @@ export default function createRouter(Router) {
     // Create router instance and register onMatchMiss hook (add dynamic routes)
     const router = new Router({routes});
 
-    if (needSlideTransition) {
+    if (MIPConfig.pageTransitionType === 'slide') {
         util.initHistory({base: router.options.base});
     }
 
@@ -99,16 +109,19 @@ export default function createRouter(Router) {
         }
     };
 
-    router.beforeEach((to, from, next) => {
-        if (router.app) {
-            let effect = needSlideTransition ?
-                (util.isForward(to, from) ? 'slide-left' : 'slide-right')
-                : pageTransitionType;
-            router.app.pageTransitionType = pageTransitionType;
-            router.app.pageTransitionEffect = effect;
-        }
-        next();
-    });
+    // router.beforeEach((to, from, next) => {
+    //     // Multiple apps here
+    //     // Pick the main one
+    //     if (router.app) {
+    //         let effect = needSlideTransition ?
+    //             (util.isForward(to, from) ? 'slide-left' : 'slide-right')
+    //             : pageTransitionType;
+    //         router.app.icon = icon;
+    //         router.app.pageTransitionType = pageTransitionType;
+    //         router.app.pageTransitionEffect = effect;
+    //     }
+    //     next();
+    // });
 
     return router;
 }

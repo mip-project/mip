@@ -3,7 +3,7 @@
  * @author huanghuiquan (huanghuiquan@baidu.com)
  */
 
-import MipImg from './mip-img/MipImg.vue';
+import mipImg from './mip-img/MipImg.vue';
 import mipIframe from './mip-iframe/MipIframe.vue';
 import mipVideo from './mip-video/MipVideo.vue';
 import mipStore from './mip-store';
@@ -19,7 +19,7 @@ function install(Vue) {
         },
         {
             tag: 'mip-img',
-            component: MipImg
+            component: mipImg
         },
         {
             tag: 'mip-iframe',
@@ -46,6 +46,8 @@ function install(Vue) {
             component: {props: ['data']}
         }
     ];
+
+    Vue.__customElements__.forEach(element => Vue.customElement(element.tag, element.component));
 }
 
 export default install;

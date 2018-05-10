@@ -65,12 +65,12 @@ export default {
                 namespaced: true
             });
 
-            this.eventEmit();
-        },
-
-        eventEmit() {
-            let globalStoreRegisteredEvent = util.event.create('global-store-registered');
-            document.dispatchEvent(globalStoreRegisteredEvent);
+            // this.eventEmit();
         }
+
+        // eventEmit() {
+        //     let globalStoreRegisteredEvent = util.event.create('global-store-registered');
+        //     document.dispatchEvent(globalStoreRegisteredEvent);
+        // }
     }
 };

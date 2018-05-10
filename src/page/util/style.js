@@ -14,9 +14,11 @@ export function getScopedStyles(classname, rawCss) {
         return '';
     }
 
-    if (!classname.startsWith('.')) {
-        classname = '.' + classname;
-    }
+    // if (!classname.startsWith('.')) {
+    //     classname = '.' + classname;
+    // }
+
+    classname = `[${classname}]`;
 
     let scopedCss = {};
     rawCss = normalize(rawCss);

@@ -28,7 +28,7 @@ let store = new Vuex.Store(window.storeData || {});
 let mip = {
     Vue,
     customElement(tag, component) {
-        Vue.__customElements__.push({tag, component});
+        Vue.customElement(tag, component);
     },
     util,
     // 当前是否在 iframe 中
