@@ -6,6 +6,7 @@
 import mipImg from './mip-img';
 import mipIframe from './mip-iframe';
 import mipVideo from './mip-video';
+import mipStore from './mip-store';
 import mipCarousel from './mip-carousel';
 import mipPix from './mip-pix';
 
@@ -30,6 +31,10 @@ function install(Vue) {
         {
             tag: 'mip-video',
             component: mipVideo
+        },
+        {
+            tag: 'mip-store',
+            component: mipStore
         },
         {
             tag: 'mip-template',

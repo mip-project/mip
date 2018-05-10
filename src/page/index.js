@@ -6,12 +6,11 @@
 import * as util from './util';
 import * as constants from './const';
 
-import createRouter from './create-router';
 import createAppShell from './create-appshell';
 
 const CONTAINER_ID = constants.MIP_CONTAINER_ID;
 
-const start = function ({Vue, Router}, store) {
+const start = function ({Vue, Router}, store, router) {
     // Configure mip
     Vue.config.ignoredElements = [
       /^mip-/
@@ -19,11 +18,6 @@ const start = function ({Vue, Router}, store) {
 
     // Create mip container
     util.createContainer(CONTAINER_ID);
-
-    const router = createRouter({
-        Router,
-        pageTransitionType: 'slide'
-    });
 
     createAppShell({
         Vue,

@@ -5,7 +5,9 @@
 
 /* global mip */
 
-mip.customElement('mip-store', {
+import util from '../../util';
+
+export default {
     template: '<!-- mip-store -->',
     props: {
         src: String,
@@ -64,8 +66,8 @@ mip.customElement('mip-store', {
         },
 
         eventEmit() {
-            let globalStoreRegisteredEvent = mip.util.event.create('global-store-registered');
+            let globalStoreRegisteredEvent = util.event.create('global-store-registered');
             document.dispatchEvent(globalStoreRegisteredEvent);
         }
     }
-});
+};
