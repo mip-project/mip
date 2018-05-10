@@ -1,6 +1,10 @@
 mip-carousel a {
     -webkit-tap-highlight-color: transparent;
 }
+.mip-carousel {
+    overflow: hidden;
+    position: relative;
+}
 .mip-carousle-subtitle {
     position: absolute;
     bottom: 0;
@@ -45,6 +49,12 @@ mip-carousel a {
     left: 0;
     width: 100%;
     height: 100%;
+    display: flex;
+    transition: transform ease .3s;
+    &>* {
+        position: relative;
+        flex: 1;
+    }
 }
 .mip-carousel-slideBox {
     width: 100%;
@@ -63,6 +73,7 @@ span.mip-carousel-current-indicator {
     bottom: 3px;
     right: 10px;
     color: #fff;
+    text-shadow: 0 0 3px rgba(0, 0, 0, .8);
 }
 .mip-carousel-indicatornow {
     font-size: 20px;

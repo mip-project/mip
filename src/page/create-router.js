@@ -24,7 +24,6 @@ function getRoute(rawHTML, routeOptions = {}) {
             beforeRouteEnter(to, from, next) {
                 next(vm => {
                     document.title = vm.$parent.MIPRouterTitle = vm.MIPRouterTitle;
-                    // TODO: interact with appshell
                 });
             }
         }
