@@ -41,6 +41,8 @@ function install(Vue) {
             component: {props: ['data']}
         }
     ];
+
+    Vue.__customElements__.forEach(element => Vue.customElement(element.tag, element.component));
 }
 
 export default install;

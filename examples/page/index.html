@@ -40,17 +40,18 @@ Fast - Respond quickly to user interactions with silky smooth animations and no 
     <mip-link class="link" to="./not-mip.html">Go to Not MIP</mip-link>
     <mip-link class="link" to="/not/exists">Go to Not Exists</mip-link>
 
-    <mip-store>
+    <mip-store id="mip-config">
         <script type="application/json">
             {
                 "model": {
-                    "icon": "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg",
-                    "pageTransitionType": "slide"
+                    "MIPConfig": {
+                        "icon": "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg",
+                        "pageTransitionType": "slide"
+                    }
                 }
             }
         </script>
     </mip-store>
 
     <script src="../../dist/mip.js"></script>
-    <script src="./components/mip-store.js"></script>
 </body>

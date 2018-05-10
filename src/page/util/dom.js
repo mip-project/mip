@@ -32,6 +32,22 @@ export function createContainer (containerId) {
     }
 }
 
+export function getMIPConfig() {
+    // Only read from current page
+    for (let i = 0; i < document.body.children.length; i++) {
+        let node = document.body.children[i];
+
+        if (node.tagName.toLowerCase() === 'mip-store' && node.getAttribute('id') === 'mip-config') {
+            try {
+                return JSON.parse(node.children[0].innerHTML).model.MIPConfig;
+            }
+            catch (e) {}
+        }
+    }
+
+    return {};
+}
+
 export function getMIPTitle(rawContent) {
     let title;
 

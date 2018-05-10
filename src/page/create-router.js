@@ -32,9 +32,9 @@ function getRoute(rawHTML, routeOptions = {}) {
 };
 
 export default function createRouter(Router) {
-    // let pageTransitionType = store.state.global.pageTransitionType;
-    let pageTransitionType = 'slide';
-    // console.log(store.state.global, store.state)
+    let MIPConfig = util.getMIPConfig();
+    let pageTransitionType = MIPConfig.pageTransitionType || 'fade';
+    let icon = MIPConfig.icon;
     const needSlideTransition = pageTransitionType === 'slide';
 
     // Build routes
@@ -97,6 +97,7 @@ export default function createRouter(Router) {
             let effect = needSlideTransition ?
                 (util.isForward(to, from) ? 'slide-left' : 'slide-right')
                 : pageTransitionType;
+            router.app.icon = icon;
             router.app.pageTransitionType = pageTransitionType;
             router.app.pageTransitionEffect = effect;
         }

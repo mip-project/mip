@@ -19,17 +19,12 @@ const start = function ({Vue, Router}, store, router) {
     // Create mip container
     util.createContainer(CONTAINER_ID);
 
-    createAppShell({
-        Vue,
-        router,
-        store
-    });
-
-    window.onload = function () {
-        // Register all customElements after page(Vue) load
-        Vue.__customElements__.forEach(element => Vue.customElement(element.tag, element.component));
-        // Make proceeding registery directly
-        mip.customElement = Vue.customElement;
+    window.onload = () => {
+        createAppShell({
+            Vue,
+            router,
+            store
+        });
     };
 }
 

@@ -16,6 +16,7 @@ export default function createAppShell({Vue, router, store}) {
             <div id="${CONTAINER_ID}">
                 <app-header
                     :title="MIPRouterTitle"
+                    :icon="MIPRouterIcon"
                     @click-back="onClickHeaderBack">
                 </app-header>
                 <transition
@@ -32,6 +33,9 @@ export default function createAppShell({Vue, router, store}) {
             </div>
         `,
         computed: {
+            // ...mip.Store.mapState('global', [
+            //     'MIPConfig'
+            // ]),
             pageTransitionClass() {
                 return `transition-${this.pageTransitionType}`;
             },
@@ -45,8 +49,10 @@ export default function createAppShell({Vue, router, store}) {
             }
         },
         data() {
+            let MIPConfig = store.state.global.MIPConfig;
             return {
                 MIPRouterTitle: '',
+                MIPRouterIcon: MIPConfig ? MIPConfig.icon : undefined,
                 scrollPostionMap: {},
                 pageTransitionType: 'fade',
                 pageTransitionEffect: 'fade'
