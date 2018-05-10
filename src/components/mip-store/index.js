@@ -8,7 +8,10 @@
 import util from '../../util';
 
 export default {
-    template: '<!-- mip-store -->',
+    // template: '<!-- mip-store -->',
+    render() {
+        return null;
+    },
     props: {
         src: String,
         model: {

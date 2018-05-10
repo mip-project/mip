@@ -4,67 +4,69 @@
  * @author zhangzhiqiang37(zhiqiangzhang37@163.com)
  */
 
+<template>
+    <div
+        class="mip-img"
+        :style="{
+            width: computedWidth,
+        }"
+    >
+        <div
+            class="mip-img-inner"
+            :style="{
+                height: wrapperHeight,
+                paddingBottom: computedHeightWidthRatio
+            }"
+        >
+            <img
+                :src="imgSrc"
+                :usemap="usemap"
+                :title="title"
+                :sizes="sizes"
+                :ismap="ismap"
+                :alt="alt"
+                :srcset="imgSrcset"
+                ref="img"
+                @click="popupShow"
+                :style="{
+                    width: computedWidth,
+                    height: computedHeight
+                }"
+            />
+        </div>
+        <div
+            v-if="popupVal && showPopup"
+            class="mip-img-popup-wrapper"
+            @click="hidePopup"
+        >
+            <div
+                class="mip-img-popup-bg"
+                :class="{
+                    show: placeImg
+                }"
+            ></div>
+            <img
+                :class="{'mip-img-popup-innerimg': placeImg}"
+                :src="imgSrc"
+                :sizes="sizes"
+                :srcset="imgSrcset"
+                :style="{
+                    width: computedWidth,
+                    height: computedHeight,
+                    top: popupImgTop,
+                    left: popupImgLeft
+                }"
+
+            />
+        </div>
+    </div>
+</template>
+
+<script>
 import util from '../../util';
 
 export default {
-    template: `
-        <div
-            class="mip-img"
-            :style="{
-                width: computedWidth,
-            }"
-        >
-            <div
-                class="mip-img-inner"
-                :style="{
-                    height: wrapperHeight,
-                    paddingBottom: computedHeightWidthRatio
-                }"
-            >
-                <img
-                    :src="imgSrc"
-                    :usemap="usemap"
-                    :title="title"
-                    :sizes="sizes"
-                    :ismap="ismap"
-                    :alt="alt"
-                    :srcset="imgSrcset"
-                    ref="img"
-                    @click="popupShow"
-                    :style="{
-                        width: computedWidth,
-                        height: computedHeight
-                    }"
-                />
-            </div>
-            <div
-                v-if="popupVal && showPopup"
-                class="mip-img-popup-wrapper"
-                @click="hidePopup"
-            >
-                <div
-                    class="mip-img-popup-bg"
-                    :class="{
-                        show: placeImg
-                    }"
-                ></div>
-                <img
-                    :class="{'mip-img-popup-innerimg': placeImg}"
-                    :src="imgSrc"
-                    :sizes="sizes"
-                    :srcset="imgSrcset"
-                    :style="{
-                        width: computedWidth,
-                        height: computedHeight,
-                        top: popupImgTop,
-                        left: popupImgLeft
-                    }"
-
-                />
-            </div>
-        </div>
-    `,
-
+    name: 'mip-image',
     data() {
         return {
             showPopup: false,
@@ -174,3 +176,52 @@ export default {
         }
     }
 };
+</script>
+
+<style lang="less">
+@import '../../styles/variable.less';
+
+mip-img {
+    .mip-img {
+        display: inline-block;
+        font-size: 0;
+    }
+
+    .mip-img-inner {
+        position: relative;
+        background: @placeholder-bg;
+    }
+
+    .mip-img-popup-wrapper {
+        z-index: 9999;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        .mip-img-popup-bg {
+            height: 100%;
+            background: rgba(0, 0, 0, 1);
+            transition: all ease .4s;
+            opacity: 0;
+            &.show {
+                opacity: 1;
+            }
+        }
+        img {
+            position: absolute;
+            transition: all ease .3s;
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .mip-img-popup-innerimg {
+            width: 100% !important;
+            height: auto !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%);
+        }
+    }
+}
+</style>

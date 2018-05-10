@@ -4,11 +4,7 @@
  * @author zhangzhiqiang37(zhiqiangzhang37@163.com)
  */
 
-import util from '../../util';
-const httpsReg = /^https:|^\/\//;
-const windowInIframe = util.viewer.isIframed;
-
-let template = `
+<template>
     <div
         class="mip-video"
         :style="{
@@ -50,11 +46,14 @@ let template = `
             </div>
         </div>
     </div>
-`;
+</template>
+
+<script>
+import util from '../../util';
+const httpsReg = /^https:|^\/\//;
+const windowInIframe = util.viewer.isIframed;
 
 export default {
-    template,
-
     props: {
         layout: {
             default() {
@@ -170,3 +169,55 @@ export default {
         }
     }
 };
+</script>
+
+<style lang="less">
+@import '../../styles/variable.less';
+
+mip-video {
+    background: #000;
+    font-size: 0;
+    .mip-video {
+        display: inline-block;
+    }
+    .mip-video-inner {
+        background: @placeholder-bg;
+        position: relative;
+    }
+    .mip-video-playbtn {
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        border: 4px solid white;
+        border-radius: 100%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.3);
+        -webkit-tap-highlight-color: rbga(0, 0, 0, 0.3);
+        tap-highlight-color: rbga(0, 0, 0, 0.3);
+        &:before {
+            content: '';
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            border-style: solid;
+            border-width: 16px 0 16px 26px;
+            border-color: transparent transparent transparent white;
+            left: 20px;
+            top: 14px;
+        }
+    }
+    .mip-video-poster {
+        height: 100%;
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
+</style>

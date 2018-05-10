@@ -2,13 +2,12 @@
  * @file index.js
  * @author mj(zoumiaojiang@gmail.com)
  */
-
-let template = `
+<template>
     <div class="mip-iframe"></div>
-`;
+</template>
 
+<script>
 export default {
-    template,
     props: {
         src: String,
         width: [Number, String],
@@ -19,3 +18,21 @@ export default {
         allowtransparency: [String]
     }
 };
+</script>
+
+<style lang="less">
+mip-iframe {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    iframe {
+        display: block;
+        width: 100px;
+        min-width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+}
+</style>

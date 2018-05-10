@@ -15,7 +15,7 @@
             @after-enter="onAfterEnter"
             @before-leave="onBeforeLeave">
             <mip-view
-                :class="[pageTransitionClass]"
+                :class="['mip-appshell-router-view', pageTransitionClass]"
                 :key="routerViewKey"
                 :data-page-id="$route.fullPath">
             </mip-view>

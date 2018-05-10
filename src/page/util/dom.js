@@ -109,7 +109,10 @@ export function getMIPContent(rawContent) {
     }
 
     // Create a root node
-    return `<div id="${MIP_VIEW_ID}" class="mip-appshell-router-view ${scope}">${rawResult}</div>`;
+    return {
+        mipContent: rawResult,
+        scope
+    };
 }
 
 // Add v-pre for each <mip-*>
