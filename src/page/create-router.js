@@ -10,7 +10,7 @@ import ErrorPage from './vue-components/error-page';
  * @param {Object?} routeOptions route's options
  * @return {Object} routeObject
  */
-function getRoute(rawHTML, routeOptions = {}, options) {
+function getRoute(rawHTML, routeOptions = {}, initOptions) {
     let MIPRouterTitle = util.getMIPTitle(rawHTML);
 
     return Object.assign({
@@ -23,16 +23,25 @@ function getRoute(rawHTML, routeOptions = {}, options) {
             },
             beforeRouteEnter(to, from, next) {
                 next(vm => {
-                    document.title = vm.$parent.MIPRouterTitle = vm.MIPRouterTitle;
-                    if (options) {
-                        vm.$parent.MIPRouterIcon = options.icon;
-                        let pageTransitionType = options.pageTransitionType || 'fade';
-                        vm.$parent.pageTransitionType = pageTransitionType;
-                        vm.$parent.pageTransitionEffect = pageTransitionType === 'slide' ?
-                            (util.isForward(to, from) ? 'slide-left' : 'slide-right')
+                    let parent = vm.$parent;
+                    document.title = parent.MIPRouterTitle = vm.MIPRouterTitle;
+
+                    if (initOptions) {
+                        parent.MIPRouterIcon = initOptions.icon;
+                        let pageTransitionType = initOptions.pageTransitionType || 'fade';
+                        parent.pageTransitionType = pageTransitionType;
+                        parent.pageTransitionEffect = parent.pageTransitionType === 'slide'
+                            ? 'slide-left'
                             : pageTransitionType;
                     }
                 });
+            },
+            beforeRouteLeave(to, from, next) {
+                let parent = this.$parent;
+                parent.pageTransitionEffect = parent.pageTransitionType === 'slide'
+                    ? (util.isForward(to, from) ? 'slide-left' : 'slide-right')
+                    : parent.pageTransitionType;
+                next();
             }
         }
     }, routeOptions);

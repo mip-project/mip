@@ -27,7 +27,7 @@ let HISTORY_STACK = [];
  * @type {String}
  * @const
  */
-const LAVAS_HISTORY_ARRAY_STACK_LOCAL_KEY = 'LAVAS_HISTORY_ARRAY_STACK_LOCAL_KEY';
+const MIP_HISTORY_ARRAY_STACK_LOCAL_KEY = 'MIP_HISTORY_ARRAY_STACK_LOCAL_KEY';
 
 /**
  * 用于存储历史state记录到localStorage的key
@@ -35,7 +35,7 @@ const LAVAS_HISTORY_ARRAY_STACK_LOCAL_KEY = 'LAVAS_HISTORY_ARRAY_STACK_LOCAL_KEY
  * @type {String}
  * @const
  */
-const LAVAS_HISTORY_STATE_STACK_LOCAL_KEY = 'LAVAS_HISTORY_STATE_STACK_LOCAL_KEY';
+const MIP_HISTORY_STATE_STACK_LOCAL_KEY = 'MIP_HISTORY_STATE_STACK_LOCAL_KEY';
 
 /**
  * 使用history API记录的state数组
@@ -65,7 +65,7 @@ function initHistoryStateStack() {
     // 如果当前tab有历史条目，那么应该把之前存储的state list读取出来
     if (history.length > 1) {
         try {
-            let historyState = JSON.parse(localStorage.getItem(LAVAS_HISTORY_STATE_STACK_LOCAL_KEY));
+            let historyState = JSON.parse(localStorage.getItem(MIP_HISTORY_STATE_STACK_LOCAL_KEY));
             if (historyState && historyState.length) {
                 // 为了有效控制localStorage大小，每次读取时应该只读取不大于当前tab历史条目长度
                 // 因为大于历史条目长度之前的记录都是过期的state，无需读取
@@ -97,7 +97,7 @@ function initHistoryArrayStack(routerBase) {
     try {
         // 如果localStorage中有历史访问记录，且最新一条和当前访问的是同一个页面
         // 那应该把之前的记录也加进来，主要解决在访问过程中刷新导致history列表丢失的问题
-        let historyStack = JSON.parse(localStorage.getItem(LAVAS_HISTORY_ARRAY_STACK_LOCAL_KEY));
+        let historyStack = JSON.parse(localStorage.getItem(MIP_HISTORY_ARRAY_STACK_LOCAL_KEY));
         if (
             historyStack
             && historyStack.length
@@ -183,7 +183,7 @@ export function isForward(to, from) {
                 HISTORY_STATE_STACK.push(pageKey);
             }
 
-            saveHistoryToLocal(LAVAS_HISTORY_STATE_STACK_LOCAL_KEY, HISTORY_STATE_STACK);
+            saveHistoryToLocal(MIP_HISTORY_STATE_STACK_LOCAL_KEY, HISTORY_STATE_STACK);
         }, 300);
     }
     // 使用array判断
@@ -195,7 +195,7 @@ export function isForward(to, from) {
             HISTORY_STACK.push(to.fullPath);
         }
 
-        saveHistoryToLocal(LAVAS_HISTORY_ARRAY_STACK_LOCAL_KEY, HISTORY_STACK);
+        saveHistoryToLocal(MIP_HISTORY_ARRAY_STACK_LOCAL_KEY, HISTORY_STACK);
     }
 
     // 以下属于强行更改方向系列
