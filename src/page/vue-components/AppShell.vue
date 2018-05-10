@@ -3,6 +3,7 @@
         <app-header
             ref="appHeader"
             :title="MIPRouterTitle"
+            :icon="MIPRouterIcon"
             @click-back="onClickHeaderBack">
         </app-header>
         <div v-show="showLoading" class="mip-appshell-router-view-mask">
@@ -27,6 +28,7 @@ import AppHeader from './AppHeader.vue';
 import Loading from './Loading.vue';
 import * as constants from '../const';
 import {restoreContainerScrollPosition, restoreBodyScrollPosition} from '../util';
+import Store from '../../vuex/index';
 
 const CONTAINER_ID = constants.MIP_CONTAINER_ID;
 
@@ -52,6 +54,7 @@ export default {
         return {
             CONTAINER_ID,
             MIPRouterTitle: '',
+            MIPRouterIcon: undefined,
             scrollPostionMap: {},
             pageTransitionType: 'fade',
             pageTransitionEffect: 'fade',
