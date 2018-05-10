@@ -39,7 +39,6 @@ export default {
     },
     computed: {
         pageTransitionClass() {
-            console.log(this)
             return `transition-${this.pageTransitionType}`;
         },
         routerViewKey() {
