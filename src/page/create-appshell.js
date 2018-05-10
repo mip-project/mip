@@ -1,13 +1,15 @@
 import * as constants from './const';
 import {restoreContainerScrollPosition, restoreBodyScrollPosition} from './util';
 import AppHeader from './vue-components/app-header';
+import Loading from './vue-components/loading';
 
 const CONTAINER_ID = constants.MIP_CONTAINER_ID;
 
 export default function createAppShell({Vue, router, store}) {
     new Vue({
         components: {
-            'app-header': AppHeader
+            'app-header': AppHeader,
+            'loading': Loading
         },
         router,
         store,
@@ -15,9 +17,13 @@ export default function createAppShell({Vue, router, store}) {
         template: `
             <div id="${CONTAINER_ID}">
                 <app-header
+                    ref="appHeader"
                     :title="MIPRouterTitle"
                     @click-back="onClickHeaderBack">
                 </app-header>
+                <div v-show="showLoading" class="mip-appshell-router-view-mask">
+                    <loading size="50" indeterminate></loading>
+                </div>
                 <transition
                     :name="pageTransitionEffect"
                     @before-enter="onBeforeEnter"
@@ -49,8 +55,15 @@ export default function createAppShell({Vue, router, store}) {
                 MIPRouterTitle: '',
                 scrollPostionMap: {},
                 pageTransitionType: 'fade',
-                pageTransitionEffect: 'fade'
+                pageTransitionEffect: 'fade',
+                showLoading: true
             }
+        },
+        mounted() {
+            document.documentElement.setAttribute('mip-ready', null);
+            setTimeout(() => {
+                this.showLoading = false;
+            }, 500);
         },
         methods: {
             onClickHeaderBack() {

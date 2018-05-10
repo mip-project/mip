@@ -1,3 +1,22 @@
+@appshell-header-height: 44px;
+
+@loading-color: #1867c0;
+@progress-circular-rotate-animation: progress-circular-rotate 1.4s linear infinite;
+@progress-circular-rotate-dash: progress-circular-dash 1.4s ease-in-out infinite;
+@progress-circular-overlay-transition: all .6s ease-in-out;
+@progress-circular-intermediate-svg-transition: all .2s ease-in-out;
+
+[mip] {
+    display: none;
+}
+[mip-ready] {
+    display: block;
+}
+
+[mip-cloak] {
+    display: none !important;
+}
+
 .mip-appshell-header {
     position: fixed;
     right: 0;
@@ -5,21 +24,51 @@
     display: flex;
     align-items: center;
     z-index: 140;
-    height: 44px;
-    line-height: 44px;
+    height: @appshell-header-height;
+    line-height: @appshell-header-height;
     font-size: 16px;
     border-bottom: 1px solid #eee;
     background: white;
+    padding: 0 16px 0 6px;
 
     &-icon {
         height: 32px;
         width: 32px;
     }
+
+    &-title {
+        flex: 1;
+    }
+
+    &-button {
+        display: inline-block;
+        width: 56px;
+        height: 25px;
+        font-size: 12px;
+        box-sizing: border-box;
+        text-align: center;
+        padding: 3px 0px;
+        line-height: 19px;
+        border-radius: 2px;
+
+        &-chat {
+            color: #3C76FF;
+            border: 1px solid #3C76FF;
+            background: #fff;
+            margin-right: 8px;
+        }
+
+        &-subscribe {
+            color: #fff;
+            border: 1px solid #3897F0;
+            background: #3897F0;
+        }
+    }
 }
 
 .mip-appshell-router-view {
     position: absolute;
-    top: 44px;
+    top: @appshell-header-height;
     right: 0;
     bottom: 0;
     left: 0;
@@ -65,5 +114,81 @@
         &.slide-right-leave-active {
             overflow-y: auto;
         }
+    }
+}
+
+.mip-appshell-router-view-mask {
+    position: absolute;
+    top: @appshell-header-height;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    z-index: 10;
+    touch-action: none;
+}
+
+.mip-loading {
+    position: relative;
+    display: inline-flex;
+    color: @loading-color;
+
+    svg {
+        width: 100%;
+        height: 100%;
+        margin: auto;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 0;
+    }
+
+    &--indeterminate {
+        svg {
+            animation: @progress-circular-rotate-animation;
+            transform-origin: center center;
+            transition: @progress-circular-intermediate-svg-transition;
+        }
+
+        .mip-loading-overlay {
+            animation: @progress-circular-rotate-dash;
+            stroke-linecap: round;
+            stroke-dasharray: 80,200;
+            stroke-dashoffset: 0px;
+        }
+    }
+
+    &-overlay {
+        stroke: currentColor;
+        z-index: 2;
+        transition: @progress-circular-overlay-transition;
+    }
+}
+
+@keyframes progress-circular-dash {
+    0% {
+        stroke-dasharray: 1,200;
+        stroke-dashoffset: 0px;
+    }
+
+    50% {
+        stroke-dasharray: 100,200;
+        stroke-dashoffset: -15px;
+    }
+
+    100% {
+        stroke-dasharray: 100,200;
+        stroke-dashoffset: -125px;
+    }
+}
+
+@keyframes progress-circular-rotate {
+    100% {
+        transform: rotate(360deg);
     }
 }
