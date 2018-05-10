@@ -156,7 +156,7 @@ function initStore(vm) {
     storeModule.namespaced = true;
 
     // register once
-    if (!vm.$store._modulesNamespaceMap[namespace + '/']) {
+    if (vm.$store && !vm.$store._modulesNamespaceMap[namespace + '/']) {
         vm.$store.registerModule(namespace, storeModule);
     }
 }

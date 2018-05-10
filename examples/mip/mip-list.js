@@ -6,7 +6,7 @@
 /* global mip */
 
 function mockMustacheRender(template, data) {
-    return template.replace(/\{\{(\w+)\}\}/g, item => data[RegExp.$1]);
+    return template.replace(/\{\{(\w+)\}\}/g, item => data[item.replace(/[\{\}]/ig, '')]);
 }
 
 mip.customElement('mip-list', {
