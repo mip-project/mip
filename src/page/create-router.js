@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as util from './util';
 import {MIP_ERROR_ROUTE_PATH} from './const';
 import ErrorPage from './vue-components/error-page';
+// import RouterView from './vue-components/RouterView.vue';
 
 /**
  * extract route object from current DOM tree or raw HTML.
@@ -12,14 +13,21 @@ import ErrorPage from './vue-components/error-page';
  */
 function getRoute(rawHTML, routeOptions = {}) {
     let MIPRouterTitle = util.getMIPTitle(rawHTML);
+    let mipContent = util.getMIPContent(rawHTML);
 
     return Object.assign({
         component: {
-            template: util.getMIPContent(rawHTML),
             data() {
                 return {
                     MIPRouterTitle
                 };
+            },
+            render(createElement) {
+                return createElement('div', {
+                    domProps: {
+                        innerHTML: mipContent
+                    }
+                });
             },
             beforeRouteEnter(to, from, next) {
                 next(vm => {

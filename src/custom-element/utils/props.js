@@ -136,7 +136,11 @@ export function getPropsData(element, componentDefinition, props) {
         let propCamelCase = props.camelCase[index];
         let type = null;
         let propValue = element.attributes[name]
-            || element[propCamelCase]
+            /**
+             * 这里有一个 bug：<mip-link append> 使用的 append 属性，在 DOM Element 是一个 Function
+             * 此时 props 初始化就出错了。
+             */
+            // || element[propCamelCase]
             || propsData[name];
 
         if (props.types[propCamelCase]) {

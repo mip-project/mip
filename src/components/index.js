@@ -3,18 +3,23 @@
  * @author huanghuiquan (huanghuiquan@baidu.com)
  */
 
-import mipImg from './mip-img';
-import mipIframe from './mip-iframe';
-import mipVideo from './mip-video';
+import MipImg from './mip-img/MipImg.vue';
+import mipIframe from './mip-iframe/MipIframe.vue';
+import mipVideo from './mip-video/MipVideo.vue';
 import mipStore from './mip-store';
-import mipCarousel from './mip-carousel';
+import mipCarousel from './mip-carousel/MipCarousel.vue';
 import mipPix from './mip-pix';
+import mipLink from './mip-link';
 
 function install(Vue) {
     Vue.__customElements__ = [
         {
+            tag: 'mip-link',
+            component: mipLink
+        },
+        {
             tag: 'mip-img',
-            component: mipImg
+            component: MipImg
         },
         {
             tag: 'mip-iframe',
