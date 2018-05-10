@@ -5,12 +5,11 @@
 
 import * as util from './util';
 import * as constants from './const';
-
-import createAppShell from './create-appshell';
+import AppShell from './vue-components/AppShell.vue';
 
 const CONTAINER_ID = constants.MIP_CONTAINER_ID;
 
-const start = function ({Vue, Router}, store, router) {
+const start = function ({Vue}, store, router) {
     // Configure mip
     Vue.config.ignoredElements = [
       /^mip-/
@@ -19,11 +18,12 @@ const start = function ({Vue, Router}, store, router) {
     // Create mip container
     util.createContainer(CONTAINER_ID);
 
-    window.onload = () => {
-        createAppShell({
-            Vue,
+    window.onload = function () {
+        new Vue({
+            ...AppShell,
             router,
-            store
+            store,
+            el: `#${CONTAINER_ID}`,
         });
     };
 }
