@@ -56,7 +56,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 mip-iframe {
     display: block;
     position: relative;

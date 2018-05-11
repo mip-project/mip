@@ -57,9 +57,9 @@ class Resources {
 
             setTimeout(() => {
                 scrollLock = false;
-            }, 80);
+            }, 30);
             scrollLock = true;
-            this.updateState();console.log('scroll')
+            this.updateState();
 
         });
         this.gesture.on('swipe', (e, data) => {

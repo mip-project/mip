@@ -96,8 +96,7 @@ export default {
 </script>
 
 <style lang="less">
-@appshell-header-height: 44px;
-
+@import './src/styles/mip.less';
 
 [mip-ready] {
     display: block;
