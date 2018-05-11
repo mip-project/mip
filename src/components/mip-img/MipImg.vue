@@ -72,7 +72,8 @@ export default {
             showPopup: false,
             popupImgTop: '',
             popupImgLeft: '',
-            placeImg: false
+            placeImg: false,
+            imgSrc: undefined
         };
     },
 
@@ -126,9 +127,9 @@ export default {
             return this.popup !== undefined;
         },
 
-        imgSrc() {
-            return util.makeCacheUrl(this.src, 'img');
-        },
+        // imgSrc() {
+        //     return util.makeCacheUrl(this.src, 'img');
+        // },
 
         imgSrcset() {
             let imgSrcset = this.srcset;
@@ -173,6 +174,10 @@ export default {
             setTimeout(() => {
                 this.showPopup = false;
             }, 300);
+        },
+
+        firstInviewCallback() {
+            this.imgSrc = util.makeCacheUrl(this.src, 'img');
         }
     }
 };

@@ -7,9 +7,24 @@ import registerCustomElement from './utils/register-custom-element';
 import createVueInstance from './utils/create-vueInstance';
 import {getProps, convertAttributeValue} from './utils/props';
 import {camelize} from './utils/helpers';
+import resources from './utils/resources';
 
 function install(Vue, store, router) {
     Vue.customElement = function vueCustomElement(tag, componentDefinition, options = {}) {
+
+        // 添加一个是否在可视区域的prop
+        componentDefinition.props = componentDefinition.props || {};
+        componentDefinition.props[resources.firstInviewPropName] = [Number, String];
+        componentDefinition.watch = {
+            [resources.firstInviewPropName](v) {
+                if (v && !this.firstInviewDone) {
+                    let cb = this.firstInviewCallback;
+                    cb && typeof cb === 'function' && this.firstInviewCallback();
+                    this.firstInviewDone = true;
+                }
+            }
+        };
+
         const isAsyncComponent = typeof componentDefinition === 'function';
         const optionsProps = isAsyncComponent && {
             props: options.props || []
@@ -22,6 +37,7 @@ function install(Vue, store, router) {
             },
 
             connectedCallback() {
+                let element;
                 const asyncComponentPromise = isAsyncComponent && componentDefinition();
                 const isAsyncComponentPromise = asyncComponentPromise
                     && asyncComponentPromise.then
@@ -37,7 +53,7 @@ function install(Vue, store, router) {
                     if (isAsyncComponentPromise) {
                         asyncComponentPromise.then(lazyLoadedComponent => {
                             const lazyLoadedComponentProps = getProps(lazyLoadedComponent);
-                            createVueInstance(
+                            element = createVueInstance(
                                 this,
                                 {Vue, store, router},
                                 lazyLoadedComponent,
@@ -47,13 +63,14 @@ function install(Vue, store, router) {
                         });
                     }
                     else {
-                        createVueInstance(
+                        element = createVueInstance(
                             this,
                             {Vue, store, router},
                             componentDefinition,
                             props,
                             options
                         );
+                        resources.add(element);
                     }
                 }
 

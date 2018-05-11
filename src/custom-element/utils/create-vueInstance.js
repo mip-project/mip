@@ -19,11 +19,10 @@ export default function createVueInstance(
         let propsData = getPropsData(element, ComponentDefinition, props);
 
         // for mip-template syntax
+        // @TODO: 这里有个 bug， 如果 Vue 不带 compiler，那这个 template 没法用，只能用 render 方法
         if (element && element.tagName.toLowerCase() === 'mip-template') {
             ComponentDefinition.template = `<div class="mip-template-wrap">${element.innerHTML}</div>`;
         }
-
-        let vueVersion = (Vue.version && parseInt(Vue.version.split('.')[0], 10)) || 0;
 
         // Auto event handling based on $emit
         function beforeCreate() { // eslint-disable-line no-inner-declarations
@@ -44,61 +43,38 @@ export default function createVueInstance(
         }
 
         let rootElement;
+        let elementOriginalChildren = element.cloneNode(true).childNodes; // clone hack due to IE compatibility
 
-        if (vueVersion >= 2) {
-            let elementOriginalChildren = element.cloneNode(true).childNodes; // clone hack due to IE compatibility
-            // Vue 2+
-            rootElement = {
-                propsData,
-                props: props.camelCase,
-                computed: {
-                    reactiveProps() {
-                        let reactivePropsList = {};
-                        props.camelCase.forEach(prop => {
-                            reactivePropsList[prop] = this[prop];
-                        });
+        rootElement = {
+            propsData,
+            props: props.camelCase,
+            computed: {
+                reactiveProps() {
+                    let reactivePropsList = {};
+                    props.camelCase.forEach(prop => {
+                        reactivePropsList[prop] = this[prop];
+                    });
 
-                        return reactivePropsList;
-                    }
-                },
-
-                /* eslint-disable */
-                render(createElement) {
-                    let data = {
-                        props: this.reactiveProps
-                    };
-
-                    return createElement(
-                        ComponentDefinition,
-                        data,
-                        getSlots(elementOriginalChildren, createElement)
-                    );
+                    return reactivePropsList;
                 }
+            },
 
-                /* eslint-enable */
-            };
-        }
-        // else if (vueVersion === 1) {
-        //     // Fallback for Vue 1.x
-        //     rootElement = ComponentDefinition;
-        //     rootElement.propsData = propsData;
-        // }
-        else {
-            // Fallback for older Vue versions
-            rootElement = ComponentDefinition;
-            let propsWithDefault = {};
-            Object.keys(propsData)
-                .forEach(prop => {
-                    propsWithDefault[prop] = {
-                        'default': propsData[prop]
-                    };
-                });
-            rootElement.props = propsWithDefault;
-        }
+            /* eslint-disable */
+            render(createElement) {
+                let data = {
+                    props: this.reactiveProps
+                };
 
-        let elementInnerHtml = vueVersion >= 2
-            ? '<div></div>'
-            : `<div>${element.innerHTML}</div>`.replace(/vue-slot=/g, 'slot=');
+                return createElement(
+                    ComponentDefinition,
+                    data,
+                    getSlots(elementOriginalChildren, createElement)
+                );
+            }
+            /* eslint-enable */
+        };
+        let elementInnerHtml = '<div></div>';
+
         if (options.shadow && element.shadowRoot) {
             element.shadowRoot.innerHTML = elementInnerHtml;
             rootElement.el = element.shadowRoot.children[0];
@@ -134,5 +110,7 @@ export default function createVueInstance(
         element.removeAttribute('vce-cloak');
         element.setAttribute('vce-ready', '');
         customEmit(element, 'vce-ready');
+
+        return element;
     }
 }
