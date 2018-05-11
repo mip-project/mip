@@ -32,7 +32,7 @@ export default {
 </script>
 
 <style lang="less">
-@appshell-header-height: 44px;
+@import './src/styles/variable.less';
 
 .mip-appshell-header {
     position: fixed;
