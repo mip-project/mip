@@ -12,6 +12,7 @@ const node = require('rollup-plugin-node-resolve');
 const async = require('rollup-plugin-async');
 const less = require('rollup-plugin-less');
 const vue = require('rollup-plugin-vue2');
+const uglify = require('rollup-plugin-uglify');
 const version = process.env.VERSION || require('../package.json').version;
 const aliases = require('./alias');
 const fs = require('fs-extra');
@@ -51,6 +52,7 @@ const builds = {
         entry: resolve('src/index.js'),
         dest: resolve('dist/mip.min.js'),
         format: 'umd',
+        env: 'production',
         alias: {
             he: './entity-decoder'
         },
@@ -99,6 +101,9 @@ function genConfig(name) {
         config.plugins.push(replace({
             'process.env.NODE_ENV': JSON.stringify(opts.env)
         }));
+        if (opts.env === 'production') {
+            config.plugins.push(uglify());
+        }
     }
 
     Object.defineProperty(config, '_name', {
