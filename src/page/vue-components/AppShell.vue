@@ -98,9 +98,7 @@ export default {
 <style lang="less">
 @appshell-header-height: 44px;
 
-[mip] {
-    display: none;
-}
+
 [mip-ready] {
     display: block;
 }
