@@ -30,8 +30,5 @@ mip.customElement('mip-contacts', {
             'contacts',
             'users'
         ])
-    },
-    mounted() {
-        console.log('on contacts mounted', this.group)
     }
 });
