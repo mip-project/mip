@@ -60,6 +60,7 @@ export class History {
           } else {
             this.push(to);
           }
+          return;
         }
 
         this.transitionTo(location, onComplete, onAbort, true);

@@ -183,7 +183,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @import './src/styles/variable.less';
 
 mip-img {
