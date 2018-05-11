@@ -99,6 +99,44 @@ const builds = {
             }),
             uglify()
         ]
+    },
+    'router': {
+        entry: resolve('src/router/index.js'),
+        dest: resolve('dist/router.min.js'),
+        format: 'umd',
+        env: 'production',
+        alias: {
+            he: './entity-decoder'
+        },
+        banner,
+        plugins: [
+            node({
+                jsNext: true,
+                main: true,
+                browser: true
+            }),
+            cjs(),
+            uglify()
+        ]
+    },
+    'store': {
+        entry: resolve('src/vuex/index.js'),
+        dest: resolve('dist/vuex.min.js'),
+        format: 'umd',
+        env: 'production',
+        alias: {
+            he: './entity-decoder'
+        },
+        banner,
+        plugins: [
+            node({
+                jsNext: true,
+                main: true,
+                browser: true
+            }),
+            cjs(),
+            uglify()
+        ]
     }
 };
 
