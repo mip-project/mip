@@ -9,9 +9,9 @@ let count = 0;
 
 mip.customElement('mip-init', {
     template: `
-        <div>
+        <div class="wrapper">
             <h2>moduleName: {{moduleName}}</h2>
-            <ul v-if="tabNames && tabNames.length">
+            <ul v-if="tabNames && tabNames.length" class="list">
                 <li v-for="name in tabNames">{{name}}</li>
             </ul>
             <p @click="changeName('test')">click me to change moduleNam to: test</p>
@@ -39,6 +39,9 @@ mip.customElement('mip-init', {
                             },
                             {
                                 name: 'tab2'
+                            },
+                            {
+                                name: 'tab3'
                             }
                         ]
                     };
