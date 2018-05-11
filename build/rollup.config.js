@@ -17,6 +17,7 @@ const version = process.env.VERSION || require('../package.json').version;
 const aliases = require('./alias');
 const fs = require('fs-extra');
 const autoprefixer = require('autoprefixer');
+const csso = require('postcss-csso');
 const banner = '/* mip */';
 
 const resolve = p => {
@@ -72,12 +73,12 @@ const builds = {
             vue({
                 css: false,
                 style: {
-                    preprocessOptions: {
-                        less: {
-                            compress: true,
-                            relativeUrls: true
-                        }
-                    },
+                    // preprocessOptions: {
+                    //     less: {
+                    //         compress: true,
+                    //         relativeUrls: true
+                    //     }
+                    // },
                     postcssPlugins: [
                         autoprefixer({
                             browsers: [
@@ -85,7 +86,8 @@ const builds = {
                                 'last 2 versions',
                                 'ie 9-10'
                             ]
-                        })
+                        }),
+                        csso()
                     ]
                 }
             }),
