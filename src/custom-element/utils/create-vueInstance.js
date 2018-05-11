@@ -134,5 +134,7 @@ export default function createVueInstance(
         element.removeAttribute('vce-cloak');
         element.setAttribute('vce-ready', '');
         customEmit(element, 'vce-ready');
+
+        return element;
     }
 }
