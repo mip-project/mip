@@ -10,12 +10,13 @@ const cjs = require('rollup-plugin-commonjs');
 const replace = require('rollup-plugin-replace');
 const node = require('rollup-plugin-node-resolve');
 const async = require('rollup-plugin-async');
-const less = require('rollup-plugin-less');
-const vue = require('rollup-plugin-vue2');
+const vue = require('rollup-plugin-vue');
+const css = require('rollup-plugin-css-only');
+const uglify = require('rollup-plugin-uglify');
 const version = process.env.VERSION || require('../package.json').version;
 const aliases = require('./alias');
 const fs = require('fs-extra');
-
+const autoprefixer = require('autoprefixer');
 const banner = '/* mip */';
 
 const resolve = p => {
@@ -44,13 +45,15 @@ const builds = {
                 main: true,
                 browser: true
             }),
-            cjs()
+            cjs(),
+            vue(), // dev 模式不启用样式分离
         ]
     },
     'web-full-prod': {
         entry: resolve('src/index.js'),
         dest: resolve('dist/mip.min.js'),
         format: 'umd',
+        env: 'production',
         alias: {
             he: './entity-decoder'
         },
@@ -61,7 +64,32 @@ const builds = {
                 main: true,
                 browser: true
             }),
-            cjs()
+            cjs(),
+            css({
+                include: '**/*.css?*',
+                output: resolve('dist/mip.css')
+            }),
+            vue({
+                css: false,
+                style: {
+                    preprocessOptions: {
+                        less: {
+                            compress: true,
+                            relativeUrls: true
+                        }
+                    },
+                    postcssPlugins: [
+                        autoprefixer({
+                            browsers: [
+                                '> 1%',
+                                'last 2 versions',
+                                'ie 9-10'
+                            ]
+                        })
+                    ]
+                }
+            }),
+            uglify()
         ]
     }
 };
@@ -78,10 +106,6 @@ function genConfig(name) {
         plugins: (opts.plugins || []).concat(...[
             replace({
                 __VERSION__: version
-            }),
-            vue({css: false}),
-            less({
-                output: resolve('dist/mip.css')
             }),
             async(),
             babel(),
