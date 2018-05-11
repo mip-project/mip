@@ -65,7 +65,7 @@ export default {
         document.documentElement.setAttribute('mip-ready', '');
         setTimeout(() => {
             this.showLoading = false;
-        }, 500);
+        }, 320);
     },
     methods: {
         onClickHeaderBack() {

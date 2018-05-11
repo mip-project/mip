@@ -4,7 +4,7 @@
  * @type {Array.<string>}
  * @const
  */
-const ALWAYS_BACK_PAGE = [];
+let ALWAYS_BACK_PAGE = [];
 
 /**
  * to 如果在这个列表中，始终采用从右到左的滑动效果
@@ -12,7 +12,7 @@ const ALWAYS_BACK_PAGE = [];
  * @type {Array.<string>}
  * @const
  */
-const ALWAYS_FORWARD_PAGE = [];
+let ALWAYS_FORWARD_PAGE = [];
 
 /**
  * 历史记录，记录访问过的页面的 fullPath
@@ -200,12 +200,12 @@ export function isForward(to, from) {
 
     // 以下属于强行更改方向系列
     // to 如果在这个列表中，始终认为是后退
-    if (to.name && ALWAYS_BACK_PAGE.indexOf(to.name) !== -1) {
+    if (to.path && ALWAYS_BACK_PAGE.indexOf(to.path) !== -1) {
 
         res = false;
     }
     // 如果在这个列表中，始终认为是前进
-    else if (to.name && ALWAYS_FORWARD_PAGE.indexOf(to.name) !== -1) {
+    else if (to.path && ALWAYS_FORWARD_PAGE.indexOf(to.path) !== -1) {
         res = true;
     }
 
@@ -218,5 +218,23 @@ export function initHistory({base}) {
     }
     else {
         initHistoryArrayStack(base);
+    }
+}
+
+export function addAlwaysBackPage(pages) {
+    if (Array.isArray(pages)) {
+        ALWAYS_BACK_PAGE = ALWAYS_BACK_PAGE.concat(pages);
+    }
+    else {
+        ALWAYS_BACK_PAGE.push(pages);
+    }
+}
+
+export function addAlwaysForwardPage(pages) {
+    if (Array.isArray(pages)) {
+        ALWAYS_FORWARD_PAGE = ALWAYS_FORWARD_PAGE.concat(pages);
+    }
+    else {
+        ALWAYS_FORWARD_PAGE.push(pages);
     }
 }

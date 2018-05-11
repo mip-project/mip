@@ -53,6 +53,7 @@ const builds = {
         entry: resolve('src/index.js'),
         dest: resolve('dist/mip.min.js'),
         format: 'umd',
+        env: 'production',
         alias: {
             he: './entity-decoder'
         },
