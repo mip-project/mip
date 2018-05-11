@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "rollup -w -c build/rollup.config.js --environment TARGET:web-full-dev",
     "dev:page": "node examples/server.js",
-    "build": "node build/build.js"
+    "build": "rollup -c build/rollup.config.js --environment TARGET:web-full-prod"
   },
   "repository": {
     "type": "git",

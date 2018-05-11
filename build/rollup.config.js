@@ -30,7 +30,7 @@ const resolve = p => {
 const builds = {
     // Runtime+compiler development build (Browser)
     'web-full-dev': {
-        entry: resolve('src/index.js'),
+        entry: resolve('src/index.dev.js'),
         dest: resolve('dist/mip.js'),
         format: 'umd',
         env: 'development',
@@ -47,9 +47,9 @@ const builds = {
             cjs()
         ]
     },
-    'web-full-esm': {
+    'web-full-prod': {
         entry: resolve('src/index.js'),
-        dest: resolve('dist/mip.esm.js'),
+        dest: resolve('dist/mip.min.js'),
         format: 'umd',
         alias: {
             he: './entity-decoder'

@@ -68,9 +68,9 @@ export function getMIPTitle(rawContent) {
 }
 
 export function getMIPContent(rawContent) {
+    let rawResult = rawContent;
     let scope = generateScope();
-    let rawResult = addVPre(rawContent);
-    if (!rawContent) {
+    if (!rawResult) {
         // Process scoped styles
         processMIPStyle(scope);
 
@@ -91,7 +91,7 @@ export function getMIPContent(rawContent) {
     }
     else {
         // Process scoped styles
-        processMIPStyle(scope, rawContent);
+        processMIPStyle(scope, rawResult);
 
         let match = rawResult.match(/<\bbody\b.*>([\s\S]+)<\/body>/i);
 
@@ -112,51 +112,6 @@ export function getMIPContent(rawContent) {
         mipContent: rawResult,
         scope
     };
-}
-
-// Add v-pre for each <mip-*>
-// These tags should be rendered by Custom Element, rather than Vue.
-function addVPre(rawContent) {
-    if (!rawContent) {
-        let addVPreInner = function (node) {
-            let tagName = node.tagName.toLowerCase();
-            if (/^mip-/.test(tagName)) {
-                if (tagName !== 'mip-link' && tagName !== 'mip-view') {
-                    node.setAttribute('v-pre', '');
-                }
-            }
-            // for prevent vue to render mustache template of MIP1.0
-            if (tagName === 'template' && node.getAttribute('type') === 'mip-mustache') {
-                let div = document.createElement('div');
-                div.setAttribute('type', 'mip-mustache');
-                div.className = 'mip-hidden';
-                div.innerHTML = node.innerHTML;
-                node.parentNode.appendChild(div);
-                node.remove(node);
-            }
-
-            for (let i = 0; i < node.children.length; i++) {
-                addVPreInner(node.children[i]);
-            }
-        }
-
-        addVPreInner(document.body);
-    }
-    else {
-        return rawContent.replace(/<mip-[^>]+/ig, function (match) {
-            if (match.indexOf('mip-link') !== -1
-                || match.indexOf('mip-view') !== -1) {
-                return match;
-            }
-
-            return match + ' v-pre';
-        }).replace(
-            /(<template.+?type\s*?=\s*(["'])mip-mustache\1.*?>)[\s\S]*?(<\/template>)/ig,
-            function (match) {
-                return match.replace(/template/ig, 'div');
-            }
-        );
-    }
 }
 
 export function processMIPStyle(scope, rawContent) {

@@ -4,7 +4,7 @@
  */
 
 import './styles/mip.less';
-import Vue from './vue/platforms/web/entry-runtime';
+import Vue from './vue/platforms/web/entry-runtime-with-compiler';
 import customElement from './custom-element/index';
 import customElementBuildInComponents from './components';
 import util from './util';
