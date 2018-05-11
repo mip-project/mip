@@ -1,7 +1,7 @@
 import { warn } from '../util/warn'
 
 export default {
-  name: 'RouterView',
+  name: 'MipView',
   functional: true,
   props: {
     name: {
