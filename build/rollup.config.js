@@ -17,6 +17,7 @@ const version = process.env.VERSION || require('../package.json').version;
 const aliases = require('./alias');
 const fs = require('fs-extra');
 const autoprefixer = require('autoprefixer');
+const csso = require('postcss-csso');
 const banner = '/* mip */';
 
 const resolve = p => {
@@ -46,7 +47,13 @@ const builds = {
                 browser: true
             }),
             cjs(),
-            vue(), // dev 模式不启用样式分离
+            css({
+                include: '**/*.css?*',
+                output: resolve('dist/mip.css')
+            }),
+            vue({
+                css: false
+            })
         ]
     },
     'web-full-prod': {
@@ -72,12 +79,12 @@ const builds = {
             vue({
                 css: false,
                 style: {
-                    preprocessOptions: {
-                        less: {
-                            compress: true,
-                            relativeUrls: true
-                        }
-                    },
+                    // preprocessOptions: {
+                    //     less: {
+                    //         compress: true,
+                    //         relativeUrls: true
+                    //     }
+                    // },
                     postcssPlugins: [
                         autoprefixer({
                             browsers: [
@@ -85,7 +92,8 @@ const builds = {
                                 'last 2 versions',
                                 'ie 9-10'
                             ]
-                        })
+                        }),
+                        csso()
                     ]
                 }
             }),
@@ -107,6 +115,7 @@ function genConfig(name) {
             replace({
                 __VERSION__: version
             }),
+
             async(),
             babel(),
             alias(Object.assign({}, aliases, opts.alias))
