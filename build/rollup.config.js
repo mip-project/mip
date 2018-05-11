@@ -47,7 +47,13 @@ const builds = {
                 browser: true
             }),
             cjs(),
-            vue(), // dev 模式不启用样式分离
+            css({
+                include: '**/*.css?*',
+                output: resolve('dist/mip.css')
+            }),
+            vue({
+                css: false
+            })
         ]
     },
     'web-full-prod': {
@@ -109,6 +115,7 @@ function genConfig(name) {
             replace({
                 __VERSION__: version
             }),
+
             async(),
             babel(),
             alias(Object.assign({}, aliases, opts.alias))
