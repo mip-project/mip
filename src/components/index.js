@@ -8,7 +8,7 @@ import mipIframe from './mip-iframe/MipIframe.vue';
 import mipVideo from './mip-video/MipVideo.vue';
 import mipStore from './mip-store';
 import mipCarousel from './mip-carousel/MipCarousel.vue';
-import mipPix from './mip-pix';
+import mipPix from './mip-pix/MipPix.vue';
 import mipData from './mip-bind';
 import mipLink from './mip-link';
 
