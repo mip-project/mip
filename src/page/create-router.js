@@ -6,7 +6,7 @@
 import axios from 'axios';
 import * as util from './util';
 import {MIP_ERROR_ROUTE_PATH, MIP_CONTAINER_ID} from './const';
-import ErrorPage from './vue-components/error-page';
+import ErrorPage from './vue-components/Error.vue';
 // import RouterView from './vue-components/RouterView.vue';
 
 /**
@@ -120,8 +120,7 @@ export default function createRouter(Router) {
                 path: MIP_ERROR_ROUTE_PATH,
                 params: {
                     error
-                },
-                replace: true
+                }
             });
         }
     };

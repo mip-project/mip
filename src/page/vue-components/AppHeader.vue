@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import Vuex from '../../vuex/index'
+
 export default {
     name: 'mip-appshell-header',
     props: {
@@ -24,9 +26,13 @@ export default {
         }
     },
     methods: {
+        ...Vuex.mapState('global', ['group']),
         onClick(source) {
             this.$emit(`click-${source}`);
         }
+    },
+    mounted() {
+        console.log('mounted', this.group)
     }
 };
 </script>
