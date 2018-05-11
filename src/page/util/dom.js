@@ -109,7 +109,7 @@ export function getMIPContent(rawContent) {
 
     // Create a root node
     return {
-        mipContent: rawResult,
+        MIPContent: rawResult,
         scope
     };
 }

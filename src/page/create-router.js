@@ -1,3 +1,8 @@
+/**
+ * @file create router
+ * @author panyuqi@baidu.com (panyuqi)
+ */
+
 import axios from 'axios';
 import * as util from './util';
 import {MIP_ERROR_ROUTE_PATH, MIP_CONTAINER_ID} from './const';
@@ -13,7 +18,7 @@ import ErrorPage from './vue-components/error-page';
  */
 function getRoute(rawHTML, routeOptions = {}, initOptions) {
     let MIPRouterTitle = util.getMIPTitle(rawHTML);
-    let {mipContent, scope} = util.getMIPContent(rawHTML);
+    let {MIPContent, scope} = util.getMIPContent(rawHTML);
 
     return Object.assign({
         component: {
@@ -25,7 +30,7 @@ function getRoute(rawHTML, routeOptions = {}, initOptions) {
             render(createElement) {
                 return createElement('div', {
                     domProps: {
-                        innerHTML: mipContent
+                        innerHTML: MIPContent
                     }
                 });
             },
@@ -78,6 +83,10 @@ export default function createRouter(Router) {
 
     if (MIPConfig.pageTransitionType === 'slide') {
         util.initHistory({base: router.options.base});
+
+        if (MIPConfig.pageTransitionAlwaysBackPages) {
+            util.addAlwaysBackPage(MIPConfig.pageTransitionAlwaysBackPages);
+        }
     }
 
     router.onMatchMiss = async function(to, from, next) {
@@ -116,20 +125,6 @@ export default function createRouter(Router) {
             });
         }
     };
-
-    // router.beforeEach((to, from, next) => {
-    //     // Multiple apps here
-    //     // Pick the main one
-    //     if (router.app) {
-    //         let effect = needSlideTransition ?
-    //             (util.isForward(to, from) ? 'slide-left' : 'slide-right')
-    //             : pageTransitionType;
-    //         router.app.icon = icon;
-    //         router.app.pageTransitionType = pageTransitionType;
-    //         router.app.pageTransitionEffect = effect;
-    //     }
-    //     next();
-    // });
 
     return router;
 }
