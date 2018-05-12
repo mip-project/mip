@@ -29,7 +29,6 @@
                 ref="img"
                 @click="popupShow"
                 :style="{
-                    width: computedWidth,
                     height: computedHeight
                 }"
             />
@@ -51,8 +50,7 @@
                 :sizes="sizes"
                 :srcset="imgSrcset"
                 :style="{
-                    width: computedWidth,
-                    height: computedHeight,
+                    width: popupImgWidth,
                     top: popupImgTop,
                     left: popupImgLeft
                 }"
@@ -70,6 +68,7 @@ export default {
     data() {
         return {
             showPopup: false,
+            popupImgWidth: '',
             popupImgTop: '',
             popupImgLeft: '',
             placeImg: false,
@@ -158,14 +157,15 @@ export default {
                 return;
             }
 
-            let {left, top} = img.getBoundingClientRect();
+            let {left, top, width} = img.getBoundingClientRect();
             this.showPopup = true;
             this.popupImgLeft = `${left}px`;
             this.popupImgTop = `${top}px`;
+            this.popupImgWidth = `${width}px`;
 
             setTimeout(() => {
                 this.placeImg = true;
-            }, 5);
+            }, 16);
 
         },
 
@@ -173,7 +173,7 @@ export default {
             this.placeImg = false;
             setTimeout(() => {
                 this.showPopup = false;
-            }, 300);
+            }, 200);
         },
 
         firstInviewCallback() {
@@ -192,6 +192,10 @@ mip-img {
         font-size: 0;
     }
 
+    img {
+        width: 100%;
+    }
+
     .mip-img-inner {
         position: relative;
         background: @placeholder-bg;
@@ -208,7 +212,7 @@ mip-img {
         .mip-img-popup-bg {
             height: 100%;
             background: rgba(0, 0, 0, 1);
-            transition: all ease .4s;
+            transition: all ease .2s;
             opacity: 0;
             &.show {
                 opacity: 1;
@@ -216,7 +220,7 @@ mip-img {
         }
         img {
             position: absolute;
-            transition: all ease .3s;
+            transition: all linear .2s;
             max-width: 100%;
             max-height: 100%;
         }
@@ -224,8 +228,8 @@ mip-img {
             width: 100% !important;
             height: auto !important;
             top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%);
+            left: 0 !important;
+            transform: translate(0, -50%);
         }
     }
 }
