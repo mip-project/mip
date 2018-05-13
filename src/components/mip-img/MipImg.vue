@@ -19,6 +19,7 @@
             }"
         >
             <img
+                :width="imgWidth"
                 :src="imgSrc"
                 :usemap="usemap"
                 :title="title"
@@ -116,6 +117,12 @@ export default {
             return /^\d+$/.test(width) ? `${width}px` : width;
         },
 
+        imgWidth() {
+            if (this.width) {
+                return '100%';
+            }
+        },
+
         computedHeight() {
             // 宽度支持写百分比等，纯数字认为是像素单位
             let height = this.height;
@@ -190,10 +197,6 @@ mip-img {
     .mip-img {
         display: inline-block;
         font-size: 0;
-    }
-
-    img {
-        width: 100%;
     }
 
     .mip-img-inner {
