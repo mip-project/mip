@@ -10,12 +10,14 @@ const cjs = require('rollup-plugin-commonjs');
 const replace = require('rollup-plugin-replace');
 const node = require('rollup-plugin-node-resolve');
 const async = require('rollup-plugin-async');
-const less = require('rollup-plugin-less');
-const vue = require('rollup-plugin-vue2');
+const vue = require('rollup-plugin-vue');
+const css = require('rollup-plugin-css-only');
+const uglify = require('rollup-plugin-uglify');
 const version = process.env.VERSION || require('../package.json').version;
 const aliases = require('./alias');
 const fs = require('fs-extra');
-
+const autoprefixer = require('autoprefixer');
+const csso = require('postcss-csso');
 const banner = '/* mip */';
 
 const resolve = p => {
@@ -44,13 +46,21 @@ const builds = {
                 main: true,
                 browser: true
             }),
-            cjs()
+            cjs(),
+            css({
+                include: '**/*.css?*',
+                output: resolve('dist/mip.css')
+            }),
+            vue({
+                css: false
+            })
         ]
     },
     'web-full-prod': {
         entry: resolve('src/index.js'),
         dest: resolve('dist/mip.min.js'),
         format: 'umd',
+        env: 'production',
         alias: {
             he: './entity-decoder'
         },
@@ -61,7 +71,71 @@ const builds = {
                 main: true,
                 browser: true
             }),
-            cjs()
+            cjs(),
+            css({
+                include: '**/*.css?*',
+                output: resolve('dist/mip.css')
+            }),
+            vue({
+                css: false,
+                style: {
+                    // preprocessOptions: {
+                    //     less: {
+                    //         compress: true,
+                    //         relativeUrls: true
+                    //     }
+                    // },
+                    postcssPlugins: [
+                        autoprefixer({
+                            browsers: [
+                                '> 1%',
+                                'last 2 versions',
+                                'ie 9-10'
+                            ]
+                        }),
+                        csso()
+                    ]
+                }
+            }),
+            uglify()
+        ]
+    },
+    'router': {
+        entry: resolve('src/router/index.js'),
+        dest: resolve('dist/router.min.js'),
+        format: 'umd',
+        env: 'production',
+        alias: {
+            he: './entity-decoder'
+        },
+        banner,
+        plugins: [
+            node({
+                jsNext: true,
+                main: true,
+                browser: true
+            }),
+            cjs(),
+            uglify()
+        ]
+    },
+    'store': {
+        entry: resolve('src/vuex/index.js'),
+        dest: resolve('dist/vuex.min.js'),
+        format: 'umd',
+        env: 'production',
+        alias: {
+            he: './entity-decoder'
+        },
+        banner,
+        plugins: [
+            node({
+                jsNext: true,
+                main: true,
+                browser: true
+            }),
+            cjs(),
+            uglify()
         ]
     }
 };
@@ -79,10 +153,7 @@ function genConfig(name) {
             replace({
                 __VERSION__: version
             }),
-            vue({css: false}),
-            less({
-                output: resolve('dist/mip.css')
-            }),
+
             async(),
             babel(),
             alias(Object.assign({}, aliases, opts.alias))

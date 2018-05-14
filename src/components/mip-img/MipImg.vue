@@ -40,8 +40,7 @@
                 :sizes="sizes"
                 :srcset="imgSrcset"
                 :style="{
-                    width: computedWidth,
-                    height: computedHeight,
+                    width: popupImgWidth,
                     top: popupImgTop,
                     left: popupImgLeft
                 }"
@@ -59,6 +58,7 @@ export default {
     data() {
         return {
             showPopup: false,
+            popupImgWidth: '',
             popupImgTop: '',
             popupImgLeft: '',
             placeImg: false,
@@ -141,7 +141,7 @@ export default {
 
             setTimeout(() => {
                 this.placeImg = true;
-            }, 5);
+            }, 16);
 
         },
 
@@ -149,7 +149,7 @@ export default {
             this.placeImg = false;
             setTimeout(() => {
                 this.showPopup = false;
-            }, 300);
+            }, 200);
         },
 
         firstInviewCallback() {
@@ -159,8 +159,8 @@ export default {
 };
 </script>
 
-<style lang="less">
-@import '../../styles/variable.less';
+<style lang="less" scoped>
+@import './src/styles/variable.less';
 
 mip-img {
     .mip-img {
@@ -184,7 +184,7 @@ mip-img {
         .mip-img-popup-bg {
             height: 100%;
             background: rgba(0, 0, 0, 1);
-            transition: all ease .4s;
+            transition: all ease .2s;
             opacity: 0;
             &.show {
                 opacity: 1;
@@ -192,7 +192,7 @@ mip-img {
         }
         img {
             position: absolute;
-            transition: all ease .3s;
+            transition: all linear .2s;
             max-width: 100%;
             max-height: 100%;
         }
@@ -200,8 +200,8 @@ mip-img {
             width: 100% !important;
             height: auto !important;
             top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%);
+            left: 0 !important;
+            transform: translate(0, -50%);
         }
     }
 }

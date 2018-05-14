@@ -57,9 +57,9 @@ class Resources {
 
             setTimeout(() => {
                 scrollLock = false;
-            }, 80);
+            }, 30);
             scrollLock = true;
-            this.updateState();console.log('scroll')
+            this.updateState();
 
         });
         this.gesture.on('swipe', (e, data) => {
@@ -127,7 +127,8 @@ class Resources {
             element.inViewport = inViewport;
         }
 
-        if (inViewport) {
+        // 确保元素还在dom树结构中
+        if (inViewport && element.parentNode) {
             // 此处特殊处理元素属性
             element[firstInviewPropName] = 1;
         }
@@ -145,6 +146,21 @@ class Resources {
             // If current element`s prerenderAllowed returns `true` always set the state to be `true`.
             let inViewport = rect.overlapping(rect.getElementRect(resources[i]), viewportRect);
             this.setInViewport(resources[i], inViewport);
+        }
+    }
+
+    /**
+     * force to set element in viewport
+     *
+     * @param  {HTMLElement} element dom node
+     */
+    prerenderElement(element) {
+        this.setInViewport(element, true);
+        let children = element.children;
+        if (children) {
+            for (let i = 0; i < children.length; i++) {
+                this.prerenderElement(children[i]);
+            }
         }
     }
 

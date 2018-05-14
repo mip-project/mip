@@ -3,7 +3,7 @@
  * @author sfe
  */
 
-import './styles/mip.less';
+// import './styles/mip.less';
 import Vue from './vue/platforms/web/entry-runtime';
 import customElement from './custom-element/index';
 import customElementBuildInComponents from './components';

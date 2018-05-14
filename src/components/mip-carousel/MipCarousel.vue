@@ -40,6 +40,9 @@
 </template>
 
 <script>
+
+import resources from '../../custom-element/utils/resources';
+
 const defaultDefer = 4000;
 const defaultTransDuration = '.3s';
 const defaultTransDurationMs = 300;
@@ -185,6 +188,23 @@ export default {
     },
 
     methods: {
+
+        // 预加载相邻的图片
+        preloadImg() {
+            let defaultSlot = this.$slots.default;
+            let length = defaultSlot.length;
+
+            let imgIndex = this.imgIndex;
+            let curNodeIdx = imgIndex - 1;
+            let nextNodeIdx = imgIndex >= length ? 0 : imgIndex;
+            let preNodeIdx = imgIndex - 2 < 0 ? length - 1 : imgIndex - 2;
+
+            // 预先加载当前和前一张和后一张图片
+            resources.prerenderElement(defaultSlot[curNodeIdx].elm);
+            resources.prerenderElement(defaultSlot[nextNodeIdx].elm);
+            resources.prerenderElement(defaultSlot[preNodeIdx].elm);
+        },
+
         // 初始化dom节点
         initEle() {
             // 没想到更好的办法来克隆节点
@@ -196,13 +216,16 @@ export default {
                 return;
             }
 
-            carouselWrapper.appendChild(defaultSlot[0].elm.cloneNode(true));
-            carouselWrapper.insertBefore(
-                defaultSlot[length - 1].elm.cloneNode(true),
-                carouselWrapper.firstChild
-            );
-            this.allWidth = carouselWrapper.offsetWidth;
-            this.translateToIdx(1);
+            this.preloadImg();
+            setTimeout(() => {
+                carouselWrapper.appendChild(defaultSlot[0].elm.cloneNode(true));
+                carouselWrapper.insertBefore(
+                    defaultSlot[length - 1].elm.cloneNode(true),
+                    carouselWrapper.firstChild
+                );
+                this.allWidth = carouselWrapper.offsetWidth;
+                this.translateToIdx(1);
+            });
 
         },
 
@@ -323,6 +346,7 @@ export default {
             setTimeout(() => {
                 this.btnLock = false;
             }, defaultTransDurationMs);
+            this.preloadImg();
         },
 
         ontouchstart(event) {
@@ -385,7 +409,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 mip-carousel a {
     -webkit-tap-highlight-color: transparent;
 }

@@ -171,8 +171,8 @@ export default {
 };
 </script>
 
-<style lang="less">
-@import '../../styles/variable.less';
+<style lang="less" scoped>
+@import './src/styles/variable.less';
 
 mip-video {
     background: #000;

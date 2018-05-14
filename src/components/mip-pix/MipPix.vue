@@ -4,6 +4,15 @@
  * @author zhangzhiqiang(zhiqiangzhang37@163.com)
  */
 
+<template>
+    <img
+        class="mip-pix"
+        :src="realSrc"
+    ></img>
+</template>
+
+<script>
+
 /**
  * 替换请求链接中的参数
  *
@@ -33,19 +42,18 @@ function getBodyAttr(attr) {
 
 export default {
 
-    template: `
-        <img
-            class="mip-pix"
-            :src="realSrc"
-        ></img>
-    `,
+    data() {
+        return {
+            realSrc: undefined
+        };
+    },
 
     props: {
         src: String
     },
 
-    computed: {
-        realSrc() {
+    methods: {
+        firstInviewCallback() {
             let src = this.src;
             // 替换通用参数
             src = addParas(src, 'TIME', Date.now());
@@ -64,9 +72,21 @@ export default {
             src = src.replace(/\$?{.+?}/g, '');
             // 去除其余 '${', '{', '}' 确保输出不包含 MIP 定义的语法
             src = src.replace(/\$?{|}/g, '');
-
-            return src;
-
+            this.realSrc = src;
         }
     }
 };
+
+</script>
+
+<style lang="less" scoped>
+
+mip-pix {
+    font-size: 0;
+    .mip-pix {
+        width: 0;
+        height: 0;
+    }
+}
+
+</style>

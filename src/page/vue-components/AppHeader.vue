@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import Vuex from '../../vuex/index'
+
 export default {
     name: 'mip-appshell-header',
     props: {
@@ -32,7 +34,7 @@ export default {
 </script>
 
 <style lang="less">
-@appshell-header-height: 44px;
+@import './src/styles/variable.less';
 
 .mip-appshell-header {
     position: fixed;
@@ -68,6 +70,10 @@ export default {
         padding: 3px 0px;
         line-height: 19px;
         border-radius: 2px;
+
+        &:active {
+            opacity: 0.2;
+        }
 
         &-chat {
             color: #3C76FF;

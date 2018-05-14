@@ -7,7 +7,6 @@
 mip.customElement('mip-contacts', {
     template: `
         <div>
-            <mip-link to="/">xx</mip-link>
             <div>hello {{group.info.name}}!</div>
             <ul v-if="contacts && contacts.length">
                 <h3>Async contacts Data below:</h3>
