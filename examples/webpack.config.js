@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const aliases = require('../build/alias');
+const version = process.env.VERSION || require('../package.json').version;
+console.log('version', version)
 
 const resolve = p => path.resolve(__dirname, '../', p);
 
@@ -45,7 +47,8 @@ module.exports = {
 
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+      '__VERSION__': JSON.stringify(version.toString())
     })
   ]
 
