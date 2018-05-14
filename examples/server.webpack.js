@@ -1,13 +1,24 @@
 /**
- * @file examples server
+ * @file examples server using webpack
  * @author wangyisheng@baidu.com (wangyisheng)
  */
 
 const express = require('express');
 const rewrite = require('express-urlrewrite');
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware')
+const WebpackConfig = require('./webpack.config')
 
 const app = express();
 const path = require('path');
+
+app.use(webpackDevMiddleware(webpack(WebpackConfig), {
+    publicPath: '/dist/',
+    stats: {
+        colors: true,
+        chunks: false
+    }
+}));
 
 app.use(express.static(path.join(__dirname, '../')));
 

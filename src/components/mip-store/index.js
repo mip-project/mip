@@ -46,6 +46,7 @@ export default {
         },
 
         register(data) {
+            console.log(this, this.$store, 'here')
             if (this.$store.state.global) {
                 data = Object.assign({}, this.$store.state.global, data);
             }
