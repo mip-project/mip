@@ -3,7 +3,6 @@
  * @author panyuqi@baidu.com (panyuqi)
  */
 
-import axios from 'axios';
 import * as util from './util';
 import {MIP_ERROR_ROUTE_PATH, MIP_CONTAINER_ID} from './const';
 import ErrorPage from './vue-components/Error.vue';
@@ -89,40 +88,44 @@ export default function createRouter(Router) {
         }
     }
 
-    router.onMatchMiss = async function(to, from, next) {
+    router.onMatchMiss = function(to, from, next) {
         // add current loaded components
         util.addLoadedComponents();
 
-        try {
-            let {data: targetHTML} = await axios.get(to.path);
+        let handleError = error => next({
+            path: MIP_ERROR_ROUTE_PATH,
+            params: {
+                error
+            }
+        });
 
-            // see whether it's a MIP page
-            if (!util.isMIP(targetHTML)) {
-                window.location.href = to.path;
+        fetch(to.path).then(res => {
+            if (!res.ok) {
+                handleError();
                 return;
             }
 
-            let newComponents = util.getNewComponents(targetHTML);
-            if (newComponents.length !== 0) {
-                await util.loadScripts(newComponents);
-            }
-            router.addRoutes([
-                getRoute(targetHTML, {
-                    path: to.path
-                })
-            ]);
-
-            next();
-        }
-        catch (error) {
-            // redirect to error page
-            next({
-                path: MIP_ERROR_ROUTE_PATH,
-                params: {
-                    error
+            res.text().then(async function(targetHTML) {
+                // see whether it's a MIP page
+                if (!util.isMIP(targetHTML)) {
+                    window.location.href = to.path;
+                    return;
                 }
+
+                let newComponents = util.getNewComponents(targetHTML);
+                if (newComponents.length !== 0) {
+                    await util.loadScripts(newComponents);
+                }
+                router.addRoutes([
+                    getRoute(targetHTML, {
+                        path: to.path
+                    })
+                ]);
+
+                next();
             });
-        }
+        }, handleError);
+
     };
 
     return router;

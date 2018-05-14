@@ -6,15 +6,15 @@
 /* global mip */
 mip.customElement('mip-contacts', {
     template: `
-        <div>
-            <div>hello {{group.info.name}}! wait to show contacts</div>
-            <ul v-if="contacts && contacts.length">
+        <div class="wrapper">
+            <div>hello {{group.info.name}}! </div>
+            <ul v-if="contacts && contacts.length" class="list">
                 <li v-for="c in contacts">
-                    <p>username:{{c.username}}</p>
-                    <p>gender:{{c.gender}}</p>
+                    <p>username: {{c.username}}</p>
+                    <p>gender: {{c.gender}}</p>
                 </li>
             </ul>
-            <ul v-if="tabs && tabs.length">
+            <ul v-if="tabs && tabs.length" class="list">
                 <li v-for="t in tabs">
                     <p>tab:{{t}}</p>
                 </li>
