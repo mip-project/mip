@@ -3,15 +3,10 @@ const path = require('path');
 const webpack = require('webpack');
 const aliases = require('../build/alias');
 const version = process.env.VERSION || require('../package.json').version;
-console.log('version', version)
 
 const resolve = p => path.resolve(__dirname, '../', p);
 
 module.exports = {
-
-  devtool: 'inline-source-map',
-
-  entry: resolve('src/index.dev.js'),
 
   output: {
     path: resolve('dist'),

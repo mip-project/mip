@@ -46,4 +46,5 @@ page.start(mip, store, router);
 Vue.use(customElement, store, router);
 Vue.use(customElementBuildInComponents);
 
+window.mip = mip;
 export default mip;
