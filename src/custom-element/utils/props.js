@@ -34,7 +34,7 @@ export function convertAttributeValue(value, overrideType, attr, element) {
     catch (e) {}
 
     // hide the data attribute
-    element && element.removeAttribute(attr.name);
+    // element && element.removeAttribute(attr.name);
 
     return temp;
 }

@@ -7,19 +7,12 @@
 <template>
     <div
         class="mip-img"
-        :style="{
-            width: computedWidth,
-        }"
     >
         <div
             class="mip-img-inner"
-            :style="{
-                height: wrapperHeight,
-                paddingBottom: computedHeightWidthRatio
-            }"
         >
             <img
-                :src="imgSrc"
+                :src="src"
                 :usemap="usemap"
                 :title="title"
                 :sizes="sizes"
@@ -28,10 +21,6 @@
                 :srcset="imgSrcset"
                 ref="img"
                 @click="popupShow"
-                :style="{
-                    width: computedWidth,
-                    height: computedHeight
-                }"
             />
         </div>
         <div
@@ -47,7 +36,7 @@
             ></div>
             <img
                 :class="{'mip-img-popup-innerimg': placeImg}"
-                :src="imgSrc"
+                :src="src"
                 :sizes="sizes"
                 :srcset="imgSrcset"
                 :style="{
@@ -73,7 +62,8 @@ export default {
             popupImgTop: '',
             popupImgLeft: '',
             placeImg: false,
-            imgSrc: undefined
+            computedWidth: 0,
+            computedHeight: 0
         };
     },
 
@@ -111,25 +101,9 @@ export default {
             }
         },
 
-        computedWidth() {
-            // 宽度支持写百分比等，纯数字认为是像素单位
-            let width = this.width;
-            return /^\d+$/.test(width) ? `${width}px` : width;
-        },
-
-        computedHeight() {
-            // 宽度支持写百分比等，纯数字认为是像素单位
-            let height = this.height;
-            return /^\d+$/.test(height) ? `${height}px` : height;
-        },
-
         popupVal() {
             return this.popup !== undefined;
         },
-
-        // imgSrc() {
-        //     return util.makeCacheUrl(this.src, 'img');
-        // },
 
         imgSrcset() {
             let imgSrcset = this.srcset;
@@ -158,10 +132,12 @@ export default {
                 return;
             }
 
-            let {left, top} = img.getBoundingClientRect();
+            let {left, top, width, height} = img.getBoundingClientRect();
             this.showPopup = true;
             this.popupImgLeft = `${left}px`;
             this.popupImgTop = `${top}px`;
+            this.computedWidth = width + 'px';
+            this.computedHeight = height + 'px';
 
             setTimeout(() => {
                 this.placeImg = true;
