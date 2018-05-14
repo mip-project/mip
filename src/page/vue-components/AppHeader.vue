@@ -71,6 +71,10 @@ export default {
         line-height: 19px;
         border-radius: 2px;
 
+        &:active {
+            opacity: 0.2;
+        }
+
         &-chat {
             color: #3C76FF;
             border: 1px solid #3C76FF;

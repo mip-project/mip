@@ -13,7 +13,8 @@ export function createRoute (record, location, redirectedFrom, router) {
   } catch (e) {}
 
   const route = {
-    name: location.name || (record && record.name),
+    name: null,
+    // name: location.name || (record && record.name),
     meta: (record && record.meta) || {},
     path: location.path || '/',
     hash: location.hash || '',
@@ -75,13 +76,13 @@ export function isSameRoute (a, b) {
       a.hash === b.hash &&
       isObjectEqual(a.query, b.query)
     )
-  } else if (a.name && b.name) {
-    return (
-      a.name === b.name &&
-      a.hash === b.hash &&
-      isObjectEqual(a.query, b.query) &&
-      isObjectEqual(a.params, b.params)
-    )
+  // } else if (a.name && b.name) {
+  //   return (
+  //     a.name === b.name &&
+  //     a.hash === b.hash &&
+  //     isObjectEqual(a.query, b.query) &&
+  //     isObjectEqual(a.params, b.params)
+  //   )
   } else {
     return false
   }
