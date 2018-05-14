@@ -19,7 +19,7 @@ class Observer {
 
     _define(data, key, value) {
         // if value has observed, stop it
-        if (value.__ob__) {
+        if (value && value.__ob__) {
             return;
         }
 
