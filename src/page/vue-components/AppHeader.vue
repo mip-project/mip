@@ -34,7 +34,7 @@ export default {
 </script>
 
 <style lang="less">
-@import './src/styles/variable.less';
+@import '../../styles/mip.less';
 
 .mip-appshell-header {
     position: fixed;

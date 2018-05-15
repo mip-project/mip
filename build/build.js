@@ -1,97 +1,40 @@
 /**
- * @file build.js
- * @author huanghuiquan (huanghuiquan@baidu.com)
+ * @file webpack build 脚本
+ * @author wangyisheng@baidu.com (wangyisheng)
  */
 
-/* eslint-disable */
+'use strict'
 
-const fs = require('fs-extra');
-const path = require('path');
-const zlib = require('zlib');
-const rollup = require('rollup');
-const uglify = require('uglify-js');
+process.env.NODE_ENV = 'production'
 
-let builds = require('./rollup.config').getAllBuilds();
+const ora = require('ora');
+const rm = require('rimraf');
+const path = require('path')
+const chalk = require('chalk')
+const webpack = require('webpack');
+const webpackConfig = require('./webpack.config.prod');
 
-build(builds);
+const spinner = ora('building for production...');
+spinner.start();
 
-function build(builds) {
-    let built = 0;
-    const total = builds.length;
-    const next = () => {
-        buildEntry(builds[built]).then(() => {
-            built++;
-            if (built < total) {
-                next();
-            }
+rm(path.join(__dirname, '../dist'), err => {
+  if (err) throw err
+  webpack(webpackConfig, (err, stats) => {
+    spinner.stop();
+    if (err) throw err
+    process.stdout.write(stats.toString({
+      colors: true,
+      modules: false,
+      children: false, // If you are using ts-loader, setting this to true will make TypeScript errors show up during build.
+      chunks: false,
+      chunkModules: false
+    }) + '\n\n')
 
-        }).catch(logError);
-    };
+    if (stats.hasErrors()) {
+      console.log(chalk.red('  Build failed with errors.\n'))
+      process.exit(1)
+    }
 
-    next();
-}
-
-function buildEntry(config) {
-    const output = config.output;
-    const {file, banner} = output;
-    const isProd = /min\.js$/.test(file);
-
-    return rollup.rollup(config)
-        .then(bundle => bundle.generate(output))
-        .then(({code}) => {
-            if (isProd) {
-                let minified = (banner ? banner + '\n' : '') + uglify.minify(code, {
-                    output: {
-                        ascii_only: true
-                    },
-                    compress: {
-                        pure_funcs: ['makeMap']
-                    }
-                }).code;
-                return write(file, minified, true);
-            }
-            else {
-                return write(file, code);
-            }
-        });
-}
-
-function write(dest, code, zip) {
-    return new Promise((resolve, reject) => {
-        function report(extra) {
-            console.log(blue(path.relative(process.cwd(), dest)) + ' ' + getSize(code) + (extra || ''));
-            resolve();
-        }
-
-        fs.writeFile(dest, code, err => {
-            if (err) {
-                return reject(err);
-            }
-
-            if (zip) {
-                zlib.gzip(code, (err, zipped) => {
-                    if (err) {
-                        return reject(err);
-                    }
-
-                    report(' (gzipped: ' + getSize(zipped) + ')');
-                });
-            }
-            else {
-                report();
-            }
-        });
-    });
-}
-
-function getSize(code) {
-    return (code.length / 1024).toFixed(2) + 'kb';
-}
-
-function logError(e) {
-    console.log(e);
-}
-
-function blue(str) {
-    return '\x1b[1m\x1b[34m' + str + '\x1b[39m\x1b[22m';
-}
+    console.log(chalk.cyan('  Build complete.\n'))
+  })
+})

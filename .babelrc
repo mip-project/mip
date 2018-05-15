@@ -1,22 +1,7 @@
 {
-    "presets": [
-        [
-            "env",
-            {
-                "targets": {
-                    "ie": 9,
-                    "uglify": true
-                },
-                "modules": false,
-                "exclude": ["transform-regenerator"]
-            }
-        ]
-    ],
+    "presets": ["vue-app"],
     "plugins": [
-        "transform-custom-element-classes",
-        "external-helpers",
-        "syntax-dynamic-import",
-        "transform-object-rest-spread"
+        "transform-custom-element-classes"
     ],
     "ignore": [
         "dist/*.js"

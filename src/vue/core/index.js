@@ -22,6 +22,6 @@ Object.defineProperty(MIP.prototype, '$ssrContext', {
     }
 });
 
-MIP.version = '__VERSION__';
+MIP.version = __VERSION__;
 
 export default MIP;
