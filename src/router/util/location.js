@@ -55,7 +55,8 @@ export function normalizeLocation(raw, current, append, router) {
         _normalized: true,
         path,
         query,
-        hash
+        hash,
+        raw
     };
 }
 

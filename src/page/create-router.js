@@ -66,7 +66,7 @@ export default function createRouter(Router) {
     // Build routes
     let routes = [
         getRoute(undefined, {
-            path: window.location.pathname
+            path: location.pathname + location.search
         }, {
             pageTransitionType: MIPConfig.pageTransitionType,
             icon: MIPConfig.icon
