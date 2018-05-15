@@ -141,9 +141,9 @@ export default class MIPRouter {
 
     addRoutes(routes) {
         this.matcher.addRoutes(routes);
-        if (this.history.current !== START) {
-            this.history.transitionTo(this.history.getCurrentLocation());
-        }
+        // if (this.history.current !== START) {
+        //     this.history.transitionTo(this.history.getCurrentLocation());
+        // }
     }
 }
 

@@ -8,6 +8,7 @@ const merge = require('webpack-merge');
 const baseConfig = require('./webpack.config.base');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const resolve = p => path.resolve(__dirname, '../', p);
 
@@ -29,5 +30,6 @@ module.exports = merge.smart(baseConfig, {
     plugins: [
         new ExtractTextPlugin('mip.css'),
         new UglifyJsPlugin()
+        // new BundleAnalyzerPlugin()
     ]
 });

@@ -6,7 +6,6 @@
 import * as util from './util';
 import {MIP_ERROR_ROUTE_PATH, MIP_CONTAINER_ID} from './const';
 import ErrorPage from './vue-components/Error.vue';
-// import RouterView from './vue-components/RouterView.vue';
 
 /**
  * extract route object from current DOM tree or raw HTML.

@@ -18,14 +18,12 @@ const start = function ({Vue}, store, router) {
     // Create mip container
     util.createContainer(CONTAINER_ID);
 
-    window.onload = function () {
-        new Vue({
-            ...AppShell,
-            router,
-            store,
-            el: `#${CONTAINER_ID}`,
-        });
-    };
+    new Vue({
+        ...AppShell,
+        router,
+        store,
+        el: `#${CONTAINER_ID}`
+    });
 }
 
 export default {
