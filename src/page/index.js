@@ -9,7 +9,7 @@ import AppShell from './vue-components/AppShell.vue';
 
 const CONTAINER_ID = constants.MIP_CONTAINER_ID;
 
-const start = function ({Vue}, store, router) {
+export function start({Vue}, store, router) {
     // Configure mip
     Vue.config.ignoredElements = [
       /^mip-/
@@ -24,10 +24,4 @@ const start = function ({Vue}, store, router) {
         store,
         el: `#${CONTAINER_ID}`
     });
-}
-
-export default {
-    util,
-    const: constants,
-    start
 };
