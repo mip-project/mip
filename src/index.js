@@ -3,14 +3,15 @@
  * @author sfe
  */
 
-import Vue from './vue/platforms/web/entry-runtime';
+import Vue from 'vue';
 import customElement from './custom-element/index';
 import customElementBuildInComponents from './components';
 import util from './util';
 
-// fetch polyfill and fetch-jsonp
-import 'fetch-jsonp';
-import 'deps/fetch';
+import './log/monitor';
+
+// mip1 的兼容代码
+import './mip1-polyfill';
 
 import Router from './router/index';
 import {start} from './page/index';
@@ -46,5 +47,5 @@ start(mip, store, router);
 Vue.use(customElement, store, router);
 Vue.use(customElementBuildInComponents);
 
-window.mip = mip;
-export default mip;
+window.MIP = window.mip = mip;
+export default MIP;

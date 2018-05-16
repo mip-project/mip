@@ -9,7 +9,6 @@ import Watcher from './watcher';
 import util from '../../util';
 
 /* global MIP */
-window.MIP = {};
 
 class Bind {
     constructor() {
@@ -140,7 +139,7 @@ class Bind {
                     let parent = path.pop();
                     path = [...path, ...tmp.map(p => p !== ',' ? `${parent}.${p}` : ',')];
                 }
-            }    
+            }
         }
 
         return path;

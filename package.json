@@ -72,8 +72,12 @@
     "vue-loader": "^14.2.2",
     "vue-template-compiler": "^2.5.16",
     "webpack": "^3.11.0",
+    "webpack-concat-plugin": "^2.4.2",
     "webpack-dev-middleware": "^1.12.2",
     "webpack-merge": "^4.1.0",
     "zlib": "^1.0.5"
+  },
+  "dependencies": {
+    "promise-pjs": "^1.1.3"
   }
 }
