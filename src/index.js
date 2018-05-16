@@ -10,7 +10,8 @@ import util from './util';
 import sandbox from './util/sandbox';
 import templates from './util/templates';
 import hash from './util/hash';
-import {viewer, viewport} from './util';
+import viewer from './util/viewer';
+import viewport from './util/viewport';
 import Router from './router/index';
 import {start} from './page/index';
 import createRouter from './page/create-router';
@@ -34,7 +35,7 @@ Vue.use(Vuex);
 /* global storeData */
 
 let mip = {
-    // Vue,
+    Vue,
     customElement(tag, component) {
         Vue.customElement(tag, component);
     },
@@ -111,7 +112,7 @@ util.dom.waitDocumentReady(() => {
     start(mip, store, router);
 
     // clear cookie
-    let storage = customStorage(2);
+    let storage = util.customStorage(2);
     storage.delExceedCookie();
 });
 
