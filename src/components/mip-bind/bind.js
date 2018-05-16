@@ -5,6 +5,8 @@
 
 import Compile from './compile';
 import Observer from './observer';
+import Watcher from './watcher';
+import util from '../../util';
 
 /* global MIP */
 window.MIP = {};
@@ -13,6 +15,8 @@ class Bind {
     constructor() {
         let me = this;
         this._win = window;
+        this._watchers = [];
+        this._watcherIds = [];
         // require mip data extension runtime
         this._compile = new Compile();
         this._observer = new Observer();
@@ -24,6 +28,40 @@ class Bind {
         };
         MIP.$set = function (action, from) {
             me._bindTarget(true, action, from);
+            me._eventEmit();
+        };
+        MIP.watch = function (target, cb) {
+            if (target.constructor === Array) {
+                for (let key of target) {
+                    MIP.watch(key, cb);
+                }
+                return;
+            }
+            if (typeof target !== 'string') {
+                return;
+            }
+            if (!cb || typeof cb !== 'function') {
+                return;
+            }
+
+            // TODO 去重逻辑还需要修改
+            let watcher = `${target}${cb.toString()}`.replace(/[\n\t\s]/g, '');
+            if (me._watcherIds.indexOf(watcher) !== -1) {
+                console.log(watcher);
+                return;
+            }
+            me._watcherIds.push(watcher);
+            me._watchers.push(new Watcher(
+                null,
+                me._win.m,
+                '',
+                target,
+                cb // args: (dir, newVal, oldVal)
+            ));
+        };
+        MIP.unwatchAll = function () {
+            me._watchers.forEach(watcher => watcher.teardown());
+            me._watcherIds = [];
         };
     }
 
@@ -38,6 +76,14 @@ class Bind {
             let origin = JSON.stringify(window.m);
             this._compile.upadteData(JSON.parse(origin));
             // fn.extend(window.m, data);
+            // let globals = this._normalize(data);
+            // this._diff({
+            //     globals: this._globals,
+            //     data: window.m
+            // }, {
+            //     globals,
+            //     data
+            // });
             Object.assign(window.m, data);
             if (compile) {
                 this._observer.start(this._win.m);
@@ -47,6 +93,57 @@ class Bind {
         else {
             console.error('setData method must accept an object!');
         }
+    }
+
+    _diff({globals: oldGlobals, data: oldData}, {globals: newGlobals, data: newData}) {
+
+    }
+
+    _normalize(data) {
+        let globals = this._normalizeGlobal(data).filter(attr => attr !== ',');
+
+        for (let g of globals) {
+            let paths = g.split('.');
+            let obj = data;
+            let lastAttr = paths.pop();
+            for (let p of paths) {
+                obj = obj[p];
+            }
+            obj[lastAttr] = obj[`#${lastAttr}`];
+            delete obj[`#${lastAttr}`];
+        }
+
+        return globals;
+    }
+
+    _normalizeGlobal(data) {
+        let path = [];
+
+        for (let k of Object.keys(data)) {
+            let stop = false;
+            if (/^#/.test(k)) {
+                stop = true;
+                path.push(k.substr(1));
+                path.push(',');
+            }
+            else {
+                path.push(k);
+            }
+
+            if (Object.prototype.toString.call(data[k]) === '[object Object]' && !stop) {
+                let tmp = this._normalizeGlobal(data[k]);
+                tmp = tmp.slice(0, tmp.lastIndexOf(',') + 1);
+                if (!tmp.length) {
+                    path.pop();
+                }
+                else {
+                    let parent = path.pop();
+                    path = [...path, ...tmp.map(p => p !== ',' ? `${parent}.${p}` : ',')];
+                }
+            }    
+        }
+
+        return path;
     }
 
     // Bind event for post message when fetch data returned, then compile dom again
@@ -65,6 +162,12 @@ class Bind {
                 MIP.$set(event.data.m);
             }
         });
+    }
+
+    _eventEmit() {
+        this._win.dispatchEvent(
+            util.event.create('ready-to-watch')
+        );
     }
 
     start() {
