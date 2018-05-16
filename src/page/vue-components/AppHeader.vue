@@ -1,17 +1,65 @@
 <template>
     <div class="mip-appshell-header">
-        <svg @click="onClick('back')" class="mip-appshell-header-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1076" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs></defs><path d="M263.570286 530.285714l261.376 261.339429a18.285714 18.285714 0 0 1-25.892572 25.892571l-292.571428-292.571428a18.285714 18.285714 0 0 1 0-25.892572l292.571428-292.571428a18.285714 18.285714 0 0 1 25.892572 25.892571L263.570286 493.714286H804.571429a18.285714 18.285714 0 1 1 0 36.571428H263.570286z" p-id="1077"></path></svg>
-        <img class="mip-appshell-header-icon" :src="icon">
+        <span
+            v-if="showBackIcon"
+            class="material-icons"
+            @click="onClick('back')">
+            keyboard_arrow_left
+        </span>
+        <img v-if="logo" class="mip-appshell-header-logo" :src="logo">
         <span class="mip-appshell-header-title">{{title}}</span>
         <div class="mip-appshell-header-button-group">
-            <div class="mip-appshell-header-button mip-appshell-header-button-chat">发消息</div>
-            <div class="mip-appshell-header-button mip-appshell-header-button-subscribe">关注</div>
+            <template v-for="button in buttonGroup">
+                <div
+                    v-if="button.type === 'icon'"
+                    class="mip-appshell-header-icon"
+                    @click="onClick(`${button.name}`)">
+                    <mip-link class="mip-appshell-header-link" v-if="button.link" :to="button.link">
+                        <span class="material-icons">{{button.text}}</span>
+                    </mip-link>
+                    <span v-if="!button.link" class="material-icons">{{button.text}}</span>
+                </div>
+                <button
+                    v-if="button.type === 'button'"
+                    :class="{
+                        'mip-appshell-header-button': true,
+                        [`mip-appshell-header-button-${button.outline ? 'outlined' : 'filled'}`]: true
+                    }"
+                    @click="onClick(`${button.name}`)">
+                    <mip-link class="mip-appshell-header-link" v-if="button.link" :to="button.link">
+                        {{button.text}}
+                    </mip-link>
+                    <span v-if="!button.link">{{button.text}}</span>
+                </button>
+
+                <div v-if="button.type === 'dropdown'"
+                    class="mip-appshell-header-icon"
+                    v-click-outside="clickOutsideArgs">
+                    <span class="material-icons" @click="showDropdown = !showDropdown">
+                        menu
+                    </span>
+                    <transition name="slide">
+                        <div ref="appshellHeaderDropdown"
+                            class="mip-appshell-header-dropdown"
+                            v-show="showDropdown">
+                            <div v-for="item in button.items"
+                                class="mip-appshell-header-dropdown-item"
+                                @click="onClick(`${item.name}`)">
+                                <mip-link class="mip-appshell-header-link" v-if="item.link" :to="item.link">
+                                    {{item.text}}
+                                </mip-link>
+                                <span v-if="!item.link">{{item.text}}</span>
+                            </div>
+                        </div>
+                    </transition>
+                </div>
+            </template>
         </div>
     </div>
 </template>
 
 <script>
-import Vuex from '../../vuex/index'
+import ClickOutside from '../directives/click-outside';
 
 export default {
     name: 'mip-appshell-header',
@@ -20,21 +68,49 @@ export default {
             type: String,
             default: ''
         },
-        icon: {
-            type: String,
-            default: 'https://www.baidu.com/cache/icon/favicon.ico'
+        logo: {
+            type: [String, Boolean],
+            default: false
+        },
+        showBackIcon: {
+            type: Boolean,
+            default: false
+        },
+        buttonGroup: {
+            type: Array,
+            default: []
         }
     },
+    directives: {
+        ClickOutside
+    },
+    data() {
+        return {
+            showDropdown: false,
+            clickOutsideArgs: {
+                include: this.getDropDownParent,
+                onClose: this.onCloseDropdown,
+                // closeConditional: this.closeConditional
+            }
+        };
+    },
     methods: {
+        getDropDownParent() {
+            return [this.$refs.appshellHeaderDropdown && this.$refs.appshellHeaderDropdown[0]];
+        },
         onClick(source) {
-            this.$emit(`click-${source}`);
+            this.showDropdown = false;
+            this.$emit(`appheader::click-${source}`);
+        },
+        onCloseDropdown() {
+            this.showDropdown = false;
         }
     }
 };
 </script>
 
 <style lang="less">
-@import '../../styles/mip.less';
+@import '../../styles/variable.less';
 
 .mip-appshell-header {
     position: fixed;
@@ -50,7 +126,7 @@ export default {
     background: white;
     padding: 0 16px 0 6px;
 
-    &-icon {
+    &-logo {
         height: 32px;
         width: 32px;
         margin: 0 8px 0 0;
@@ -60,32 +136,102 @@ export default {
         flex: 1;
     }
 
-    &-button {
-        display: inline-block;
-        width: 56px;
-        height: 25px;
-        font-size: 12px;
-        box-sizing: border-box;
-        text-align: center;
-        padding: 3px 0px;
-        line-height: 19px;
-        border-radius: 2px;
+    &-button-group {
+        display: flex;
+        align-items: center;
+        position: relative;
 
-        &:active {
-            opacity: 0.2;
+        .mip-appshell-header-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 4px;
+            .mip-appshell-header-link {
+                a {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
         }
 
-        &-chat {
-            color: #3C76FF;
-            border: 1px solid #3C76FF;
-            background: #fff;
-            margin-right: 8px;
+        .mip-appshell-header-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 4px;
+            width: 56px;
+            height: 25px;
+            font-size: 12px;
+            box-sizing: border-box;
+            text-align: center;
+            padding: 3px 0px;
+            line-height: 19px;
+            border-radius: 2px;
+
+            &:active {
+                opacity: 0.2;
+            }
+
+            &-outlined {
+                color: #3C76FF;
+                border: 1px solid #3C76FF;
+                background: #fff;
+
+                .mip-appshell-header-link {
+                    a {
+                        color: #3C76FF;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                }
+            }
+
+            &-filled {
+                color: #fff;
+                border: 1px solid #3897F0;
+                background: #3897F0;
+
+                .mip-appshell-header-link {
+                    a {
+                        color: #fff;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                }
+            }
         }
 
-        &-subscribe {
-            color: #fff;
-            border: 1px solid #3897F0;
-            background: #3897F0;
+        .mip-appshell-header-dropdown {
+            position: absolute;
+            z-index: 999999;
+            top: 20px;
+            right: 0;
+            width: 100px;
+            background: white;
+            transition: all 0.3s ease;
+            opacity: 1;
+            transform: translate(0, 0);
+            will-change: transform;
+            box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
+            padding: 4px 8px;
+
+            &.slide-enter {
+                transform: translate(0, -10px);
+                opacity: 0;
+            }
+            &.slide-leave-active {
+                transform: translate(0, -10px);
+                opacity: 0;
+            }
+
+            &-item {
+                height: 30px;
+                display: flex;
+                align-items: center;
+            }
         }
     }
 }

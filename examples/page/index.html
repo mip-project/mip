@@ -24,6 +24,59 @@
     <link rel="stylesheet" href="../../dist/mip.css">
 </head>
 <body>
+    <mip-shell>
+        <script type="application/json">
+            {
+                "header": {
+                    "title": "xxxxxx",
+                    "logo": "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg",
+                    "buttonGroup": [
+                        {
+                            "type": "icon",
+                            "name": "search",
+                            "text": "search",
+                            "link": "/examples/page/tree.html"
+                        },
+                        {
+                            "type": "button",
+                            "name": "subscribe",
+                            "text": "关注",
+                            "link": "/examples/page/tree.html"
+                        },
+                        {
+                            "type": "button",
+                            "name": "chat",
+                            "text": "发消息",
+                            "outline": true
+                        },
+                        {
+                            "type": "dropdown",
+                            "items": [
+                                {
+                                    "name": "subscribe",
+                                    "text": "关注",
+                                    "link": "/examples/page/tree.html"
+                                },
+                                {
+                                    "name": "chat",
+                                    "text": "发消息"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "view": {
+                    "isIndex": true,
+                    "transition": {
+                        "mode": "slide",
+                        "alwaysBackPages": ["/examples/page/index.html"]
+                    }
+                },
+                "footer": {}
+            }
+        </script>
+    </mip-shell>
+
     <div class="main-image">
         <mip-img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg" width="300" height="300"></mip-img>
     </div>
@@ -40,20 +93,6 @@ Fast - Respond quickly to user interactions with silky smooth animations and no 
     <mip-link class="link" to="/not/exists">Go to Not Exists</mip-link>
 
     <br><br>
-
-    <mip-store id="mip-config">
-        <script type="application/json">
-            {
-                "model": {
-                    "MIPConfig": {
-                        "icon": "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg",
-                        "pageTransitionType": "slide",
-                        "pageTransitionAlwaysBackPages": ["/examples/page/index.html"]
-                    }
-                }
-            }
-        </script>
-    </mip-store>
 
     <script src="../../dist/mip.js"></script>
 </body>
