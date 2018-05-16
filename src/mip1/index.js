@@ -35,7 +35,7 @@ define('util', utilDefine);
 define('naboo', nabooDefine);
 define('customElement', customElementDefine);
 define('viewer', viewerDefine);
-define('fixedElement', fixedElementDefine);
+define('fixed-element', fixedElementDefine);
 define('performance', performanceDefine);
 define('viewport', viewportDefine);
 define('templates', templatesDefine);
