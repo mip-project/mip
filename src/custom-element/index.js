@@ -8,6 +8,7 @@ import createVueInstance from './utils/create-vueInstance';
 import {getProps, convertAttributeValue} from './utils/props';
 import {camelize} from './utils/helpers';
 import resources from './utils/resources';
+import layout from '../util/layout';
 
 function install(Vue, store, router) {
     Vue.customElement = function vueCustomElement(tag, componentDefinition, options = {}) {
@@ -37,6 +38,7 @@ function install(Vue, store, router) {
             },
 
             connectedCallback() {
+
                 let element;
                 const asyncComponentPromise = isAsyncComponent && componentDefinition();
                 const isAsyncComponentPromise = asyncComponentPromise
@@ -44,6 +46,7 @@ function install(Vue, store, router) {
                     && typeof asyncComponentPromise.then === 'function';
 
                 typeof options.connectedCallback === 'function' && options.connectedCallback.call(this);
+
 
                 if (isAsyncComponent && !isAsyncComponentPromise) {
                     throw new Error(`Async component ${tag} do not returns Promise`);
@@ -73,6 +76,7 @@ function install(Vue, store, router) {
                         resources.add(element);
                     }
                 }
+                layout.applyLayout(this);
 
                 this.__detached__ = false;
             },

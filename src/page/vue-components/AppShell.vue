@@ -96,7 +96,7 @@ export default {
 </script>
 
 <style lang="less">
-@import './src/styles/mip.less';
+@import '../../styles/mip.less';
 
 [mip-ready] {
     display: block;

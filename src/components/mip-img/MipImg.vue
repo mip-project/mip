@@ -7,19 +7,12 @@
 <template>
     <div
         class="mip-img"
-        :style="{
-            width: computedWidth,
-        }"
     >
         <div
             class="mip-img-inner"
-            :style="{
-                height: wrapperHeight,
-                paddingBottom: computedHeightWidthRatio
-            }"
         >
             <img
-                :src="imgSrc"
+                :src="src"
                 :usemap="usemap"
                 :title="title"
                 :sizes="sizes"
@@ -28,10 +21,6 @@
                 :srcset="imgSrcset"
                 ref="img"
                 @click="popupShow"
-                :style="{
-                    width: computedWidth,
-                    height: computedHeight
-                }"
             />
         </div>
         <div
@@ -47,12 +36,11 @@
             ></div>
             <img
                 :class="{'mip-img-popup-innerimg': placeImg}"
-                :src="imgSrc"
+                :src="src"
                 :sizes="sizes"
                 :srcset="imgSrcset"
                 :style="{
-                    width: computedWidth,
-                    height: computedHeight,
+                    width: popupImgWidth,
                     top: popupImgTop,
                     left: popupImgLeft
                 }"
@@ -70,10 +58,12 @@ export default {
     data() {
         return {
             showPopup: false,
+            popupImgWidth: '',
             popupImgTop: '',
             popupImgLeft: '',
             placeImg: false,
-            imgSrc: undefined
+            computedWidth: 0,
+            computedHeight: 0
         };
     },
 
@@ -111,25 +101,9 @@ export default {
             }
         },
 
-        computedWidth() {
-            // 宽度支持写百分比等，纯数字认为是像素单位
-            let width = this.width;
-            return /^\d+$/.test(width) ? `${width}px` : width;
-        },
-
-        computedHeight() {
-            // 宽度支持写百分比等，纯数字认为是像素单位
-            let height = this.height;
-            return /^\d+$/.test(height) ? `${height}px` : height;
-        },
-
         popupVal() {
             return this.popup !== undefined;
         },
-
-        // imgSrc() {
-        //     return util.makeCacheUrl(this.src, 'img');
-        // },
 
         imgSrcset() {
             let imgSrcset = this.srcset;
@@ -158,14 +132,16 @@ export default {
                 return;
             }
 
-            let {left, top} = img.getBoundingClientRect();
+            let {left, top, width, height} = img.getBoundingClientRect();
             this.showPopup = true;
             this.popupImgLeft = `${left}px`;
             this.popupImgTop = `${top}px`;
+            this.computedWidth = width + 'px';
+            this.computedHeight = height + 'px';
 
             setTimeout(() => {
                 this.placeImg = true;
-            }, 5);
+            }, 16);
 
         },
 
@@ -173,7 +149,7 @@ export default {
             this.placeImg = false;
             setTimeout(() => {
                 this.showPopup = false;
-            }, 300);
+            }, 200);
         },
 
         firstInviewCallback() {
@@ -184,7 +160,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import './src/styles/variable.less';
+@import '../../styles/mip.less';
 
 mip-img {
     .mip-img {
@@ -208,7 +184,7 @@ mip-img {
         .mip-img-popup-bg {
             height: 100%;
             background: rgba(0, 0, 0, 1);
-            transition: all ease .4s;
+            transition: all ease .2s;
             opacity: 0;
             &.show {
                 opacity: 1;
@@ -216,7 +192,7 @@ mip-img {
         }
         img {
             position: absolute;
-            transition: all ease .3s;
+            transition: all linear .2s;
             max-width: 100%;
             max-height: 100%;
         }
@@ -224,8 +200,8 @@ mip-img {
             width: 100% !important;
             height: auto !important;
             top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%);
+            left: 0 !important;
+            transform: translate(0, -50%);
         }
     }
 }

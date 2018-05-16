@@ -1,5 +1,5 @@
 /**
- * @file define getter functions
+ * @file define dom functions
  * @author wangyisheng@baidu.com (wangyisheng)
  */
 

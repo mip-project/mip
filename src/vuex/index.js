@@ -4,7 +4,7 @@ import { mapState, mapMutations, mapGetters, mapActions, createNamespacedHelpers
 export default {
   Store,
   install,
-  version: '__VERSION__',
+  version: __VERSION__,
   mapState,
   mapMutations,
   mapGetters,

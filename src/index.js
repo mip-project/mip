@@ -3,7 +3,6 @@
  * @author sfe
  */
 
-// import './styles/mip.less';
 import Vue from './vue/platforms/web/entry-runtime';
 import customElement from './custom-element/index';
 import customElementBuildInComponents from './components';
@@ -14,7 +13,7 @@ import 'fetch-jsonp';
 import 'deps/fetch';
 
 import Router from './router/index';
-import page from './page/index';
+import {start} from './page/index';
 import createRouter from './page/create-router';
 import Vuex from './vuex/index';
 import sandbox from './util/sandbox';
@@ -42,9 +41,10 @@ let mip = {
 };
 
 const router = createRouter(Router);
-page.start(mip, store, router);
+start(mip, store, router);
 
 Vue.use(customElement, store, router);
 Vue.use(customElementBuildInComponents);
 
+window.mip = mip;
 export default mip;

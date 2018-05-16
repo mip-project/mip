@@ -34,7 +34,7 @@ export default {
 </script>
 
 <style lang="less">
-@import './src/styles/variable.less';
+@import '../../styles/mip.less';
 
 .mip-appshell-header {
     position: fixed;
@@ -70,6 +70,10 @@ export default {
         padding: 3px 0px;
         line-height: 19px;
         border-radius: 2px;
+
+        &:active {
+            opacity: 0.2;
+        }
 
         &-chat {
             color: #3C76FF;

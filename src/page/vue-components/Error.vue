@@ -15,3 +15,13 @@ export default {
     }
 };
 </script>
+
+<style lang="less">
+.mip-appshell-error {
+    p {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 40px;
+    }
+}
+</style>
