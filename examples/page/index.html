@@ -32,12 +32,6 @@
                     "logo": "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg",
                     "buttonGroup": [
                         {
-                            "type": "icon",
-                            "name": "search",
-                            "text": "search",
-                            "link": "/examples/page/tree.html"
-                        },
-                        {
                             "type": "button",
                             "name": "subscribe",
                             "text": "关注",
@@ -48,6 +42,12 @@
                             "name": "chat",
                             "text": "发消息",
                             "outline": true
+                        },
+                        {
+                            "type": "icon",
+                            "name": "search",
+                            "text": "search",
+                            "link": "/examples/page/tree.html"
                         },
                         {
                             "type": "dropdown",
@@ -91,8 +91,85 @@ Fast - Respond quickly to user interactions with silky smooth animations and no 
     <mip-link class="link" to="./data.html">Go to Data</mip-link>
     <mip-link class="link" to="./not-mip.html">Go to Not MIP</mip-link>
     <mip-link class="link" to="/not/exists">Go to Not Exists</mip-link>
+    <mip-data>
+        <script type="application/json">
+                {
+                    "num": 1,
+                    "title": "Apple/苹果 iPhone X",
+                    "basePrice": "9688.00",
+                    "price": "9688.00",
+                    "comments": 5855,
+                    "integral": 968,
+                    "network": {
+                        "nocontract": 1
+                    },
+                    "color": {
+                        "silver": 0,
+                        "grey": 1
+                    },
+                    "size": {
+                        "small": 0,
+                        "big": 1
+                    },
+                    "staging": {
+                        "three": 0,
+                        "six": 0,
+                        "twelve": 0
+                    },
+                    "sp": {
+                        "three": "¥3303.60",
+                        "six": "¥1687.32",
+                        "twelve": "¥867.88"
+                    },
+                    "img": {
+                        "first": 0,
+                        "second": 0,
+                        "third": 0,
+                        "four": 0,
+                        "five": 0
+                    },
+                    "time": 1,
+                    "src": "https://img.alicdn.com/bao/uploaded/i4/1917047079/TB2ZpydmPihSKJjy0FeXXbJtpXa_!!1917047079.png_430x430q90.jpg"
+                }
+
+            </script>
+    </mip-data>
 
     <br><br>
 
+    <p m-text="title"></p>
+    <p m-text="num"></p>
+    <div on="tap:MIP.setData({num:2})">click change num</div>
+    <p m-text="sp.three"></p>
+    <div on="tap:MIP.setData({sp:{three:'¥0'}})">click change sp.three</div>
+    <p m-text="basePrice"></p>
+    <div on="tap:MIP.setData({basePrice:3000})">click change basePrice</div>
+    <p m-text="img.first"></p>
+    <div on="tap:MIP.setData({img:{first:1}})">click change img.first</div>
+    <script src="../../dist/deps.js"></script>
     <script src="../../dist/mip.js"></script>
+    <script>
+        window.addEventListener('ready-to-watch', function () {
+            MIP.watch('num', function () {
+                MIP.setData({
+                    title: 'ckkkk changing num'
+                });
+            });
+            MIP.watch('num', function () {
+                console.log('num another cb')
+            });
+            MIP.watch('sp.three', function () {
+                MIP.setData({
+                    title: 'ckkkk changing sp.three'
+                });
+            });
+            MIP.watch(['basePrice', 'img.first'], function () {
+                MIP.setData({
+                    title: 'ckkkk changing multi'
+                });
+                console.log(window.m)
+            });
+            // MIP.unwatchAll()
+        });
+    </script>
 </body>

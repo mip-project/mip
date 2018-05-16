@@ -54,7 +54,7 @@ export function createMatcher(routes, router) {
             for (let i = 0; i < pathList.length; i++) {
                 const path = pathList[i];
                 const record = pathMap[path];
-                if (matchRoute(record.regex, location.path, location.params)) {
+                if (matchRoute(record.regex, location)) {
                     return _createRoute(record, location, redirectedFrom);
                 }
 
@@ -166,8 +166,8 @@ export function createMatcher(routes, router) {
     };
 }
 
-function matchRoute(regex, path, params) {
-    const m = path.match(regex);
+function matchRoute(regex, {path, params, fullpath}) {
+    const m = fullpath.match(regex);
 
     if (!m) {
         return false;

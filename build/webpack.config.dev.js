@@ -11,5 +11,10 @@ const resolve = p => path.resolve(__dirname, '../', p);
 
 module.exports = merge.smart(baseConfig, {
     devtool: 'inline-source-map',
-    entry: resolve('src/index.dev.js')
+    entry: resolve('src/index.js'),
+    resolve: {
+        alias: {
+            vue: resolve('src/vue/platforms/web/entry-runtime-with-compiler')
+        }
+    }
 });

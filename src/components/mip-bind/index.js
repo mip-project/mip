@@ -13,9 +13,9 @@ export default {
         this.bind = new Bind();
         this.postMessage(this.$root.$options.propsData);
     },
-    mounted() {
-        this.bind.start();
-    },
+    // mounted() {
+    //     this.bind.start();
+    // },
     methods: {
         postMessage(data) {
             window.m = window.m ? window.m : {};

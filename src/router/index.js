@@ -51,7 +51,7 @@ export default class MIPRouter {
         const history = this.history;
 
         let currentLocation = history.getCurrentLocation();
-        history.transitionTo(currentLocation, undefined, undefined, true);
+        history.transitionTo(currentLocation);
         // used in mip-view to judge whether this is first time loading.
 
         history.listen(route => {
@@ -141,9 +141,9 @@ export default class MIPRouter {
 
     addRoutes(routes) {
         this.matcher.addRoutes(routes);
-        if (this.history.current !== START) {
-            this.history.transitionTo(this.history.getCurrentLocation());
-        }
+        // if (this.history.current !== START) {
+        //     this.history.transitionTo(this.history.getCurrentLocation());
+        // }
     }
 }
 

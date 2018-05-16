@@ -112,6 +112,8 @@ export default {
 <style lang="less">
 @import '../../styles/variable.less';
 
+@appshell-header-dropdown-height: 30px;
+
 .mip-appshell-header {
     position: fixed;
     right: 0;
@@ -149,8 +151,6 @@ export default {
             .mip-appshell-header-link {
                 a {
                     display: flex;
-                    align-items: center;
-                    justify-content: center;
                 }
             }
         }
@@ -182,8 +182,6 @@ export default {
                     a {
                         color: #3C76FF;
                         display: flex;
-                        align-items: center;
-                        justify-content: center;
                     }
                 }
             }
@@ -197,8 +195,6 @@ export default {
                     a {
                         color: #fff;
                         display: flex;
-                        align-items: center;
-                        justify-content: center;
                     }
                 }
             }
@@ -228,9 +224,14 @@ export default {
             }
 
             &-item {
-                height: 30px;
+                height: @appshell-header-dropdown-height;
                 display: flex;
                 align-items: center;
+
+                .mip-appshell-header-link {
+                    width: 100%;
+                    line-height: @appshell-header-dropdown-height;
+                }
             }
         }
     }
