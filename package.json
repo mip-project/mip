@@ -78,6 +78,7 @@
     "zlib": "^1.0.5"
   },
   "dependencies": {
+    "document-register-element": "^1.8.1",
     "promise-pjs": "^1.1.3"
   }
 }

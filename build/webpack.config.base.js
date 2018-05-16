@@ -15,7 +15,8 @@ let filesToConcat = [
     resolve('deps/fetch.js'),
     resolve('deps/fetch-jsonp.js'),
     'zepto',
-    'esljs'
+    'esljs',
+    'document-register-element/build/document-register-element'
 ];
 
 module.exports = {

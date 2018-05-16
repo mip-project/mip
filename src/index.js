@@ -18,17 +18,14 @@ import createRouter from './page/create-router';
 import Vuex from './vuex/index';
 
 import sleepWakeModule from './sleepWakeModule';
-import resouces from './resouces';
-import registerElement from './element';
+import Resources from './resources';
 import performance from './performance';
 
 import './log/monitor';
 
 // mip1 的兼容代码
-import './mip1-polyfill';
+import mip1PolyfillInstall from './mip1-polyfill';
 // import './polyfills';
-
-
 
 Vue.use(Router);
 Vue.use(Vuex);
@@ -50,26 +47,15 @@ let mip = {
     Store: Vuex,
     sandbox,
     css: {},
-    prerenderElement: resouces.prerenderElement,
-    registerMipElement(name, customClass, css) {
-        if (templates.isTemplateClass(customClass)) {
-            templates.register(name, customClass);
-        } else {
-            registerElement(name, customClass, css);
-        }
-    }
+    prerenderElement: Resources.prerenderElement
 };
-
-const store = new Vuex.Store(window.storeData || {});
-const router = createRouter(Router);
-
-Vue.use(customElement, store, router);
-Vue.use(customElementBuildInComponents);
 
 if (window.MIP) {
     let exts = window.MIP;
     mip.extensions = exts;
 }
+
+window.MIP = window.mip = mip;
 
 // before document ready
 mip.push = function (extensions) {
@@ -80,7 +66,14 @@ mip.push = function (extensions) {
     mip.extensions.push(extensions);
 };
 
-window.MIP = window.mip = mip;
+// install mip1 polyfill
+mip1PolyfillInstall(mip);
+
+const store = new Vuex.Store(window.storeData || {});
+const router = createRouter(Router);
+
+Vue.use(customElement, store, router);
+Vue.use(customElementBuildInComponents);
 
 util.dom.waitDocumentReady(() => {
     // Initialize sleepWakeModule
