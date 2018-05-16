@@ -5,14 +5,15 @@
  */
 
 <template>
-    <div
-        class="mip-img"
-    >
-        <div
-            class="mip-img-inner"
+    <div class="mip-img" :style="{width: computedWidth}">
+        <div class="mip-img-inner"
+            :style="{
+                paddingBottom: computedHeightWidthRatio
+            }"
         >
             <img
-                :src="src"
+                :width="imgWidth"
+                :src="imgSrc"
                 :usemap="usemap"
                 :title="title"
                 :sizes="sizes"
@@ -36,7 +37,7 @@
             ></div>
             <img
                 :class="{'mip-img-popup-innerimg': placeImg}"
-                :src="src"
+                :src="imgSrc"
                 :sizes="sizes"
                 :srcset="imgSrcset"
                 :style="{
@@ -54,7 +55,7 @@
 import util from '../../util';
 
 export default {
-    name: 'mip-image',
+    name: 'mip-img',
     data() {
         return {
             showPopup: false,
@@ -62,18 +63,10 @@ export default {
             popupImgTop: '',
             popupImgLeft: '',
             placeImg: false,
-            computedWidth: 0,
-            computedHeight: 0
+            loaded: false
         };
     },
-
     props: {
-        layout: {
-            default() {
-                return 'responsive';
-            },
-            type: String
-        },
         src: String,
         alt: String,
         title: String,
@@ -87,27 +80,37 @@ export default {
         height: [Number, String],
         popup: [Boolean, String]
     },
-
     computed: {
         wrapperHeight() {
             return this.computedHeight
                 ? this.computedHeight
                 : (this.heightWidthRatio ? 0 : '');
         },
-
         computedHeightWidthRatio() {
             if (!this.computedHeight) {
                 return this.heightWidthRatio;
             }
         },
-
+        computedWidth() {
+            // 宽度支持写百分比等，纯数字认为是像素单位
+            let width = this.width;
+            return /^\d+$/.test(width) ? `${width}px` : width;
+        },
+        imgWidth() {
+            if (this.width) {
+                return '100%';
+            }
+        },
+        computedHeight() {
+            // 宽度支持写百分比等，纯数字认为是像素单位
+            let height = this.height;
+            return /^\d+$/.test(height) ? `${height}px` : height;
+        },
         popupVal() {
             return this.popup !== undefined;
         },
-
         imgSrcset() {
             let imgSrcset = this.srcset;
-
             if (imgSrcset) {
                 let reg = /[\w-/]+\.(jpg|jpeg|png|gif|webp|bmp|tiff) /g;
                 let srcArr = imgSrcset.replace(reg, function (url) {
@@ -115,64 +118,63 @@ export default {
                 });
                 return srcArr;
             }
-
+        },
+        imgSrc() {
+            return this.loaded ? this.src : undefined;
         }
     },
-
     methods: {
         popupShow() {
-
             if (!this.popupVal) {
                 return;
             }
-
             let img = this.$refs.img;
             // 图片未加载则不弹层
             if (!img.naturalWidth) {
                 return;
             }
-
-            let {left, top, width, height} = img.getBoundingClientRect();
+            let {left, top, width} = img.getBoundingClientRect();
             this.showPopup = true;
             this.popupImgLeft = `${left}px`;
             this.popupImgTop = `${top}px`;
-            this.computedWidth = width + 'px';
-            this.computedHeight = height + 'px';
-
+            this.popupImgWidth = `${width}px`;
             setTimeout(() => {
                 this.placeImg = true;
             }, 16);
-
         },
-
         hidePopup() {
             this.placeImg = false;
             setTimeout(() => {
                 this.showPopup = false;
             }, 200);
-        },
-
-        firstInviewCallback() {
-            this.imgSrc = util.makeCacheUrl(this.src, 'img');
         }
+    },
+    firstInviewCallback() {
+        let vm = this.vm;
+        this.applyFillContent(vm.$el, true);
+        vm.loaded = true;
     }
 };
+
+
 </script>
 
 <style lang="less" scoped>
-@import '../../styles/mip.less';
-
+@import '../../styles/variable.less';
 mip-img {
     .mip-img {
         display: inline-block;
         font-size: 0;
     }
-
     .mip-img-inner {
         position: relative;
         background: @placeholder-bg;
-    }
 
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
     .mip-img-popup-wrapper {
         z-index: 9999;
         position: fixed;
@@ -180,7 +182,6 @@ mip-img {
         left: 0;
         right: 0;
         bottom: 0;
-
         .mip-img-popup-bg {
             height: 100%;
             background: rgba(0, 0, 0, 1);

@@ -91,17 +91,17 @@ export function reactiveProps(element, props) {
     props.camelCase.forEach((name, index) => {
         Object.defineProperty(element, name, {
             get() {
-                return this.__vue_custom_element__[name];
+                return this.vm[name];
             },
             set(value) {
                 if (
                     (typeof value === 'object'
                         || typeof value === 'function'
                     )
-                    && this.__vue_custom_element__
+                    && this.vm
                 ) {
                     let propName = props.camelCase[index];
-                    this.__vue_custom_element__[propName] = value;
+                    this.vm[propName] = value;
                 }
                 else {
                     let type = props.types[props.camelCase[index]];
