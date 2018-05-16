@@ -11,7 +11,7 @@ import util from './util';
 import './log/monitor';
 
 // mip1 的兼容代码
-import './mip1-polyfill';
+// import './mip1-polyfill';
 
 import Router from './router/index';
 import {start} from './page/index';
@@ -19,6 +19,9 @@ import createRouter from './page/create-router';
 import Vuex from './vuex/index';
 import sandbox from './util/sandbox';
 import viewer from './util/viewer';
+
+// mip1 polyfill
+import './mip1';
 
 viewer.init();
 
@@ -47,5 +50,5 @@ start(mip, store, router);
 Vue.use(customElement, store, router);
 Vue.use(customElementBuildInComponents);
 
-window.MIP = window.mip = mip;
+window.mip = mip;
 export default MIP;
