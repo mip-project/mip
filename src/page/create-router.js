@@ -3,9 +3,16 @@
  * @author panyuqi@baidu.com (panyuqi)
  */
 
+import sandbox from '../util/sandbox';
 import * as util from './util';
-import {MIP_ERROR_ROUTE_PATH, MIP_CONTAINER_ID} from './const';
+import {
+    MIP_ERROR_ROUTE_PATH,
+    MIP_CONTAINER_ID,
+    MIP_WATCH_FUNCTION_NAME
+} from './const';
 import ErrorPage from './vue-components/Error.vue';
+
+const {window: sandWin, document: sandDoc} = sandbox;
 
 /**
  * extract route object from current DOM tree or raw HTML.
@@ -16,13 +23,15 @@ import ErrorPage from './vue-components/Error.vue';
  */
 function getRoute(rawHTML, routeOptions = {}, initOptions) {
     let MIPRouterTitle = util.getMIPTitle(rawHTML);
+    let MIPCustomScript = util.getMIPCustomScript(rawHTML);
     let {MIPContent, scope} = util.getMIPContent(rawHTML);
 
     return Object.assign({
         component: {
             data() {
                 return {
-                    MIPRouterTitle
+                    MIPRouterTitle,
+                    MIPCustomScript
                 };
             },
             render(createElement) {
@@ -36,8 +45,23 @@ function getRoute(rawHTML, routeOptions = {}, initOptions) {
                 next(vm => {
                     vm.$el.setAttribute(scope, '');
                     let parent = vm.$parent;
+
+                    // Set title
                     document.title = parent.MIPRouterTitle = vm.MIPRouterTitle;
 
+                    // Add custom script
+                    if (vm.MIPCustomScript) {
+                        let script = document.createElement('script');
+                        script.id = 'mip-custom-script';
+                        script.type = 'text/javascript';
+                        script.innerHTML = vm.MIPCustomScript;
+                        document.body.appendChild(script);
+                        if (typeof window[MIP_WATCH_FUNCTION_NAME] === 'function') {
+                            window[MIP_WATCH_FUNCTION_NAME](sandWin, sandDoc);
+                        }
+                    }
+
+                    // Set initial config
                     if (initOptions) {
                         parent.MIPRouterIcon = initOptions.icon;
                         let pageTransitionType = initOptions.pageTransitionType || 'fade';
@@ -50,9 +74,20 @@ function getRoute(rawHTML, routeOptions = {}, initOptions) {
             },
             beforeRouteLeave(to, from, next) {
                 let parent = this.$parent;
+
+                // Set leave transition type
                 parent.pageTransitionEffect = parent.pageTransitionType === 'slide'
                     ? (util.isForward(to, from) ? 'slide-left' : 'slide-right')
                     : parent.pageTransitionType;
+
+                // Remove custom script
+                let customScript = document.querySelector('#mip-custom-script');
+                if (customScript) {
+                    customScript.remove();
+                    // TODO call unWatchAll
+                    console.log('mip.unWatchAll() from beforeRouteLeave');
+                }
+
                 next();
             }
         }

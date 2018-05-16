@@ -49,6 +49,10 @@
 
     <mip-link to="./index.html" class="link">Back to Index</mip-link>
 
+    <script type="application/mip-script">
+        console.log('Prepare to watch anotherData');
+        mip.watch('anotherData', () => console.log('callback'));
+    </script>
     <script src="../../dist/mip.js"></script>
     <script src="./components/mip-change-contacts.js"></script>
     <script src="./components/mip-contacts.js"></script>

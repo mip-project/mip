@@ -35,7 +35,6 @@ let mip = {
     // 当前是否在 iframe 中
     isIframed: window === top,
     standalone: window === top,
-    Router,
     Store: Vuex,
     sandbox
 };

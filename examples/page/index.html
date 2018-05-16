@@ -54,6 +54,9 @@ Fast - Respond quickly to user interactions with silky smooth animations and no 
             }
         </script>
     </mip-store>
-
+    <script type="application/mip-script">
+        console.log('Prepare to watch someData');
+        mip.watch('someData', () => console.log('callback'));
+    </script>
     <script src="../../dist/mip.js"></script>
 </body>

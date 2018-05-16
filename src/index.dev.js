@@ -37,7 +37,11 @@ let mip = {
     standalone: window === top,
     Router,
     Store: Vuex,
-    sandbox
+    sandbox,
+    // TEST ONLY
+    watch(data, callback) {
+        console.log('watch', data, callback.toString());
+    }
 };
 
 const router = createRouter(Router);
