@@ -57,7 +57,7 @@ function formatMatch (record) {
   return res
 }
 
-function getFullPath (
+export function getFullPath (
   { path, query = {}, hash = '' },
   _stringifyQuery
 ) {

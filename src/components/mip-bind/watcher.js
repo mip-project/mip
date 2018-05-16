@@ -52,6 +52,12 @@ class Watcher {
             this._depIds[dep.id] = dep;
         }
     }
+
+    teardown() {
+        for (let key of Object.keys(this._depIds)) {
+            this._depIds[key].subs = [];
+        }
+    }
 }
 
 export default Watcher;

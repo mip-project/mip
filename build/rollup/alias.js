@@ -8,7 +8,7 @@ const path = require('path');
 const resolve = p => path.resolve(__dirname, '../', p);
 
 module.exports = {
-    mip: resolve('src/vue/platforms/web/entry-runtime'),
+    vue: resolve('src/vue/platforms/web/entry-runtime'),
     compiler: resolve('src/vue/compiler'),
     core: resolve('src/vue/core'),
     shared: resolve('src/vue/shared'),

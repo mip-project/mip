@@ -4,6 +4,7 @@ import {parsePath, resolvePath} from './path';
 import {resolveQuery} from './query';
 import {fillParams} from './params';
 import {warn} from './warn';
+import {getFullPath} from './route';
 
 export function normalizeLocation(raw, current, append, router) {
     let next = typeof raw === 'string' ? {
@@ -56,7 +57,7 @@ export function normalizeLocation(raw, current, append, router) {
         path,
         query,
         hash,
-        raw
+        fullpath: getFullPath({path, query, hash})
     };
 }
 

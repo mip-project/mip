@@ -166,8 +166,8 @@ export function createMatcher(routes, router) {
     };
 }
 
-function matchRoute(regex, {path, params, raw}) {
-    const m = raw.match(regex);
+function matchRoute(regex, {path, params, fullpath}) {
+    const m = fullpath.match(regex);
 
     if (!m) {
         return false;
