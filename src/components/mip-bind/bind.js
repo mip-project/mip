@@ -17,6 +17,7 @@ class Bind {
         this._win = window;
         this._watchers = [];
         this._watcherIds = [];
+        this._globals = [];
         // require mip data extension runtime
         this._compile = new Compile();
         this._observer = new Observer();
@@ -44,13 +45,23 @@ class Bind {
                 return;
             }
 
-            // TODO 去重逻辑还需要修改
-            let watcher = `${target}${cb.toString()}`.replace(/[\n\t\s]/g, '');
-            if (me._watcherIds.indexOf(watcher) !== -1) {
-                console.log(watcher);
+            // TODO 去重
+            let reg = target.split('.').reduce((total, current) => {
+                if (total) {
+                    total += '\{("[^\{\}:]+":\{[^\{\}]+\},)*';
+                }
+                return total + `"${current}":`;
+            }, '');
+            if (!JSON.stringify(me._win.m).match(new RegExp(reg))) {
                 return;
             }
-            me._watcherIds.push(watcher);
+
+            let watcherId = `${target}${cb.toString()}`.replace(/[\n\t\s]/g, '');
+            if (me._watcherIds.indexOf(watcherId) !== -1) {
+                return;
+            }
+
+            me._watcherIds.push(watcherId);
             me._watchers.push(new Watcher(
                 null,
                 me._win.m,
@@ -62,6 +73,8 @@ class Bind {
         MIP.unwatchAll = function () {
             me._watchers.forEach(watcher => watcher.teardown());
             me._watcherIds = [];
+            // 只保留 global 数据
+            me._win.m = me._getGlobalData(me._globals, me._win.m);
         };
     }
 
@@ -76,18 +89,21 @@ class Bind {
             let origin = JSON.stringify(window.m);
             this._compile.upadteData(JSON.parse(origin));
             // fn.extend(window.m, data);
-            // let globals = this._normalize(data);
-            // this._diff({
-            //     globals: this._globals,
-            //     data: window.m
-            // }, {
-            //     globals,
-            //     data
-            // });
-            Object.assign(window.m, data);
+            // Object.assign(window.m, data);
             if (compile) {
+                let globals = this._normalize(data);
+                this._diff({
+                    globals: this._globals,
+                    data: window.m
+                }, {
+                    globals,
+                    data
+                });
                 this._observer.start(this._win.m);
                 this._compile.start(this._win.m);
+            }
+            else {
+                this._assign(window.m, data);
             }
         }
         else {
@@ -95,25 +111,64 @@ class Bind {
         }
     }
 
-    _diff({globals: oldGlobals, data: oldData}, {globals: newGlobals, data: newData}) {
+    _diff(
+        {globals: oldGlobals, data: oldData},
+        {globals: newGlobals, data: newData}
+    ) {
+        this._getGlobalData(oldGlobals, oldData, newData, function (globalPath, clone) {
+            if (!~newGlobals.indexOf(globalPath)) {
+                newGlobals.push(globalPath);
+                clone();
+            }
+        });
 
+        this._globals = newGlobals;
+        Object.assign(oldData, newData);
+    }
+
+    _assign(oldData, newData) {
+        for (let k of Object.keys(newData)) {
+            if (isObj(newData[k]) && oldData[k]) {
+                this._assign(oldData[k], newData[k]);
+            }
+            else {
+                oldData[k] = newData[k];
+            }
+        }
+    }
+
+    _getGlobalData(globals, srcData, target = {}, condition) {
+        if (!condition) {
+            condition = function (globalPath, clone) {
+                clone();
+            };
+        }
+
+        for (let r of globals) {
+            condition(r, function () {
+                let paths = r.split('.');
+                let objSrc = srcData;
+                let objData = target;
+                let lastAttr = paths.pop();
+                for (let p of paths) {
+                    if (objData[p]) {
+                        objData = objData[p];
+                    }
+                    else {
+                        objData[p] = {};
+                        objData = objData[p];
+                    }
+                    objSrc = objSrc[p];
+                }
+                objData[lastAttr] = objSrc[lastAttr];
+            });
+        }
+
+        return target;
     }
 
     _normalize(data) {
-        let globals = this._normalizeGlobal(data).filter(attr => attr !== ',');
-
-        for (let g of globals) {
-            let paths = g.split('.');
-            let obj = data;
-            let lastAttr = paths.pop();
-            for (let p of paths) {
-                obj = obj[p];
-            }
-            obj[lastAttr] = obj[`#${lastAttr}`];
-            delete obj[`#${lastAttr}`];
-        }
-
-        return globals;
+        return this._normalizeGlobal(data).filter(attr => attr !== ',');
     }
 
     _normalizeGlobal(data) {
@@ -121,29 +176,34 @@ class Bind {
 
         for (let k of Object.keys(data)) {
             let stop = false;
+            let newKey = k;
+
             if (/^#/.test(k)) {
                 stop = true;
-                path.push(k.substr(1));
+                newKey = k.substr(1);
+                path.push(newKey);
                 path.push(',');
+                data[newKey] = data[k];
+                delete data[k];
             }
             else {
                 path.push(k);
             }
 
-            if (Object.prototype.toString.call(data[k]) === '[object Object]' && !stop) {
-                let tmp = this._normalizeGlobal(data[k]);
-                tmp = tmp.slice(0, tmp.lastIndexOf(',') + 1);
-                if (!tmp.length) {
-                    path.pop();
-                }
-                else {
-                    let parent = path.pop();
+            if (isObj(data[newKey]) && !stop) {
+                let tmp = this._normalizeGlobal(data[newKey]);
+                let parent = path.pop();
+                if (tmp.length) {
                     path = [...path, ...tmp.map(p => p !== ',' ? `${parent}.${p}` : ',')];
                 }
-            }    
+            }
         }
 
-        return path;
+        path = path.join(' ')
+            .replace(/([^,]*\s)([^,])/g, ' $2')
+            .replace(/^\s*|\s*$/g, '')
+            .split(' ');
+        return path.slice(0, path.lastIndexOf(',') + 1);
     }
 
     // Bind event for post message when fetch data returned, then compile dom again
@@ -199,6 +259,10 @@ class Bind {
             }
         });
     }
+}
+
+function isObj(obj) {
+    return Object.prototype.toString.call(obj) === '[object Object]';
 }
 
 export default Bind;

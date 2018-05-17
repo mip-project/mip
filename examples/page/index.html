@@ -45,7 +45,7 @@ Fast - Respond quickly to user interactions with silky smooth animations and no 
                     "title": "Apple/苹果 iPhone X",
                     "basePrice": "9688.00",
                     "price": "9688.00",
-                    "comments": 5855,
+                    "#comments": 5855,
                     "integral": 968,
                     "network": {
                         "nocontract": 1
@@ -63,7 +63,7 @@ Fast - Respond quickly to user interactions with silky smooth animations and no 
                         "six": 0,
                         "twelve": 0
                     },
-                    "sp": {
+                    "#sp": {
                         "three": "¥3303.60",
                         "six": "¥1687.32",
                         "twelve": "¥867.88"
@@ -81,6 +81,13 @@ Fast - Respond quickly to user interactions with silky smooth animations and no 
     
             </script>
     </mip-data>
+    <mip-data>
+        <script type="application/json">
+            {
+                "num2": "num2"
+            }
+        </script>
+    </mip-data>
 
     <br><br>
 
@@ -97,15 +104,22 @@ Fast - Respond quickly to user interactions with silky smooth animations and no 
             }
         </script>
     </mip-store>
+    <span>group.info.name will show after go to data page and come back(state from data.html):</span>
+    <p m-text="group.info.name"></p>
     <p m-text="title"></p>
     <p m-text="num"></p>
     <div on="tap:MIP.setData({num:2})">click change num</div>
+    <p m-text="num2"></p>
+    <div on="tap:MIP.setData({num2:4})">click change num2</div>
     <p m-text="sp.three"></p>
     <div on="tap:MIP.setData({sp:{three:'¥0'}})">click change sp.three</div>
     <p m-text="basePrice"></p>
     <div on="tap:MIP.setData({basePrice:3000})">click change basePrice</div>
+    <p m-text="comments"></p>
+    <div on="tap:MIP.setData({comments:'ckkk'})">click change comments</div>
     <p m-text="img.first"></p>
     <div on="tap:MIP.setData({img:{first:1}})">click change img.first</div>
+    
     <script src="../../dist/mip.js"></script>
     <script>
         window.addEventListener('ready-to-watch', function () {
@@ -114,20 +128,27 @@ Fast - Respond quickly to user interactions with silky smooth animations and no 
                     title: 'ckkkk changing num'
                 });
             });
-            MIP.watch('num', function () {
-                console.log('num another cb')
+            MIP.watch('num2', function () {
+                console.log('num2 cb')
             });
             MIP.watch('sp.three', function () {
+                console.log('sp.three')
                 MIP.setData({
                     title: 'ckkkk changing sp.three'
+                });
+            });
+            MIP.watch('comments', function () {
+                console.log('comments')
+                MIP.setData({
+                    title: 'ckkkk changing comments'
                 });
             });
             MIP.watch(['basePrice', 'img.first'], function () {
                 MIP.setData({
                     title: 'ckkkk changing multi'
                 });
-                console.log(window.m)
             });
+            
             // MIP.unwatchAll()
         });
     </script>
