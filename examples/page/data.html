@@ -145,6 +145,9 @@
             });
             MIP.watch('num2', function () {
                 console.log('num2 cb')
+                MIP.setData({
+                    title: 'ckkkk changing num2'
+                });
             });
             MIP.watch('sp.three', function () {
                 console.log('sp.three')
