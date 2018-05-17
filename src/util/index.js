@@ -14,6 +14,7 @@ import EventEmitter from './event-emitter';
 import Gesture from './gesture';
 import customStorage from './customStorage';
 import viewer from './viewer';
+import viewport from './viewport';
 
 /**
  * Exchange a url to cache url.
@@ -107,5 +108,6 @@ export default {
     EventEmitter,
     Gesture,
     customStorage,
-    viewer
+    viewer,
+    viewport
 };

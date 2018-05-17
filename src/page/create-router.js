@@ -18,11 +18,21 @@ const {window: sandWin, document: sandDoc} = sandbox;
  * extract route object from current DOM tree or raw HTML.
  *
  * @param {string?} rawHTML raw HTML content
- * @param {Object?} routeOptions route's options
+ * @param {Object?} shellConfig route's options
  * @return {Object} routeObject
  */
-function getRoute(rawHTML, routeOptions = {}, initOptions) {
-    let MIPRouterTitle = util.getMIPTitle(rawHTML);
+function getRoute(rawHTML, routeOptions = {}, shellConfig) {
+    if (!shellConfig) {
+        shellConfig = util.getMIPShellConfig(rawHTML);
+    }
+
+    if (!shellConfig.header) {
+        shellConfig.header = {};
+    }
+    if (!shellConfig.header.title) {
+        shellConfig.header.title = util.getMIPTitle(rawHTML);
+    }
+
     let MIPCustomScript = util.getMIPCustomScript(rawHTML);
     let {MIPContent, scope} = util.getMIPContent(rawHTML);
 
@@ -30,7 +40,6 @@ function getRoute(rawHTML, routeOptions = {}, initOptions) {
         component: {
             data() {
                 return {
-                    MIPRouterTitle,
                     MIPCustomScript
                 };
             },
@@ -44,10 +53,11 @@ function getRoute(rawHTML, routeOptions = {}, initOptions) {
             beforeRouteEnter(to, from, next) {
                 next(vm => {
                     vm.$el.setAttribute(scope, '');
-                    let parent = vm.$parent;
 
+                    let shell = vm.$parent;
                     // Set title
-                    document.title = parent.MIPRouterTitle = vm.MIPRouterTitle;
+                    shell = Object.assign(shell, shellConfig);
+                    document.title = shell.header.title;
 
                     // Add custom script
                     if (vm.MIPCustomScript) {
@@ -60,25 +70,15 @@ function getRoute(rawHTML, routeOptions = {}, initOptions) {
                             window[MIP_WATCH_FUNCTION_NAME](sandWin, sandDoc);
                         }
                     }
-
-                    // Set initial config
-                    if (initOptions) {
-                        parent.MIPRouterIcon = initOptions.icon;
-                        let pageTransitionType = initOptions.pageTransitionType || 'fade';
-                        parent.pageTransitionType = pageTransitionType;
-                        parent.pageTransitionEffect = parent.pageTransitionType === 'slide'
-                            ? 'slide-left'
-                            : pageTransitionType;
-                    }
                 });
             },
             beforeRouteLeave(to, from, next) {
-                let parent = this.$parent;
+                let shell = this.$parent;
 
                 // Set leave transition type
-                parent.pageTransitionEffect = parent.pageTransitionType === 'slide'
+                shell.view.transition.effect = shell.view.transition.mode === 'slide'
                     ? (util.isForward(to, from) ? 'slide-left' : 'slide-right')
-                    : parent.pageTransitionType;
+                    : shell.view.transition.mode;
 
                 // Remove custom script
                 let customScript = document.querySelector('#mip-custom-script');
@@ -95,16 +95,14 @@ function getRoute(rawHTML, routeOptions = {}, initOptions) {
 };
 
 export default function createRouter(Router) {
-    let MIPConfig = util.getMIPConfig();
+    let shellConfig = util.getMIPShellConfig();
+    let view = shellConfig.view;
 
     // Build routes
     let routes = [
         getRoute(undefined, {
-            path: location.pathname + location.search
-        }, {
-            pageTransitionType: MIPConfig.pageTransitionType,
-            icon: MIPConfig.icon
-        }),
+            path: window.location.pathname
+        }, shellConfig),
         {
             path: MIP_ERROR_ROUTE_PATH,
             component: ErrorPage
@@ -114,11 +112,11 @@ export default function createRouter(Router) {
     // Create router instance and register onMatchMiss hook (add dynamic routes)
     const router = new Router({routes});
 
-    if (MIPConfig.pageTransitionType === 'slide') {
+    if (view && view.transition && view.transition.mode === 'slide') {
         util.initHistory({base: router.options.base});
 
-        if (MIPConfig.pageTransitionAlwaysBackPages) {
-            util.addAlwaysBackPage(MIPConfig.pageTransitionAlwaysBackPages);
+        if (view.transition.alwaysBackPages) {
+            util.addAlwaysBackPage(view.transition.alwaysBackPages);
         }
     }
 

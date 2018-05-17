@@ -38,25 +38,66 @@ Fast - Respond quickly to user interactions with silky smooth animations and no 
     <mip-link class="link" to="./data.html">Go to Data</mip-link>
     <mip-link class="link" to="./not-mip.html">Go to Not MIP</mip-link>
     <mip-link class="link" to="/not/exists">Go to Not Exists</mip-link>
-
     <br><br>
 
-    <mip-store id="mip-config">
+    <mip-shell>
         <script type="application/json">
             {
-                "model": {
-                    "MIPConfig": {
-                        "icon": "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg",
-                        "pageTransitionType": "slide",
-                        "pageTransitionAlwaysBackPages": ["/examples/page/index.html"]
+                "header": {
+                    "title": "xxxxxx",
+                    "logo": "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg",
+                    "buttonGroup": [
+                        {
+                            "type": "button",
+                            "name": "subscribe",
+                            "text": "关注",
+                            "link": "/examples/page/tree.html"
+                        },
+                        {
+                            "type": "button",
+                            "name": "chat",
+                            "text": "发消息",
+                            "outline": true
+                        },
+                        {
+                            "type": "icon",
+                            "name": "search",
+                            "text": "search",
+                            "link": "/examples/page/tree.html"
+                        },
+                        {
+                            "type": "dropdown",
+                            "items": [
+                                {
+                                    "name": "subscribe",
+                                    "text": "关注",
+                                    "link": "/examples/page/tree.html"
+                                },
+                                {
+                                    "name": "chat",
+                                    "text": "发消息"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "view": {
+                    "isIndex": true,
+                    "transition": {
+                        "mode": "slide",
+                        "alwaysBackPages": ["/examples/page/index.html"]
                     }
-                }
+                },
+                "footer": {}
             }
         </script>
-    </mip-store>
+    </mip-shell>
+
     <script type="application/mip-script">
         console.log('Prepare to watch someData');
         mip.watch('someData', () => console.log('callback'));
     </script>
+
+    <script src="../../dist/deps.js"></script>
     <script src="../../dist/mip.js"></script>
 </body>

@@ -17,6 +17,47 @@
 </head>
 
 <body>
+    <mip-shell>
+        <script type="application/json">
+            {
+                "header": {
+                    "title": "tree page",
+                    "buttonGroup": [
+                        {
+                            "type": "icon",
+                            "name": "search",
+                            "text": "search"
+                        },
+                        {
+                            "type": "icon",
+                            "name": "home",
+                            "text": "home"
+                        },
+                        {
+                            "type": "dropdown",
+                            "items": [
+                                {
+                                    "name": "subscribe",
+                                    "text": "关注"
+                                },
+                                {
+                                    "name": "chat",
+                                    "text": "发消息"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "view": {
+                    "transition": {
+                        "mode": "slide",
+                        "alwaysBackPages": ["/examples/page/index.html"]
+                    }
+                },
+                "footer": {}
+            }
+        </script>
+    </mip-shell>
     <p>This is Page#2, using different component (mip-tree)</p>
     <mip-tree>
         <script type="application/json">
@@ -25,6 +66,7 @@
     </mip-tree>
     <mip-link to="./index.html" class="link">Back to Index</mip-link>
 
+    <script src="../../dist/deps.js"></script>
     <script src="../../dist/mip.js"></script>
     <script src="./components/mip-tree.js"></script>
 </body>

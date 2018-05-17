@@ -33,18 +33,24 @@ export function createContainer (containerId) {
     }
 }
 
-export function getMIPConfig() {
-    // Only read from current page
-    for (let i = 0; i < document.body.children.length; i++) {
-        let node = document.body.children[i];
-
-        if (node.tagName.toLowerCase() === 'mip-store' && node.getAttribute('id') === 'mip-config') {
-            try {
-                return JSON.parse(node.children[0].innerHTML).model.MIPConfig;
-            }
-            catch (e) {}
+export function getMIPShellConfig(rawHTML) {
+    let rawJSON;
+    if (rawHTML) {
+        let match = rawHTML.match(/<\bmip-shell\b.*>\s*<script.*>([\s\S]+)<\/script>\s*<\/mip-shell>/i);
+        if (match) {
+            rawJSON = match[1];
         }
     }
+    else {
+        let $shell = document.body.querySelector('mip-shell');
+        if ($shell) {
+            rawJSON = $shell.children[0].innerHTML;
+        }
+    }
+    try {
+        return JSON.parse(rawJSON);
+    }
+    catch (e) {}
 
     return {};
 }
