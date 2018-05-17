@@ -286,6 +286,7 @@ class Layout {
         }
         return layout;
     }
+
 }
 
 export default new Layout();

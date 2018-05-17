@@ -123,14 +123,8 @@ class Resources {
      * @param {boolean} inViewport inViewport
      */
     setInViewport(element, inViewport) {
-        if (element.inViewport !== inViewport) {
-            element.inViewport = inViewport;
-        }
-
-        // 确保元素还在dom树结构中
-        if (inViewport && element.parentNode) {
-            // 此处特殊处理元素属性
-            element[firstInviewPropName] = 1;
+        if (element.inViewport() !== inViewport) {
+            element.viewportCallback(inViewport);
         }
     }
 
