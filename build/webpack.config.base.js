@@ -13,7 +13,7 @@ const resolve = p => path.resolve(__dirname, '../', p);
 
 let filesToConcat = [
     resolve('deps/fetch.js'),
-    resolve('deps/fetch-jsonp.js'),
+    'fetch-jsonp',
     'zepto',
     'esljs',
     'document-register-element/build/document-register-element'

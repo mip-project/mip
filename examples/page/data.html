@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>MIP Page Data</title>
+    <title>MIP Data Page</title>
     <meta name="keywords" content="vue,mip,store">
     <meta name="description" content="mip-store">
     <meta name="apple-touch-fullscreen" content="yes">
@@ -17,19 +17,15 @@
         margin-top: 20px;
         display: block;
     }
+    p, .button {
+        width: 150px;
+        display: inline-block;
+        margin: 20px 0 0 20px;
+    }
     </style>
 </head>
 
 <body>
-    <p m-text="title"></p>
-    <p m-text="num"></p>
-    <div on="tap:MIP.setData({num:2})">click change num</div>
-    <p m-text="sp.three"></p>
-    <div on="tap:MIP.setData({sp:{three:'¥0'}})">click change sp.three</div>
-    <p m-text="basePrice"></p>
-    <div on="tap:MIP.setData({basePrice:3000})">click change basePrice</div>
-    <p m-text="img.first"></p>
-    <div on="tap:MIP.setData({img:{first:1}})">click change img.first</div>
     <mip-data>
         <script type="application/json">
             {
@@ -37,7 +33,7 @@
                 "title": "Apple/苹果 iPhone X",
                 "basePrice": "9688.00",
                 "price": "9688.00",
-                "comments": 5855,
+                "#comments": 5855,
                 "integral": 968,
                 "network": {
                     "nocontract": 1
@@ -55,7 +51,7 @@
                     "six": 0,
                     "twelve": 0
                 },
-                "sp": {
+                "#sp": {
                     "three": "¥3303.60",
                     "six": "¥1687.32",
                     "twelve": "¥867.88"
@@ -72,14 +68,46 @@
             }
         </script>
     </mip-data>
+    <mip-data>
+        <script type="application/json">
+            {
+                "num2": "num2"
+            }
+        </script>
+    </mip-data>
 
+    <span>group.info.name will show after go to data page and come back(state from data.html):</span>
+    <br><br>
+    <p m-text="group.info.name"></p>
+
+    <h1 m-text="title"></h1>
+
+    <p m-text="num"></p>
+    <div on="tap:MIP.setData({num:2})" class="button">click change num</div>
+
+    <p m-text="num2"></p>
+    <div on="tap:MIP.setData({num2:4})" class="button">click change num2</div>
+
+    <p m-text="sp.three"></p>
+    <div on="tap:MIP.setData({sp:{three:'¥0'}})" class="button">click change sp.three</div>
+
+    <p m-text="basePrice"></p>
+    <div on="tap:MIP.setData({basePrice:3000})" class="button">click change basePrice</div>
+
+    <p m-text="comments"></p>
+    <div on="tap:MIP.setData({comments:'ckkk'})" class="button">click change comments</div>
+
+    <p m-text="img.first"></p>
+    <div on="tap:MIP.setData({img:{first:1}})" class="button">click change img.first</div>
+
+    <br><br>
     <mip-link to="./index.html" class="link">Back to Index</mip-link>
 
     <mip-shell>
         <script type="application/json">
             {
                 "header": {
-                    "title": "xxxxxx",
+                    "title": "Mip Data",
                     "logo": "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg",
                     "buttonGroup": [
                         {
@@ -93,26 +121,6 @@
                             "name": "chat",
                             "text": "发消息",
                             "outline": true
-                        },
-                        {
-                            "type": "icon",
-                            "name": "search",
-                            "text": "search",
-                            "link": "/examples/page/tree.html"
-                        },
-                        {
-                            "type": "dropdown",
-                            "items": [
-                                {
-                                    "name": "subscribe",
-                                    "text": "关注",
-                                    "link": "/examples/page/tree.html"
-                                },
-                                {
-                                    "name": "chat",
-                                    "text": "发消息"
-                                }
-                            ]
                         }
                     ]
                 },
@@ -129,18 +137,25 @@
     </mip-shell>
 
     <script type="application/mip-script">
-        // window.addEventListener('ready-to-watch', function () {
+        window.addEventListener('ready-to-watch', function () {
             MIP.watch('num', function () {
                 MIP.setData({
                     title: 'ckkkk changing num'
                 });
             });
-            MIP.watch('num', function () {
-                console.log('num another cb')
+            MIP.watch('num2', function () {
+                console.log('num2 cb')
             });
             MIP.watch('sp.three', function () {
+                console.log('sp.three')
                 MIP.setData({
                     title: 'ckkkk changing sp.three'
+                });
+            });
+            MIP.watch('comments', function () {
+                console.log('comments')
+                MIP.setData({
+                    title: 'ckkkk changing comments'
                 });
             });
             MIP.watch(['basePrice', 'img.first'], function () {
@@ -148,8 +163,9 @@
                     title: 'ckkkk changing multi'
                 });
             });
+
             // MIP.unwatchAll()
-        // });
+        });
     </script>
     <script src="../../dist/deps.js"></script>
     <script src="../../dist/mip.js"></script>
