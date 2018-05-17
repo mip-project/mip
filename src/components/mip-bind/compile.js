@@ -102,7 +102,7 @@ class Compile {
     }
 
     text(node, directive, newVal) {
-        node.textContent = newVal ? newVal : '';
+        node.textContent = (newVal || newVal !== 0) ? newVal : '';
     }
 
     bind(node, directive, newVal) {
