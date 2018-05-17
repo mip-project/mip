@@ -46,11 +46,7 @@ let mip = {
     Store: Vuex,
     sandbox,
     css: {},
-    prerenderElement: Resources.prerenderElement,
-    // TEST ONLY
-    watch(data, callback) {
-        console.log('watch', data, callback.toString());
-    }
+    prerenderElement: Resources.prerenderElement
 };
 
 if (window.MIP) {
