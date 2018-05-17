@@ -1,16 +1,17 @@
 <template>
-    <div :id="CONTAINER_ID">
+    <div :id="MIP_CONTAINER_ID">
         <app-header
-            ref="appHeader"
-            :title="MIPRouterTitle"
-            :icon="MIPRouterIcon"
-            @click-back="onClickHeaderBack">
+            :title="header.title"
+            :logo="header.logo"
+            :showBackIcon="!view.isIndex"
+            :buttonGroup="header.buttonGroup"
+            @appheader::click-back="onClickHeaderBack">
         </app-header>
         <div v-show="showLoading" class="mip-appshell-router-view-mask">
             <loading size="50" indeterminate></loading>
         </div>
         <transition
-            :name="pageTransitionEffect"
+            :name="view.transition.effect"
             @before-enter="onBeforeEnter"
             @after-enter="onAfterEnter"
             @before-leave="onBeforeLeave">
@@ -26,11 +27,9 @@
 <script>
 import AppHeader from './AppHeader.vue';
 import Loading from './Loading.vue';
-import * as constants from '../const';
 import {restoreContainerScrollPosition, restoreBodyScrollPosition} from '../util';
 import Store from '../../vuex/index';
-
-const CONTAINER_ID = constants.MIP_CONTAINER_ID;
+import {MIP_CONTAINER_ID, DEFAULT_SHELL_CONFIG} from '../const';
 
 export default {
     components: {
@@ -39,7 +38,7 @@ export default {
     },
     computed: {
         pageTransitionClass() {
-            return `transition-${this.pageTransitionType}`;
+            return `transition-${this.view.transition.mode}`;
         },
         routerViewKey() {
             let {name, params} = this.$route;
@@ -52,12 +51,9 @@ export default {
     },
     data() {
         return {
-            CONTAINER_ID,
-            MIPRouterTitle: '',
-            MIPRouterIcon: undefined,
+            ...DEFAULT_SHELL_CONFIG,
+            MIP_CONTAINER_ID,
             scrollPostionMap: {},
-            pageTransitionType: 'fade',
-            pageTransitionEffect: 'fade',
             showLoading: true
         }
     },

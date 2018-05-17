@@ -9,7 +9,6 @@ import Watcher from './watcher';
 import util from '../../util';
 
 /* global MIP */
-window.MIP = {};
 
 class Bind {
     constructor() {

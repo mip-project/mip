@@ -24,6 +24,59 @@
     <link rel="stylesheet" href="../../dist/mip.css">
 </head>
 <body>
+    <mip-shell>
+        <script type="application/json">
+            {
+                "header": {
+                    "title": "xxxxxx",
+                    "logo": "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg",
+                    "buttonGroup": [
+                        {
+                            "type": "button",
+                            "name": "subscribe",
+                            "text": "关注",
+                            "link": "/examples/page/tree.html"
+                        },
+                        {
+                            "type": "button",
+                            "name": "chat",
+                            "text": "发消息",
+                            "outline": true
+                        },
+                        {
+                            "type": "icon",
+                            "name": "search",
+                            "text": "search",
+                            "link": "/examples/page/tree.html"
+                        },
+                        {
+                            "type": "dropdown",
+                            "items": [
+                                {
+                                    "name": "subscribe",
+                                    "text": "关注",
+                                    "link": "/examples/page/tree.html"
+                                },
+                                {
+                                    "name": "chat",
+                                    "text": "发消息"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "view": {
+                    "isIndex": true,
+                    "transition": {
+                        "mode": "slide",
+                        "alwaysBackPages": ["/examples/page/index.html"]
+                    }
+                },
+                "footer": {}
+            }
+        </script>
+    </mip-shell>
+
     <div class="main-image">
         <mip-img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg" width="300" height="300"></mip-img>
     </div>
@@ -78,7 +131,7 @@ Fast - Respond quickly to user interactions with silky smooth animations and no 
                     "time": 1,
                     "src": "https://img.alicdn.com/bao/uploaded/i4/1917047079/TB2ZpydmPihSKJjy0FeXXbJtpXa_!!1917047079.png_430x430q90.jpg"
                 }
-    
+
             </script>
     </mip-data>
     <mip-data>
@@ -91,19 +144,6 @@ Fast - Respond quickly to user interactions with silky smooth animations and no 
 
     <br><br>
 
-    <mip-store id="mip-config">
-        <script type="application/json">
-            {
-                "model": {
-                    "MIPConfig": {
-                        "icon": "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg",
-                        "pageTransitionType": "slide",
-                        "pageTransitionAlwaysBackPages": ["/examples/page/index.html"]
-                    }
-                }
-            }
-        </script>
-    </mip-store>
     <span>group.info.name will show after go to data page and come back(state from data.html):</span>
     <p m-text="group.info.name"></p>
     <p m-text="title"></p>
@@ -119,7 +159,7 @@ Fast - Respond quickly to user interactions with silky smooth animations and no 
     <div on="tap:MIP.setData({comments:'ckkk'})">click change comments</div>
     <p m-text="img.first"></p>
     <div on="tap:MIP.setData({img:{first:1}})">click change img.first</div>
-    
+    <script src="../../dist/deps.js"></script>
     <script src="../../dist/mip.js"></script>
     <script>
         window.addEventListener('ready-to-watch', function () {

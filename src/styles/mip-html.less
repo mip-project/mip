@@ -27,3 +27,19 @@
         word-wrap: break-word;
     }
 }
+
+body::before {
+    display: block;
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    z-index: 99999;
+}
+
+[mip-ready] body::before {
+    display: none;
+}
