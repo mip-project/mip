@@ -9,7 +9,7 @@ import {customEmit} from './custom-event';
 
 export default function createVueInstance(
     element,
-    {Vue, store, router},
+    {Vue, router},
     componentDefinition,
     props
 ) {
@@ -22,6 +22,15 @@ export default function createVueInstance(
         if (element && element.tagName.toLowerCase() === 'mip-template') {
             ComponentDefinition.template = `<div class="mip-template-wrap">${element.innerHTML}</div>`;
         }
+        // for mip-data syntax
+        if (element
+            && element.tagName.toLowerCase() === 'mip-data'
+            && element.getAttribute('src')
+        ) {
+            propsData.mipsrc = element.getAttribute('src');
+            element.setAttribute('mipsrc', element.getAttribute('src'));
+            element.removeAttribute('src');
+        }
 
         let elementOriginalChildren = element.cloneNode(true).childNodes; // clone hack due to IE compatibility
 
@@ -29,7 +38,6 @@ export default function createVueInstance(
 
         let rootElement = {
             propsData,
-            store,
             router,
             props: props.camelCase,
             el: element.children[0],

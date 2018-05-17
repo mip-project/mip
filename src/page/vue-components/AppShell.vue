@@ -94,6 +94,8 @@ export default {
 <style lang="less">
 @import '../../styles/mip.less';
 
+@page-transition-duration: 0.35s;
+
 [mip-ready] {
     display: block;
 }
@@ -109,6 +111,7 @@ export default {
     left: 0;
     -webkit-overflow-scrolling: touch;
     background: white;
+    width: 100%;
 
     &.transition-fade {
         opacity: 1;
@@ -122,25 +125,41 @@ export default {
     }
 
     &.transition-slide {
-        transition: transform 0.35s cubic-bezier(0, 0, 0.2, 1);
         &.slide-left-enter {
             transform: translate(100%, 0);
         }
         &.slide-left-enter-active {
+            transition: transform @page-transition-duration cubic-bezier(0, 0, 0.2, 1);
             box-shadow: 0 16px 16px 2px rgba(0, 0, 0, 0.3);
         }
-        &.slide-right-enter {
-            transform: translate(-30%, 0);
-            transition-timing-function: linear;
-        }
-        &.slide-right-leave-active {
-            transform: translate(100%, 0);
-            box-shadow: 0 16px 16px 2px rgba(0, 0, 0, 0.3);
-            z-index: 99;
+        &.slide-left-enter-to,
+        &.slide-left-leave {
+            transform: translate(0, 0);
         }
         &.slide-left-leave-active {
+            transition: transform @page-transition-duration linear;
+        }
+        &.slide-left-leave-to {
             transform: translate(-30%, 0);
-            transition-timing-function: linear;
+        }
+
+        &.slide-right-enter {
+            transform: translate(-30%, 0);
+        }
+        &.slide-right-enter-active {
+            transition: transform @page-transition-duration linear;
+        }
+        &.slide-right-enter-to,
+        &.slide-right-leave {
+            transform: translate(0, 0);
+        }
+        &.slide-right-leave-active {
+            transition: transform @page-transition-duration cubic-bezier(0, 0, 0.2, 1);
+            box-shadow: 0 16px 16px 2px rgba(0, 0, 0, 0.3);
+            z-index: 99999;
+        }
+        &.slide-right-leave-to {
+            transform: translate(100%, 0);
         }
         &.mip-appshell-router-view-scroll-enabled,
         &.slide-left-enter-active,

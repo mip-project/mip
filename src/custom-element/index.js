@@ -9,7 +9,7 @@ import {camelize} from './utils/helpers';
 import resources from './utils/resources';
 import layout from '../util/layout';
 
-function install(Vue, store, router) {
+function install(Vue, router) {
     Vue.customElement = function vueCustomElement(tag, componentDefinition) {
 
         const props = getProps(componentDefinition);
@@ -67,7 +67,6 @@ function install(Vue, store, router) {
                     this._resources.add(createVueInstance(
                         this, {
                             Vue,
-                            store,
                             router
                         },
                         componentDefinition,
