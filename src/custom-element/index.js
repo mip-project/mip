@@ -10,7 +10,7 @@ import {camelize} from './utils/helpers';
 import resources from './utils/resources';
 import layout from '../util/layout';
 
-function install(Vue, store, router) {
+function install(Vue, router) {
     Vue.customElement = function vueCustomElement(tag, componentDefinition, options = {}) {
 
         // 添加一个是否在可视区域的prop
@@ -58,7 +58,7 @@ function install(Vue, store, router) {
                             const lazyLoadedComponentProps = getProps(lazyLoadedComponent);
                             element = createVueInstance(
                                 this,
-                                {Vue, store, router},
+                                {Vue, router},
                                 lazyLoadedComponent,
                                 lazyLoadedComponentProps,
                                 options
@@ -68,7 +68,7 @@ function install(Vue, store, router) {
                     else {
                         element = createVueInstance(
                             this,
-                            {Vue, store, router},
+                            {Vue, router},
                             componentDefinition,
                             props,
                             options

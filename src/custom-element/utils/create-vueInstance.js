@@ -9,7 +9,7 @@ import {customEmit} from './custom-event';
 
 export default function createVueInstance(
     element,
-    {Vue, store, router},
+    {Vue, router},
     componentDefinition,
     props,
     options
@@ -90,7 +90,6 @@ export default function createVueInstance(
             rootElement = options.beforeCreateVueInstance(rootElement) || rootElement;
         }
 
-        rootElement.store = store;
         rootElement.router = router;
 
         /* eslint-disable */
