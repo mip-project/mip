@@ -76,8 +76,7 @@
         </script>
     </mip-data>
 
-    <span>group.info.name will show after go to data page and come back(state from data.html):</span>
-    <br><br>
+    <span>group.info.name will show below which is a global state shared from index.html:</span>
     <p m-text="group.info.name"></p>
 
     <h1 m-text="title"></h1>
@@ -145,6 +144,9 @@
             });
             MIP.watch('num2', function () {
                 console.log('num2 cb')
+                MIP.setData({
+                    title: 'ckkkk changing num2'
+                });
             });
             MIP.watch('sp.three', function () {
                 console.log('sp.three')
