@@ -115,9 +115,21 @@ export function getMIPContent(rawContent) {
 
                 return '';
             });
+
+        // Add <mip-data> for global data
+        if (!/<\/mip-data>/.test(rawResult) && typeof window.m === 'object') {
+            let dataStr = JSON.stringify(window.m, (key, value) => {
+                if (key === '__ob__') {
+                    return;
+                }
+
+                return value;
+            });
+
+            rawResult += `<mip-data><script type="application/json">${dataStr}</script></mip-data>`;
+        }
     }
 
-    // Create a root node
     return {
         MIPContent: rawResult,
         scope

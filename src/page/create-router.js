@@ -50,11 +50,6 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
 
     return Object.assign({
         component: {
-            // data() {
-            //     return {
-            //         MIPCustomScript
-            //     };
-            // },
             render(createElement) {
                 return createElement('div', {
                     attrs: {
@@ -68,6 +63,7 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
             beforeRouteEnter(to, from, next) {
                 next(vm => {
                     let shell = vm.$parent;
+
                     // Set title
                     shell = Object.assign(shell, shellConfig);
                     document.title = shell.header.title;
