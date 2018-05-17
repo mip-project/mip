@@ -72,11 +72,16 @@
     <mip-data>
         <script type="application/json">
             {
-                "num2": "num2"
+                "userInfo": {
+                    "name": "sfe",
+                    "age": 5,
+                    "members": []
+                }
             }
         </script>
     </mip-data>
 
+    <!-- <mip-complevel1 m-bind:userinfo="userInfo" userinfo="userInfo" on="test-event:MIP.setData({userInfo:{name:'sfe-1'}})"></mip-complevel1> -->
 
     <span>group.info.name will show below which is a global state shared from index.html:</span>
     <span m-text="group.info.name"></span>
@@ -170,4 +175,6 @@
     </script>
     <script src="../../dist/deps.js"></script>
     <script src="../../dist/mip.js"></script>
+    <script src="./components/mip-complevel1.js"></script>
+    <script src="./components/mip-complevel2.js"></script>
 </body>
