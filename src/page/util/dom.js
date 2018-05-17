@@ -169,7 +169,7 @@ export function getMIPCustomScript(rawContent) {
             return;
         }
 
-        let scriptContent = addSandBoxWrapper(script.innerHTML, MIP_WATCH_FUNCTION_NAME);
+        let scriptContent = getSandboxFunction(script.innerHTML);
         script.remove();
         return scriptContent;
     }
@@ -177,14 +177,23 @@ export function getMIPCustomScript(rawContent) {
     let match = rawContent.match(/<script[\s\S]+?type=['"]?application\/mip-script['"]?>([\s\S]+?)<\/script>/i);
     if (match) {
         let scriptContent = match[1];
-        return addSandBoxWrapper(scriptContent, MIP_WATCH_FUNCTION_NAME);
+        return getSandboxFunction(scriptContent);
     }
 }
 
-function addSandBoxWrapper(script, name) {
-    // TODO maybe addEventListener?
-    return `function ${name}(window, document) {
-        let {alert, close, confirm, prompt, setTimeout, setInterval, self, top} = window;
-        ${script}
-    }`;
+import sandbox from '../../util/sandbox';
+const {window: sandWin, document: sandDoc} = sandbox;
+
+function getSandboxFunction(script) {
+    console.log('getSandboxFunction')
+    let foo = new Function('window', 'document', `
+        console.log('hello!!')
+    `);
+    // let {alert, close, confirm, prompt, setTimeout, setInterval, self, top} = window;
+        // ${script}
+    // return () => {
+    //     // console.log(foo.toString())
+    //     foo(sandWin, sandDoc)
+    // };
+    return foo;
 }

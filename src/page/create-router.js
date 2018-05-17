@@ -7,12 +7,13 @@ import sandbox from '../util/sandbox';
 import * as util from './util';
 import {
     MIP_ERROR_ROUTE_PATH,
-    MIP_CONTAINER_ID,
-    MIP_WATCH_FUNCTION_NAME
+    MIP_CONTAINER_ID
+    // MIP_WATCH_FUNCTION_NAME
 } from './const';
 import ErrorPage from './vue-components/Error.vue';
 
 const {window: sandWin, document: sandDoc} = sandbox;
+const foo = function () {console.log('foo')};
 
 /**
  * extract route object from current DOM tree or raw HTML.
@@ -34,15 +35,19 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
     }
 
     let MIPCustomScript = util.getMIPCustomScript(rawHTML);
+    // let MIPWatchHandler;
+    // if (MIPCustomScript) {
+    //     MIPWatchHandler = () => MIPCustomScript(sandWin, sandDoc);
+    // }
     let {MIPContent, scope} = util.getMIPContent(rawHTML);
 
     return Object.assign({
         component: {
-            data() {
-                return {
-                    MIPCustomScript
-                };
-            },
+            // data() {
+            //     return {
+            //         MIPCustomScript
+            //     };
+            // },
             render(createElement) {
                 return createElement('div', {
                     domProps: {
@@ -60,15 +65,18 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
                     document.title = shell.header.title;
 
                     // Add custom script
-                    if (vm.MIPCustomScript) {
-                        let script = document.createElement('script');
-                        script.id = 'mip-custom-script';
-                        script.type = 'text/javascript';
-                        script.innerHTML = vm.MIPCustomScript;
-                        document.body.appendChild(script);
-                        if (typeof window[MIP_WATCH_FUNCTION_NAME] === 'function') {
-                            window[MIP_WATCH_FUNCTION_NAME](sandWin, sandDoc);
-                        }
+                    if (MIPCustomScript) {
+                        // console.log(MIPCustomScript.toString(), 'in beforeRouteEnter')
+                        // window.addEventListener('ready-to-watch', MIPCustomScript);
+                        window.addEventListener('ready-to-watch', foo)
+                        // let script = document.createElement('script');
+                        // script.id = 'mip-custom-script';
+                        // script.type = 'text/javascript';
+                        // script.innerHTML = vm.MIPCustomScript;
+                        // document.body.appendChild(script);
+                        // if (typeof window[MIP_WATCH_FUNCTION_NAME] === 'function') {
+                        //     window[MIP_WATCH_FUNCTION_NAME](sandWin, sandDoc);
+                        // }
                     }
                 });
             },
@@ -80,13 +88,18 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
                     ? (util.isForward(to, from) ? 'slide-left' : 'slide-right')
                     : shell.view.transition.mode;
 
-                // Remove custom script
-                let customScript = document.querySelector('#mip-custom-script');
-                if (customScript) {
-                    customScript.remove();
-                    // TODO call unWatchAll
-                    console.log('mip.unWatchAll() from beforeRouteLeave');
+                if (MIPCustomScript) {
+                    console.log('run here')
+                    // console.log(MIPCustomScript.toString(), 'in beforeRouteLeave');
+                    // window.removeEventListener('ready-to-watch', MIPCustomScript);
+                    window.removeEventListener('ready-to-watch', foo);
                 }
+                // Remove custom script
+                // let customScript = document.querySelector('#mip-custom-script');
+                // if (customScript) {
+                //     customScript.remove();
+                //     mip.unwatchAll();
+                // }
 
                 next();
             }
