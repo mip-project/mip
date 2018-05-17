@@ -8,6 +8,7 @@ import {
     MIP_CONTAINER_ID,
     MIP_VIEW_ID,
     MIP_CONTENT_IGNORE_TAG_LIST,
+    DEFAULT_SHELL_CONFIG,
     MIP_WATCH_FUNCTION_NAME
 } from '../const';
 
@@ -29,7 +30,9 @@ export function createContainer (containerId) {
         document.body.appendChild(container);
     }
     else {
-        oldContainer.innerHTML = '';
+        // client hydrating
+        oldContainer.setAttribute('data-server-rendered', '');
+        // oldContainer.innerHTML = '';
     }
 }
 
@@ -52,7 +55,7 @@ export function getMIPShellConfig(rawHTML) {
     }
     catch (e) {}
 
-    return {};
+    return DEFAULT_SHELL_CONFIG;
 }
 
 export function getMIPTitle(rawContent) {

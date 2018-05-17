@@ -26,11 +26,20 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
         shellConfig = util.getMIPShellConfig(rawHTML);
     }
 
-    if (!shellConfig.header) {
-        shellConfig.header = {};
-    }
     if (!shellConfig.header.title) {
         shellConfig.header.title = util.getMIPTitle(rawHTML);
+    }
+
+    if (shellConfig.view
+        && shellConfig.view.transition
+        && shellConfig.view.transition.mode === 'slide') {
+        if (shellConfig.view.transition.alwaysBackPages) {
+            util.addAlwaysBackPage(shellConfig.view.transition.alwaysBackPages);
+        }
+        // add index page
+        if (shellConfig.view.isIndex) {
+            util.addAlwaysBackPage(routeOptions.path);
+        }
     }
 
     let MIPCustomScript = util.getMIPCustomScript(rawHTML);
@@ -45,6 +54,9 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
             },
             render(createElement) {
                 return createElement('div', {
+                    attrs: {
+                        [scope]: ''
+                    },
                     domProps: {
                         innerHTML: MIPContent
                     }
@@ -52,8 +64,6 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
             },
             beforeRouteEnter(to, from, next) {
                 next(vm => {
-                    vm.$el.setAttribute(scope, '');
-
                     let shell = vm.$parent;
                     // Set title
                     shell = Object.assign(shell, shellConfig);
@@ -114,10 +124,6 @@ export default function createRouter(Router) {
 
     if (view && view.transition && view.transition.mode === 'slide') {
         util.initHistory({base: router.options.base});
-
-        if (view.transition.alwaysBackPages) {
-            util.addAlwaysBackPage(view.transition.alwaysBackPages);
-        }
     }
 
     router.onMatchMiss = function(to, from, next) {

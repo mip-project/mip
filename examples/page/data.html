@@ -103,74 +103,9 @@
 
     <br><br>
     <mip-link to="./index.html" class="link">Back to Index</mip-link>
+    <mip-link to="./tree.html" class="link">Go to tree</mip-link>
 
-    <mip-shell>
-        <script type="application/json">
-            {
-                "header": {
-                    "title": "Mip Data",
-                    "logo": "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg",
-                    "buttonGroup": [
-                        {
-                            "type": "button",
-                            "name": "subscribe",
-                            "text": "关注",
-                            "link": "/examples/page/tree.html"
-                        },
-                        {
-                            "type": "button",
-                            "name": "chat",
-                            "text": "发消息",
-                            "outline": true
-                        }
-                    ]
-                },
-                "view": {
-                    "isIndex": true,
-                    "transition": {
-                        "mode": "slide",
-                        "alwaysBackPages": ["/examples/page/index.html"]
-                    }
-                },
-                "footer": {}
-            }
-        </script>
-    </mip-shell>
 
-    <script type="application/mip-script">
-        window.addEventListener('ready-to-watch', function () {
-            MIP.watch('num', function () {
-                MIP.setData({
-                    title: 'ckkkk changing num'
-                });
-            });
-            MIP.watch('num2', function () {
-                console.log('num2 cb')
-                MIP.setData({
-                    title: 'ckkkk changing num2'
-                });
-            });
-            MIP.watch('sp.three', function () {
-                console.log('sp.three')
-                MIP.setData({
-                    title: 'ckkkk changing sp.three'
-                });
-            });
-            MIP.watch('comments', function () {
-                console.log('comments')
-                MIP.setData({
-                    title: 'ckkkk changing comments'
-                });
-            });
-            MIP.watch(['basePrice', 'img.first'], function () {
-                MIP.setData({
-                    title: 'ckkkk changing multi'
-                });
-            });
-
-            // MIP.unwatchAll()
-        });
-    </script>
     <script src="../../dist/deps.js"></script>
     <script src="../../dist/mip.js"></script>
 </body>
