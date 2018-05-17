@@ -4,12 +4,7 @@
  * @author zhangzhiqiang(zhiqiangzhang37@163.com)
  */
 <template>
-    <div
-        class="mip-carousel"
-        :style="{
-            width: computedWidth
-        }"
-    >
+    <div class="mip-carousel">
         <div
             class="mip-carousel-wrapper"
             ref="carouselWrapper"
@@ -19,9 +14,7 @@
             :style="{
                 width: carouselWrapperWidth,
                 transform: wrapperTransform,
-                transitionDuration: transitionDuration,
-                height: wrapperHeight,
-                paddingBottom: computedHeightWidthRatio
+                transitionDuration: transitionDuration
             }"
         >
             <slot></slot>
@@ -121,32 +114,9 @@ export default {
     },
 
     computed: {
-        computedWidth() {
-            // 宽度支持写百分比等，纯数字认为是像素单位
-            let width = this.width;
-            return /^\d+$/.test(width) ? `${width}px` : width;
-        },
-
-        computedHeight() {
-            // 宽度支持写百分比等，纯数字认为是像素单位
-            let height = this.height;
-            return /^\d+$/.test(height) ? `${height}px` : height;
-        },
 
         carouselWrapperWidth() {
             return `${this.slideLen * 100}%`;
-        },
-
-        wrapperHeight() {
-            return this.computedHeight
-                ? this.computedHeight
-                : (this.heightWidthRatio ? 0 : '');
-        },
-
-        computedHeightWidthRatio() {
-            if (!this.computedHeight) {
-                return this.heightWidthRatio;
-            }
         },
 
         realSlideLen() {
@@ -409,13 +379,17 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 mip-carousel a {
     -webkit-tap-highlight-color: transparent;
 }
 .mip-carousel {
     overflow: hidden;
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 .mip-carousle-subtitle {
     position: absolute;
@@ -466,6 +440,7 @@ mip-carousel a {
     &>* {
         position: relative;
         flex: 1;
+        height: 100%;
     }
 }
 .mip-carousel-slideBox {
