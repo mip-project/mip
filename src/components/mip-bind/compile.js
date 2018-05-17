@@ -75,7 +75,7 @@ class Compile {
             fnName = 'bind';
         }
         let data = me._getMVal(node, attrName, expression);
-        if (data) {
+        if (data || data === 0) {
             me[fnName] && me[fnName](node, attrName, data);
         }
         this._listenerFormElement(node, directive, expression);
@@ -102,7 +102,7 @@ class Compile {
     }
 
     text(node, directive, newVal) {
-        node.textContent = newVal ? newVal : '';
+        node.textContent = (newVal || newVal !== 0) ? newVal : '';
     }
 
     bind(node, directive, newVal) {

@@ -8,7 +8,7 @@ import {
     MIP_CONTAINER_ID,
     MIP_VIEW_ID,
     MIP_CONTENT_IGNORE_TAG_LIST,
-    MIP_WATCH_FUNCTION_NAME
+    DEFAULT_SHELL_CONFIG
 } from '../const';
 
 export function isMIP(rawContent) {
@@ -29,7 +29,9 @@ export function createContainer (containerId) {
         document.body.appendChild(container);
     }
     else {
-        oldContainer.innerHTML = '';
+        // client hydrating
+        oldContainer.setAttribute('data-server-rendered', '');
+        // oldContainer.innerHTML = '';
     }
 }
 
@@ -52,7 +54,7 @@ export function getMIPShellConfig(rawHTML) {
     }
     catch (e) {}
 
-    return {};
+    return DEFAULT_SHELL_CONFIG;
 }
 
 export function getMIPTitle(rawContent) {
@@ -181,19 +183,10 @@ export function getMIPCustomScript(rawContent) {
     }
 }
 
-import sandbox from '../../util/sandbox';
-const {window: sandWin, document: sandDoc} = sandbox;
-
 function getSandboxFunction(script) {
-    console.log('getSandboxFunction')
-    let foo = new Function('window', 'document', `
-        console.log('hello!!')
+    return new Function('window', 'document', `
+        let {alert, close, confirm, prompt, setTimeout, setInterval, self, top} = window;
+
+        ${script}
     `);
-    // let {alert, close, confirm, prompt, setTimeout, setInterval, self, top} = window;
-        // ${script}
-    // return () => {
-    //     // console.log(foo.toString())
-    //     foo(sandWin, sandDoc)
-    // };
-    return foo;
 }
