@@ -20,7 +20,7 @@ import {isNonPhrasingTag} from 'web/compiler/util';
 // Regular Expressions for parsing tags and attributes
 const attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>`]+)))?/;
 // could use https://www.w3.org/TR/1999/REC-xml-names-19990114/#NT-QName
-// but for MIP templates we can enforce a simple charset
+// but for Vue templates we can enforce a simple charset
 const ncname = '[a-zA-Z_][\\w\\-\\.]*';
 const qnameCapture = `((?:${ncname}\:)?${ncname})`;
 const startTagOpen = new RegExp(`^<${qnameCapture}`);

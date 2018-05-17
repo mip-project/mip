@@ -55,15 +55,15 @@ export function initRender(vm) {
     }
 }
 
-export function renderMixin(MIP) {
+export function renderMixin(Vue) {
     // install runtime convenience helpers
-    installRenderHelpers(MIP.prototype);
+    installRenderHelpers(Vue.prototype);
 
-    MIP.prototype.$nextTick = function (fn) {
+    Vue.prototype.$nextTick = function (fn) {
         return nextTick(fn, this);
     };
 
-    MIP.prototype._render = function () {
+    Vue.prototype._render = function () {
         const vm = this;
         const {render, _parentVnode} = vm.$options;
 

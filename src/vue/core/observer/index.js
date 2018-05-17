@@ -126,7 +126,7 @@ export function observe(value, asRootData) {
         && !isServerRendering()
         && (Array.isArray(value) || isPlainObject(value))
         && Object.isExtensible(value)
-        && !value._isMIP
+        && !value._isVue
     ) {
         ob = new Observer(value);
     }
@@ -220,9 +220,9 @@ export function set(target, key, val) {
     }
 
     const ob = (target).__ob__;
-    if (target._isMIP || (ob && ob.vmCount)) {
+    if (target._isVue || (ob && ob.vmCount)) {
         process.env.NODE_ENV !== 'production' && warn(
-            'Avoid adding reactive properties to a MIP instance or its root $data '
+            'Avoid adding reactive properties to a Vue instance or its root $data '
             + 'at runtime - declare it upfront in the data option.'
         );
         return val;
@@ -248,9 +248,9 @@ export function del(target, key) {
     }
 
     const ob = (target).__ob__;
-    if (target._isMIP || (ob && ob.vmCount)) {
+    if (target._isVue || (ob && ob.vmCount)) {
         process.env.NODE_ENV !== 'production' && warn(
-            'Avoid deleting properties on a MIP instance or its root $data '
+            'Avoid deleting properties on a Vue instance or its root $data '
             + '- just set it to null.'
         );
         return;

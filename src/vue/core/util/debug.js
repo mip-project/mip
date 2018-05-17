@@ -27,14 +27,14 @@ if (process.env.NODE_ENV !== 'production') {
             config.warnHandler.call(null, msg, vm, trace);
         }
         else if (hasConsole && (!config.silent)) {
-            console.error(`[MIP warn]: ${msg}${trace}`);
+            console.error(`[Vue warn]: ${msg}${trace}`);
         }
 
     };
 
     tip = (msg, vm) => {
         if (hasConsole && (!config.silent)) {
-            console.warn(`[MIP tip]: ${msg}` + (
+            console.warn(`[Vue tip]: ${msg}` + (
                 vm ? generateComponentTrace(vm) : ''
                 ));
         }
@@ -48,13 +48,13 @@ if (process.env.NODE_ENV !== 'production') {
 
         const options = typeof vm === 'function' && vm.cid != null
             ? vm.options
-            : vm._isMIP
+            : vm._isVue
                 ? vm.$options || vm.constructor.options
                 : vm || {};
         let name = options.name || options._componentTag;
         const file = options.__file;
         if (!name && file) {
-            const match = file.match(/([^/\\]+)\.mip$/);
+            const match = file.match(/([^/\\]+)\.vue$/);
             name = match && match[1];
         }
 
@@ -81,7 +81,7 @@ if (process.env.NODE_ENV !== 'production') {
     };
 
     generateComponentTrace = vm => {
-        if (vm._isMIP && vm.$parent) {
+        if (vm._isVue && vm.$parent) {
             const tree = [];
             let currentRecursiveSequence = 0;
             while (vm) {

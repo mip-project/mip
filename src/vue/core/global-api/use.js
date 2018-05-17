@@ -5,8 +5,8 @@
 
 import {toArray} from '../util/index';
 
-export function initUse(MIP) {
-    MIP.use = function (plugin) {
+export function initUse(Vue) {
+    Vue.use = function (plugin) {
         const installedPlugins = (this._installedPlugins || (this._installedPlugins = []));
         if (installedPlugins.indexOf(plugin) > -1) {
             return this;

@@ -122,7 +122,7 @@ function initProps(vm, propsOptions) {
             defineReactive(props, key, value);
         }
         // static props are already proxied on the component's prototype
-        // during MIP.extend(). We only need to proxy props defined at
+        // during Vue.extend(). We only need to proxy props defined at
         // instantiation here.
         if (!(key in vm)) {
             proxy(vm, '_props', key);
@@ -340,7 +340,7 @@ function initMethods(vm, methods) {
 
             if ((key in vm) && isReserved(key)) {
                 warn(
-                    `Method "${key}" conflicts with an existing MIP instance method. `
+                    `Method "${key}" conflicts with an existing Vue instance method. `
                     + 'Avoid defining component methods that start with _ or $.'
                 );
             }
@@ -382,7 +382,7 @@ function createWatcher(
     return vm.$watch(keyOrFn, handler, options);
 }
 
-export function stateMixin(MIP) {
+export function stateMixin(Vue) {
     // flow somehow has problems with directly declared definition object
     // when using Object.defineProperty, so we have to procedurally build up
     // the object here.
@@ -408,13 +408,13 @@ export function stateMixin(MIP) {
         };
     }
 
-    Object.defineProperty(MIP.prototype, '$data', dataDef);
-    Object.defineProperty(MIP.prototype, '$props', propsDef);
+    Object.defineProperty(Vue.prototype, '$data', dataDef);
+    Object.defineProperty(Vue.prototype, '$props', propsDef);
 
-    MIP.prototype.$set = set;
-    MIP.prototype.$delete = del;
+    Vue.prototype.$set = set;
+    Vue.prototype.$delete = del;
 
-    MIP.prototype.$watch = function (
+    Vue.prototype.$watch = function (
         expOrFn,
         cb,
         options

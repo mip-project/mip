@@ -8,7 +8,7 @@
 import {parseFilters} from './parser/filter-parser';
 
 export function baseWarn(msg) {
-    console.error(`[MIP compiler]: ${msg}`);
+    console.error(`[Vue compiler]: ${msg}`);
 }
 
 export function pluckModuleFunction(
