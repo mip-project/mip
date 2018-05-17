@@ -8,7 +8,7 @@
         </span>
         <img v-if="logo" class="mip-appshell-header-logo" :src="logo">
         <span class="mip-appshell-header-title">{{title}}</span>
-        <div class="mip-appshell-header-button-group">
+        <div v-if="buttonGroup.length" class="mip-appshell-header-button-group">
             <template v-for="button in buttonGroup">
                 <div
                     v-if="button.type === 'icon'"
@@ -78,7 +78,7 @@ export default {
         },
         buttonGroup: {
             type: Array,
-            default: []
+            default: () => { return []; }
         }
     },
     directives: {

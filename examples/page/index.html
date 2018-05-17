@@ -2,7 +2,7 @@
 <html mip>
 <head>
     <meta charset="utf-8">
-    <title>MIP Page Index</title>
+    <title>MIP Index Page</title>
     <meta name="apple-touch-fullscreen" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
@@ -24,11 +24,45 @@
     <link rel="stylesheet" href="../../dist/mip.css">
 </head>
 <body>
+    <div class="main-image">
+        <mip-img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg" width="300" height="300"></mip-img>
+    </div>
+    <br><br>
+    <p>
+    Progressive Web Apps are user experiences that have the reach of the web, and are:
+Reliable - Load instantly and never show the downasaur, even in uncertain network conditions.
+Fast - Respond quickly to user interactions with silky smooth animations and no janky scrolling.
+    </p>
+
+    <mip-link class="link" to="./tree.html">Go to Tree</mip-link>
+    <mip-link class="link" to="./data.html">Go to Data</mip-link>
+    <mip-link class="link" to="./not-mip.html">Go to Not MIP</mip-link>
+    <mip-link class="link" to="/not/exists">Go to Not Exists</mip-link>
+    <br><br>
+
+    <p>
+    Progressive Web Apps are user experiences that have the reach of the web, and are:
+Reliable - Load instantly and never show the downasaur, even in uncertain network conditions.
+Fast - Respond quickly to user interactions with silky smooth animations and no janky scrolling.
+    </p>
+
+    <p>
+    Progressive Web Apps are user experiences that have the reach of the web, and are:
+Reliable - Load instantly and never show the downasaur, even in uncertain network conditions.
+Fast - Respond quickly to user interactions with silky smooth animations and no janky scrolling.
+    </p>
+
+    <p>
+    Progressive Web Apps are user experiences that have the reach of the web, and are:
+Reliable - Load instantly and never show the downasaur, even in uncertain network conditions.
+Fast - Respond quickly to user interactions with silky smooth animations and no janky scrolling.
+    </p>
+
     <mip-shell>
         <script type="application/json">
             {
                 "header": {
-                    "title": "xxxxxx",
+                    "title": "Mip Index",
                     "logo": "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg",
                     "buttonGroup": [
                         {
@@ -68,8 +102,7 @@
                 "view": {
                     "isIndex": true,
                     "transition": {
-                        "mode": "slide",
-                        "alwaysBackPages": ["/examples/page/index.html"]
+                        "mode": "slide"
                     }
                 },
                 "footer": {}
@@ -77,119 +110,23 @@
         </script>
     </mip-shell>
 
-    <div class="main-image">
-        <mip-img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg" width="300" height="300"></mip-img>
-    </div>
-    <br><br>
-    <p>
-    Progressive Web Apps are user experiences that have the reach of the web, and are:
-Reliable - Load instantly and never show the downasaur, even in uncertain network conditions.
-Fast - Respond quickly to user interactions with silky smooth animations and no janky scrolling.
-    </p>
-
-    <mip-link class="link" to="./tree.html">Go to Tree</mip-link>
-    <mip-link class="link" to="./data.html">Go to Data</mip-link>
-    <mip-link class="link" to="./not-mip.html">Go to Not MIP</mip-link>
-    <mip-link class="link" to="/not/exists">Go to Not Exists</mip-link>
-    <mip-data>
-        <script type="application/json">
-                {
-                    "num": 1,
-                    "title": "Apple/苹果 iPhone X",
-                    "basePrice": "9688.00",
-                    "price": "9688.00",
-                    "#comments": 5855,
-                    "integral": 968,
-                    "network": {
-                        "nocontract": 1
-                    },
-                    "color": {
-                        "silver": 0,
-                        "grey": 1
-                    },
-                    "size": {
-                        "small": 0,
-                        "big": 1
-                    },
-                    "staging": {
-                        "three": 0,
-                        "six": 0,
-                        "twelve": 0
-                    },
-                    "#sp": {
-                        "three": "¥3303.60",
-                        "six": "¥1687.32",
-                        "twelve": "¥867.88"
-                    },
-                    "img": {
-                        "first": 0,
-                        "second": 0,
-                        "third": 0,
-                        "four": 0,
-                        "five": 0
-                    },
-                    "time": 1,
-                    "src": "https://img.alicdn.com/bao/uploaded/i4/1917047079/TB2ZpydmPihSKJjy0FeXXbJtpXa_!!1917047079.png_430x430q90.jpg"
-                }
-
-            </script>
-    </mip-data>
     <mip-data>
         <script type="application/json">
             {
-                "num2": "num2"
+                "#group": {
+                    "info": {
+                        "name": "sfe"
+                    }
+                }
             }
         </script>
     </mip-data>
 
-    <br><br>
+    <script type="application/mip-script">
+        console.log('Prepare to watch someData');
+        mip.watch('someData', () => console.log('callback'));
+    </script>
 
-    <span>group.info.name will show after go to data page and come back(state from data.html):</span>
-    <p m-text="group.info.name"></p>
-    <p m-text="title"></p>
-    <p m-text="num"></p>
-    <div on="tap:MIP.setData({num:2})">click change num</div>
-    <p m-text="num2"></p>
-    <div on="tap:MIP.setData({num2:4})">click change num2</div>
-    <p m-text="sp.three"></p>
-    <div on="tap:MIP.setData({sp:{three:'¥0'}})">click change sp.three</div>
-    <p m-text="basePrice"></p>
-    <div on="tap:MIP.setData({basePrice:3000})">click change basePrice</div>
-    <p m-text="comments"></p>
-    <div on="tap:MIP.setData({comments:'ckkk'})">click change comments</div>
-    <p m-text="img.first"></p>
-    <div on="tap:MIP.setData({img:{first:1}})">click change img.first</div>
     <script src="../../dist/deps.js"></script>
     <script src="../../dist/mip.js"></script>
-    <script>
-        window.addEventListener('ready-to-watch', function () {
-            MIP.watch('num', function () {
-                MIP.setData({
-                    title: 'ckkkk changing num'
-                });
-            });
-            MIP.watch('num2', function () {
-                console.log('num2 cb')
-            });
-            MIP.watch('sp.three', function () {
-                console.log('sp.three')
-                MIP.setData({
-                    title: 'ckkkk changing sp.three'
-                });
-            });
-            MIP.watch('comments', function () {
-                console.log('comments')
-                MIP.setData({
-                    title: 'ckkkk changing comments'
-                });
-            });
-            MIP.watch(['basePrice', 'img.first'], function () {
-                MIP.setData({
-                    title: 'ckkkk changing multi'
-                });
-            });
-            
-            // MIP.unwatchAll()
-        });
-    </script>
 </body>

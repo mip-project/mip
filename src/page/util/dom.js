@@ -7,7 +7,9 @@ import {generateScope, getScopedStyles} from './style';
 import {
     MIP_CONTAINER_ID,
     MIP_VIEW_ID,
-    MIP_CONTENT_IGNORE_TAG_LIST
+    MIP_CONTENT_IGNORE_TAG_LIST,
+    DEFAULT_SHELL_CONFIG,
+    MIP_WATCH_FUNCTION_NAME
 } from '../const';
 
 export function isMIP(rawContent) {
@@ -28,7 +30,9 @@ export function createContainer (containerId) {
         document.body.appendChild(container);
     }
     else {
-        oldContainer.innerHTML = '';
+        // client hydrating
+        oldContainer.setAttribute('data-server-rendered', '');
+        // oldContainer.innerHTML = '';
     }
 }
 
@@ -51,7 +55,7 @@ export function getMIPShellConfig(rawHTML) {
     }
     catch (e) {}
 
-    return {};
+    return DEFAULT_SHELL_CONFIG;
 }
 
 export function getMIPTitle(rawContent) {
@@ -76,10 +80,11 @@ export function getMIPTitle(rawContent) {
 export function getMIPContent(rawContent) {
     let rawResult = rawContent;
     let scope = generateScope();
-    if (!rawResult) {
-        // Process scoped styles
-        processMIPStyle(scope);
 
+    // Process scoped styles
+    processMIPStyle(scope, rawResult);
+
+    if (!rawResult) {
         let tmpArr = [];
         let removeNode = [];
         for (let i = 0; i < document.body.children.length; i++) {
@@ -96,21 +101,21 @@ export function getMIPContent(rawContent) {
         rawResult = tmpArr.join('');
     }
     else {
-        // Process scoped styles
-        processMIPStyle(scope, rawResult);
-
         let match = rawResult.match(/<\bbody\b.*>([\s\S]+)<\/body>/i);
 
         if (match) {
-            rawResult = match[1].replace(/<mip-shell[\s\S]+?<\/mip-shell>/ig, '')
-                .replace(/<script[\s\S]+?<\/script>/ig, function (scriptTag) {
-                    if (scriptTag.indexOf('application/json') !== -1) {
-                        return scriptTag;
-                    }
-
-                    return '';
-                });
+            rawResult = match[1];
         }
+
+        // Delete <mip-shell> & <script>
+        rawResult = rawResult.replace(/<mip-shell[\s\S]+?<\/mip-shell>/ig, '')
+            .replace(/<script[\s\S]+?<\/script>/ig, function (scriptTag) {
+                if (scriptTag.indexOf('application/json') !== -1) {
+                    return scriptTag;
+                }
+
+                return '';
+            });
     }
 
     // Create a root node
@@ -158,4 +163,31 @@ export function processMIPStyle(scope, rawContent) {
             document.querySelector('style[mip-custom]').innerHTML += getScopedStyles(scope, rawStyle);
         }
     }
+}
+
+export function getMIPCustomScript(rawContent) {
+    if (!rawContent) {
+        let script = document.querySelector('script[type="application/mip-script"]');
+        if (!script) {
+            return;
+        }
+
+        let scriptContent = addSandBoxWrapper(script.innerHTML, MIP_WATCH_FUNCTION_NAME);
+        script.remove();
+        return scriptContent;
+    }
+
+    let match = rawContent.match(/<script[\s\S]+?type=['"]?application\/mip-script['"]?>([\s\S]+?)<\/script>/i);
+    if (match) {
+        let scriptContent = match[1];
+        return addSandBoxWrapper(scriptContent, MIP_WATCH_FUNCTION_NAME);
+    }
+}
+
+function addSandBoxWrapper(script, name) {
+    // TODO maybe addEventListener?
+    return `function ${name}(window, document) {
+        let {alert, close, confirm, prompt, setTimeout, setInterval, self, top} = window;
+        ${script}
+    }`;
 }
