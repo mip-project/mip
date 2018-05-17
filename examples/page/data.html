@@ -84,8 +84,9 @@
     <!-- <mip-complevel1 m-bind:userinfo="userInfo" userinfo="userInfo" on="test-event:MIP.setData({userInfo:{name:'sfe-1'}})"></mip-complevel1> -->
 
     <span>group.info.name will show below which is a global state shared from index.html:</span>
-    <p m-text="group.info.name"></p>
+    <span m-text="group.info.name"></span>
 
+    <br><br>
     <h1 m-text="title"></h1>
 
     <p m-text="num"></p>
@@ -143,37 +144,33 @@
     </mip-shell>
 
     <script type="application/mip-script">
-        window.addEventListener('ready-to-watch', function () {
-            MIP.watch('num', function () {
-                MIP.setData({
-                    title: 'ckkkk changing num'
-                });
+        MIP.watch('num', function () {
+            MIP.setData({
+                title: 'ckkkk changing num'
             });
-            MIP.watch('num2', function () {
-                console.log('num2 cb')
-                MIP.setData({
-                    title: 'ckkkk changing num2'
-                });
+        });
+        MIP.watch('num2', function () {
+            console.log('num2 cb')
+            MIP.setData({
+                title: 'ckkkk changing num2'
             });
-            MIP.watch('sp.three', function () {
-                console.log('sp.three')
-                MIP.setData({
-                    title: 'ckkkk changing sp.three'
-                });
+        });
+        MIP.watch('sp.three', function () {
+            console.log('sp.three')
+            MIP.setData({
+                title: 'ckkkk changing sp.three'
             });
-            MIP.watch('comments', function () {
-                console.log('comments')
-                MIP.setData({
-                    title: 'ckkkk changing comments'
-                });
+        });
+        MIP.watch('comments', function () {
+            console.log('comments')
+            MIP.setData({
+                title: 'ckkkk changing comments'
             });
-            MIP.watch(['basePrice', 'img.first'], function () {
-                MIP.setData({
-                    title: 'ckkkk changing multi'
-                });
+        });
+        MIP.watch(['basePrice', 'img.first'], function () {
+            MIP.setData({
+                title: 'ckkkk changing multi'
             });
-
-            // MIP.unwatchAll()
         });
     </script>
     <script src="../../dist/deps.js"></script>
