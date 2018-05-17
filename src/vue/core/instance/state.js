@@ -76,10 +76,6 @@ export function initState(vm) {
     if (opts.watch && opts.watch !== nativeWatch) {
         initWatch(vm, opts.watch);
     }
-
-    if (opts.initStore) {
-        initStore(vm);
-    }
 }
 
 function initProps(vm, propsOptions) {
@@ -130,35 +126,6 @@ function initProps(vm, propsOptions) {
 
     }
     observerState.shouldConvert = true;
-}
-
-function initStore(vm) {
-    let storeFunc = vm.$options.initStore;
-    let store = storeFunc.call(vm);
-    let namespace = store.namespace;
-    let storeModule = store.module;
-
-    if (!namespace) {
-        return warn(
-            'No `namespace` property for initStore.',
-            vm
-        );
-    }
-
-    if (!storeModule) {
-        return warn(
-            'No `moudle` property for initStore',
-            vm
-        );
-    }
-
-    namespace = namespace.replace(/\/$/, '');
-    storeModule.namespaced = true;
-
-    // register once
-    if (vm.$store && !vm.$store._modulesNamespaceMap[namespace + '/']) {
-        vm.$store.registerModule(namespace, storeModule);
-    }
 }
 
 function initData(vm) {

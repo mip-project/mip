@@ -8,8 +8,7 @@ import {
     MIP_CONTAINER_ID,
     MIP_VIEW_ID,
     MIP_CONTENT_IGNORE_TAG_LIST,
-    DEFAULT_SHELL_CONFIG,
-    MIP_WATCH_FUNCTION_NAME
+    DEFAULT_SHELL_CONFIG
 } from '../const';
 
 export function isMIP(rawContent) {
@@ -172,7 +171,7 @@ export function getMIPCustomScript(rawContent) {
             return;
         }
 
-        let scriptContent = addSandBoxWrapper(script.innerHTML, MIP_WATCH_FUNCTION_NAME);
+        let scriptContent = getSandboxFunction(script.innerHTML);
         script.remove();
         return scriptContent;
     }
@@ -180,14 +179,14 @@ export function getMIPCustomScript(rawContent) {
     let match = rawContent.match(/<script[\s\S]+?type=['"]?application\/mip-script['"]?>([\s\S]+?)<\/script>/i);
     if (match) {
         let scriptContent = match[1];
-        return addSandBoxWrapper(scriptContent, MIP_WATCH_FUNCTION_NAME);
+        return getSandboxFunction(scriptContent);
     }
 }
 
-function addSandBoxWrapper(script, name) {
-    // TODO maybe addEventListener?
-    return `function ${name}(window, document) {
+function getSandboxFunction(script) {
+    return new Function('window', 'document', `
         let {alert, close, confirm, prompt, setTimeout, setInterval, self, top} = window;
+
         ${script}
-    }`;
+    `);
 }

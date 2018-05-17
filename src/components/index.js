@@ -6,7 +6,6 @@
 import mipImg from './mip-img/MipImg.vue';
 import mipIframe from './mip-iframe/MipIframe.vue';
 import mipVideo from './mip-video/MipVideo.vue';
-import mipStore from './mip-store';
 import mipCarousel from './mip-carousel/MipCarousel.vue';
 import mipPix from './mip-pix/MipPix.vue';
 import mipData from './mip-bind';
@@ -37,10 +36,6 @@ function install(Vue) {
         {
             tag: 'mip-video',
             component: mipVideo
-        },
-        {
-            tag: 'mip-store',
-            component: mipStore
         },
         {
             tag: 'mip-template',

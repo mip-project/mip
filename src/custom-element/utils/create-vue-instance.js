@@ -9,7 +9,7 @@ import {customEmit} from './custom-event';
 
 export default function createVueInstance(
     element,
-    {Vue, store, router},
+    {Vue, router},
     componentDefinition,
     props
 ) {
@@ -38,7 +38,6 @@ export default function createVueInstance(
 
         let rootElement = {
             propsData,
-            store,
             router,
             props: props.camelCase,
             el: element.children[0],
