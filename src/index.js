@@ -24,7 +24,7 @@ import performance from './performance';
 import './log/monitor';
 
 // mip1 的兼容代码
-import mip1PolyfillInstall from './mip1-polyfill';
+// import mip1PolyfillInstall from './mip1-polyfill';
 // import './polyfills';
 
 Vue.use(Router);
@@ -67,7 +67,7 @@ mip.push = function (extensions) {
 };
 
 // install mip1 polyfill
-mip1PolyfillInstall(mip);
+// mip1PolyfillInstall(mip);
 
 const store = new Vuex.Store(window.storeData || {});
 const router = createRouter(Router);

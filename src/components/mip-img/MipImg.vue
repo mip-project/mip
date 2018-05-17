@@ -6,29 +6,22 @@
 
 <template>
     <div class="mip-img" :style="{width: computedWidth}">
-        <div class="mip-img-inner"
-            :style="{
-                paddingBottom: computedHeightWidthRatio
-            }"
-        >
-            <img
-                :width="imgWidth"
-                :src="imgSrc"
-                :usemap="usemap"
-                :title="title"
-                :sizes="sizes"
-                :ismap="ismap"
-                :alt="alt"
-                :srcset="imgSrcset"
-                ref="img"
-                @click="popupShow"
-            />
-        </div>
-        <div
-            v-if="popupVal && showPopup"
+        <img
+            :src="imgSrc"
+            :usemap="usemap"
+            :title="title"
+            :sizes="sizes"
+            :ismap="ismap"
+            :alt="alt"
+            :srcset="imgSrcset"
+            ref="img"
+            @click="popupShow"
+            :style="imgStyle"
+        />
+
+        <div v-if="popupVal && showPopup"
             class="mip-img-popup-wrapper"
-            @click="hidePopup"
-        >
+            @click="popupHide">
             <div
                 class="mip-img-popup-bg"
                 :class="{
@@ -40,12 +33,7 @@
                 :src="imgSrc"
                 :sizes="sizes"
                 :srcset="imgSrcset"
-                :style="{
-                    width: popupImgWidth,
-                    top: popupImgTop,
-                    left: popupImgLeft
-                }"
-
+                :style="popupImgStyle"
             />
         </div>
     </div>
@@ -54,14 +42,15 @@
 <script>
 import util from '../../util';
 
+let clientWidth = document.documentElement.clientWidth;
+
 export default {
     name: 'mip-img',
     data() {
         return {
             showPopup: false,
-            popupImgWidth: '',
-            popupImgTop: '',
-            popupImgLeft: '',
+            popupImgStyle: null,
+            imgStyle: null,
             placeImg: false,
             loaded: false
         };
@@ -81,30 +70,10 @@ export default {
         popup: [Boolean, String]
     },
     computed: {
-        wrapperHeight() {
-            return this.computedHeight
-                ? this.computedHeight
-                : (this.heightWidthRatio ? 0 : '');
-        },
-        computedHeightWidthRatio() {
-            if (!this.computedHeight) {
-                return this.heightWidthRatio;
-            }
-        },
         computedWidth() {
             // 宽度支持写百分比等，纯数字认为是像素单位
             let width = this.width;
             return /^\d+$/.test(width) ? `${width}px` : width;
-        },
-        imgWidth() {
-            if (this.width) {
-                return '100%';
-            }
-        },
-        computedHeight() {
-            // 宽度支持写百分比等，纯数字认为是像素单位
-            let height = this.height;
-            return /^\d+$/.test(height) ? `${height}px` : height;
         },
         popupVal() {
             return this.popup !== undefined;
@@ -121,32 +90,51 @@ export default {
         },
         imgSrc() {
             return this.loaded ? this.src : undefined;
+        },
+        imgRect() {
+            return this.$refs.img.getBoundingClientRect();
         }
     },
     methods: {
         popupShow() {
-            if (!this.popupVal) {
-                return;
-            }
-            let img = this.$refs.img;
             // 图片未加载则不弹层
-            if (!img.naturalWidth) {
+            if (!this.loaded || !this.popupVal) {
                 return;
             }
-            let {left, top, width} = img.getBoundingClientRect();
+
             this.showPopup = true;
-            this.popupImgLeft = `${left}px`;
-            this.popupImgTop = `${top}px`;
-            this.popupImgWidth = `${width}px`;
+
+            let {left, top, width, height} = this.imgRect;
+            this.popupImgStyle = {
+                left: left + 'px',
+                top: top + 'px',
+                width: width + 'px',
+                height: height + 'px'
+            };
+
             setTimeout(() => {
                 this.placeImg = true;
+                this.popupImgStyle = {
+                    width: clientWidth + 'px',
+                    height: height * clientWidth / width + 'px'
+                };
+                this.imgStyle = {visibility: 'hidden'};
             }, 16);
         },
-        hidePopup() {
+        popupHide() {
             this.placeImg = false;
+
+            let {left, top, width, height} = this.imgRect;
+            this.popupImgStyle = {
+                left: left + 'px',
+                top: top + 'px',
+                width: width + 'px',
+                height: height + 'px'
+            };
             setTimeout(() => {
                 this.showPopup = false;
-            }, 200);
+                this.imgStyle = null;
+            }, 400);
         }
     },
     firstInviewCallback() {
@@ -162,19 +150,14 @@ export default {
 <style lang="less" scoped>
 @import '../../styles/variable.less';
 mip-img {
-    .mip-img {
-        display: inline-block;
-        font-size: 0;
-    }
-    .mip-img-inner {
-        position: relative;
-        background: @placeholder-bg;
+    font-size: 0;
+    background: @placeholder-bg;
 
-        img {
-            width: 100%;
-            height: 100%;
-        }
+    img {
+        width: 100%;
+        height: 100%;
     }
+
     .mip-img-popup-wrapper {
         z-index: 9999;
         position: fixed;
@@ -182,24 +165,25 @@ mip-img {
         left: 0;
         right: 0;
         bottom: 0;
+
         .mip-img-popup-bg {
             height: 100%;
             background: rgba(0, 0, 0, 1);
-            transition: all ease .2s;
+            transition: opacity ease .4s;
             opacity: 0;
+
             &.show {
                 opacity: 1;
             }
         }
         img {
             position: absolute;
-            transition: all linear .2s;
+            transition: all ease .4s;
             max-width: 100%;
             max-height: 100%;
         }
         .mip-img-popup-innerimg {
             width: 100% !important;
-            height: auto !important;
             top: 50% !important;
             left: 0 !important;
             transform: translate(0, -50%);
