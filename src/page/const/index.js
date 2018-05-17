@@ -19,8 +19,8 @@ export const DEFAULT_SHELL_CONFIG = {
     view: {
         isIndex: false,
         transition: {
-            mode: 'fade',
-            effect: 'fade'
+            mode: 'slide',
+            alwaysBackPages: []
         }
     },
     footer: {}

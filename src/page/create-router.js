@@ -19,11 +19,20 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
         shellConfig = util.getMIPShellConfig(rawHTML);
     }
 
-    if (!shellConfig.header) {
-        shellConfig.header = {};
-    }
     if (!shellConfig.header.title) {
         shellConfig.header.title = util.getMIPTitle(rawHTML);
+    }
+
+    if (shellConfig.view
+        && shellConfig.view.transition
+        && shellConfig.view.transition.mode === 'slide') {
+        if (shellConfig.view.transition.alwaysBackPages) {
+            util.addAlwaysBackPage(shellConfig.view.transition.alwaysBackPages);
+        }
+        // add index page
+        if (shellConfig.view.isIndex) {
+            util.addAlwaysBackPage(routeOptions.path);
+        }
     }
 
     let {MIPContent, scope} = util.getMIPContent(rawHTML);
@@ -76,10 +85,6 @@ export default function createRouter(Router) {
 
     if (view && view.transition && view.transition.mode === 'slide') {
         util.initHistory({base: router.options.base});
-
-        if (view.transition.alwaysBackPages) {
-            util.addAlwaysBackPage(view.transition.alwaysBackPages);
-        }
     }
 
     router.onMatchMiss = function(to, from, next) {
