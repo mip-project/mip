@@ -6,10 +6,10 @@
 
 'use strict';
 
-import './deps/esl';
-import './deps/zepto';
-// 如果fetch-jsonp在mip2也要可以把这里的import去掉，在该mip1 polyfill之后import
-import '../../deps/fetch-jsonp';
+import 'script-loader!zepto';
+import 'script-loader!fetch-jsonp';
+import 'script-loader!esljs';
+
 import util from '../util';
 import naboo from './deps/naboo';
 import customElement from './customElement';
@@ -40,6 +40,7 @@ define('performance', performanceDefine);
 define('viewport', viewportDefine);
 define('templates', templatesDefine);
 define('zepto', () => window.$);
+define('fetch-jsonp', () => window.fetchJsonp);
 
 // The global variable of MIP
 const Mip = {};
