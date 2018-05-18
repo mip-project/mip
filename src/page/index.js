@@ -23,4 +23,6 @@ export function start({Vue}, router) {
         router,
         el: `#${CONTAINER_ID}`
     });
+
+    util.installMipLink(router);
 };
