@@ -78,7 +78,7 @@ function install(Vue, router) {
                 callLifeCycle(this, 'connectedCallback');
 
                 // Apply layout for this.
-                this._layout = layout.applyLayout(this);
+                this._layout = layout.applyLayout(this, this.vm);
 
                 // Add to resource manager.
                 this._resources.add(this);
