@@ -13,8 +13,8 @@ import registerElement from './element';
 import customElement from './customElement';
 import performance from '../performance';
 
-// 将 jquery 配置为远程的，需要时才引入
-window.require.config({
+ // 将 jquery 配置为远程的，需要时才引入
+ window.require.config({
     paths:{
         'searchbox/openjs/aio': '//m.baidu.com/static/searchbox/openjs/aio.js?v=201606',
         jquery: '//mipcache.bdstatic.com/static/v1/deps/jquery'
@@ -32,13 +32,16 @@ window.define('fetch-jsonp', () => window.fetchJsonp);
 window.define('zepto', () => window.$);
 
 export default function install(mip) {
+
     mip.registerMipElement = function (name, customClass, css) {
         if (templates.isTemplateClass(customClass)) {
             templates.register(name, customClass);
-        } else {
+        }
+        else {
             registerElement(name, customClass, css);
         }
-    }
+    };
+
 }
 
 // TODO by (zhangzhiqiang04)
