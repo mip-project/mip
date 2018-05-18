@@ -87,7 +87,9 @@ export default {
         onBeforeLeave(el) {
             let pageId = el.dataset.pageId;
             let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-            restoreContainerScrollPosition(el, scrollTop);
+            setTimeout(() => {
+                restoreContainerScrollPosition(el, scrollTop);
+            }, 0);
             this.scrollPostionMap = Object.assign(this.scrollPostionMap, {
                 [pageId]: {y: scrollTop}
             });
@@ -120,6 +122,11 @@ export default {
 
     &.mip-appshell-router-view-with-header {
         top: @appshell-header-height;
+    }
+
+    &::-webkit-scrollbar {
+        width: 0;
+        background: transparent;
     }
 
     &.transition-fade {
