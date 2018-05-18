@@ -12,17 +12,18 @@ import {
 } from '../const';
 
 export function createContainer (containerId) {
-    let oldContainer = document.querySelector(`#${containerId}`);
-    if (!oldContainer) {
-        let container = document.createElement('div');
+    let container = document.querySelector(`#${containerId}`);
+    if (!container) {
+        container = document.createElement('div');
         container.id = containerId;
         document.body.appendChild(container);
     }
     else {
         // client hydrating
-        oldContainer.setAttribute('data-server-rendered', '');
+        container.setAttribute('data-server-rendered', '');
         // oldContainer.innerHTML = '';
     }
+    return container;
 }
 
 export function getMIPShellConfig(rawHTML) {
