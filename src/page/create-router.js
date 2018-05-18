@@ -94,6 +94,37 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
     }, routeOptions);
 };
 
+function getErrorRoute() {
+    return {
+        path: MIP_ERROR_ROUTE_PATH,
+        component: ErrorPage,
+        beforeRouteEnter(to, from, next) {
+            next(vm => {
+                let shell = vm.$parent;
+
+                // Set title
+                let title = 'Mip Error';
+                shell = Object.assign(shell, DEFAULT_SHELL_CONFIG, {
+                    header: {
+                        title
+                    }
+                });
+                document.title = title;
+            });
+        },
+        beforeRouteLeave(to, from, next) {
+            let shell = this.$parent;
+
+            // Set leave transition type
+            shell.view.transition.effect = shell.view.transition.mode === 'slide'
+                ? (util.isForward(to, from) ? 'slide-left' : 'slide-right')
+                : shell.view.transition.mode;
+
+            next();
+        }
+    }
+}
+
 export default function createRouter(Router) {
     let shellConfig = util.getMIPShellConfig();
     let view = shellConfig.view;
@@ -103,10 +134,7 @@ export default function createRouter(Router) {
         getRoute(undefined, {
             path: window.location.pathname
         }, shellConfig),
-        {
-            path: MIP_ERROR_ROUTE_PATH,
-            component: ErrorPage
-        }
+        getErrorRoute()
     ];
 
     // Create router instance and register onMatchMiss hook (add dynamic routes)
