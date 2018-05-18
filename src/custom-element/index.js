@@ -102,6 +102,10 @@ function install(Vue, router) {
                     callLifeCycle(this, 'attributeChangedCallback', name, oldValue, value);
                     const nameCamelCase = camelize(name);
                     const type = this.props.types[nameCamelCase];
+                    try {
+                        value = JSON.parse(value);
+                    }
+                    catch (e) {}
                     this.vm.$root[nameCamelCase] = convertAttributeValue(value, type);
                 }
             }
