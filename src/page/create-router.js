@@ -163,17 +163,11 @@ export default function createRouter(Router) {
 
         fetch(to.path).then(res => {
             if (!res.ok) {
-                handleError();
+                handleError({message: '404'});
                 return;
             }
 
             res.text().then(async function(targetHTML) {
-                // see whether it's a MIP page
-                if (!util.isMIP(targetHTML)) {
-                    window.location.href = to.path;
-                    return;
-                }
-
                 let newComponents = util.getNewComponents(targetHTML);
                 if (newComponents.length !== 0) {
                     await util.loadScripts(newComponents);
