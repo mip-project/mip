@@ -123,7 +123,7 @@ class Resources {
      * @param {boolean} inViewport inViewport
      */
     setInViewport(element, inViewport) {
-        if (element.inViewport() !== inViewport) {
+        if (element.inViewport && element.parentNode && element.inViewport() !== inViewport) {
             element.viewportCallback(inViewport);
         }
     }

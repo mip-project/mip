@@ -102,7 +102,7 @@ class Compile {
     }
 
     text(node, directive, newVal) {
-        node.textContent = (newVal || newVal !== 0) ? newVal : '';
+        node.textContent = (newVal || newVal === 0) ? newVal : '';
     }
 
     bind(node, directive, newVal) {
@@ -116,6 +116,9 @@ class Compile {
             // fn.extend(window.m, this.origin);
             Object.assign(window.m, this.origin);
             return;
+        }
+        if (typeof newVal === 'object') {
+            newVal = JSON.stringify(newVal);
         }
         newVal !== '' ? node.setAttribute(attr, newVal) : node.removeAttribute(attr);
         if (TAGNAMES.test(node.tagName)) {

@@ -9,11 +9,16 @@ import AppShell from './vue-components/AppShell.vue';
 
 const CONTAINER_ID = constants.MIP_CONTAINER_ID;
 
-export function start({Vue}, store, router) {
+export function start({Vue}, router) {
     // Configure mip
     Vue.config.ignoredElements = [
       /^mip-/
     ];
+
+    // Don't let browser restore scroll position.
+    if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'manual';
+    }
 
     // Create mip container
     util.createContainer(CONTAINER_ID);
@@ -21,7 +26,8 @@ export function start({Vue}, store, router) {
     new Vue({
         ...AppShell,
         router,
-        store,
         el: `#${CONTAINER_ID}`
     });
+
+    util.installMipLink(router);
 };

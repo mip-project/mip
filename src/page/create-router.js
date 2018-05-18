@@ -7,8 +7,7 @@ import sandbox from '../util/sandbox';
 import * as util from './util';
 import {
     MIP_ERROR_ROUTE_PATH,
-    MIP_CONTAINER_ID,
-    MIP_WATCH_FUNCTION_NAME
+    MIP_CONTAINER_ID
 } from './const';
 import ErrorPage from './vue-components/Error.vue';
 
@@ -26,6 +25,12 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
         shellConfig = util.getMIPShellConfig(rawHTML);
     }
 
+    // hide header in <iframe>
+    if (window.top !== window) {
+        shellConfig.header.hidden = true;
+    }
+
+    // use title in <title> tag if not provided
     if (!shellConfig.header.title) {
         shellConfig.header.title = util.getMIPTitle(rawHTML);
     }
@@ -43,15 +48,14 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
     }
 
     let MIPCustomScript = util.getMIPCustomScript(rawHTML);
+    let MIPWatchHandler;
+    if (MIPCustomScript) {
+        MIPWatchHandler = () => MIPCustomScript(sandWin, sandDoc);
+    }
     let {MIPContent, scope} = util.getMIPContent(rawHTML);
 
     return Object.assign({
         component: {
-            data() {
-                return {
-                    MIPCustomScript
-                };
-            },
             render(createElement) {
                 return createElement('div', {
                     attrs: {
@@ -65,20 +69,14 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
             beforeRouteEnter(to, from, next) {
                 next(vm => {
                     let shell = vm.$parent;
+
                     // Set title
                     shell = Object.assign(shell, shellConfig);
                     document.title = shell.header.title;
 
                     // Add custom script
-                    if (vm.MIPCustomScript) {
-                        let script = document.createElement('script');
-                        script.id = 'mip-custom-script';
-                        script.type = 'text/javascript';
-                        script.innerHTML = vm.MIPCustomScript;
-                        document.body.appendChild(script);
-                        if (typeof window[MIP_WATCH_FUNCTION_NAME] === 'function') {
-                            window[MIP_WATCH_FUNCTION_NAME](sandWin, sandDoc);
-                        }
+                    if (MIPWatchHandler) {
+                        window.addEventListener('ready-to-watch', MIPWatchHandler);
                     }
                 });
             },
@@ -90,12 +88,10 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
                     ? (util.isForward(to, from) ? 'slide-left' : 'slide-right')
                     : shell.view.transition.mode;
 
-                // Remove custom script
-                let customScript = document.querySelector('#mip-custom-script');
-                if (customScript) {
-                    customScript.remove();
-                    // TODO call unWatchAll
-                    console.log('mip.unWatchAll() from beforeRouteLeave');
+                // Unwatch & unregister
+                if (MIPWatchHandler) {
+                    window.removeEventListener('ready-to-watch', MIPWatchHandler);
+                    mip.unwatchAll()
                 }
 
                 next();
@@ -103,6 +99,37 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
         }
     }, routeOptions);
 };
+
+function getErrorRoute() {
+    return {
+        path: MIP_ERROR_ROUTE_PATH,
+        component: ErrorPage,
+        beforeRouteEnter(to, from, next) {
+            next(vm => {
+                let shell = vm.$parent;
+
+                // Set title
+                let title = 'Mip Error';
+                shell = Object.assign(shell, DEFAULT_SHELL_CONFIG, {
+                    header: {
+                        title
+                    }
+                });
+                document.title = title;
+            });
+        },
+        beforeRouteLeave(to, from, next) {
+            let shell = this.$parent;
+
+            // Set leave transition type
+            shell.view.transition.effect = shell.view.transition.mode === 'slide'
+                ? (util.isForward(to, from) ? 'slide-left' : 'slide-right')
+                : shell.view.transition.mode;
+
+            next();
+        }
+    }
+}
 
 export default function createRouter(Router) {
     let shellConfig = util.getMIPShellConfig();
@@ -113,10 +140,7 @@ export default function createRouter(Router) {
         getRoute(undefined, {
             path: window.location.pathname
         }, shellConfig),
-        {
-            path: MIP_ERROR_ROUTE_PATH,
-            component: ErrorPage
-        }
+        getErrorRoute()
     ];
 
     // Create router instance and register onMatchMiss hook (add dynamic routes)
@@ -139,17 +163,11 @@ export default function createRouter(Router) {
 
         fetch(to.path).then(res => {
             if (!res.ok) {
-                handleError();
+                handleError({message: '404'});
                 return;
             }
 
             res.text().then(async function(targetHTML) {
-                // see whether it's a MIP page
-                if (!util.isMIP(targetHTML)) {
-                    window.location.href = to.path;
-                    return;
-                }
-
                 let newComponents = util.getNewComponents(targetHTML);
                 if (newComponents.length !== 0) {
                     await util.loadScripts(newComponents);

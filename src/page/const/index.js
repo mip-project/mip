@@ -10,12 +10,12 @@ export const MIP_CONTENT_IGNORE_TAG_LIST = [
     'mip-shell'
 ];
 export const MIP_ERROR_ROUTE_PATH = '/mip-error';
-export const MIP_WATCH_FUNCTION_NAME = 'MIPRegisterWatch';
 export const DEFAULT_SHELL_CONFIG = {
     header: {
         title: '',
         logo: '',
-        buttonGroup: []
+        buttonGroup: [],
+        hidden: false
     },
     view: {
         isIndex: false,

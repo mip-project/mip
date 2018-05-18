@@ -10,7 +10,7 @@ import resources from './utils/resources';
 import layout from '../util/layout';
 import EventEmitter from '../util/event-emitter';
 
-function install(Vue, store, router) {
+function install(Vue, router) {
     Vue.customElement = function vueCustomElement(tag, componentDefinition) {
 
         const props = getProps(componentDefinition);
@@ -52,7 +52,6 @@ function install(Vue, store, router) {
                     this._resources.add(createVueInstance(
                         this, {
                             Vue,
-                            store,
                             router
                         },
                         componentDefinition,
@@ -84,6 +83,10 @@ function install(Vue, store, router) {
                 if (this.vm) {
                     const nameCamelCase = camelize(name);
                     const type = this.props.types[nameCamelCase];
+                    try {
+                        value = JSON.parse(value);
+                    }
+                    catch (e) {}
                     this.vm.$root[nameCamelCase] = convertAttributeValue(value, type);
                 }
             }

@@ -10,11 +10,12 @@ import viewer from '../../util/viewer';
 
 export default function createVueInstance(
     element,
-    {Vue, store, router},
+    {Vue, router},
     componentDefinition,
     props
 ) {
-    if (!element.vm && !element.hasAttribute('vce-ready')) {
+    // if (!element.vm && !element.hasAttribute('vce-ready')) {
+    if (!element.vm) {
         let ComponentDefinition = Vue.util.extend({}, componentDefinition);
         let propsData = getPropsData(element, ComponentDefinition, props);
 
@@ -49,7 +50,6 @@ export default function createVueInstance(
 
         let rootElement = {
             propsData,
-            store,
             router,
             props: props.camelCase,
             el: element.children[0],
@@ -84,6 +84,8 @@ export default function createVueInstance(
 
         element.removeAttribute('vce-cloak');
         element.setAttribute('vce-ready', '');
+
+        element.children[0].setAttribute('data-server-rendered', '');
         customEmit(element, 'vce-ready');
 
         return element;

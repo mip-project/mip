@@ -8,19 +8,8 @@ import {
     MIP_CONTAINER_ID,
     MIP_VIEW_ID,
     MIP_CONTENT_IGNORE_TAG_LIST,
-    DEFAULT_SHELL_CONFIG,
-    MIP_WATCH_FUNCTION_NAME
+    DEFAULT_SHELL_CONFIG
 } from '../const';
-
-export function isMIP(rawContent) {
-    // In fact this 'if' will not be executed
-    // Once a page references 'mip.js' as script, it must be (or will be treated as) a MIP page.
-    if (!rawContent) {
-        return document.querySelector('html').getAttribute('mip') !== null;
-    }
-
-    return /<html[^>]+?\bmip\b/.test(rawContent);
-}
 
 export function createContainer (containerId) {
     let oldContainer = document.querySelector(`#${containerId}`);
@@ -116,9 +105,21 @@ export function getMIPContent(rawContent) {
 
                 return '';
             });
+
+        // Add <mip-data> for global data
+        if (!/<\/mip-data>/.test(rawResult) && typeof window.m === 'object') {
+            let dataStr = JSON.stringify(window.m, (key, value) => {
+                if (key === '__ob__') {
+                    return;
+                }
+
+                return value;
+            });
+
+            rawResult += `<mip-data><script type="application/json">${dataStr}</script></mip-data>`;
+        }
     }
 
-    // Create a root node
     return {
         MIPContent: rawResult,
         scope
@@ -172,7 +173,7 @@ export function getMIPCustomScript(rawContent) {
             return;
         }
 
-        let scriptContent = addSandBoxWrapper(script.innerHTML, MIP_WATCH_FUNCTION_NAME);
+        let scriptContent = getSandboxFunction(script.innerHTML);
         script.remove();
         return scriptContent;
     }
@@ -180,14 +181,52 @@ export function getMIPCustomScript(rawContent) {
     let match = rawContent.match(/<script[\s\S]+?type=['"]?application\/mip-script['"]?>([\s\S]+?)<\/script>/i);
     if (match) {
         let scriptContent = match[1];
-        return addSandBoxWrapper(scriptContent, MIP_WATCH_FUNCTION_NAME);
+        return getSandboxFunction(scriptContent);
     }
 }
 
-function addSandBoxWrapper(script, name) {
-    // TODO maybe addEventListener?
-    return `function ${name}(window, document) {
+function getSandboxFunction(script) {
+    return new Function('window', 'document', `
         let {alert, close, confirm, prompt, setTimeout, setInterval, self, top} = window;
+
         ${script}
-    }`;
+    `);
+}
+
+function guardEvent(e, $a) {
+    // don't redirect with control keys
+    if (e.metaKey || e.altKey || e.ctrlKey || e.shiftKey) {
+        return;
+    }
+    // don't redirect when preventDefault called
+    if (e.defaultPrevented) {
+        return;
+    }
+    // don't redirect if `target="_blank"`
+    if ($a.getAttribute) {
+        const target = $a.getAttribute('target');
+        if (/\b_blank\b/i.test(target)) {
+            return;
+        }
+    }
+    e.preventDefault();
+    return true;
+}
+
+export function installMipLink(router) {
+    $(document).on('click', 'a', (e) => {
+        let $a = e.currentTarget;
+        if ($a.hasAttribute('mip')) {
+            let to = $a.getAttribute('href');
+            if (guardEvent(e, $a)) {
+                const {location} = router.resolve(to, router.currentRoute, false);
+                if ($a.hasAttribute('replace')) {
+                  router.replace(location);
+                }
+                else {
+                  router.push(location);
+                }
+            }
+        }
+    });
 }
