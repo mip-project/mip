@@ -3,6 +3,8 @@
  * @author huanghuiquan (huanghuiquan@baidu.com)
  */
 
+const SPACE_TAG_NAME = 'mip-i-space';
+
 /**
  * Layout types.
  * @inner
@@ -256,7 +258,12 @@ class Layout {
             element.style.height = height;
         }
         else if (layout === LAYOUT.RESPONSIVE) {
-            let space = element.ownerDocument.createElement('mip-i-space');
+
+            if (element.firstChild.tagName.toLowerCase() === SPACE_TAG_NAME) {
+                return;
+            }
+
+            let space = element.ownerDocument.createElement(SPACE_TAG_NAME);
             space.style.display = 'block';
             space.style.paddingTop
                 = ((this.getLengthNumeral(height) / this.getLengthNumeral(width)) * 100) + '%';

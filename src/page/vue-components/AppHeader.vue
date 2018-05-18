@@ -14,9 +14,9 @@
                     v-if="button.type === 'icon'"
                     class="mip-appshell-header-icon"
                     @click="onClick(`${button.name}`)">
-                    <mip-link class="mip-appshell-header-link" v-if="button.link" :to="button.link">
+                    <a mip v-if="button.link" :href="button.link">
                         <span class="material-icons">{{button.text}}</span>
-                    </mip-link>
+                    </a>
                     <span v-if="!button.link" class="material-icons">{{button.text}}</span>
                 </div>
                 <button
@@ -26,9 +26,9 @@
                         [`mip-appshell-header-button-${button.outline ? 'outlined' : 'filled'}`]: true
                     }"
                     @click="onClick(`${button.name}`)">
-                    <mip-link class="mip-appshell-header-link" v-if="button.link" :to="button.link">
+                    <a mip v-if="button.link" :href="button.link">
                         {{button.text}}
-                    </mip-link>
+                    </a>
                     <span v-if="!button.link">{{button.text}}</span>
                 </button>
 
@@ -45,9 +45,9 @@
                             <div v-for="item in button.items"
                                 class="mip-appshell-header-dropdown-item"
                                 @click="onClick(`${item.name}`)">
-                                <mip-link class="mip-appshell-header-link" v-if="item.link" :to="item.link">
+                                <a mip v-if="item.link" :href="item.link">
                                     {{item.text}}
-                                </mip-link>
+                                </a>
                                 <span v-if="!item.link">{{item.text}}</span>
                             </div>
                         </div>
@@ -60,6 +60,7 @@
 
 <script>
 import ClickOutside from '../directives/click-outside';
+import {customEmit} from '../../custom-element/utils/custom-event';
 
 export default {
     name: 'mip-appshell-header',
@@ -100,7 +101,10 @@ export default {
         },
         onClick(source) {
             this.showDropdown = false;
-            this.$emit(`appheader::click-${source}`);
+            let eventName = `appheader::click-${source}`;
+            this.$emit(eventName);
+            // trigger CustomEvent like vue-custom-element
+            customEmit(window, eventName);
         },
         onCloseDropdown() {
             this.showDropdown = false;
@@ -147,11 +151,11 @@ export default {
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 24px;
+            height: 24px;
             margin: 0 4px;
-            .mip-appshell-header-link {
-                a {
-                    display: flex;
-                }
+            a {
+                display: flex;
             }
         }
 
@@ -178,11 +182,9 @@ export default {
                 border: 1px solid #3C76FF;
                 background: #fff;
 
-                .mip-appshell-header-link {
-                    a {
-                        color: #3C76FF;
-                        display: flex;
-                    }
+                a {
+                    color: #3C76FF;
+                    display: flex;
                 }
             }
 
@@ -191,11 +193,9 @@ export default {
                 border: 1px solid #3897F0;
                 background: #3897F0;
 
-                .mip-appshell-header-link {
-                    a {
-                        color: #fff;
-                        display: flex;
-                    }
+                a {
+                    color: #fff;
+                    display: flex;
                 }
             }
         }

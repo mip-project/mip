@@ -25,6 +25,12 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
         shellConfig = util.getMIPShellConfig(rawHTML);
     }
 
+    // hide header in <iframe>
+    if (window.top !== window) {
+        shellConfig.header.hidden = true;
+    }
+
+    // use title in <title> tag if not provided
     if (!shellConfig.header.title) {
         shellConfig.header.title = util.getMIPTitle(rawHTML);
     }
@@ -94,6 +100,37 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
     }, routeOptions);
 };
 
+function getErrorRoute() {
+    return {
+        path: MIP_ERROR_ROUTE_PATH,
+        component: ErrorPage,
+        beforeRouteEnter(to, from, next) {
+            next(vm => {
+                let shell = vm.$parent;
+
+                // Set title
+                let title = 'Mip Error';
+                shell = Object.assign(shell, DEFAULT_SHELL_CONFIG, {
+                    header: {
+                        title
+                    }
+                });
+                document.title = title;
+            });
+        },
+        beforeRouteLeave(to, from, next) {
+            let shell = this.$parent;
+
+            // Set leave transition type
+            shell.view.transition.effect = shell.view.transition.mode === 'slide'
+                ? (util.isForward(to, from) ? 'slide-left' : 'slide-right')
+                : shell.view.transition.mode;
+
+            next();
+        }
+    }
+}
+
 export default function createRouter(Router) {
     let shellConfig = util.getMIPShellConfig();
     let view = shellConfig.view;
@@ -103,10 +140,7 @@ export default function createRouter(Router) {
         getRoute(undefined, {
             path: window.location.pathname
         }, shellConfig),
-        {
-            path: MIP_ERROR_ROUTE_PATH,
-            component: ErrorPage
-        }
+        getErrorRoute()
     ];
 
     // Create router instance and register onMatchMiss hook (add dynamic routes)
@@ -129,17 +163,11 @@ export default function createRouter(Router) {
 
         fetch(to.path).then(res => {
             if (!res.ok) {
-                handleError();
+                handleError({message: '404'});
                 return;
             }
 
             res.text().then(async function(targetHTML) {
-                // see whether it's a MIP page
-                if (!util.isMIP(targetHTML)) {
-                    window.location.href = to.path;
-                    return;
-                }
-
                 let newComponents = util.getNewComponents(targetHTML);
                 if (newComponents.length !== 0) {
                     await util.loadScripts(newComponents);

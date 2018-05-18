@@ -15,6 +15,11 @@ export function start({Vue}, router) {
       /^mip-/
     ];
 
+    // Don't let browser restore scroll position.
+    if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'manual';
+    }
+
     // Create mip container
     util.createContainer(CONTAINER_ID);
 
@@ -23,4 +28,6 @@ export function start({Vue}, router) {
         router,
         el: `#${CONTAINER_ID}`
     });
+
+    util.installMipLink(router);
 };
