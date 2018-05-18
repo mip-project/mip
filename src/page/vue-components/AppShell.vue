@@ -1,6 +1,7 @@
 <template>
     <div :id="MIP_CONTAINER_ID">
         <app-header
+            v-show="!header.hidden"
             :title="header.title"
             :logo="header.logo"
             :showBackIcon="!view.isIndex"
@@ -16,7 +17,7 @@
             @after-enter="onAfterEnter"
             @before-leave="onBeforeLeave">
             <mip-view
-                :class="['mip-appshell-router-view', pageTransitionClass]"
+                :class="routerViewClass"
                 :key="routerViewKey"
                 :data-page-id="$route.fullPath">
             </mip-view>
@@ -37,8 +38,12 @@ export default {
         'loading': Loading
     },
     computed: {
-        pageTransitionClass() {
-            return `transition-${this.view.transition.mode}`;
+        routerViewClass() {
+            return {
+                'mip-appshell-router-view': true,
+                'mip-appshell-router-view-with-header': !this.header.hidden,
+                [`transition-${this.view.transition.mode}`]: true
+            };
         },
         routerViewKey() {
             let {name, params} = this.$route;
@@ -105,13 +110,17 @@ export default {
 
 .mip-appshell-router-view {
     position: absolute;
-    top: @appshell-header-height;
+    top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     -webkit-overflow-scrolling: touch;
     background: white;
     width: 100%;
+
+    &.mip-appshell-router-view-with-header {
+        top: @appshell-header-height;
+    }
 
     &.transition-fade {
         opacity: 1;

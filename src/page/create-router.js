@@ -26,6 +26,12 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
         shellConfig = util.getMIPShellConfig(rawHTML);
     }
 
+    // hide header in <iframe>
+    if (window.top !== window) {
+        shellConfig.header.hidden = true;
+    }
+
+    // use title in <title> tag if not provided
     if (!shellConfig.header.title) {
         shellConfig.header.title = util.getMIPTitle(rawHTML);
     }

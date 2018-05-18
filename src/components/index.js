@@ -10,14 +10,9 @@ import mipStore from './mip-store';
 import mipCarousel from './mip-carousel/MipCarousel.vue';
 import mipPix from './mip-pix/MipPix.vue';
 import mipData from './mip-bind';
-import mipLink from './mip-link';
 
 function install(Vue) {
     [
-        {
-            tag: 'mip-link',
-            component: mipLink
-        },
         {
             tag: 'mip-img',
             component: mipImg
