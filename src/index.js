@@ -15,7 +15,6 @@ import viewport from './util/viewport';
 import Router from './router/index';
 import {start} from './page/index';
 import createRouter from './page/create-router';
-import Vuex from './vuex/index';
 
 import sleepWakeModule from './sleepWakeModule';
 import Resources from './resources';
@@ -28,8 +27,6 @@ import './log/monitor';
 // import './polyfills';
 
 Vue.use(Router);
-Vue.use(Vuex);
-/* global storeData */
 
 let mip = {
     Vue,
@@ -43,7 +40,6 @@ let mip = {
     // 当前是否在 iframe 中
     isIframed: window === top,
     standalone: window === top,
-    Store: Vuex,
     sandbox,
     css: {},
     prerenderElement: Resources.prerenderElement
@@ -68,10 +64,9 @@ mip.push = function (extensions) {
 // install mip1 polyfill
 // mip1PolyfillInstall(mip);
 
-const store = new Vuex.Store(window.storeData || {});
 const router = createRouter(Router);
 
-Vue.use(customElement, store, router);
+Vue.use(customElement, router);
 Vue.use(customElementBuildInComponents);
 
 util.dom.waitDocumentReady(() => {
@@ -101,7 +96,7 @@ util.dom.waitDocumentReady(() => {
     // Show page
     viewer.show();
 
-    start(mip, store, router);
+    start(mip, router);
 
     // clear cookie
     let storage = util.customStorage(2);

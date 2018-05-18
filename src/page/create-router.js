@@ -7,8 +7,7 @@ import sandbox from '../util/sandbox';
 import * as util from './util';
 import {
     MIP_ERROR_ROUTE_PATH,
-    MIP_CONTAINER_ID,
-    MIP_WATCH_FUNCTION_NAME
+    MIP_CONTAINER_ID
 } from './const';
 import ErrorPage from './vue-components/Error.vue';
 
@@ -49,15 +48,14 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
     }
 
     let MIPCustomScript = util.getMIPCustomScript(rawHTML);
+    let MIPWatchHandler;
+    if (MIPCustomScript) {
+        MIPWatchHandler = () => MIPCustomScript(sandWin, sandDoc);
+    }
     let {MIPContent, scope} = util.getMIPContent(rawHTML);
 
     return Object.assign({
         component: {
-            data() {
-                return {
-                    MIPCustomScript
-                };
-            },
             render(createElement) {
                 return createElement('div', {
                     attrs: {
@@ -71,20 +69,14 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
             beforeRouteEnter(to, from, next) {
                 next(vm => {
                     let shell = vm.$parent;
+
                     // Set title
                     shell = Object.assign(shell, shellConfig);
                     document.title = shell.header.title;
 
                     // Add custom script
-                    if (vm.MIPCustomScript) {
-                        let script = document.createElement('script');
-                        script.id = 'mip-custom-script';
-                        script.type = 'text/javascript';
-                        script.innerHTML = vm.MIPCustomScript;
-                        document.body.appendChild(script);
-                        if (typeof window[MIP_WATCH_FUNCTION_NAME] === 'function') {
-                            window[MIP_WATCH_FUNCTION_NAME](sandWin, sandDoc);
-                        }
+                    if (MIPWatchHandler) {
+                        window.addEventListener('ready-to-watch', MIPWatchHandler);
                     }
                 });
             },
@@ -96,12 +88,10 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
                     ? (util.isForward(to, from) ? 'slide-left' : 'slide-right')
                     : shell.view.transition.mode;
 
-                // Remove custom script
-                let customScript = document.querySelector('#mip-custom-script');
-                if (customScript) {
-                    customScript.remove();
-                    // TODO call unWatchAll
-                    console.log('mip.unWatchAll() from beforeRouteLeave');
+                // Unwatch & unregister
+                if (MIPWatchHandler) {
+                    window.removeEventListener('ready-to-watch', MIPWatchHandler);
+                    mip.unwatchAll()
                 }
 
                 next();

@@ -84,7 +84,20 @@ function doScoping(classname, cssJson, scopedCss) {
                 }
                 else if (css.children && isEmptyObj(css.children)) {
                     let subKeys = key.split(',');
-                    subKeys = subKeys.map(k => /(html|body)/.test(k.trim()) ? k : `${classname} ${k.trim()}`);
+                    subKeys = subKeys.map(k => {
+                        if (/(html|body)/g.test(k)) {
+                            k = k.trim().replace(/(\s{2,})/g, ' ').split(' ');
+                            let last = Math.max(k.lastIndexOf('html'), k.lastIndexOf('body'));
+                            if (last || k.length > 1) {
+                                k.splice(last + 1, 0, classname);
+                            }
+                            k = k.join(' ');
+                        }
+                        else {
+                            k = `${classname} ${k.trim()}`;
+                        }
+                        return k;
+                    });
                     newKey = subKeys.join(',');
 
                     scopedCss[newKey] = css;

@@ -37,8 +37,11 @@ class Bind {
         MIP.unwatchAll = function () {
             me._watchers.forEach(watcher => watcher.teardown());
             me._watcherIds = [];
-            // 只保留 global 数据
-            me._win.m = me._getGlobalData(me._win.g, me._win.m);
+            // 只保留 global 数据，并去掉 __ob__
+            let m = me._getGlobalData(me._win.g, me._win.m);
+            me._win.m = JSON.parse(
+                JSON.stringify(m).replace(/,"__ob__":\{\}/g, '')
+            );
         };
     }
 
