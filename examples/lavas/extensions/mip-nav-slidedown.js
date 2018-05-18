@@ -3,11 +3,12 @@
  * @author liangjiaying
  * @time 2016.09
  */
-define(function (require) {
+define('mip-nav-slidedown', function (require) {
     var customElement = require('customElement').create();
     var $ = require('zepto');
 
     function build() {
+        debugger
         var element = this.element;
         render(element);
         bindEvents(element);
@@ -160,4 +161,13 @@ define(function (require) {
     // build 方法，元素插入到文档时执行，仅会执行一次
     customElement.prototype.build = build;
     return customElement;
+});
+
+debugger
+(window.MIP = window.MIP || []).push({
+    name: 'mip-nav-slidedown',
+    func: function () {
+        debugger
+        require(['mip-nav-slidedown']);
+    }
 });
