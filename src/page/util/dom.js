@@ -11,16 +11,6 @@ import {
     DEFAULT_SHELL_CONFIG
 } from '../const';
 
-export function isMIP(rawContent) {
-    // In fact this 'if' will not be executed
-    // Once a page references 'mip.js' as script, it must be (or will be treated as) a MIP page.
-    if (!rawContent) {
-        return document.querySelector('html').getAttribute('mip') !== null;
-    }
-
-    return /<html[^>]+?\bmip\b/.test(rawContent);
-}
-
 export function createContainer (containerId) {
     let oldContainer = document.querySelector(`#${containerId}`);
     if (!oldContainer) {
