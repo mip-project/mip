@@ -137,10 +137,9 @@ export default {
             }, 400);
         }
     },
-    firstInviewCallback() {
-        let vm = this.vm;
-        this.applyFillContent(vm.$el, true);
-        vm.loaded = true;
+    firstInviewCallback(element) {
+        element.applyFillContent(this.$el, true);
+        this.loaded = true;
     }
 };
 

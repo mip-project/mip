@@ -8,22 +8,22 @@ import {getProps, convertAttributeValue} from './utils/props';
 import {camelize} from './utils/helpers';
 import resources from './utils/resources';
 import layout from '../util/layout';
+import EventEmitter from '../util/event-emitter';
 
 function install(Vue, store, router) {
     Vue.customElement = function vueCustomElement(tag, componentDefinition) {
 
         const props = getProps(componentDefinition);
-
         function callLifeCycle(ctx, name) {
-            typeof componentDefinition[name] === 'function'
-                && componentDefinition[name].apply(ctx, [].slice.call(arguments, 2));
+            if (typeof componentDefinition[name] === 'function') {
+                return componentDefinition[name].apply(ctx, [].slice.call(arguments, 2));
+            }
         }
 
         class CustomElement extends HTMLElement {
             // Can define constructor arguments if you wish.
             constructor() {
                 super();
-                callLifeCycle(this, 'constructorCallback');
 
                 /**
                  * Viewport state
@@ -45,21 +45,6 @@ function install(Vue, store, router) {
                  * @type {Object}
                  */
                 this._resources = resources;
-
-                // /**
-                //  * Instantiated the custom element.
-                //  * @type {Object}
-                //  * @public
-                //  */
-                // var customElement = this.customElement = new CustomEle(this);
-
-                // customElement.createdCallback();
-
-                // // Add first-screen element to performance.
-                // if (customElement.hasResources()) {
-                //     performance.addFsElement(this);
-                // }
-
             }
 
             connectedCallback() {
@@ -73,13 +58,11 @@ function install(Vue, store, router) {
                         componentDefinition,
                         props
                     ));
+
+                    // Apply layout for this.
+                    this._layout = layout.applyLayout(this);
                 }
                 this.__detached__ = false;
-
-                callLifeCycle(this, 'connectedCallback');
-
-                // Apply layout for this.
-                this._layout = layout.applyLayout(this);
 
                 // Add to resource manager.
                 this._resources.add(this);
@@ -87,7 +70,6 @@ function install(Vue, store, router) {
 
             disconnectedCallback() {
                 this.__detached__ = true;
-                callLifeCycle(this, 'disconnectedCallback');
 
                 setTimeout(() => {
                     if (this.__detached__ && this.vm) {
@@ -100,7 +82,6 @@ function install(Vue, store, router) {
 
             attributeChangedCallback(name, oldValue, value) {
                 if (this.vm) {
-                    callLifeCycle(this, 'attributeChangedCallback', name, oldValue, value);
                     const nameCamelCase = camelize(name);
                     const type = this.props.types[nameCamelCase];
                     this.vm.$root[nameCamelCase] = convertAttributeValue(value, type);
@@ -112,7 +93,7 @@ function install(Vue, store, router) {
             }
 
             firstInviewCallback() {
-                callLifeCycle(this, 'firstInviewCallback');
+                callLifeCycle(this.vm, 'firstInviewCallback', this);
             }
 
             viewportCallback(inViewport) {
@@ -127,6 +108,23 @@ function install(Vue, store, router) {
                 ele.classList.add('mip-fill-content');
                 if (isReplaced) {
                     ele.classList.add('mip-replaced-content');
+                }
+            }
+
+            addEventAction(/** name, handler */) {
+                let evt = this._actionEvent;
+                if (!evt) {
+                    evt = this._actionEvent = new EventEmitter();
+                    evt.setEventContext(this);
+                }
+
+                evt.on.apply(evt, arguments);
+            }
+
+            executeEventAction(action) {
+                let eventObj = this._actionEvent;
+                if (action && eventObj) {
+                    eventObj.trigger(action.handler, action.event, action.arg);
                 }
             }
 
