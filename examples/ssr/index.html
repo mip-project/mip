@@ -1,7 +1,7 @@
 <html mip="" class="mip-i-android-scroll" mip-ready="">
 <head>
     <meta charset="utf-8">
-    <title>xxxxxx</title>
+    <title>SSR Demo</title>
     <meta name="apple-touch-fullscreen" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
@@ -11,13 +11,43 @@
 </head>
 <body class="mip-i-android-scroll" style="opacity: 1; animation: none;">
 
-    <custom-volume volume="62" vce-ready>
+    <custom-volume volume="62">
       <div data-server-rendered>
           62 <input type="range">
       </div>
     </custom-volume>
 
+    <mip-img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg" width="300" height="300" class="mip-layout-fixed mip-layout-size-defined" style="width: 300px; height: 300px;">
+        <div data-server-rendered data-v-72c47de4="" class="mip-img mip-fill-content mip-replaced-content" style="width: 300px;"><img data-v-72c47de4="" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3010417400,2137373730&fm=27&gp=0.jpg">
+        </div>
+    </mip-img>
     <script src="../../dist/deps.js"></script>
     <script src="../../dist/mip.js"></script>
+    <script>
+    mip.Vue.customElement('custom-volume', {
+        template: `
+            <div>
+              {{volume}} <input type="range" v-model="localVolume">
+            </div>
+        `,
+        props: {
+            volume: {
+                type: Number,
+                default: 100
+            }
+        },
+        computed: {
+            localVolume: {
+                get: function() {
+                    return this.volume;
+                },
+                set: function(volume) {
+                    // this.$emit('volume-changed', volume);
+                    this.$root.$el.parentNode.volume = volume;
+                }
+            }
+        }
+    });
+    </script>
 </body>
 </html>

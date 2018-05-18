@@ -8,8 +8,8 @@
 mip.customElement('mip-complevel1', {
     template: `
         <div class="mip-complevel1">
-            <mip-complevel2 m-bind:userinfo="userinfo" userinfo="userInfo"></mip-complevel2>
-            <p @click="changeData">click me to change name</p>
+            <mip-complevel2 m-bind:userinfo="userInfo"></mip-complevel2>
+            <p @click="changeData">click me to change name:{{userinfo.name}}</p>
         </div>
     `,
     props: {
@@ -19,6 +19,8 @@ mip.customElement('mip-complevel1', {
             },
             type: Object
         }
+    },
+    updated() {
     },
     methods: {
         changeData() {

@@ -3,7 +3,7 @@
  * @author liangjiaying
  * @time 2016.09
  */
-define(function (require) {
+define('mip-nav-slidedown', function (require) {
     var customElement = require('customElement').create();
     var $ = require('zepto');
 
@@ -47,7 +47,6 @@ define(function (require) {
      * @param  {obj} me this
      */
     function bindEvents(me) {
-        debugger
         var bodyClass = $('body').attr('class');
         $('#bs-navbar').find('.' + bodyClass).addClass('active');
 
@@ -160,4 +159,17 @@ define(function (require) {
     // build 方法，元素插入到文档时执行，仅会执行一次
     customElement.prototype.build = build;
     return customElement;
+});
+
+(window.MIP = window.MIP || []).push({
+    name: 'mip-nav-slidedown',
+    func: function () {
+        function e(e, t) {
+            e.registerMipElement("mip-nav-slidedown", t, ".mip-nav-wrapper{height:72px}.mip-nav-wrapper.show{opacity:1 !important}.mip-nav-wrapper .hr-xs{display:none}mip-nav-slidedown #bs-navbar{margin-bottom:0;margin-right:0;float:right}mip-nav-slidedown #bs-navbar .navbar-nav{display:-ms-flexbox;display:-webkit-box;display:-webkit-flex;display:flex;margin-top:10px;margin-right:-25px}mip-nav-slidedown #bs-navbar .navbar-nav li{list-style:none;line-height:50px}mip-nav-slidedown #bs-navbar .navbar-nav li.active a,mip-nav-slidedown #bs-navbar .navbar-nav li.active mip-link mip-nav-slidedown #bs-navbar .navbar-nav li.active span{color:black;font-weight:bold}mip-nav-slidedown #bs-navbar .navbar-nav mip-link,mip-nav-slidedown #bs-navbar .navbar-nav a,mip-nav-slidedown #bs-navbar .navbar-nav span{white-space:nowrap;margin:15px;padding:10px;color:#666}mip-nav-slidedown #bs-navbar .navbar-nav mip-link:hover,mip-nav-slidedown #bs-navbar .navbar-nav a:hover,mip-nav-slidedown #bs-navbar .navbar-nav span:hover,mip-nav-slidedown #bs-navbar .navbar-nav mip-link:focus,mip-nav-slidedown #bs-navbar .navbar-nav a:focus,mip-nav-slidedown #bs-navbar .navbar-nav span:focus{text-decoration:none;background:transparent;color:black}mip-nav-slidedown .navbar-wise-close{display:none}mip-nav-slidedown .navbar-brand{float:none;display:inline-block;margin:15px 0 10px;height:41px;background-size:100% auto;position:absolute;font-size:26px}mip-nav-slidedown .navbar-brand:hover,mip-nav-slidedown .navbar-brand:active{color:rgba(255,255,255,0.85)}mip-nav-slidedown .navbar-header{float:left}mip-nav-slidedown .navbar-toggle{display:none}@media screen and (max-width:767px){.mip-nav-wrapper{height:44px}.mip-nav-wrapper #bs-navbar{height:0;transition:height .3s;width:100%;left:0;overflow-y:scroll;-webkit-overflow-scrolling:touch;overflow-scrolling:touch;z-index:1000;border:0;float:none;position:absolute;background-color:white}.mip-nav-wrapper #bs-navbar .navbar-nav{margin:0;min-height:283px;height:100%;display:block}.mip-nav-wrapper #bs-navbar .navbar-nav li{padding:5px 0}.mip-nav-wrapper #bs-navbar .navbar-nav a,.mip-nav-wrapper #bs-navbar .navbar-nav mip-link,.mip-nav-wrapper #bs-navbar .navbar-nav span{text-align:center;color:#333;font-size:18px;padding:0;margin:0 auto;display:block}.mip-nav-wrapper .navbar-header{float:none;overflow:hidden}.mip-nav-wrapper .container>.navbar-collapse{padding:0;background-color:white}.mip-nav-wrapper .navbar-static-top .navbar-brand{left:50%;margin-left:-30px}.mip-nav-wrapper .navbar-static-top a{margin:0}.mip-nav-wrapper .navbar-brand{margin:5px 0 0;height:33px;font-size:23px}.mip-nav-wrapper .navbar-toggle{display:block;margin:8px 0;padding:5px;border:0;background:transparent;float:right}.mip-nav-wrapper .navbar-toggle .icon-bar{background-color:white;height:2px;width:23px;background:#999;display:block}.mip-nav-wrapper .navbar-toggle .icon-bar+.icon-bar{margin-top:6px}.mip-nav-wrapper .hr-xs{display:block !important;border-color:#eee;margin:0 10px;border-top:0}.mip-nav-wrapper .navbar-wise-close{display:block;text-align:center;margin:20px 0}.mip-nav-wrapper #navbar-wise-close-btn{width:40px;height:40px;border-radius:50%;border:1px solid #d4d4d4;display:inline-block;position:relative}.mip-nav-wrapper #navbar-wise-close-btn:before{content:'';width:1px;height:25px;display:inline-block;position:absolute;background:#d4d4d4;transform:rotate(45deg);-webkit-transform:rotate(45deg);top:7px}.mip-nav-wrapper #navbar-wise-close-btn:after{content:'';width:1px;height:25px;display:inline-block;position:absolute;background:#d4d4d4;transform:rotate(-45deg);-webkit-transform:rotate(-45deg);top:7px}.mip-nav-wrapper #navbar-wise-close-btn.down{background:#f3f3f3}.mip-nav-wrapper .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0, 0, 0, 0);border:0}}@media screen and (min-width:768px){mip-nav-slidedown #bs-navbar li .navbar-more:after{content:'';position:relative;display:inline-block;border:4px solid;top:1px;border-color:#666 transparent transparent;left:3px}mip-nav-slidedown #bs-navbar li:hover .navbar-more:after{border-color:transparent transparent #666;top:-3px}mip-nav-slidedown #bs-navbar li>ul{display:none;list-style:none;position:absolute;background:white}mip-nav-slidedown #bs-navbar li:hover>ul{display:inherit;z-index:10}}")
+        }
+        if (window.MIP) require(["mip-nav-slidedown"], function (t) {
+            e(window.MIP, t)
+        });
+        else require(["mip", "mip-nav-slidedown"], e)
+    }
 });

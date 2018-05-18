@@ -17,7 +17,7 @@ mip.customElement('mip-complevel2', {
             type: Object
         }
     },
-    mounted() {
+    updated() {
         console.log(this.userinfo)
     },
     methods: {

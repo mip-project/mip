@@ -108,9 +108,7 @@ export default {
         },
         indicator: [String, Boolean],
         indicatorid: String,
-        buttoncontroller: [String, Boolean],
-        // 高/宽比例，用于占位，如宽50px，高100px，heightWidthRatio就是50/100=50%
-        heightWidthRatio: String
+        buttoncontroller: [String, Boolean]
     },
 
     computed: {
