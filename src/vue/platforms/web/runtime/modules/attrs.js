@@ -100,6 +100,11 @@ function setAttr(el, key, value) {
         if (isFalsyAttrValue(value)) {
             el.removeAttribute(key);
         }
+        // update for mip
+        // mip 自定义标签不支持 object 数据传递，必须转成 json 字符串
+        else if (/^mip-/i.test(el.tagName) && typeof value === 'object') {
+            el.setAttribute(key, JSON.stringify(value));
+        }
         else {
             el.setAttribute(key, value);
         }
