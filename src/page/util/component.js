@@ -18,11 +18,9 @@ export function getMIPComponents(rawContent) {
     if (!rawContent) {
         document.querySelectorAll('script').forEach(script => {
             let src = script.getAttribute('src') || '';
-            let match = src.match(/\/mip-(.+)\.js$/);
+            let match = src.match(/\/mip-([^\/]+)\.js/);
 
-            // filter mip-router.js out
-            // TODO delete me when mip-router.js is combined with mip.js
-            if (match && match !== 'router') {
+            if (match) {
                 componentsSet.add(match[1]);
                 componentsSrcMap[match[1]] = src;
             }
@@ -33,9 +31,9 @@ export function getMIPComponents(rawContent) {
 
         if (match) {
             match.forEach(scriptAttrStr => {
-                let innerMatch = scriptAttrStr.match(/src=['"]?(.+\/mip-(.+?)\.js)/);
+                let innerMatch = scriptAttrStr.match(/src=['"]?(.+\/mip-([^\/]+)\.js)/);
 
-                if (innerMatch && innerMatch[2] !== 'router') {
+                if (innerMatch) {
                     componentsSet.add(innerMatch[2]);
                     componentsSrcMap[innerMatch[2]] = innerMatch[1];
                 }

@@ -101,7 +101,7 @@ export default {
 <style lang="less">
 @import '../../styles/mip.less';
 
-@page-transition-duration: 0.35s;
+@page-transition-duration: 5.35s;
 
 [mip-ready] {
     display: block;

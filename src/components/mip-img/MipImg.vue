@@ -67,7 +67,13 @@ export default {
         heightWidthRatio: String,
         width: [Number, String],
         height: [Number, String],
-        popup: [Boolean, String]
+        popup: [Boolean, String],
+        layout: {
+            type: String,
+            default() {
+                return 'responsive';
+            }
+        }
     },
     computed: {
         computedWidth() {
