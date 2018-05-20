@@ -4,6 +4,8 @@
  */
 
 import {generateScope, getScopedStyles} from './style';
+import event from '../../util/dom/event';
+
 import {
     MIP_CONTAINER_ID,
     MIP_VIEW_ID,
@@ -215,19 +217,21 @@ function guardEvent(e, $a) {
 }
 
 export function installMipLink(router) {
-    $(document).on('click', 'a', (e) => {
+    event.delegate(document, 'a', 'click', function (e) {
+
         let $a = e.currentTarget;
         if ($a.hasAttribute('mip')) {
             let to = $a.getAttribute('href');
             if (guardEvent(e, $a)) {
-                const {location} = router.resolve(to, router.currentRoute, false);
+                const location = router.resolve(to, router.currentRoute, false).location;
                 if ($a.hasAttribute('replace')) {
-                  router.replace(location);
+                    router.replace(location);
                 }
                 else {
-                  router.push(location);
+                    router.push(location);
                 }
             }
         }
     });
+
 }

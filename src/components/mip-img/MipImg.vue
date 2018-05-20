@@ -71,7 +71,7 @@ export default {
         layout: {
             type: String,
             default() {
-                return 'responsive';
+                return 'container';
             }
         }
     },
