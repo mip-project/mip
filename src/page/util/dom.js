@@ -14,17 +14,18 @@ import {
 } from '../const';
 
 export function createContainer (containerId) {
-    let oldContainer = document.querySelector(`#${containerId}`);
-    if (!oldContainer) {
-        let container = document.createElement('div');
+    let container = document.querySelector(`#${containerId}`);
+    if (!container) {
+        container = document.createElement('div');
         container.id = containerId;
         document.body.appendChild(container);
     }
     else {
         // client hydrating
-        oldContainer.setAttribute('data-server-rendered', '');
+        container.setAttribute('data-server-rendered', '');
         // oldContainer.innerHTML = '';
     }
+    return container;
 }
 
 export function getMIPShellConfig(rawHTML) {
@@ -73,7 +74,7 @@ export function getMIPContent(rawContent) {
     let scope = generateScope();
 
     // Process scoped styles
-    processMIPStyle(scope, rawResult);
+    // processMIPStyle(scope, rawResult);
 
     if (!rawResult) {
         let tmpArr = [];
@@ -219,7 +220,7 @@ function guardEvent(e, $a) {
 export function installMipLink(router) {
     event.delegate(document, 'a', 'click', function (e) {
 
-        let $a = e.currentTarget;
+        let $a = e.target;
         if ($a.hasAttribute('mip')) {
             let to = $a.getAttribute('href');
             if (guardEvent(e, $a)) {

@@ -14,8 +14,8 @@ export default function createVueInstance(
     componentDefinition,
     props
 ) {
-    // if (!element.vm && !element.hasAttribute('vce-ready')) {
-    if (!element.vm) {
+    if (!element.vm && !element.hasAttribute('vce-ready')) {
+    // if (!element.vm) {
         let ComponentDefinition = Vue.util.extend({}, componentDefinition);
         let propsData = getPropsData(element, ComponentDefinition, props);
 
@@ -85,6 +85,7 @@ export default function createVueInstance(
         element.removeAttribute('vce-cloak');
         element.setAttribute('vce-ready', '');
 
+        // add a hydrating flag to <div> wrapper
         element.children[0] && element.children[0].setAttribute('data-server-rendered', '');
         customEmit(element, 'vce-ready');
 

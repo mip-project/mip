@@ -97,7 +97,6 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
                     window.removeEventListener('ready-to-watch', MIPWatchHandler);
                     mip.unwatchAll()
                 }
-
                 next();
             }
         }
