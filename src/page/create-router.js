@@ -75,9 +75,9 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
                     document.title = shell.header.title;
 
                     // Add custom script
-                    if (MIPWatchHandler) {
-                        window.addEventListener('ready-to-watch', MIPWatchHandler);
-                    }
+                    // if (MIPWatchHandler) {
+                    //     window.addEventListener('ready-to-watch', MIPWatchHandler);
+                    // }
                 });
             },
             beforeRouteLeave(to, from, next) {
@@ -89,11 +89,10 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
                     : shell.view.transition.mode;
 
                 // Unwatch & unregister
-                if (MIPWatchHandler) {
-                    window.removeEventListener('ready-to-watch', MIPWatchHandler);
-                    mip.unwatchAll()
-                }
-
+                // if (MIPWatchHandler) {
+                //     window.removeEventListener('ready-to-watch', MIPWatchHandler);
+                //     mip.unwatchAll()
+                // }
                 next();
             }
         }

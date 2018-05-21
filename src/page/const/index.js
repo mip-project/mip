@@ -21,6 +21,7 @@ export const DEFAULT_SHELL_CONFIG = {
         isIndex: false,
         transition: {
             mode: 'slide',
+            effect: 'slide-left',
             alwaysBackPages: []
         }
     },

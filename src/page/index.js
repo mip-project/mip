@@ -30,6 +30,7 @@ export function start({Vue}, router) {
 
     if ($container.hasAttribute('data-server-rendered')) {
         router.onReady(() => {
+            console.log('ssr ready...')
             app.$mount(`#${CONTAINER_ID}`);
         });
     }

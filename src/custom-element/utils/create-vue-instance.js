@@ -13,8 +13,8 @@ export default function createVueInstance(
     componentDefinition,
     props
 ) {
-    // if (!element.vm && !element.hasAttribute('vce-ready')) {
-    if (!element.vm) {
+    if (!element.vm && !element.hasAttribute('vce-ready')) {
+    // if (!element.vm) {
         let ComponentDefinition = Vue.util.extend({}, componentDefinition);
         let propsData = getPropsData(element, ComponentDefinition, props);
 

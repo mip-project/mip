@@ -72,7 +72,7 @@ export function getMIPContent(rawContent) {
     let scope = generateScope();
 
     // Process scoped styles
-    processMIPStyle(scope, rawResult);
+    // processMIPStyle(scope, rawResult);
 
     if (!rawResult) {
         let tmpArr = [];

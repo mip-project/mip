@@ -140,6 +140,9 @@ export default {
 
     &-title {
         flex: 1;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 
     &-button-group {
@@ -227,6 +230,10 @@ export default {
                 height: @appshell-header-dropdown-height;
                 display: flex;
                 align-items: center;
+                min-width: 100px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
 
                 .mip-appshell-header-link {
                     width: 100%;

@@ -16,11 +16,13 @@
             @before-enter="onBeforeEnter"
             @after-enter="onAfterEnter"
             @before-leave="onBeforeLeave">
-            <mip-view
-                :class="routerViewClass"
-                :key="routerViewKey"
-                :data-page-id="$route.fullPath">
-            </mip-view>
+            <keep-alive>
+                <mip-view
+                    :class="routerViewClass"
+                    :key="routerViewKey"
+                    :data-page-id="$route.fullPath">
+                </mip-view>
+            </keep-alive>
         </transition>
     </div>
 </template>
@@ -46,12 +48,12 @@ export default {
             };
         },
         routerViewKey() {
-            let {name, params} = this.$route;
-            let paramKeys = Object.keys(params);
-            if (paramKeys.length) {
-                return name + paramKeys.reduce((prev, cur) => prev + params[cur], '');
-            }
-            return null;
+            // let {name, params} = this.$route;
+            // let paramKeys = Object.keys(params);
+            // if (paramKeys.length) {
+            //     return name + paramKeys.reduce((prev, cur) => prev + params[cur], '');
+            // }
+            return this.$route.fullPath;
         }
     },
     data() {
@@ -118,7 +120,6 @@ export default {
     left: 0;
     -webkit-overflow-scrolling: touch;
     background: white;
-    width: 100%;
 
     &.mip-appshell-router-view-with-header {
         top: @appshell-header-height;
@@ -156,7 +157,7 @@ export default {
             transition: transform @page-transition-duration linear;
         }
         &.slide-left-leave-to {
-            transform: translate(-30%, 0);
+            transform: translate(-100%, 0);
         }
 
         &.slide-right-enter {
