@@ -5,6 +5,9 @@
 
 'use strict';
 
+import 'script-loader!zepto';
+import 'script-loader!esljs';
+
 import util from '../util';
 import viewer from '../util/viewer';
 import viewport from '../util/viewport';

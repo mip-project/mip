@@ -26,10 +26,10 @@ export function getScopedStyles(classname, rawCss) {
 
     scopedCss = cssParser.toCSS(scopedCss);
     for (let rep of replacementPair) {
-        let reg = new RegExp(`${rep.type}:\\s*${rep.before}[\\s;]+`, 'g');
+        let reg = new RegExp(`${rep.type}:(.*)${rep.before}`, 'g');
         let match = scopedCss.match(reg);
         if (match) {
-            scopedCss = scopedCss.replace(new RegExp(`(${rep.type}):\\s*${rep.before}`, 'g'), '$1: ' + rep.after);
+            scopedCss = scopedCss.replace(new RegExp(`(${rep.type}):(.*)${rep.before}`, 'g'), '$1: $2' + rep.after);
         }
     }
     return scopedCss.replace(/[\n\t\r]/g, '');
@@ -116,7 +116,12 @@ function doScoping(classname, cssJson, scopedCss) {
 }
 
 function normalize(rawCss) {
-    return rawCss.replace(/(;)?(})?[\n\t\s]*(})/g, (...args) => (typeof args[2] === 'undefined' ? ';' : args[2]) + args[3]);
+    return rawCss.replace(/([^\{\}\n\t\s])[\n\t\s]*(\})/g, (...args) => {
+        if (args[1] !== ';' && args[1] !== '}') {
+            return `${args[1]};}`;
+        }
+        return `${args[1]}}`;
+    });
 }
 
 function isEmptyObj(obj) {

@@ -7,11 +7,9 @@
 
 'use strict';
 
-import util from './util';
-import layout from './layout';
-
-const platform = util.platform;
-const css = util.css;
+import platform from './util/platform';
+import css from './util/dom/css';
+import layout from './util/layout';
 
 /**
  * The fixed element processor.
