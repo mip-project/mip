@@ -22,8 +22,13 @@ import performance from './performance';
 
 import './log/monitor';
 
+import 'script-loader!../deps/fetch.js';
+import 'script-loader!fetch-jsonp';
+import 'script-loader!document-register-element/build/document-register-element';
+
 // mip1 的兼容代码
 import mip1PolyfillInstall from './mip1-polyfill';
+
 import './polyfills';
 
 Vue.use(Router);
