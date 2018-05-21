@@ -10,7 +10,7 @@ import rect from './dom/rect';
 import fn from './fn';
 import platform from './platform';
 
-// import fixedElement from './fixed-element';
+// import fixedElement from '../fixed-element';
 
 
 // Native objects.

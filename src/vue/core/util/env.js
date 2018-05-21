@@ -39,17 +39,17 @@ if (inBrowser) {
     catch (e) {}
 }
 
-// this needs to be lazy-evaled because MIP may be required before
-// mip-server-renderer can set MIP_ENV
+// this needs to be lazy-evaled because Vue may be required before
+// vue-server-renderer can set VUE_ENV
 let $isServer;
 export const isServerRendering = () => {
     if ($isServer === undefined) {
 
         /* istanbul ignore if */
         if (!inBrowser && typeof global !== 'undefined') {
-            // detect presence of mip-server-renderer and avoid
+            // detect presence of vue-server-renderer and avoid
             // Webpack shimming the process
-            $isServer = global.process.env.MIP_ENV === 'server';
+            $isServer = global.process.env.VUE_ENV === 'server';
         }
         else {
             $isServer = false;
@@ -60,7 +60,7 @@ export const isServerRendering = () => {
 };
 
 // detect devtools
-export const devtools = inBrowser && window.__MIP_DEVTOOLS_GLOBAL_HOOK__;
+export const devtools = inBrowser && window.__VUE_DEVTOOLS_GLOBAL_HOOK__;
 
 /* istanbul ignore next */
 export function isNative(Ctor) {

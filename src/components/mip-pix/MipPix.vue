@@ -53,7 +53,7 @@ export default {
     },
 
     methods: {
-        firstInviewCallback() {
+        firstInviewCallback(element) {
             let src = this.src;
             // 替换通用参数
             src = addParas(src, 'TIME', Date.now());

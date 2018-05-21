@@ -13,17 +13,17 @@ import {
 } from '../util/index';
 import {defineComputed, proxy} from '../instance/state';
 
-export function initExtend(MIP) {
+export function initExtend(Vue) {
 
     /**
-     * Each instance constructor, including MIP, has a unique
+     * Each instance constructor, including Vue, has a unique
      * cid. This enables us to create wrapped "child
      * constructors" for prototypal inheritance and cache them.
      */
-    MIP.cid = 0;
+    Vue.cid = 0;
     let cid = 1;
 
-    MIP.extend = function (extendOptions = {}) {
+    Vue.extend = function (extendOptions = {}) {
         // extendOptions = extendOptions || {};
         const Super = this;
         const SuperId = Super.cid;
@@ -43,7 +43,7 @@ export function initExtend(MIP) {
             }
         }
 
-        const Sub = function MIPComponent(options) {
+        const Sub = function VueComponent(options) {
             this._init(options);
         };
         Sub.prototype = Object.create(Super.prototype);
@@ -56,7 +56,7 @@ export function initExtend(MIP) {
         Sub.super = Super;
 
         // For props and computed properties, we define the proxy getters on
-        // the MIP instances at extension time, on the extended prototype. This
+        // the Vue instances at extension time, on the extended prototype. This
         // avoids Object.defineProperty calls for each instance created.
         if (Sub.options.props) {
             initProps(Sub);

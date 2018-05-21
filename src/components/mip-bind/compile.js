@@ -117,6 +117,9 @@ class Compile {
             Object.assign(window.m, this.origin);
             return;
         }
+        if (typeof newVal === 'object') {
+            newVal = JSON.stringify(newVal);
+        }
         newVal !== '' ? node.setAttribute(attr, newVal) : node.removeAttribute(attr);
         if (TAGNAMES.test(node.tagName)) {
             if (ATTRS.test(attr)) {

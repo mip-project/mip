@@ -19,8 +19,8 @@ import {
 
 let uid = 0;
 
-export function initMixin(MIP) {
-    MIP.prototype._init = function (options) {
+export function initMixin(Vue) {
+    Vue.prototype._init = function (options) {
         const vm = this;
         // a uid
         vm._uid = uid++;
@@ -30,13 +30,13 @@ export function initMixin(MIP) {
 
         /* istanbul ignore if */
         if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
-            startTag = `mip-perf-start:${vm._uid}`;
-            endTag = `mip-perf-end:${vm._uid}`;
+            startTag = `vue-perf-start:${vm._uid}`;
+            endTag = `vue-perf-end:${vm._uid}`;
             mark(startTag);
         }
 
         // a flag to avoid this being observed
-        vm._isMIP = true;
+        vm._isVue = true;
         // merge options
         if (options && options._isComponent) {
             // optimize internal component instantiation
@@ -74,7 +74,7 @@ export function initMixin(MIP) {
         if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
             vm._name = formatComponentName(vm, false);
             mark(endTag);
-            measure(`mip ${vm._name} init`, startTag, endTag);
+            measure(`vue ${vm._name} init`, startTag, endTag);
         }
 
         if (vm.$options.el) {

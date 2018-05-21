@@ -6,6 +6,7 @@
 import {getPropsData, reactiveProps} from './props';
 import {getSlots} from './slots';
 import {customEmit} from './custom-event';
+import viewer from '../../util/viewer';
 
 export default function createVueInstance(
     element,
@@ -32,6 +33,16 @@ export default function createVueInstance(
             element.setAttribute('mipsrc', element.getAttribute('src'));
             element.removeAttribute('src');
         }
+
+        // Auto event handling based on $emit
+        function beforeCreate() { // eslint-disable-line no-inner-declarations
+            this.$emit = function emit(...args) {
+                customEmit(element, ...args);
+                viewer.eventAction.execute(args[0], element, args[1]);
+                this.__proto__ && this.__proto__.$emit.call(this, ...args); // eslint-disable-line no-proto
+            };
+        }
+        ComponentDefinition.beforeCreate = [].concat(ComponentDefinition.beforeCreate || [], beforeCreate);
 
         let elementOriginalChildren = element.cloneNode(true).childNodes; // clone hack due to IE compatibility
 
@@ -75,9 +86,7 @@ export default function createVueInstance(
         element.setAttribute('vce-ready', '');
 
         // add a hydrating flag to <div> wrapper
-        if (element.children && element.children[0]) {
-            element.children[0].setAttribute('data-server-rendered', '');
-        }
+        element.children[0] && element.children[0].setAttribute('data-server-rendered', '');
         customEmit(element, 'vce-ready');
 
         return element;

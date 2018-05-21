@@ -49,8 +49,8 @@ export function initLifecycle(vm) {
     vm._isBeingDestroyed = false;
 }
 
-export function lifecycleMixin(MIP) {
-    MIP.prototype._update = function (vnode, hydrating) {
+export function lifecycleMixin(Vue) {
+    Vue.prototype._update = function (vnode, hydrating) {
         const vm = this;
         if (vm._isMounted) {
             callHook(vm, 'beforeUpdate');
@@ -61,7 +61,7 @@ export function lifecycleMixin(MIP) {
         const prevActiveInstance = activeInstance;
         activeInstance = vm;
         vm._vnode = vnode;
-        // MIP.prototype.__patch__ is injected in entry points
+        // Vue.prototype.__patch__ is injected in entry points
         // based on the rendering backend used.
         if (!prevVnode) {
             // initial render
@@ -81,13 +81,13 @@ export function lifecycleMixin(MIP) {
             vm.$el = vm.__patch__(prevVnode, vnode);
         }
         activeInstance = prevActiveInstance;
-        // update __mip__ reference
+        // update __vue__ reference
         if (prevEl) {
-            prevEl.__mip__ = null;
+            prevEl.__vue__ = null;
         }
 
         if (vm.$el) {
-            vm.$el.__mip__ = vm;
+            vm.$el.__vue__ = vm;
         }
 
         // if parent is an HOC, update its $el as well
@@ -99,7 +99,7 @@ export function lifecycleMixin(MIP) {
         // updated in a parent's updated hook.
     };
 
-    MIP.prototype.$forceUpdate = function () {
+    Vue.prototype.$forceUpdate = function () {
         const vm = this;
         if (vm._watcher) {
             vm._watcher.update();
@@ -107,7 +107,7 @@ export function lifecycleMixin(MIP) {
 
     };
 
-    MIP.prototype.$destroy = function () {
+    Vue.prototype.$destroy = function () {
         const vm = this;
         if (vm._isBeingDestroyed) {
             return;
@@ -144,9 +144,9 @@ export function lifecycleMixin(MIP) {
         callHook(vm, 'destroyed');
         // turn off all instance listeners.
         vm.$off();
-        // remove __mip__ reference
+        // remove __vue__ reference
         if (vm.$el) {
-            vm.$el.__mip__ = null;
+            vm.$el.__vue__ = null;
         }
 
         // release circular reference (#6759)
@@ -169,7 +169,7 @@ export function mountComponent(vm, el, hydrating) {
                 || el
             ) {
                 warn(
-                    'You are using the runtime-only build of MIP where the template '
+                    'You are using the runtime-only build of Vue where the template '
                     + 'compiler is not available. Either pre-compile the templates into '
                     + 'render functions, or use the compiler-included build.',
                     vm
@@ -193,18 +193,18 @@ export function mountComponent(vm, el, hydrating) {
         updateComponent = () => {
             const name = vm._name;
             const id = vm._uid;
-            const startTag = `mip-perf-start:${id}`;
-            const endTag = `mip-perf-end:${id}`;
+            const startTag = `vue-perf-start:${id}`;
+            const endTag = `vue-perf-end:${id}`;
 
             mark(startTag);
             const vnode = vm._render();
             mark(endTag);
-            measure(`mip ${name} render`, startTag, endTag);
+            measure(`vue ${name} render`, startTag, endTag);
 
             mark(startTag);
             vm._update(vnode, hydrating);
             mark(endTag);
-            measure(`mip ${name} patch`, startTag, endTag);
+            measure(`vue ${name} patch`, startTag, endTag);
         };
     }
     else {

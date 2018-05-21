@@ -12,20 +12,20 @@ import {eventsMixin} from './events';
 import {lifecycleMixin} from './lifecycle';
 import {warn} from '../util/index';
 
-function MIP(options) {
+function Vue(options) {
     if (process.env.NODE_ENV !== 'production'
-        && !(this instanceof MIP)
+        && !(this instanceof Vue)
     ) {
-        warn('MIP is a constructor and should be called with the `new` keyword');
+        warn('Vue is a constructor and should be called with the `new` keyword');
     }
 
     this._init(options);
 }
 
-initMixin(MIP);
-stateMixin(MIP);
-eventsMixin(MIP);
-lifecycleMixin(MIP);
-renderMixin(MIP);
+initMixin(Vue);
+stateMixin(Vue);
+eventsMixin(Vue);
+lifecycleMixin(Vue);
+renderMixin(Vue);
 
-export default MIP;
+export default Vue;

@@ -6,14 +6,10 @@
 <template>
     <div
         v-if="ifsrc && height"
-        class="mip-element mip-layout-fixed mip-layout-size-defined"
+        class="mip-iframe"
         :allowfullscreen="allowfullscreen"
         :sanbox="sanbox"
         :allowtransparency="allowtransparency"
-        :style="{
-            width: width + 'px',
-            height: height + 'px'
-        }"
     >
         <iframe
             frameBorder="0"
@@ -27,12 +23,7 @@
 export default {
     props: {
         src: String,
-        width: {
-            default() {
-                return '100%';
-            },
-            type: [Number, String]
-        },
+        width: [Number, String],
         height: [Number, String],
         srcdoc: [String],
         sanbox: [String],
@@ -42,7 +33,13 @@ export default {
             },
             type: [Boolean, String]
         },
-        allowtransparency: [Boolean, String]
+        allowtransparency: [Boolean, String],
+        layout: {
+            type: String,
+            default() {
+                return 'responsive';
+            }
+        }
     },
 
     computed: {
@@ -57,16 +54,20 @@ export default {
 </script>
 
 <style lang="less" scoped>
-mip-iframe {
+.mip-iframe {
     display: block;
     position: relative;
     overflow: hidden;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
     iframe {
         display: block;
         width: 100px;
         min-width: 100%;
         height: 100%;
-        position: absolute;
         left: 0;
         top: 0;
     }
