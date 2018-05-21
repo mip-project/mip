@@ -68,9 +68,6 @@ function install(Vue, router) {
                     this._layout = layout.applyLayout(this);
                 }
                 this.__detached__ = false;
-
-                // Add to resource manager.
-                this._resources.add(this);
             }
 
             disconnectedCallback() {
