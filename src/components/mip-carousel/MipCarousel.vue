@@ -77,7 +77,7 @@ function changeIndicatorStyle(startDot, endDot) {
 export default {
     data() {
         return {
-            imgIndex: 1,
+            imgIndex: 0,
             allWidth: 0,
             wrapperTransform: '',
             transitionDuration: '0s',
@@ -160,12 +160,12 @@ export default {
         // 预加载相邻的图片
         preloadImg() {
             let carouselList = this.$refs.carouselWrapper.children;
-            let length = this.slideLen;
+            let length = carouselList.length;
 
             let imgIndex = this.imgIndex;
             let curNodeIdx = imgIndex;
-            let nextNodeIdx = imgIndex + 1 > length ? 0 : imgIndex + 1;
-            let preNodeIdx = imgIndex - 1 < 0 ? length : imgIndex - 1;
+            let nextNodeIdx = imgIndex + 1 >= length ? 0 : imgIndex + 1;
+            let preNodeIdx = imgIndex - 1 < 0 ? length - 1 : imgIndex - 1;
 
             // 预先加载当前和前一张和后一张图片
             resources.prerenderElement(carouselList[curNodeIdx]);
@@ -183,16 +183,18 @@ export default {
             if (length <= 1) {
                 return;
             }
+            this.preloadImg();
 
-            carouselWrapper.appendChild(defaultSlot[0].elm.cloneNode(true));
-            carouselWrapper.insertBefore(
-                defaultSlot[length - 1].elm.cloneNode(true),
-                carouselWrapper.firstChild
-            );
-            this.allWidth = carouselWrapper.offsetWidth;
-            this.translateToIdx(1);
-
-            setTimeout(() => this.preloadImg(), 20);
+            setTimeout(() => {
+                carouselWrapper.appendChild(defaultSlot[0].elm.cloneNode(true));
+                carouselWrapper.insertBefore(
+                    defaultSlot[length - 1].elm.cloneNode(true),
+                    carouselWrapper.firstChild
+                );
+                this.allWidth = carouselWrapper.offsetWidth;
+                this.translateToIdx(1);
+                this.imgIndex = 1;
+        }, 20);
 
         },
 

@@ -6,10 +6,10 @@
 
 'use strict';
 
-import fn from './util/fn';
-import Gesture from './util/gesture';
-import viewport from './util/viewport';
-import rect from './util/dom/rect';
+import fn from '../util/fn';
+import Gesture from '../util/gesture';
+import viewport from '../util/viewport';
+import rect from '../util/dom/rect';
 
 
 /**
