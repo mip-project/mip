@@ -5,7 +5,7 @@
 
 'use strict';
 
-import 'script-loader!../../deps/fetch.js';
+import 'script-loader!deps/fetch.js';
 import 'script-loader!fetch-jsonp';
 import 'script-loader!zepto';
 import 'script-loader!document-register-element/build/document-register-element';
