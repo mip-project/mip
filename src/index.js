@@ -17,7 +17,6 @@ import {start} from './page/index';
 import createRouter from './page/create-router';
 
 import sleepWakeModule from './sleepWakeModule';
-import Resources from './resources';
 import performance from './performance';
 
 import './log/monitor';
@@ -46,8 +45,7 @@ let mip = {
     isIframed: window === top,
     standalone: window === top,
     sandbox,
-    css: {},
-    prerenderElement: Resources.prerenderElement
+    css: {}
 };
 
 if (window.MIP) {

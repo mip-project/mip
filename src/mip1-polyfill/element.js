@@ -9,7 +9,7 @@
 import cssLoader from '../util/dom/css-loader';
 import layout from '../util/layout';
 import performance from '../performance';
-import Resources from '../resources';
+import Resources from './resources';
 
 /**
  * Storage of custom elements.
