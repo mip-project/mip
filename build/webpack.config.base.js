@@ -6,18 +6,9 @@
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
-const ConcatPlugin = require('webpack-concat-plugin');
 const version = process.env.VERSION || require('../package.json').version;
 
 const resolve = p => path.resolve(__dirname, '../', p);
-
-let filesToConcat = [
-    resolve('deps/fetch.js'),
-    'fetch-jsonp',
-    'zepto',
-    'esljs',
-    'document-register-element/build/document-register-element'
-];
 
 module.exports = {
 
@@ -30,7 +21,7 @@ module.exports = {
 
     module: {
         rules: [
-            { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
+            { test: /\.js$/, exclude: /node_modules|fetch.js/, loader: 'babel-loader' },
             { test: /\.vue$/, loader: 'vue-loader' },
             {
                 test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
@@ -65,11 +56,6 @@ module.exports = {
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
             '__VERSION__': JSON.stringify(version.toString())
-        }),
-        new ConcatPlugin({
-            // uglify: true,
-            name: 'deps',
-            filesToConcat
         })
     ]
 
