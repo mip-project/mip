@@ -143,7 +143,9 @@
     </mip-shell>
 
     <script type="application/mip-script">
+        console.log('watch data in data.html')
         MIP.watch('num', function () {
+            console.log('num changed callback')
             MIP.setData({
                 title: 'ckkkk changing num'
             });
@@ -172,7 +174,6 @@
             });
         });
     </script>
-    <script src="../../dist/deps.js"></script>
     <script src="../../dist/mip.js"></script>
     <script src="./components/mip-complevel1.js"></script>
     <script src="./components/mip-complevel2.js"></script>

@@ -18,10 +18,10 @@ import performance from '../performance';
 import fixedElement from '../fixed-element';
 
  // 将 jquery 配置为远程的，需要时才引入
- window.require.config({
-    paths:{
+window.require.config({
+    paths: {
         'searchbox/openjs/aio': '//m.baidu.com/static/searchbox/openjs/aio.js?v=201606',
-        jquery: '//mipcache.bdstatic.com/static/v1/deps/jquery'
+        'jquery': '//mipcache.bdstatic.com/static/v1/deps/jquery'
     }
 });
 

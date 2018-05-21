@@ -100,13 +100,13 @@ customElement.prototype.build = function () {};
  * @return {Object}
  */
 customElement.prototype.expendAttr = function (attrs, element) {
-    for (var i = 0; i < attrs.length; i++) {
-        var attr = attrs[i];
+    for (let i = 0; i < attrs.length; i++) {
+        let attr = attrs[i];
         if (this.element.hasAttribute(attr)) {
-            var val = this.element.getAttribute(attr);
-            element.setAttribute ?
-                element.setAttribute(attr, val) :
-                element[attr] = val;
+            let val = this.element.getAttribute(attr);
+            element.setAttribute
+                ? element.setAttribute(attr, val)
+                : element[attr] = val;
         }
     }
     return element;
@@ -118,8 +118,8 @@ customElement.prototype.expendAttr = function (attrs, element) {
  * @param {string} name event name
  * @param {Function} handler event handler
  */
-customElement.prototype.addEventAction = function (/* name, handler */) {
-    var evt = this._actionEvent;
+customElement.prototype.addEventAction = function () {
+    let evt = this._actionEvent;
     if (!evt) {
         evt = this._actionEvent = new EventEmitter();
         evt.setEventContext(this);
@@ -134,7 +134,7 @@ customElement.prototype.addEventAction = function (/* name, handler */) {
  * @param {string} action The action's name
  */
 customElement.prototype.executeEventAction = function (action) {
-    var eventObj = this._actionEvent;
+    let eventObj = this._actionEvent;
     if (action && eventObj) {
         eventObj.trigger(action.handler, action.event, action.arg);
     }
@@ -154,7 +154,7 @@ export default {
      *
      * @return {Function}
      */
-    create: function () {
+    create() {
         function impl(element) {
             customElement.call(this, element);
         }

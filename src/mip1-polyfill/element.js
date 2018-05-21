@@ -16,21 +16,21 @@ import Resources from '../resources';
  * @inner
  * @type {Object}
  */
-var customElements = {};
+let customElements = {};
 
 /**
  * Save resources.
  * @inner
  * @type {Resources}
  */
-var resources;
+let resources;
 
 /**
  * Save the base element prototype to avoid duplicate initialization.
  * @inner
  * @type {Object}
  */
-var baseElementProto;
+let baseElementProto;
 
 /**
  * Create a basic prototype of mip elements classes
@@ -43,13 +43,13 @@ function createBaseElementProto() {
     }
 
     // Base element inherits from HTMLElement
-    var proto = Object.create(HTMLElement.prototype);
+    let proto = Object.create(HTMLElement.prototype);
 
     /**
      * Created callback of MIPElement. It will initialize the element.
      */
     proto.createdCallback = function () {
-        var CustomEle = customElements[this.name];
+        let CustomEle = customElements[this.name];
         this.classList.add('mip-element');
 
         /**
@@ -78,7 +78,7 @@ function createBaseElementProto() {
          * @type {Object}
          * @public
          */
-        var customElement = this.customElement = new CustomEle(this);
+        let customElement = this.customElement = new CustomEle(this);
 
         customElement.createdCallback();
 
@@ -108,11 +108,8 @@ function createBaseElementProto() {
         performance.fsElementLoaded(this);
     };
 
-    /**
-     * Call the attributeChanged of custom element.
-     */
     proto.attributeChangedCallback = function (attributeName, oldValue, newValue, namespace) {
-        var ele = this.customElement;
+        let ele = this.customElement;
         ele.attributeChangedCallback.apply(ele, arguments);
     };
 
@@ -202,7 +199,7 @@ function createBaseElementProto() {
  * @return {Object}
  */
 function createMipElementProto(name) {
-    var proto = Object.create(createBaseElementProto());
+    let proto = Object.create(createBaseElementProto());
     proto.name = name;
     return proto;
 }
