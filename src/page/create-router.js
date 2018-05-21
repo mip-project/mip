@@ -50,6 +50,7 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
 
     let MIPCustomScript = util.getMIPCustomScript(rawHTML);
     let MIPWatchHandler;
+    let MIPWatchHandlerFlag = true;
     if (MIPCustomScript) {
         MIPWatchHandler = () => MIPCustomScript(sandWin, sandDoc);
     }
@@ -77,7 +78,13 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
 
                     // Add custom script
                     if (MIPWatchHandler) {
-                        window.addEventListener('ready-to-watch', MIPWatchHandler);
+                        if (MIPWatchHandlerFlag) {
+                            console.log('addEventListener', routeOptions.path)
+                            window.addEventListener('ready-to-watch', MIPWatchHandler);
+                        }
+                        else {
+                            MIPWatchHandler();
+                        }
                     }
 
                     // Polyfill for mip1 <mip-fixed>
@@ -94,7 +101,12 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
 
                 // Unwatch & unregister
                 if (MIPWatchHandler) {
-                    window.removeEventListener('ready-to-watch', MIPWatchHandler);
+                    if (MIPWatchHandlerFlag) {
+                        console.log('removeEventListener', routeOptions.path)
+                        window.removeEventListener('ready-to-watch', MIPWatchHandler);
+                        MIPWatchHandlerFlag = false;
+                    }
+
                     mip.unwatchAll()
                 }
                 next();

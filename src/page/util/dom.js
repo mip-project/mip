@@ -74,7 +74,7 @@ export function getMIPContent(rawContent) {
     let scope = generateScope();
 
     // Process scoped styles
-    // processMIPStyle(scope, rawResult);
+    processMIPStyle(scope, rawResult);
 
     if (!rawResult) {
         let tmpArr = [];
@@ -146,10 +146,10 @@ export function processMIPStyle(scope, rawContent) {
         let customStyle = document.createElement('style');
         customStyle.setAttribute('mip-custom', '');
         customStyle.innerHTML = getScopedStyles(scope, rawStyle);
-        // document.querySelector('head').appendChild(customStyle);
+        document.querySelector('head').appendChild(customStyle);
 
         // in case of style tree shaking
-        // removeNodes.forEach(node => node.remove());
+        removeNodes.forEach(node => node.remove());
     }
     else {
         let reg = /<style[^>]*mip-custom[^>]*>([^<]*.*)<\/style>/i;
@@ -164,8 +164,8 @@ export function processMIPStyle(scope, rawContent) {
                 }
             });
 
-            // document.querySelector('style[mip-custom]').innerHTML += getScopedStyles(scope, rawStyle);
-            document.querySelector('style[mip-custom]').innerHTML += rawStyle;
+            document.querySelector('style[mip-custom]').innerHTML += getScopedStyles(scope, rawStyle);
+            // document.querySelector('style[mip-custom]').innerHTML += rawStyle;
         }
     }
 }
