@@ -65,7 +65,7 @@ function install(Vue, router) {
                     ));
 
                     // Apply layout for this.
-                    this._layout = layout.applyLayout(this, this.vm);
+                    this._layout = layout.applyLayout(this);
                 }
                 this.__detached__ = false;
 

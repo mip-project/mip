@@ -185,13 +185,13 @@ class Layout {
      * @param {MIPElement} element
      * @return {string}
      */
-    applyLayout(element, vm) {
+    applyLayout(element) {
         if (element._layoutInited) {
             return;
         }
 
         element._layoutInited = true;
-        let layoutAttr = element.getAttribute('layout') || vm.layout;
+        let layoutAttr = element.getAttribute('layout');
         let widthAttr = element.getAttribute('width');
         let heightAttr = element.getAttribute('height');
         let sizesAttr = element.getAttribute('sizes');
