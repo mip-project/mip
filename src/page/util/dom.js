@@ -4,19 +4,23 @@
  */
 
 import {generateScope, getScopedStyles} from './style';
+import {getPath} from './url';
 
 import {
     MIP_CONTAINER_ID,
     MIP_VIEW_ID,
     MIP_CONTENT_IGNORE_TAG_LIST,
-    DEFAULT_SHELL_CONFIG
+    DEFAULT_SHELL_CONFIG,
+    MIP_IFRAME_CONTAINER
 } from '../const';
 
-export function createContainer (containerId) {
-    let container = document.querySelector(`#${containerId}`);
+export function createContainer(href) {
+    let path = getPath(href);
+    let container = document.querySelector(`.${MIP_IFRAME_CONTAINER}[data-page-id="${path}"]`);
     if (!container) {
-        container = document.createElement('div');
-        container.id = containerId;
+        container = document.createElement('iframe');
+        container.setAttribute('class', MIP_IFRAME_CONTAINER);
+        container.setAttribute('data-page-id', path);
         document.body.appendChild(container);
     }
     else {
@@ -24,6 +28,7 @@ export function createContainer (containerId) {
         container.setAttribute('data-server-rendered', '');
         // oldContainer.innerHTML = '';
     }
+
     return container;
 }
 

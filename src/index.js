@@ -13,7 +13,7 @@ import hash from './util/hash';
 import viewer from './util/viewer';
 import viewport from './util/viewport';
 import Router from './router/index';
-import {start} from './page/index';
+import page from './page/index';
 import createRouter from './page/create-router';
 
 import sleepWakeModule from './sleepWakeModule';
@@ -101,7 +101,8 @@ util.dom.waitDocumentReady(() => {
     // Show page
     viewer.show();
 
-    start(mip, router);
+    // start(mip, router);
+    page.start();
 
     // clear cookie
     let storage = util.customStorage(2);

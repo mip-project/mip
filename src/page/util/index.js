@@ -9,3 +9,4 @@ export * from './style';
 export * from './scroll-behavior';
 export * from './transition';
 export * from './link';
+export * from './url';
