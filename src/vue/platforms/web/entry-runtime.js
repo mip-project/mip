@@ -1,3 +1,3 @@
-import MIP from './runtime/index';
+import Vue from './runtime/index';
 
-export default MIP;
+export default Vue;

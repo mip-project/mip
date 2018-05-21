@@ -99,7 +99,10 @@ Resources.prototype = {
         element._eid = this._eid ++;
         resources[this._rid][element._eid] = element;
         element.build();
-        this.updateState();
+        // this.updateState();
+        setTimeout(() => {
+            this.updateState();
+        });
     },
 
     /**

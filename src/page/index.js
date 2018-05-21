@@ -21,13 +21,22 @@ export function start({Vue}, router) {
     }
 
     // Create mip container
-    util.createContainer(CONTAINER_ID);
+    let $container = util.createContainer(CONTAINER_ID);
 
-    new Vue({
+    let app = new Vue({
         ...AppShell,
-        router,
-        el: `#${CONTAINER_ID}`
+        router
     });
+
+    if ($container.hasAttribute('data-server-rendered')) {
+        router.onReady(() => {
+            console.log('ssr ready...')
+            app.$mount(`#${CONTAINER_ID}`);
+        });
+    }
+    else {
+        app.$mount(`#${CONTAINER_ID}`);
+    }
 
     util.installMipLink(router);
 };

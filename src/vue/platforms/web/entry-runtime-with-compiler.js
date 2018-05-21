@@ -7,7 +7,7 @@ import config from 'core/config';
 import {warn, cached} from 'core/util/index';
 import {mark, measure} from 'core/util/perf';
 
-import MIP from './runtime/index';
+import Vue from './runtime/index';
 import {query} from './util/index';
 import {shouldDecodeNewlines} from './util/compat';
 import {compileToFunctions} from './compiler/index';
@@ -17,14 +17,14 @@ const idToTemplate = cached(id => {
     return el && el.innerHTML;
 });
 
-const mount = MIP.prototype.$mount;
-MIP.prototype.$mount = function (el, hydrating) {
+const mount = Vue.prototype.$mount;
+Vue.prototype.$mount = function (el, hydrating) {
     el = el && query(el);
 
     /* istanbul ignore if */
     if (el === document.body || el === document.documentElement) {
         process.env.NODE_ENV !== 'production' && warn(
-            'Do not mount MIP to <html> or <body> - mount to normal elements instead.'
+            'Do not mount Vue to <html> or <body> - mount to normal elements instead.'
         );
         return this;
     }
@@ -80,7 +80,7 @@ MIP.prototype.$mount = function (el, hydrating) {
             /* istanbul ignore if */
             if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
                 mark('compile end');
-                measure(`mip ${this._name} compile`, 'compile', 'compile end');
+                measure(`vue ${this._name} compile`, 'compile', 'compile end');
             }
         }
     }
@@ -104,6 +104,6 @@ function getOuterHTML(el) {
     return container.innerHTML;
 }
 
-MIP.compile = compileToFunctions;
+Vue.compile = compileToFunctions;
 
-export default MIP;
+export default Vue;

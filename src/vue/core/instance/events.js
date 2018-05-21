@@ -46,9 +46,9 @@ export function updateComponentListeners(
     updateListeners(listeners, oldListeners || {}, add, remove, vm);
 }
 
-export function eventsMixin(MIP) {
+export function eventsMixin(Vue) {
     const hookRE = /^hook:/;
-    MIP.prototype.$on = function (event, fn) {
+    Vue.prototype.$on = function (event, fn) {
         const vm = this;
         if (Array.isArray(event)) {
             for (let i = 0, l = event.length; i < l; i++) {
@@ -66,7 +66,7 @@ export function eventsMixin(MIP) {
         return vm;
     };
 
-    MIP.prototype.$once = function (event, fn) {
+    Vue.prototype.$once = function (event, fn) {
         const vm = this;
         function on() {
             vm.$off(event, on);
@@ -77,7 +77,7 @@ export function eventsMixin(MIP) {
         return vm;
     };
 
-    MIP.prototype.$off = function (event, fn) {
+    Vue.prototype.$off = function (event, fn) {
         const vm = this;
         // all
         if (!arguments.length) {
@@ -121,7 +121,7 @@ export function eventsMixin(MIP) {
         return vm;
     };
 
-    MIP.prototype.$emit = function (event) {
+    Vue.prototype.$emit = function (event) {
         const vm = this;
         if (process.env.NODE_ENV !== 'production') {
             const lowerCaseEvent = event.toLowerCase();

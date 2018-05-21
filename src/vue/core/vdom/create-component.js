@@ -76,7 +76,7 @@ const componentVNodeHooks = {
 
         if (vnode.data.keepAlive) {
             if (context._isMounted) {
-                // mip-router#1212
+                // vue-router#1212
                 // During updates, a kept-alive component's child components may
                 // change, so directly walking the tree here may call activated hooks
                 // on incorrect children. Instead we push them into a queue which will
@@ -201,7 +201,7 @@ export function createComponent(
     // return a placeholder vnode
     const name = Ctor.options.name || tag;
     const vnode = new VNode(
-        `mip-component-${Ctor.cid}${name ? `-${name}` : ''}`,
+        `vue-component-${Ctor.cid}${name ? `-${name}` : ''}`,
         data, undefined, undefined, undefined, context,
         {Ctor, propsData, listeners, tag, children},
         asyncFactory

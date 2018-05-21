@@ -71,7 +71,7 @@ export default {
         layout: {
             type: String,
             default() {
-                return 'responsive';
+                return 'container';
             }
         }
     },
@@ -96,21 +96,21 @@ export default {
         },
         imgSrc() {
             return this.loaded ? this.src : undefined;
-        },
-        imgRect() {
-            return this.$refs.img.getBoundingClientRect();
         }
     },
     methods: {
+        getImgRect() {
+            return this.$refs.img.getBoundingClientRect();
+        },
         popupShow() {
             // 图片未加载则不弹层
-            if (!this.loaded || !this.popupVal) {
+            if (!this.$refs.img.naturalWidth || !this.popupVal) {
                 return;
             }
 
             this.showPopup = true;
 
-            let {left, top, width, height} = this.imgRect;
+            let {left, top, width, height} = this.getImgRect();
             this.popupImgStyle = {
                 left: left + 'px',
                 top: top + 'px',
@@ -130,7 +130,7 @@ export default {
         popupHide() {
             this.placeImg = false;
 
-            let {left, top, width, height} = this.imgRect;
+            let {left, top, width, height} = this.getImgRect();
             this.popupImgStyle = {
                 left: left + 'px',
                 top: top + 'px',
@@ -143,10 +143,9 @@ export default {
             }, 400);
         }
     },
-    firstInviewCallback() {
-        let vm = this.vm;
-        this.applyFillContent(vm.$el, true);
-        vm.loaded = true;
+    firstInviewCallback(element) {
+        element.applyFillContent(this.$el, true);
+        this.loaded = true;
     }
 };
 

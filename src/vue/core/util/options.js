@@ -84,7 +84,7 @@ export function mergeDataOrFn(
     vm
 ) {
     if (!vm) {
-        // in a MIP.extend merge, both should be functions
+        // in a Vue.extend merge, both should be functions
         if (!childVal) {
             return parentVal;
         }

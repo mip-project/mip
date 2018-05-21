@@ -5,23 +5,23 @@
 
 /* eslint-disable fecs-valid-class-jsdoc */
 
-import MIP from './instance/index';
+import Vue from './instance/index';
 import {initGlobalAPI} from './global-api/index';
 import {isServerRendering} from 'core/util/env';
 
-initGlobalAPI(MIP);
+initGlobalAPI(Vue);
 
-Object.defineProperty(MIP.prototype, '$isServer', {
+Object.defineProperty(Vue.prototype, '$isServer', {
     get: isServerRendering
 });
 
-Object.defineProperty(MIP.prototype, '$ssrContext', {
+Object.defineProperty(Vue.prototype, '$ssrContext', {
     get() {
         /* istanbul ignore next */
         return this.$vnode && this.$vnode.ssrContext;
     }
 });
 
-MIP.version = __VERSION__;
+Vue.version = __VERSION__;
 
-export default MIP;
+export default Vue;

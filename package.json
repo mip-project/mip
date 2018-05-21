@@ -42,7 +42,7 @@
     "babel-preset-vue-app": "^2.0.0",
     "babel-runtime": "^6.26.0",
     "chalk": "^2.4.1",
-    "css-json-converter": "^1.0.4",
+    "css-json-converter": "^1.0.5",
     "css-loader": "^0.28.10",
     "es6-promise": "^4.2.4",
     "express": "^4.16.3",

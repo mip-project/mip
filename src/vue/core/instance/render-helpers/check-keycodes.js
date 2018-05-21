@@ -10,7 +10,7 @@ import {hyphenate} from 'shared/util';
 
 /**
  * Runtime helper for checking keyCodes from config.
- * exposed as MIP.prototype._k
+ * exposed as Vue.prototype._k
  * passing in eventKeyName as last argument separately for backwards compat
  */
 export function checkKeyCodes(
