@@ -32,7 +32,7 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
     }
 
     // use title in <title> tag if not provided
-    if (!shellConfig.header.title) {
+    if (!shellConfig.header.hidden && !shellConfig.header.title) {
         shellConfig.header.title = util.getMIPTitle(rawHTML);
     }
 

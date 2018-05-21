@@ -15,7 +15,7 @@ export const DEFAULT_SHELL_CONFIG = {
         title: '',
         logo: '',
         buttonGroup: [],
-        hidden: false
+        hidden: true
     },
     view: {
         isIndex: false,
