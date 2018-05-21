@@ -9,8 +9,7 @@ import EventEmitter from './event-emitter';
 import rect from './dom/rect';
 import fn from './fn';
 import platform from './platform';
-
-// import fixedElement from '../fixed-element';
+import fixedElement from '../fixed-element';
 
 
 // Native objects.
@@ -139,7 +138,7 @@ let resizeEvent = fn.throttle(function (event) {
  * @return {Viewport}
  */
 function init() {
-    // fixedElement.init();
+    fixedElement.init();
     (platform.needSpecialScroll ? document.body : win)
         .addEventListener('scroll', scrollHandle.bind(this), false);
 
