@@ -19,13 +19,13 @@
             @before-enter="onBeforeEnter"
             @after-enter="onAfterEnter"
             @before-leave="onBeforeLeave">
-            <keep-alive>
-                <mip-view
-                    :class="routerViewClass"
-                    :key="routerViewKey"
-                    :data-page-id="$route.fullPath">
-                </mip-view>
-            </keep-alive>
+            <!-- <keep-alive> -->
+            <mip-view
+                :class="routerViewClass"
+                :key="routerViewKey"
+                :data-page-id="$route.fullPath">
+            </mip-view>
+            <!-- </keep-alive> -->
         </transition>
     </div>
 </template>
