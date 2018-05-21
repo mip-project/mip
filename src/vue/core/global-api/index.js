@@ -20,7 +20,7 @@ import {
     defineReactive
 } from '../util/index';
 
-export function initGlobalAPI(MIP) {
+export function initGlobalAPI(Vue) {
     // config
     const configDef = {
         get() {
@@ -31,40 +31,40 @@ export function initGlobalAPI(MIP) {
     if (process.env.NODE_ENV !== 'production') {
         configDef.set = () => {
             warn(
-                'Do not replace the MIP.config object, set individual fields instead.'
+                'Do not replace the Vue.config object, set individual fields instead.'
             );
         };
     }
 
-    Object.defineProperty(MIP, 'config', configDef);
+    Object.defineProperty(Vue, 'config', configDef);
 
     // exposed util methods.
     // NOTE: these are not considered part of the public API - avoid relying on
     // them unless you are aware of the risk.
-    MIP.util = {
+    Vue.util = {
         warn,
         extend,
         mergeOptions,
         defineReactive
     };
 
-    MIP.set = set;
-    MIP.delete = del;
-    MIP.nextTick = nextTick;
+    Vue.set = set;
+    Vue.delete = del;
+    Vue.nextTick = nextTick;
 
-    MIP.options = Object.create(null);
+    Vue.options = Object.create(null);
     ASSET_TYPES.forEach(type => {
-        MIP.options[type + 's'] = Object.create(null);
+        Vue.options[type + 's'] = Object.create(null);
     });
 
     // this is used to identify the "base" constructor to extend all plain-object
     // components with in Weex's multi-instance scenarios.
-    MIP.options._base = MIP;
+    Vue.options._base = Vue;
 
-    extend(MIP.options.components, builtInComponents);
+    extend(Vue.options.components, builtInComponents);
 
-    initUse(MIP);
-    initMixin(MIP);
-    initExtend(MIP);
-    initAssetRegisters(MIP);
+    initUse(Vue);
+    initMixin(Vue);
+    initExtend(Vue);
+    initAssetRegisters(Vue);
 }

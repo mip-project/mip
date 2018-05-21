@@ -4,6 +4,8 @@
  */
 
 import {generateScope, getScopedStyles} from './style';
+import event from '../../util/dom/event';
+
 import {
     MIP_CONTAINER_ID,
     MIP_VIEW_ID,
@@ -12,17 +14,18 @@ import {
 } from '../const';
 
 export function createContainer (containerId) {
-    let oldContainer = document.querySelector(`#${containerId}`);
-    if (!oldContainer) {
-        let container = document.createElement('div');
+    let container = document.querySelector(`#${containerId}`);
+    if (!container) {
+        container = document.createElement('div');
         container.id = containerId;
         document.body.appendChild(container);
     }
     else {
         // client hydrating
-        oldContainer.setAttribute('data-server-rendered', '');
+        container.setAttribute('data-server-rendered', '');
         // oldContainer.innerHTML = '';
     }
+    return container;
 }
 
 export function getMIPShellConfig(rawHTML) {
@@ -71,7 +74,7 @@ export function getMIPContent(rawContent) {
     let scope = generateScope();
 
     // Process scoped styles
-    processMIPStyle(scope, rawResult);
+    // processMIPStyle(scope, rawResult);
 
     if (!rawResult) {
         let tmpArr = [];
@@ -143,10 +146,10 @@ export function processMIPStyle(scope, rawContent) {
         let customStyle = document.createElement('style');
         customStyle.setAttribute('mip-custom', '');
         customStyle.innerHTML = getScopedStyles(scope, rawStyle);
-        document.querySelector('head').appendChild(customStyle);
+        // document.querySelector('head').appendChild(customStyle);
 
         // in case of style tree shaking
-        removeNodes.forEach(node => node.remove());
+        // removeNodes.forEach(node => node.remove());
     }
     else {
         let reg = /<style[^>]*mip-custom[^>]*>([^<]*.*)<\/style>/i;
@@ -161,7 +164,8 @@ export function processMIPStyle(scope, rawContent) {
                 }
             });
 
-            document.querySelector('style[mip-custom]').innerHTML += getScopedStyles(scope, rawStyle);
+            // document.querySelector('style[mip-custom]').innerHTML += getScopedStyles(scope, rawStyle);
+            document.querySelector('style[mip-custom]').innerHTML += rawStyle;
         }
     }
 }
@@ -214,19 +218,21 @@ function guardEvent(e, $a) {
 }
 
 export function installMipLink(router) {
-    $(document).on('click', 'a', (e) => {
-        let $a = e.currentTarget;
+    event.delegate(document, 'a', 'click', function (e) {
+
+        let $a = e.target;
         if ($a.hasAttribute('mip')) {
             let to = $a.getAttribute('href');
             if (guardEvent(e, $a)) {
-                const {location} = router.resolve(to, router.currentRoute, false);
+                const location = router.resolve(to, router.currentRoute, false).location;
                 if ($a.hasAttribute('replace')) {
-                  router.replace(location);
+                    router.replace(location);
                 }
                 else {
-                  router.push(location);
+                    router.push(location);
                 }
             }
         }
     });
+
 }

@@ -751,7 +751,7 @@ export function createPatchFunction(backend) {
     function assertNodeMatch(node, vnode) {
         if (isDef(vnode.tag)) {
             return (
-                vnode.tag.indexOf('mip-component') === 0
+                vnode.tag.indexOf('vue-component') === 0
                 || vnode.tag.toLowerCase() === (node.tagName && node.tagName.toLowerCase())
             );
         }

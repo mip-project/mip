@@ -8,7 +8,7 @@
 mip.customElement('mip-complevel1', {
     template: `
         <div class="mip-complevel1">
-            <mip-complevel2 m-bind:userinfo="userInfo"></mip-complevel2>
+            <mip-complevel2 :userinfo="userinfo"></mip-complevel2>
             <p @click="changeData">click me to change name:{{userinfo.name}}</p>
         </div>
     `,

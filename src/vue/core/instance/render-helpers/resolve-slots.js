@@ -21,7 +21,7 @@ export function resolveSlots(
     for (let i = 0, l = children.length; i < l; i++) {
         const child = children[i];
         const data = child.data;
-        // remove slot attribute if the node is resolved as a MIP slot node
+        // remove slot attribute if the node is resolved as a Vue slot node
         if (data && data.attrs && data.attrs.slot) {
             delete data.attrs.slot;
         }

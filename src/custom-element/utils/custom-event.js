@@ -15,6 +15,7 @@ export default function customEvent(eventName, detail) {
         event = document.createEvent('CustomEvent');
         event.initCustomEvent(eventName, params.bubbles, params.cancelable, params.detail);
     }
+
     return event;
 }
 

@@ -50,7 +50,8 @@ define('mip-nav-slidedown', function (require) {
         var bodyClass = $('body').attr('class');
         $('#bs-navbar').find('.' + bodyClass).addClass('active');
 
-        $(document).on('click', '.navbar-header .navbar-toggle', navClickHandler);
+        // $(document).on('click', '.navbar-header .navbar-toggle', navClickHandler);
+        $('.navbar-header .navbar-toggle').on('click', navClickHandler);
 
         // 主菜单关闭按钮 touchstart touchend mousedown mouseup变色
         addHoverClass($('#navbar-wise-close-btn'));

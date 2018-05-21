@@ -10,6 +10,7 @@ import {
     MIP_CONTAINER_ID
 } from './const';
 import ErrorPage from './vue-components/Error.vue';
+import fixedElement from '../fixed-element';
 
 const {window: sandWin, document: sandDoc} = sandbox;
 
@@ -78,6 +79,9 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
                     if (MIPWatchHandler) {
                         window.addEventListener('ready-to-watch', MIPWatchHandler);
                     }
+
+                    // Polyfill for mip1 <mip-fixed>
+                    fixedElement.init();
                 });
             },
             beforeRouteLeave(to, from, next) {
@@ -93,7 +97,6 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
                     window.removeEventListener('ready-to-watch', MIPWatchHandler);
                     mip.unwatchAll()
                 }
-
                 next();
             }
         }
