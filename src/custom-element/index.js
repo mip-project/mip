@@ -99,7 +99,9 @@ function install(Vue, router) {
             }
 
             firstInviewCallback() {
-                callLifeCycle(this.vm, 'firstInviewCallback', this);
+                if (this.vm) {
+                    callLifeCycle(this.vm, 'firstInviewCallback', this);
+                }
             }
 
             viewportCallback(inViewport) {

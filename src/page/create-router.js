@@ -32,8 +32,9 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
     }
 
     // use title in <title> tag if not provided
-    if (!shellConfig.header.title) {
-        shellConfig.header.title = util.getMIPTitle(rawHTML);
+    let defaultTitle = util.getMIPTitle(rawHTML);
+    if (!shellConfig.header.hidden && !shellConfig.header.title) {
+        shellConfig.header.title = defaultTitle;
     }
 
     if (shellConfig.view
@@ -50,6 +51,7 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
 
     let MIPCustomScript = util.getMIPCustomScript(rawHTML);
     let MIPWatchHandler;
+    let MIPWatchHandlerFlag = true;
     if (MIPCustomScript) {
         MIPWatchHandler = () => MIPCustomScript(sandWin, sandDoc);
     }
@@ -73,11 +75,17 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
 
                     // Set title
                     shell = Object.assign(shell, shellConfig);
-                    document.title = shell.header.title;
+                    document.title = shell.header.title || defaultTitle;
 
                     // Add custom script
                     if (MIPWatchHandler) {
-                        window.addEventListener('ready-to-watch', MIPWatchHandler);
+                        if (MIPWatchHandlerFlag) {
+                            console.log('addEventListener', routeOptions.path)
+                            window.addEventListener('ready-to-watch', MIPWatchHandler);
+                        }
+                        else {
+                            MIPWatchHandler();
+                        }
                     }
 
                     // Polyfill for mip1 <mip-fixed>
@@ -94,7 +102,12 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
 
                 // Unwatch & unregister
                 if (MIPWatchHandler) {
-                    window.removeEventListener('ready-to-watch', MIPWatchHandler);
+                    if (MIPWatchHandlerFlag) {
+                        console.log('removeEventListener', routeOptions.path)
+                        window.removeEventListener('ready-to-watch', MIPWatchHandler);
+                        MIPWatchHandlerFlag = false;
+                    }
+
                     mip.unwatchAll()
                 }
                 next();

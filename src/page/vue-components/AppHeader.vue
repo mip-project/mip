@@ -44,8 +44,11 @@
                             v-show="showDropdown">
                             <div v-for="item in button.items"
                                 class="mip-appshell-header-dropdown-item"
+                                :class="{'mip-link-active': isActive(item.link)}"
                                 @click="onClick(`${item.name}`)">
-                                <a mip v-if="item.link" :href="item.link">
+                                <a mip
+                                    v-if="item.link"
+                                    :href="item.link">
                                     {{item.text}}
                                 </a>
                                 <span v-if="!item.link">{{item.text}}</span>
@@ -60,6 +63,7 @@
 
 <script>
 import ClickOutside from '../directives/click-outside';
+import {isSameRoute, createRoute} from '../../router/util/route';
 import {customEmit} from '../../custom-element/utils/custom-event';
 
 export default {
@@ -96,6 +100,14 @@ export default {
         };
     },
     methods: {
+        isActive(to) {
+            let location = this.$router.resolve(to, this.$route, false).location;
+            let compareTarget = location.path
+                ? createRoute(null, location, null, this.$router)
+                : route;
+
+            return isSameRoute(this.$route, compareTarget);
+        },
         getDropDownParent() {
             return [this.$refs.appshellHeaderDropdown && this.$refs.appshellHeaderDropdown[0]];
         },
@@ -130,7 +142,7 @@ export default {
     font-size: 16px;
     border-bottom: 1px solid #eee;
     background: white;
-    padding: 0 16px 0 6px;
+    padding: 0 6px 0 6px;
 
     &-logo {
         height: 32px;
@@ -215,7 +227,6 @@ export default {
             transform: translate(0, 0);
             will-change: transform;
             box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
-            padding: 4px 8px;
 
             &.slide-enter {
                 transform: translate(0, -10px);
@@ -230,12 +241,17 @@ export default {
                 height: @appshell-header-dropdown-height;
                 display: flex;
                 align-items: center;
-                min-width: 100px;
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
+                padding: 4px 8px;
 
-                .mip-appshell-header-link {
+                &.mip-link-active {
+                    background: rgba(0,0,0,.12);
+                }
+
+                a {
+                    font-size: 14px;
                     width: 100%;
                     line-height: @appshell-header-dropdown-height;
                 }

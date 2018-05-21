@@ -34,6 +34,7 @@ class Bind {
             me._eventEmit();
         };
         MIP.watch = function (target, cb) {
+            console.log('from MIP.watch', target, cb)
             me._bindWatch(target, cb);
         };
         MIP.unwatchAll = function () {
