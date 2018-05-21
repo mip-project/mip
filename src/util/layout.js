@@ -191,7 +191,7 @@ class Layout {
         }
 
         element._layoutInited = true;
-        let layoutAttr = element.getAttribute('layout') || vm.layout;
+        let layoutAttr = element.getAttribute('layout') || (vm && vm.layout);
         let widthAttr = element.getAttribute('width');
         let heightAttr = element.getAttribute('height');
         let sizesAttr = element.getAttribute('sizes');

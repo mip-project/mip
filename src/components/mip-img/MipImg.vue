@@ -40,6 +40,7 @@
 </template>
 
 <script>
+/* eslint-disable fecs-esnext-ext,fecs-valid-jsdoc */
 import util from '../../util';
 
 let clientWidth = document.documentElement.clientWidth;
