@@ -101,6 +101,9 @@ export default {
     },
     methods: {
         isActive(to) {
+            if (!to) {
+                return false;
+            }
             let location = this.$router.resolve(to, this.$route, false).location;
             let compareTarget = location.path
                 ? createRoute(null, location, null, this.$router)
@@ -245,13 +248,13 @@ export default {
                 overflow: hidden;
                 white-space: nowrap;
                 padding: 4px 8px;
+                font-size: 14px;
 
                 &.mip-link-active {
                     background: rgba(0,0,0,.12);
                 }
 
                 a {
-                    font-size: 14px;
                     width: 100%;
                     line-height: @appshell-header-dropdown-height;
                 }
