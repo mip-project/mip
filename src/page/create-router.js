@@ -32,8 +32,9 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
     }
 
     // use title in <title> tag if not provided
+    let defaultTitle = util.getMIPTitle(rawHTML);
     if (!shellConfig.header.hidden && !shellConfig.header.title) {
-        shellConfig.header.title = util.getMIPTitle(rawHTML);
+        shellConfig.header.title = defaultTitle;
     }
 
     if (shellConfig.view
@@ -73,7 +74,7 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
 
                     // Set title
                     shell = Object.assign(shell, shellConfig);
-                    document.title = shell.header.title;
+                    document.title = shell.header.title || defaultTitle;
 
                     // Add custom script
                     if (MIPWatchHandler) {
