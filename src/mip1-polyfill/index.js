@@ -5,7 +5,6 @@
 
 'use strict';
 
-
 import 'script-loader!zepto';
 import 'script-loader!esljs';
 
