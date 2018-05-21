@@ -69,12 +69,7 @@ export default {
         width: [Number, String],
         height: [Number, String],
         popup: [Boolean, String],
-        layout: {
-            type: String,
-            default() {
-                return 'container';
-            }
-        }
+        layout: String
     },
     computed: {
         computedWidth() {

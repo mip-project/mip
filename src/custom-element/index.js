@@ -13,6 +13,12 @@ import EventEmitter from '../util/event-emitter';
 function install(Vue, router) {
     Vue.customElement = function vueCustomElement(tag, componentDefinition) {
 
+        // 如果不设置 template 和 render 函数，默认设置 render 函数返回 null，避免 warning
+        let {template, render} = componentDefinition;
+        if (!template && typeof render !== 'function') {
+            componentDefinition.render = () => null;
+        }
+
         const props = getProps(componentDefinition);
         function callLifeCycle(ctx, name) {
             if (typeof componentDefinition[name] === 'function') {
@@ -59,7 +65,7 @@ function install(Vue, router) {
                     ));
 
                     // Apply layout for this.
-                    this._layout = layout.applyLayout(this, this.vm);
+                    this._layout = layout.applyLayout(this);
                 }
                 this.__detached__ = false;
 

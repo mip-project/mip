@@ -1,13 +1,16 @@
 <template>
     <div :id="MIP_CONTAINER_ID">
-        <app-header
-            v-show="!header.hidden"
-            :title="header.title"
-            :logo="header.logo"
-            :showBackIcon="!view.isIndex"
-            :buttonGroup="header.buttonGroup"
-            @appheader::click-back="onClickHeaderBack">
-        </app-header>
+        <transition name="slide">
+            <app-header
+                v-show="!header.hidden"
+                class="mip-appshell-header"
+                :title="header.title"
+                :logo="header.logo"
+                :showBackIcon="!view.isIndex"
+                :buttonGroup="header.buttonGroup"
+                @appheader::click-back="onClickHeaderBack">
+            </app-header>
+        </transition>
         <div v-show="showLoading" class="mip-appshell-router-view-mask">
             <loading size="50" indeterminate></loading>
         </div>
@@ -104,12 +107,34 @@ export default {
 @import '../../styles/mip.less';
 
 @page-transition-duration: 0.35s;
+@header-transition-duration: 0.25s;
 
 [mip-ready] {
     display: block;
 }
 [mip-cloak] {
     display: none !important;
+}
+
+.mip-appshell-header {
+    &.slide-enter {
+        transform: translate(0,(-@appshell-header-height));
+    }
+    &.slide-enter-active {
+        transition: transform @header-transition-duration ease-in;
+    }
+    &.slide-enter-to {
+        transform: translate(0,0);
+    }
+    &.slide-leave {
+        transform: translate(0,0);
+    }
+    &.slide-leave-active {
+        transition: transform @header-transition-duration ease-out;
+    }
+    &.slide-leave-to {
+        transform: translate(0,(-@appshell-header-height));
+    }
 }
 
 .mip-appshell-router-view {

@@ -7,7 +7,7 @@
 'use strict';
 
 import cssLoader from '../util/dom/css-loader';
-import layout from '../layout';
+import layout from '../util/layout';
 import performance from '../performance';
 import Resources from '../resources';
 
