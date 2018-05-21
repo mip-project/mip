@@ -7,9 +7,12 @@ import Compile from './compile';
 import Observer from './observer';
 import Watcher from './watcher';
 import util from '../../util';
+import {
+    setGlobalState, setPageState,
+    destroyPageScope, assign
+} from './scope';
 
 /* global MIP */
-
 class Bind {
     constructor(id) {
         let me = this;
@@ -17,7 +20,6 @@ class Bind {
         this._win = window;
         this._watchers = [];
         this._watcherIds = [];
-        this._win.g = this._win.g || [];
         // require mip data extension runtime
         this._compile = new Compile();
         this._observer = new Observer();
@@ -38,7 +40,7 @@ class Bind {
             me._watchers.forEach(watcher => watcher.teardown());
             me._watcherIds = [];
             // 只保留 global 数据，并去掉 __ob__
-            let m = me._getGlobalData(me._win.g, me._win.m);
+            destroyPageScope();
             me._win.m = JSON.parse(
                 JSON.stringify(m).replace(/,"__ob__":\{\}/g, '')
             );
@@ -70,24 +72,16 @@ class Bind {
         }
 
         if (typeof data === 'object') {
-            let globals = this._normalize(data);
             let origin = JSON.stringify(window.m);
             this._compile.upadteData(JSON.parse(origin));
-            // fn.extend(window.m, data);
-            // Object.assign(window.m, data);
+            let classified = this._normalize(data);
             if (compile) {
-                this._diff({
-                    globals: this._win.g,
-                    data: window.m
-                }, {
-                    globals,
-                    data
-                });
+                setGlobalState(classified.globalData);
+                setPageState(classified.pageData);
                 this._observer.start(this._win.m);
                 this._compile.start(this._win.m);
             }
             else {
-                this._win.g = this._win.g.concat(globals);
                 this._assign(window.m, data);
             }
         }
@@ -97,89 +91,25 @@ class Bind {
     }
 
     _normalize(data) {
-        return this._normalizeGlobal(data).filter(attr => attr !== ',');
-    }
-
-    _normalizeGlobal(data) {
-        let path = [];
+        let globalData = {};
+        let pageData = {};
 
         for (let k of Object.keys(data)) {
-            let stop = false;
-            let newKey = k;
-
             if (/^#/.test(k)) {
-                stop = true;
-                newKey = k.substr(1);
-                path.push(newKey);
-                path.push(',');
-                data[newKey] = data[k];
-                delete data[k];
+                globalData[k.substr(1)] = data[k];
             }
             else {
-                path.push(k);
-            }
-
-            if (isObj(data[newKey]) && !stop) {
-                let tmp = this._normalizeGlobal(data[newKey]);
-                let parent = path.pop();
-                if (tmp.length) {
-                    path = [...path, ...tmp.map(p => p !== ',' ? `${parent}.${p}` : ',')];
-                }
+                pageData[k] = data[k];
             }
         }
 
-        path = path.join(' ')
-            .replace(/([^,]*\s)([^,])/g, ' $2')
-            .replace(/^\s*|\s*$/g, '')
-            .split(' ');
-        return path.slice(0, path.lastIndexOf(',') + 1);
-    }
-
-    _diff(
-        { globals: oldGlobals, data: oldData },
-        { globals: newGlobals, data: newData }
-    ) {
-        this._getGlobalData(oldGlobals, oldData, newData, function (globalPath, clone) {
-            if (!~newGlobals.indexOf(globalPath)) {
-                newGlobals.push(globalPath);
-                clone();
-            }
-        });
-
-        this._win.g = newGlobals;
-        Object.assign(oldData, newData);
-    }
-
-    _getGlobalData(globals, srcData, target = {}, condition) {
-        if (!condition) {
-            condition = function (globalPath, clone) {
-                clone();
-            };
+        return {
+            globalData,
+            pageData: pageData || {}
         }
-
-        for (let r of globals) {
-            condition(r, function () {
-                let paths = r.split('.');
-                let objSrc = srcData;
-                let objData = target;
-                let lastAttr = paths.pop();
-                for (let p of paths) {
-                    if (objData[p]) {
-                        objData = objData[p];
-                    }
-                    else {
-                        objData[p] = {};
-                        objData = objData[p];
-                    }
-                    objSrc = objSrc[p];
-                }
-                objData[lastAttr] = objSrc[lastAttr];
-            });
-        }
-
-        return target;
     }
 
+    // deepClone
     _assign(oldData, newData) {
         for (let k of Object.keys(newData)) {
             if (isObj(newData[k]) && oldData[k]) {
@@ -236,36 +166,6 @@ class Bind {
             util.event.create('ready-to-watch')
         );
     }
-
-    // start() {
-    //     // require mip data extension runtime
-    //     // require('./mip-data');
-    //     this._dataSource = {
-    //         m: window.m ? window.m : {}
-    //     };
-    //     MIP.$set(this._dataSource.m);
-    // }
-
-    // _proxy() {
-    //     let me = this;
-    //     Object.keys(this._dataSource).forEach(function (key) {
-    //         me._proxyData(key);
-    //     });
-    // }
-
-    // _proxyData(key) {
-    //     let me = this;
-    //     Object.defineProperty(this._win, key, {
-    //         configurable: false,
-    //         enumerable: true,
-    //         get() {
-    //             return me._dataSource[key];
-    //         },
-    //         set(newVal) {
-    //             me._dataSource[key] = newVal;
-    //         }
-    //     });
-    // }
 }
 
 function isObj(obj) {
@@ -273,4 +173,3 @@ function isObj(obj) {
 }
 
 export default Bind;
-

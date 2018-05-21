@@ -74,7 +74,7 @@ export default function createVueInstance(
         element.removeAttribute('vce-cloak');
         element.setAttribute('vce-ready', '');
 
-        element.children[0].setAttribute('data-server-rendered', '');
+        element.children[0] && element.children[0].setAttribute('data-server-rendered', '');
         customEmit(element, 'vce-ready');
 
         return element;
