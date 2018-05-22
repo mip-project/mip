@@ -127,7 +127,7 @@ export default function createRouter(Router) {
 
     router.onMatchMiss = function(to, from, next) {
         // add current loaded components
-        util.addLoadedComponents();
+        // util.addLoadedComponents();
 
         let handleError = error => next({
             path: MIP_ERROR_ROUTE_PATH,
@@ -143,10 +143,10 @@ export default function createRouter(Router) {
             }
 
             res.text().then(async function(targetHTML) {
-                let newComponents = util.getNewComponents(targetHTML);
-                if (newComponents.length !== 0) {
-                    await util.loadScripts(newComponents);
-                }
+                // let newComponents = util.getNewComponents(targetHTML);
+                // if (newComponents.length !== 0) {
+                //     await util.loadScripts(newComponents);
+                // }
                 router.addRoutes([
                     getRoute(targetHTML, {
                         path: to.path
