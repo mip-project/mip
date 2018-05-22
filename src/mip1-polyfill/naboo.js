@@ -286,7 +286,7 @@ Naboo.transition = (() => {
     cssReset[transitionDelay] = '';
     cssReset[transitionTiming] = '';
 
-    return function (dom, property, opt) {
+    return function (dom, property, opt = {}) {
         if (dom && Object.prototype.toString.call(property) === '[object Object]') {
             opt = opt || {};
             let duration = parseInt(opt.duration, 10) || 400;

@@ -5,8 +5,6 @@
  * @author schoeu
  */
 
-'use strict';
-
 export default {
     data: {},
 

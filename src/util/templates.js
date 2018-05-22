@@ -3,8 +3,6 @@
  * @author sekiyika(pengxing@baidu.com)
  */
 
-'use strict';
-
 const CACHED_ATTR = '_mip_template_cached';
 
 class Template {
@@ -123,7 +121,6 @@ class Templates {
         }
         inheritor.prototype = Object.create(Template.prototype);
         inheritor.constructor = inheritor;
-
         return inheritor;
     }
 }

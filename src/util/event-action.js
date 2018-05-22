@@ -8,6 +8,8 @@
 import fn from './fn';
 import dom from './dom/dom';
 
+/* global MIP */
+
 /**
  * Regular for parsing params.
  * @const
@@ -37,7 +39,6 @@ const OPTION_KEYS = ['executeEventAction', 'parse', 'checkTarget', 'getTarget', 
  * TODO: refactor
  *
  * @class
- * @param {?Object} opt Options
  */
 class EventAction {
 

@@ -35,7 +35,6 @@ class SleepWakeModule {
         for (let key in confCon) {
             this._stateChange(key, true);
         }
-
     }
 
     /**
@@ -132,7 +131,6 @@ class SleepWakeModule {
                 if (!self) {
                     continue;
                 }
-
                 tmpTextArea.textContent = self.outerHTML;
                 tmpTextArea.style.display = 'none';
                 tmpTextArea.setAttribute('data-cln', sleepDom.cln);
