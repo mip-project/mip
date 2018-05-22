@@ -22,6 +22,7 @@ export function createIFrame(path) {
         container.setAttribute('src', path);
         container.setAttribute('class', MIP_IFRAME_CONTAINER);
         container.setAttribute('data-page-id', path);
+        container.setAttribute('sandbox', 'allow-top-navigation allow-popups allow-scripts allow-forms allow-pointer-lock allow-popups-to-escape-sandbox allow-same-origin allow-modals')
         document.body.appendChild(container);
     }
     else {

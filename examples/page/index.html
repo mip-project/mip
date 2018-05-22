@@ -34,10 +34,10 @@ Reliable - Load instantly and never show the downasaur, even in uncertain networ
 Fast - Respond quickly to user interactions with silky smooth animations and no janky scrolling.
     </p>
 
-    <a class="link" href="./tree.html" mip>Go to Tree</a>
-    <a class="link" href="./data.html" mip>Go to Data</a>
+    <a class="link" href="./tree.html" mip-link>Go to Tree</a>
+    <a class="link" href="./data.html" mip-link>Go to Data</a>
     <a class="link" href="./not-mip.html">Go to Not MIP</a>
-    <a class="link" href="/not/exists" mip>Go to Not Exists</a>
+    <a class="link" href="/not/exists" mip-link>Go to Not Exists</a>
 
     <br><br>
     <p>
@@ -112,27 +112,6 @@ Fast - Respond quickly to user interactions with silky smooth animations and no 
             }
         </script>
     </mip-shell>
-
-    <mip-data>
-        <script type="application/json">
-            {
-                "#group": {
-                    "info": {
-                        "name": "sfe"
-                    }
-                },
-                "comments": 47,
-                "#sp": {
-                    "test": "ck here"
-                }
-            }
-        </script>
-    </mip-data>
-
-    <script type="application/mip-script">
-        console.log('Prepare to watch someData');
-        mip.watch('someData', () => console.log('callback'));
-    </script>
 
     <script src="../../dist/mip.js"></script>
 </body>

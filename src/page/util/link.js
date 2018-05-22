@@ -1,14 +1,16 @@
 import event from '../../util/dom/event';
 
+import {CURRENT_PAGE_ID} from '../index';
+
 function guardEvent(e, $a) {
     // don't redirect with control keys
     if (e.metaKey || e.altKey || e.ctrlKey || e.shiftKey) {
         return;
     }
     // don't redirect when preventDefault called
-    if (e.defaultPrevented) {
-        return;
-    }
+    // if (e.defaultPrevented) {
+    //     return;
+    // }
     // don't redirect if `target="_blank"`
     if ($a.getAttribute) {
         const target = $a.getAttribute('target');
@@ -23,15 +25,35 @@ function guardEvent(e, $a) {
 export function installMipLink(router) {
     event.delegate(document, 'a', 'click', function (e) {
         let $a = e.target;
-        if ($a.hasAttribute('mip')) {
+        if ($a.hasAttribute('mip-link')) {
             let to = $a.getAttribute('href');
             if (guardEvent(e, $a)) {
                 const location = router.resolve(to, router.currentRoute, false).location;
                 if ($a.hasAttribute('replace')) {
-                    router.replace(location);
+                    if (router.ROOT_PAGE_ID === CURRENT_PAGE_ID) {
+                        router.replace(location);
+                    }
+                    else {
+                        parent.postMessage({
+                            type: 'router-replace',
+                            data: {
+                                location
+                            }
+                        }, window.location.origin);
+                    }
                 }
                 else {
-                    router.push(location);
+                    if (router.ROOT_PAGE_ID === CURRENT_PAGE_ID) {
+                        router.push(location);
+                    }
+                    else {
+                        parent.postMessage({
+                            type: 'router-push',
+                            data: {
+                                location
+                            }
+                        }, window.location.origin);
+                    }
                 }
             }
         }

@@ -55,7 +55,7 @@ let viewer = {
         if (this.isIframed) {
             this.patchForIframe();
             // proxy links
-            this._proxyLink();
+            // this._proxyLink();
             this._viewportScroll();
             // Tell parent page the current page is loaded.
             this.sendMessage('mippageload', {

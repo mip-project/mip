@@ -23,24 +23,11 @@ function start() {
     else {
         router = createRouter(Router);
         router.init();
+        router.ROOT_PAGE_ID = CURRENT_PAGE_ID;
         window.MIP_ROUTER = router;
     }
     document.body.setAttribute('mip-ready', '');
     util.installMipLink(router);
-
-    // let {MIPContent, scope} = util.getMIPContent();
-    // Create mip container
-    // let $container = util.createIFrame('https://lavas.baidu.com');
-
-    // let doc;
-    // if ($container.contentDocument) {
-    //     doc = $container.contentDocument;
-    // } else {
-    //     doc = $container.contentWindow.document;
-    // }
-    // console.log(doc)
-    // // doc.body.innerHTML = MIPContent;
-    // doc.body.innerHTML = 'Hello everyone!';
 };
 
 export default {start};

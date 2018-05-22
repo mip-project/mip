@@ -159,5 +159,18 @@ export default function createRouter(Router) {
 
     };
 
+    // register message handler
+    window.addEventListener('message', (e) => {
+        if (e.source.origin === window.location.origin) {
+            let {type, data} = e.data;
+            if (type === 'router-push') {
+                router.push(data.location);
+            }
+            else if (type === 'router-replace') {
+                router.replace(data.location);
+            }
+        }
+    }, false);
+
     return router;
 }
