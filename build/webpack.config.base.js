@@ -24,6 +24,14 @@ module.exports = {
             { test: /\.js$/, exclude: /node_modules|fetch.js/, loader: 'babel-loader' },
             { test: /\.vue$/, loader: 'vue-loader' },
             {
+                test: /\.less$/,
+                use: [
+                    'style-loader',
+                    { loader: 'css-loader', options: { importLoaders: 1 } },
+                    'less-loader'
+                ]
+            },
+            {
                 test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {

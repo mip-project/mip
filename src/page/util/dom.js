@@ -14,11 +14,12 @@ import {
     MIP_IFRAME_CONTAINER
 } from '../const';
 
-export function createContainer(href) {
+export function createIFrame(href) {
     let path = getPath(href);
     let container = document.querySelector(`.${MIP_IFRAME_CONTAINER}[data-page-id="${path}"]`);
     if (!container) {
         container = document.createElement('iframe');
+        container.setAttribute('src', href);
         container.setAttribute('class', MIP_IFRAME_CONTAINER);
         container.setAttribute('data-page-id', path);
         document.body.appendChild(container);
@@ -102,29 +103,31 @@ export function getMIPContent(rawContent) {
         if (match) {
             rawResult = match[1];
         }
+        // TODO Delete comment (<!-- -->)
 
         // Delete <mip-shell> & <script>
-        rawResult = rawResult.replace(/<mip-shell[\s\S]+?<\/mip-shell>/ig, '')
-            .replace(/<script[\s\S]+?<\/script>/ig, function (scriptTag) {
-                if (scriptTag.indexOf('application/json') !== -1) {
-                    return scriptTag;
-                }
+        // rawResult = rawResult.replace(/<mip-shell[\s\S]+?<\/mip-shell>/ig, '')
+        //     .replace(/<script[\s\S]+?<\/script>/ig, function (scriptTag) {
+        //         if (scriptTag.indexOf('application/json') !== -1) {
+        //             return scriptTag;
+        //         }
 
-                return '';
-            });
+        //         return '';
+        //     });
+        rawResult = rawResult.replace(/<mip-shell[\s\S]+?<\/mip-shell>/ig, '')
 
         // Add <mip-data> for global data
-        if (!/<\/mip-data>/.test(rawResult) && typeof window.m === 'object') {
-            let dataStr = JSON.stringify(window.m, (key, value) => {
-                if (key === '__ob__') {
-                    return;
-                }
+        // if (!/<\/mip-data>/.test(rawResult) && typeof window.m === 'object') {
+        //     let dataStr = JSON.stringify(window.m, (key, value) => {
+        //         if (key === '__ob__') {
+        //             return;
+        //         }
 
-                return value;
-            });
+        //         return value;
+        //     });
 
-            rawResult += `<mip-data><script type="application/json">${dataStr}</script></mip-data>`;
-        }
+        //     rawResult += `<mip-data><script type="application/json">${dataStr}</script></mip-data>`;
+        // }
     }
 
     return {

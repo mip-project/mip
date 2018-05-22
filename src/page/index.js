@@ -4,8 +4,9 @@
  */
 
 import * as util from './util';
+import '../styles/mip.less';
 // import * as constants from './const';
-import AppShell from './vue-components/AppShell.vue';
+// import AppShell from './vue-components/AppShell.vue';
 
 // const CONTAINER_ID = constants.MIP_CONTAINER_ID;
 
@@ -15,25 +16,24 @@ function start() {
         window.history.scrollRestoration = 'manual';
     }
 
+    // let {MIPContent, scope} = util.getMIPContent();
     // Create mip container
-    let $container = util.createContainer();
+    // let $container = util.createIFrame('https://lavas.baidu.com');
 
-    // let app = new Vue({
-    //     ...AppShell,
-    //     router
-    // });
-
-    // if ($container.hasAttribute('data-server-rendered')) {
-    //     router.onReady(() => {
-    //         console.log('ssr ready...')
-    //         app.$mount(`#${CONTAINER_ID}`);
-    //     });
+    // let doc;
+    // if ($container.contentDocument) {
+    //     doc = $container.contentDocument;
+    // } else {
+    //     doc = $container.contentWindow.document;
     // }
-    // else {
-    //     app.$mount(`#${CONTAINER_ID}`);
-    // }
+    // console.log(doc)
+    // // doc.body.innerHTML = MIPContent;
+    // doc.body.innerHTML = 'Hello everyone!';
 
-    util.installMipLink(router);
+    // TODO <a mip>
+    // util.installMipLink(router);
+
+    document.body.setAttribute('mip-ready', '');
 };
 
 export default {start};
