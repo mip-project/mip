@@ -11,9 +11,10 @@ import {
 } from './const';
 import ErrorPage from './vue-components/Error.vue';
 import fixedElement from '../fixed-element';
-import {CURRENT_PAGE_ID} from './index';
+
 
 const {window: sandWin, document: sandDoc} = sandbox;
+const FIRST_PAGE_ID = util.getPath(window.location.href);
 
 /**
  * extract route object from current DOM tree or raw HTML.
@@ -56,8 +57,8 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
     return Object.assign({
         component: {
             beforeRouteEnter(to, from, next) {
-                if (to.fullPath !== CURRENT_PAGE_ID) {
-                    util.createIFrame(to.fullPath)
+                if (to.fullPath !== FIRST_PAGE_ID) {
+                    util.createIFrame(to.fullPath);
                 };
                 // Set title
                 document.title = shellConfig.header.title || defaultTitle;
@@ -127,7 +128,7 @@ export default function createRouter(Router) {
 
     router.onMatchMiss = function(to, from, next) {
         // add current loaded components
-        util.addLoadedComponents();
+        // util.addLoadedComponents();
 
         let handleError = error => next({
             path: MIP_ERROR_ROUTE_PATH,
@@ -143,10 +144,10 @@ export default function createRouter(Router) {
             }
 
             res.text().then(async function(targetHTML) {
-                let newComponents = util.getNewComponents(targetHTML);
-                if (newComponents.length !== 0) {
-                    await util.loadScripts(newComponents);
-                }
+                // let newComponents = util.getNewComponents(targetHTML);
+                // if (newComponents.length !== 0) {
+                //     await util.loadScripts(newComponents);
+                // }
                 router.addRoutes([
                     getRoute(targetHTML, {
                         path: to.path

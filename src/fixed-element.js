@@ -65,7 +65,9 @@ FixedElement.prototype.init = function () {
     this.setFixedElement(mipFixedElements);
     var fixedLen = this._fixedElements.length;
     var hasParentPage = window.parent !== window;
-    if ((platform.isIos()) && hasParentPage) {
+    var MIPVersion = hasParentPage ? window.parent.__MIP__ : window.__MIP__;
+    var isMIP2 = MIPVersion >= 2;
+    if ((platform.isIos()) && hasParentPage && !isMIP2) {
         var fixedLayer = this.getFixedLayer();
         for (var i = 0; i < fixedLen; i++) {
             var fixedElem = this._fixedElements[i];
