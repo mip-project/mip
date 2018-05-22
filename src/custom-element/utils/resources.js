@@ -9,8 +9,6 @@ import viewport from '../../util/viewport';
 import rect from '../../util/dom/rect';
 import Gesture from '../../util/gesture';
 
-const firstInviewPropName = 'firstInview';
-
 /**
  * Store the resources.
  * @inner
@@ -34,8 +32,6 @@ class Resources {
          * @type {number}
          */
         this.eid = 0;
-
-        this.firstInviewPropName = firstInviewPropName;
 
         this.gesture = new Gesture(document.body, {
             preventX: false
@@ -125,6 +121,8 @@ class Resources {
     setInViewport(element, inViewport) {
         if (element.inViewport && element.parentNode && element.inViewport() !== inViewport) {
             element.viewportCallback(inViewport);
+            // 已经调用过firstInviewCallback从resource中移除
+            this.remove(element.eid);
         }
     }
 

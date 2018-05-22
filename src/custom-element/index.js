@@ -10,6 +10,8 @@ import resources from './utils/resources';
 import layout from '../util/layout';
 import EventEmitter from '../util/event-emitter';
 
+const firstInviewCallbackLifeCircleName = 'firstInviewCallback';
+
 function install(Vue, router) {
     Vue.customElement = function vueCustomElement(tag, componentDefinition) {
 
@@ -55,22 +57,22 @@ function install(Vue, router) {
 
             connectedCallback() {
                 if (!this.__detached__) {
-                    this._resources.add(createVueInstance(
+                    createVueInstance(
                         this, {
                             Vue,
                             router
                         },
                         componentDefinition,
                         props
-                    ));
+                    );
+
+                    componentDefinition[firstInviewCallbackLifeCircleName] && this._resources.add(this);
 
                     // Apply layout for this.
                     this._layout = layout.applyLayout(this);
                 }
                 this.__detached__ = false;
 
-                // Add to resource manager.
-                this._resources.add(this);
             }
 
             disconnectedCallback() {
@@ -103,7 +105,7 @@ function install(Vue, router) {
 
             firstInviewCallback() {
                 if (this.vm) {
-                    callLifeCycle(this.vm, 'firstInviewCallback', this);
+                    callLifeCycle(this.vm, firstInviewCallbackLifeCircleName, this);
                 }
             }
 
