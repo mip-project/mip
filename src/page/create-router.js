@@ -11,7 +11,7 @@ import {
 } from './const';
 import ErrorPage from './vue-components/Error.vue';
 import fixedElement from '../fixed-element';
-import {updateRouterView} from './index';
+import {CURRENT_PAGE_ID} from './index';
 
 const {window: sandWin, document: sandDoc} = sandbox;
 
@@ -25,11 +25,6 @@ const {window: sandWin, document: sandDoc} = sandbox;
 function getRoute(rawHTML, routeOptions = {}, shellConfig) {
     if (!shellConfig) {
         shellConfig = util.getMIPShellConfig(rawHTML);
-    }
-
-    // hide header in <iframe>
-    if (window.top !== window) {
-        shellConfig.header.hidden = true;
     }
 
     // use title in <title> tag if not provided
@@ -56,15 +51,14 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
     // if (MIPCustomScript) {
     //     MIPWatchHandler = () => MIPCustomScript(sandWin, sandDoc);
     // }
-    let {MIPContent, scope} = util.getMIPContent(rawHTML);
+    // let {MIPContent, scope} = util.getMIPContent(rawHTML);
 
     return Object.assign({
         component: {
             beforeRouteEnter(to, from, next) {
-                updateRouterView({
-                    pageId: to,
-                    shellConfig
-                });
+                if (to.fullPath !== CURRENT_PAGE_ID) {
+                    util.createIFrame(to.fullPath)
+                };
                 // Set title
                 document.title = shellConfig.header.title || defaultTitle;
                 next();

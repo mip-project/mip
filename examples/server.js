@@ -22,7 +22,7 @@ app.use(webpackDevMiddleware(webpack(WebpackConfig), {
 
 app.use(express.static(path.join(__dirname, '../')));
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8081;
 
 module.exports = app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}, Ctrl+C to stop`);
