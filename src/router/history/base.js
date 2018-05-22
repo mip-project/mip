@@ -1,6 +1,3 @@
-
-
-import {_Vue} from '../install';
 import {inBrowser} from '../util/dom';
 import {runQueue} from '../util/async';
 import {warn, isError} from '../util/warn';
@@ -273,12 +270,12 @@ function extractGuards(records, name, bind, reverse) {
 }
 
 function extractGuard(def, key) {
-    if (typeof def !== 'function') {
-        // extend now so that global mixins are applied.
-        def = _Vue.extend(def);
-    }
+    // if (typeof def !== 'function') {
+    //     // extend now so that global mixins are applied.
+    //     def = _Vue.extend(def);
+    // }
 
-    return def.options[key];
+    return def[key];
 }
 
 function extractLeaveGuards(deactivated) {

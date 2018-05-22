@@ -12,7 +12,6 @@ export default class MIPRouter {
 
     constructor(options) {
         this.app = null;
-        this.apps = [];
         options.base = '/';
         this.options = options;
         this.beforeHooks = [];
@@ -32,33 +31,11 @@ export default class MIPRouter {
         return this.history && this.history.current;
     }
 
-    init(app) {
-        process.env.NODE_ENV !== 'production' && assert(
-            install.installed,
-            `not installed. Make sure to call mip.Vue.use(MIPRouter) ` +
-            `before creating root instance.`
-        );
-
-        this.apps.push(app);
-
-        // main app already initialized.
-        if (this.app) {
-            return;
-        }
-
-        this.app = app;
-
+    init() {
         const history = this.history;
 
         let currentLocation = history.getCurrentLocation();
         history.transitionTo(currentLocation);
-        // used in mip-view to judge whether this is first time loading.
-
-        history.listen(route => {
-            this.apps.forEach((app) => {
-                app._route = route;
-            });
-        });
     }
 
     beforeEach(fn) {
@@ -163,8 +140,8 @@ function createHref(base, fullPath, mode) {
     return base ? cleanPath(base + '/' + path) : path;
 }
 
-MIPRouter.install = install;
-
-if (inBrowser && window.mip) {
-    window.mip.Vue.use(MIPRouter);
-}
+// MIPRouter.install = install;
+//
+// if (inBrowser && window.mip) {
+//     window.mip.Vue.use(MIPRouter);
+// }

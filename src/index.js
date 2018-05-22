@@ -31,8 +31,6 @@ import mip1PolyfillInstall from './mip1-polyfill';
 
 import './polyfills';
 
-Vue.use(Router);
-
 let mip = {
     Vue,
     customElement(tag, component) {
@@ -71,7 +69,7 @@ mip1PolyfillInstall(mip);
 
 const router = createRouter(Router);
 
-Vue.use(customElement, router);
+Vue.use(customElement);
 Vue.use(customElementBuildInComponents);
 
 util.dom.waitDocumentReady(() => {

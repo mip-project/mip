@@ -11,6 +11,7 @@ import {
 } from './const';
 import ErrorPage from './vue-components/Error.vue';
 import fixedElement from '../fixed-element';
+import {updateRouterView} from './index';
 
 const {window: sandWin, document: sandDoc} = sandbox;
 
@@ -49,67 +50,31 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
         }
     }
 
-    let MIPCustomScript = util.getMIPCustomScript(rawHTML);
-    let MIPWatchHandler;
-    let MIPWatchHandlerFlag = true;
-    if (MIPCustomScript) {
-        MIPWatchHandler = () => MIPCustomScript(sandWin, sandDoc);
-    }
+    // let MIPCustomScript = util.getMIPCustomScript(rawHTML);
+    // let MIPWatchHandler;
+    // let MIPWatchHandlerFlag = true;
+    // if (MIPCustomScript) {
+    //     MIPWatchHandler = () => MIPCustomScript(sandWin, sandDoc);
+    // }
     let {MIPContent, scope} = util.getMIPContent(rawHTML);
 
     return Object.assign({
         component: {
-            render(createElement) {
-                return createElement('div', {
-                    attrs: {
-                        [scope]: ''
-                    },
-                    domProps: {
-                        innerHTML: MIPContent
-                    }
-                });
-            },
             beforeRouteEnter(to, from, next) {
-                next(vm => {
-                    let shell = vm.$parent;
-
-                    // Set title
-                    shell = Object.assign(shell, shellConfig);
-                    document.title = shell.header.title || defaultTitle;
-
-                    // Add custom script
-                    if (MIPWatchHandler) {
-                        if (MIPWatchHandlerFlag) {
-                            console.log('addEventListener', routeOptions.path)
-                            window.addEventListener('ready-to-watch', MIPWatchHandler);
-                        }
-                        else {
-                            MIPWatchHandler();
-                        }
-                    }
-
-                    // Polyfill for mip1 <mip-fixed>
-                    fixedElement.init();
+                updateRouterView({
+                    pageId: to,
+                    shellConfig
                 });
+                // Set title
+                document.title = shellConfig.header.title || defaultTitle;
+                next();
             },
             beforeRouteLeave(to, from, next) {
-                let shell = this.$parent;
-
                 // Set leave transition type
-                shell.view.transition.effect = shell.view.transition.mode === 'slide'
+                shellConfig.view.transition.effect = shellConfig.view.transition.mode === 'slide'
                     ? (util.isForward(to, from) ? 'slide-left' : 'slide-right')
-                    : shell.view.transition.mode;
+                    : shellConfig.view.transition.mode;
 
-                // Unwatch & unregister
-                if (MIPWatchHandler) {
-                    if (MIPWatchHandlerFlag) {
-                        console.log('removeEventListener', routeOptions.path)
-                        window.removeEventListener('ready-to-watch', MIPWatchHandler);
-                        MIPWatchHandlerFlag = false;
-                    }
-
-                    mip.unwatchAll()
-                }
                 next();
             }
         }
