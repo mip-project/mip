@@ -121,6 +121,8 @@ class Resources {
     setInViewport(element, inViewport) {
         if (element.inViewport && element.parentNode && element.inViewport() !== inViewport) {
             element.viewportCallback(inViewport);
+            // 已经调用过firstInviewCallback从resource中移除
+            this.remove(element.eid);
         }
     }
 

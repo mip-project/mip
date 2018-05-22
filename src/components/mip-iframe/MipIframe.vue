@@ -33,13 +33,7 @@ export default {
             },
             type: [Boolean, String]
         },
-        allowtransparency: [Boolean, String],
-        layout: {
-            type: String,
-            default() {
-                return 'responsive';
-            }
-        }
+        allowtransparency: [Boolean, String]
     },
 
     computed: {

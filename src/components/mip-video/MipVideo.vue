@@ -43,12 +43,6 @@ const windowInIframe = util.viewer.isIframed;
 
 export default {
     props: {
-        layout: {
-            default() {
-                return 'responsive';
-            },
-            type: String
-        },
         ads: String,
         src: String,
         controls: String,

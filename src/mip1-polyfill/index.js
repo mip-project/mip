@@ -56,6 +56,3 @@ export default function install(mip) {
 
 }
 
-// TODO by (zhangzhiqiang04)
-// naboo
-// fixed-element
