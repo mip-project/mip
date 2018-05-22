@@ -5,11 +5,11 @@
 
 /* eslint-disable fecs-valid-jsdoc */
 
-import EventEmitter from './event-emitter';
-import rect from './dom/rect';
-import fn from './fn';
-import platform from './platform';
-import fixedElement from '../fixed-element';
+import EventEmitter from './util/event-emitter';
+import rect from './util/dom/rect';
+import fn from './util/fn';
+import platform from './util/platform';
+import fixedElement from './fixed-element';
 
 
 // Native objects.

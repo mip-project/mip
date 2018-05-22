@@ -6,9 +6,9 @@
 'use strict';
 
 import util from './util';
+import viewer from './viewer';
 
-
-const {EventEmitter, viewer} = util;
+const {EventEmitter} = util;
 
 /**
  * Store first-screen elements.

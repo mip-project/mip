@@ -38,8 +38,9 @@
 
 <script>
 import util from '../../util';
+import viewer from '../../viewer';
 const httpsReg = /^https:|^\/\//;
-const windowInIframe = util.viewer.isIframed;
+const windowInIframe = viewer.isIframed;
 
 export default {
     props: {
