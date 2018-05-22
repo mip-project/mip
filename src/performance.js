@@ -8,7 +8,7 @@
 import util from './util';
 import viewer from './viewer';
 
-const {EventEmitter} = util;
+const EventEmitter = util.EventEmitter;
 
 /**
  * Store first-screen elements.
@@ -42,7 +42,8 @@ let performanceEvent = new EventEmitter();
 
 /**
  * Add first-screen element.
- * @param {HTMLElement} element
+ *
+ * @param {HTMLElement} element element
  */
 function addFsElement(element) {
     if (!fsElementsLocked) {
@@ -52,27 +53,30 @@ function addFsElement(element) {
 
 /**
  * Remove element from fsElements.
- * @param {HTMLElement} element
+ *
+ * @param {HTMLElement} element element
  */
 function removeFsElement(element) {
     let index = fsElements.indexOf(element);
-    if (index != -1) {
+    if (index !== -1) {
         fsElements.splice(index, 1);
     }
 }
 
 /**
  * Get the timings.
+ *
  * @return {Object}
  */
 function getTiming() {
     let nativeTiming;
     let performance = window.performance;
     if (performance && performance.timing) {
-        nativeTiming = performance.timing.toJSON ?
-            performance.timing.toJSON() :
-            util.fn.extend({}, performance.timing);
-    } else {
+        nativeTiming = performance.timing.toJSON
+        ? performance.timing.toJSON()
+        : util.fn.extend({}, performance.timing);
+    }
+    else {
         nativeTiming = {};
     }
     return util.fn.extend(nativeTiming, recorder);
@@ -80,8 +84,9 @@ function getTiming() {
 
 /**
  * Record timing by name.
+ *
  * @param {string} name Name of the timing.
- * @param {?number} timing
+ * @param {?number} timing timing
  */
 function recordTiming(name, timing) {
     recorder[name] = parseInt(timing, 10) || Date.now();
@@ -117,7 +122,8 @@ function domLoaded() {
 
 /**
  * First-element loaded.
- * @param {HTMLElement} element
+ *
+ * @param {HTMLElement} element element
  */
 function fsElementLoaded(element) {
     removeFsElement(element);
@@ -126,6 +132,7 @@ function fsElementLoaded(element) {
 
 /**
  * Start.
+ *
  * @param {number} startTiming The MIP start timing.
  */
 function start(startTiming) {
@@ -140,7 +147,8 @@ function start(startTiming) {
 
     if (document.readyState === 'complete') {
         domLoaded();
-    } else {
+    }
+    else {
         document.addEventListener('DOMContentLoaded', domLoaded, false);
     }
 }
@@ -150,7 +158,7 @@ export default {
     addFsElement: addFsElement,
     fsElementLoaded: fsElementLoaded,
     getTiming: getTiming,
-    on: function () {
+    on() {
         performanceEvent.on.apply(performanceEvent, arguments);
     }
 };

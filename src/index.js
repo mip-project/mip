@@ -8,7 +8,6 @@ import customElement from './custom-element/index';
 import customElementBuildInComponents from './components';
 import util from './util';
 import sandbox from './util/sandbox';
-import templates from './util/templates';
 import hash from './util/hash';
 import viewer from './viewer';
 import viewport from './viewport';
@@ -18,6 +17,7 @@ import createRouter from './page/create-router';
 
 import sleepWakeModule from './sleepWakeModule';
 import performance from './performance';
+import layout from './layout';
 
 import './log/monitor';
 

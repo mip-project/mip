@@ -7,6 +7,7 @@
 
 'use strict';
 
+import util from './util';
 import platform from './util/platform';
 import css from './util/dom/css';
 import layout from './layout';
@@ -60,22 +61,21 @@ function FixedElement() {
  */
 FixedElement.prototype.init = function () {
 
-    var mipFixedElements = document.querySelectorAll('mip-fixed, mip-semi-fixed');
+    let mipFixedElements = document.querySelectorAll('mip-fixed, mip-semi-fixed');
 
     this.setFixedElement(mipFixedElements);
-    var fixedLen = this._fixedElements.length;
-    var hasParentPage = window.parent !== window;
+    let fixedLen = this._fixedElements.length;
+    let hasParentPage = window.parent !== window;
     if ((platform.isIos()) && hasParentPage) {
-        var fixedLayer = this.getFixedLayer();
-        for (var i = 0; i < fixedLen; i++) {
-            var fixedElem = this._fixedElements[i];
+        for (let i = 0; i < fixedLen; i++) {
+            let fixedElem = this._fixedElements[i];
 
             // clone mip-semi-fixed node
             if (fixedElem.element.tagName.toLowerCase() === 'mip-semi-fixed') {
-                var ele = fixedElem.element;
-                var parentNode = ele.parentNode;
-                var nextSbiling = ele.nextElementSibling;
-                var node = ele.cloneNode(true);
+                let ele = fixedElem.element;
+                let parentNode = ele.parentNode;
+                let nextSbiling = ele.nextElementSibling;
+                let node = ele.cloneNode(true);
 
                 if (nextSbiling) {
                     parentNode.insertBefore(node, nextSbiling);
@@ -96,19 +96,19 @@ FixedElement.prototype.init = function () {
  * Process some fixed elements.
  *
  * @param {Array.<MIPElement>} fixedElements fixed elements
- * @param {boolean}            move          flag for if moving to fixedlayer
+ * @param {boolean} move flag for if moving to fixedlayer
+ * @return {*}
  */
 FixedElement.prototype.setFixedElement = function (fixedElements, move) {
-    var fixedEle = {};
-    var fixedTypeCount = {};
+    let fixedEle = {};
 
-    for (var i = 0; i < fixedElements.length; i++) {
-        var ele = fixedElements[i];
-        var fType = ele.getAttribute('type');
+    for (let i = 0; i < fixedElements.length; i++) {
+        let ele = fixedElements[i];
+        let fType = ele.getAttribute('type');
 
         // check invalid element and delete from document
-        var bottom = layout.parseLength(ele.getAttribute('bottom'));
-        var top = layout.parseLength(ele.getAttribute('top'));
+        let bottom = layout.parseLength(ele.getAttribute('bottom'));
+        let top = layout.parseLength(ele.getAttribute('top'));
         if (fType === 'left' && !top && !bottom || this._currentFixedCount >= this._maxFixedCount
             || fType === 'gototop' && ele.firstElementChild.tagName.toLowerCase() !== 'mip-gototop'
             || ele.tagName.toLowerCase() !== 'mip-semi-fixed' && ele.tagName.toLowerCase() !== 'mip-fixed') {
@@ -138,7 +138,7 @@ FixedElement.prototype.setFixedElement = function (fixedElements, move) {
 
         this._currentFixedCount++;
         this.setFixedElementRule(ele, fType);
-        var eleId = 'Fixed' + (this._count);
+        let eleId = 'Fixed' + (this._count);
         fixedEle = {
             id: eleId,
             element: ele
@@ -152,7 +152,7 @@ FixedElement.prototype.setFixedElement = function (fixedElements, move) {
             return 10000 - this._count++;
         }
 
-        this._count ++;
+        this._count++;
         this._fixedElements.push(fixedEle);
     }
 };
@@ -168,8 +168,8 @@ FixedElement.prototype.getFixedLayer = function () {
     }
     this._fixedLayer = document.createElement('body');
     this._fixedLayer.className = 'mip-fixedlayer';
-    var height = (this._isAndroidUc) ? '100%' : 0;
-    var width = (this._isAndroidUc) ? '100%' : 0;
+    let height = (this._isAndroidUc) ? '100%' : 0;
+    let width = (this._isAndroidUc) ? '100%' : 0;
     css(this._fixedLayer, {
         'position': 'absolute',
         'top': 0,
@@ -193,7 +193,7 @@ FixedElement.prototype.getFixedLayer = function () {
         'visibility': 'visible',
         'background': 'none'
     });
-    var html = document.getElementsByTagName('html')[0];
+    let html = document.getElementsByTagName('html')[0];
     html.appendChild(this._fixedLayer);
     return this._fixedLayer;
 };
@@ -205,7 +205,7 @@ FixedElement.prototype.getFixedLayer = function () {
  * @param {string} idx idx
  */
 FixedElement.prototype.moveToFixedLayer = function (fixedEle, idx) {
-    var element = fixedEle.element;
+    let element = fixedEle.element;
     if (element.parentElement === this._fixedLayer) {
         return;
     }
@@ -227,14 +227,13 @@ FixedElement.prototype.moveToFixedLayer = function (fixedEle, idx) {
  * Process custom elements created by user.
  */
 FixedElement.prototype.doCustomElements = function () {
-    var stylesheets = document.styleSheets;
+    let stylesheets = document.styleSheets;
     if (!stylesheets) {
         return;
     }
     // Find the 'position: fixed' elements.
-    var fixedSelectors = [];
-    for (var i = 0; i < stylesheets.length; i++) {
-        var stylesheet = stylesheets[i];
+    for (let i = 0; i < stylesheets.length; i++) {
+        let stylesheet = stylesheets[i];
         if (stylesheet.disabled || !stylesheet.ownerNode
             || stylesheet.ownerNode.tagName !== 'STYLE'
             || stylesheet.ownerNode.hasAttribute('mip-extension')) {
@@ -247,18 +246,20 @@ FixedElement.prototype.doCustomElements = function () {
 /**
  * Find the selectors of 'position: fixed' elements.
  * CSSRule: https://developer.mozilla.org/en-US/docs/Web/API/CSSRule#Type_constants
+ *
+ * @param {Array} cssRules css rules
  */
 FixedElement.prototype._findFixedSelectors = function (cssRules) {
-    for (var i = 0; i < cssRules.length; i++) {
-        var cssRule = cssRules[i];
-        var rType = cssRule.type;
+    for (let i = 0; i < cssRules.length; i++) {
+        let cssRule = cssRules[i];
+        let rType = cssRule.type;
         if (rType === 1) {
             // CSSStyleRule
             if (cssRule.selectorText !== '*' && cssRule.style.position === 'fixed') {
                 try {
-                    var fixedSelector = cssRule.selectorText;
-                    var elements = document.querySelectorAll(fixedSelector);
-                    for (var j = 0; j < elements.length; j++) {
+                    let fixedSelector = cssRule.selectorText;
+                    let elements = document.querySelectorAll(fixedSelector);
+                    for (let j = 0; j < elements.length; j++) {
                         // remove ?
                         elements[j].parentElement.removeChild(elements[j]);
                     }
@@ -314,12 +315,12 @@ FixedElement.prototype.setFixedElementRule = function (fixedEle, type) {
  * @param {MIPElement} fixedEle fixedEle
  */
 FixedElement.prototype.setStyle = function (fixedEle) {
-    var bottom = layout.parseLength(fixedEle.getAttribute('bottom'));
+    let bottom = layout.parseLength(fixedEle.getAttribute('bottom'));
     if (bottom) {
         fixedEle.style.bottom = bottom;
         return;
     }
-    var top = layout.parseLength(fixedEle.getAttribute('top'));
+    let top = layout.parseLength(fixedEle.getAttribute('top'));
     if (top) {
         fixedEle.style.top = top;
         return;
@@ -358,8 +359,7 @@ FixedElement.prototype.hideFixedLayer = function (layer) {
  * @param {Object} height the height of element
  */
 FixedElement.prototype.setPlaceholder = function (height) {
-
-    var placeholder = document.body.querySelector('div[mip-fixed-placeholder]');
+    let placeholder = document.body.querySelector('div[mip-fixed-placeholder]');
 
     if (!placeholder) {
         placeholder = document.createElement('div');

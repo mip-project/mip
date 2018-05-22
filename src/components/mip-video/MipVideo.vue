@@ -146,6 +146,7 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
+
     .mip-video-playbtn {
         display: inline-block;
         width: 60px;
@@ -159,6 +160,7 @@ export default {
         background-color: rgba(0, 0, 0, 0.3);
         -webkit-tap-highlight-color: rbga(0, 0, 0, 0.3);
         tap-highlight-color: rbga(0, 0, 0, 0.3);
+
         &:before {
             content: '';
             position: absolute;
@@ -171,9 +173,11 @@ export default {
             top: 14px;
         }
     }
+
     .mip-video-poster {
         height: 100%;
         width: 100%;
+
         img {
             position: absolute;
             top: 0;

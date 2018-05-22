@@ -14,16 +14,6 @@ import EventAction from './util/event-action';
 import EventEmitter from './util/event-emitter';
 import fn from './util/fn';
 
-/*
-考虑：MIP 站点生成工具
-
-方案的原则：
-1. 技术方案小于 T3 的工程师能独立完成一个站点，并且站点要达到移动体验标准
-2. 基于第一点，站点实现方案可以没有自由性
-
-问题：双向绑定本来就是一件成本比较高的的方式
-*/
-
 /**
  * Save window.
  *
