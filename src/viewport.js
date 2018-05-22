@@ -5,11 +5,11 @@
 
 /* eslint-disable fecs-valid-jsdoc */
 
-import EventEmitter from './event-emitter';
-import rect from './dom/rect';
-import fn from './fn';
-import platform from './platform';
-import fixedElement from '../fixed-element';
+import EventEmitter from './util/event-emitter';
+import rect from './util/dom/rect';
+import fn from './util/fn';
+import platform from './util/platform';
+import fixedElement from './fixed-element';
 
 
 // Native objects.
@@ -102,19 +102,23 @@ let viewport = {
 /**
  * 触发 scroll 事件
  */
-let scrollEvent = fn.throttle(event => this.trigger('scroll', event), 1000 / 60);
+let scrollEvent = fn.throttle(function (event) {
+    this.trigger('scroll', event);
+}, 1000 / 60);
 
 /**
  * 触发 changed 事件
  */
-let changedEvent = fn.throttle(event => this.trigger('changed', event), 200);
+let changedEvent = fn.throttle(function (event) {
+    this.trigger('changed', event);
+}, 200);
 
 /**
  * 滚动事件回调
  *
  * @param {Object} event 事件对象
  */
-let scrollHandle = event => {
+let scrollHandle = function (event) {
     scrollEvent.call(this, event);
     changedEvent.call(this, event);
 };
@@ -124,7 +128,9 @@ let scrollHandle = event => {
  *
  * @param {Object} event 事件对象
  */
-let resizeEvent = fn.throttle(event => this.trigger('resize', event), 200);
+let resizeEvent = fn.throttle(function (event) {
+    this.trigger('resize', event);
+}, 200);
 
 /**
  * Initialize the viewport

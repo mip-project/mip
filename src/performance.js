@@ -4,8 +4,9 @@
  */
 
 import util from './util';
+import viewer from './viewer';
 
-const {EventEmitter, viewer} = util;
+const EventEmitter = util.EventEmitter;
 
 /**
  * Store first-screen elements.

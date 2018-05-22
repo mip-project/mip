@@ -103,11 +103,8 @@ Naboo.prototype.off = function (name, fn) {
 Naboo.prototype.trigger = function (name, data) {
     let handlers = this._handlers[name];
     if (handlers) {
-        handlers.forEach(function (fn, i) {
-            fn.call(null, data);
-        });
+        handlers.forEach((fn, i) => fn.call(null, data));
     }
-
 };
 
 /**
@@ -125,9 +122,7 @@ Naboo.register = function (name, fn) {
     Naboo.prototype[name] = function () {
         let args = Array.prototype.slice.call(arguments, 0);
         args.unshift(this.next.bind(this));
-        this.steps.push(function () {
-            fn.apply(this, args);
-        });
+        this.steps.push(() => fn.apply(this, args));
         return this;
     };
 };
@@ -136,29 +131,19 @@ Naboo.register = function (name, fn) {
  * Naboo#p & Naboo.p
  * Naboo的并行插件
  */
-Naboo.register('p', function (next) {
+Naboo.register('p', next => {
     let args = Array.prototype.slice.call(arguments, 1);
     let n = args.length;
-    args.forEach(function (naboo) {
-        naboo.start(function () {
-            n--;
-            if (n === 0) {
-                next();
-            }
-
-        });
-    });
+    args.forEach(naboo => naboo.start(() => (n-- === 0 && next())));
 });
 
 /**
  * Naboo#done & Naboo.done
  * Naboo的done插件，可用于在任何一个动画插件后进行回调
  */
-Naboo.register('done', function (next, fn) {
-    fn(next);
-});
+Naboo.register('done', (next, fn) => fn(next));
 
-Naboo.tool = (function () {
+Naboo.tool = (() => {
     // 定义一批检测浏览器特性需要的变量
     let prefix = '';
     let eventPrefix = '';
@@ -284,7 +269,7 @@ Naboo.tool = (function () {
  * @param {number=} delay - 动画延迟执行的时间，单位ms
  * @param {Function=} cb - 动画完成后的回调函数
  */
-Naboo.transition = (function () {
+Naboo.transition = (() => {
     let prefix = Naboo.tool.prefix;
 
     // css transition各属性名
@@ -314,7 +299,7 @@ Naboo.transition = (function () {
             ];
             let ease = (easeArr.indexOf(opt.ease) > -1) ? opt.ease : 'ease';
             let delay = parseInt(opt.delay, 10) || 0;
-            let cb = (typeof opt.cb === 'function') ? opt.cb : function () {};
+            let cb = (typeof opt.cb === 'function') ? opt.cb : () => {};
             let nabooNum = dom.getAttribute('data-naboo');
             if (nabooNum !== +nabooNum) {
                 nabooNum = 0;
@@ -399,12 +384,7 @@ Naboo.transition = (function () {
             (duration > 0) && dom.addEventListener(transitionEnd, wrappedCallback);
 
             // 在某些老式的android手机上，transitionEnd事件有可能不会触发，这时候我们需要手动执行回调
-            setTimeout(function () {
-                if (!fired) {
-                    wrappedCallback();
-                }
-
-            }, (duration + delay) * 1000 + 25);
+            setTimeout(() => (!fired && wrappedCallback()), (duration + delay) * 1000 + 25);
 
             // 触发reflow让元素可以执行动画
             dom.clientLeft;
@@ -427,7 +407,7 @@ Naboo.transition = (function () {
  * @param {?string} opt.mode 动画的模式，可选值有'transition','keyframes(暂未支持)','js(暂未支持)'，默认值'transition'
  * @return {Object} 返回当前的naboo对象
  */
-Naboo.register('animate', function (next, dom, prop, opt) {
+Naboo.register('animate', (next, dom, prop, opt) => {
     opt = opt || {};
     let cb = opt.cb;
     opt.cb = function () {

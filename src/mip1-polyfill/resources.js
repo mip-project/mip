@@ -5,7 +5,7 @@
 
 import fn from '../util/fn';
 import Gesture from '../util/gesture';
-import viewport from '../util/viewport';
+import viewport from '../viewport';
 import rect from '../util/dom/rect';
 
 

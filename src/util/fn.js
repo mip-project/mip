@@ -3,8 +3,6 @@
  * @author sekiyika(pengxing@baidu.com)
  */
 
-'use strict';
-
 /**
  * Throttle a function.
  *
@@ -17,13 +15,16 @@ function throttle(fn, delay) {
     let args;
     let timerId;
     let execTime = 0;
+
     !delay && (delay = 10);
+
     function exec() {
         timerId = 0;
         execTime = Date.now();
         fn.apply(context, args);
     }
-    return () => {
+
+    return function () {
         let delta = Date.now() - execTime;
         context = this;
         args = arguments;
@@ -47,9 +48,11 @@ function values(obj) {
     let keys = Object.keys(obj);
     let length = keys.length;
     let ret = [];
+
     for (let i = 0; i < length; i++) {
         ret.push(obj[keys[i]]);
     }
+
     return ret;
 }
 

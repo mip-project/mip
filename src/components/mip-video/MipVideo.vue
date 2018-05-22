@@ -39,8 +39,9 @@
 <script>
 /* eslint-disable fecs-esnext-ext,fecs-valid-jsdoc */
 import util from '../../util';
+import viewer from '../../viewer';
 const httpsReg = /^https:|^\/\//;
-const windowInIframe = util.viewer.isIframed;
+const windowInIframe = viewer.isIframed;
 
 export default {
     props: {

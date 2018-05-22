@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import viewport from '../../util/viewport';
+import viewport from '../../viewport';
 import rect from '../../util/dom/rect';
 import Gesture from '../../util/gesture';
 

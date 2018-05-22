@@ -99,7 +99,7 @@ proto._opt = {
 /**
  * Cleanup the events.
  */
-proto.cleanup = () => {
+proto.cleanup = function () {
     let element = this._element;
     listenersHelp(element, 'touchstart touchmove touchend touchcancel', this._boundTouchEvent, false);
     this.off();
@@ -111,7 +111,7 @@ proto.cleanup = () => {
  *
  * @param {string} name name
  */
-proto._createEventCallback = name => {
+proto._createEventCallback = function (name) {
     if (this._hasRegister(name)) {
         return;
     }
@@ -137,7 +137,7 @@ proto._createEventCallback = name => {
  *
  * @param {string} name name
  */
-proto._removeEventCallback = name => {
+proto._removeEventCallback = function (name) {
     let recognizer;
     if (name === undefined) {
         this._recognizers = {};
@@ -156,20 +156,21 @@ proto._removeEventCallback = name => {
  * @param {string} name name
  * @return {boolean}
  */
-proto._hasRegister = name => !!this._recognizers[Recognizer.getByEventname(name)];
+proto._hasRegister = function (name) {
+    return !!this._recognizers[Recognizer.getByEventname(name)];
+};
 
 /**
  * Recognize the gesture data.
  *
  * @param {Object} data data
  */
-proto._recognize = data => {
+proto._recognize = function (data) {
     let recognizers = this._recognizers;
     for (let i in recognizers) {
         let recognizer = recognizers[i];
         recognizer.recognize(data);
     }
 };
-
 
 export default Gesture;
