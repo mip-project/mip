@@ -17,7 +17,11 @@ export function getAttributes(children) {
 }
 
 // Helper utility returning slots for render function
-export function getSlots(children = [], createElement) {
+export function getSlots(innerHTML, createElement) {
+    let emptyNode = document.createElement('div');
+    emptyNode.innerHTML = innerHTML;
+    let children = emptyNode.children;
+
     const slots = [];
     toArray(children).forEach(child => {
         if (child.nodeName === '#text') {

@@ -33,6 +33,8 @@ function install(Vue, router) {
             constructor() {
                 super();
 
+                this.inited = false;
+
                 /**
                  * Viewport state
                  * @private
@@ -53,49 +55,60 @@ function install(Vue, router) {
                  * @type {Object}
                  */
                 this._resources = resources;
+
+                // 保存自定义元素原始子节点
+                if (!this.__innerHTML) {
+                    this.__innerHTML = this.innerHTML;
+                }
+
+                this.rvm = createVueInstance(
+                    this, {
+                        Vue,
+                        router
+                    },
+                    componentDefinition,
+                    props
+                );
+                this.props = props;
             }
 
             connectedCallback() {
-                if (!this.__detached__) {
-                    createVueInstance(
-                        this, {
-                            Vue,
-                            router
-                        },
-                        componentDefinition,
-                        props
-                    );
-
-                    componentDefinition[firstInviewCallbackLifeCircleName] && this._resources.add(this);
+                if (!this.inited) {
+                    this.innerHTML = '<div></div>';
+                    this.rvm.$mount(this.children[0]);
+                    this.vm = this.rvm.$children[0];
+                    // add a hydrating flag to <div> wrapper
+                    this.children[0] && this.children[0].setAttribute('data-server-rendered', '');
 
                     // Apply layout for this.
                     this._layout = layout.applyLayout(this);
+
+                    this.inited = true;
                 }
-                this.__detached__ = false;
+
+                componentDefinition[firstInviewCallbackLifeCircleName] && resources.add(this);
             }
 
             disconnectedCallback() {
-                this.__detached__ = true;
-
-                setTimeout(() => {
-                    if (this.__detached__ && this.vm) {
-                        this.vm.$destroy(true);
-                        delete this.vm;
-                        delete this.props;
-                    }
-                }, 3000);
+                resources.remove(this);
             }
 
             attributeChangedCallback(name, oldValue, value) {
-                if (this.vm) {
+                if (this.rvm) {
                     const nameCamelCase = camelize(name);
                     const type = this.props.types[nameCamelCase];
                     try {
                         value = JSON.parse(value);
                     }
                     catch (e) {}
-                    this.vm.$root[nameCamelCase] = convertAttributeValue(value, type);
+                    this.rvm[nameCamelCase] = convertAttributeValue(value, type);
                 }
+            }
+
+            cloneNode(deep) {
+                let newNode = super.cloneNode(deep);
+                newNode.__innerHTML = this.__innerHTML;
+                return newNode;
             }
 
             inViewport() {
