@@ -98,9 +98,9 @@ function getSafeObjCopy(obj, exclude) {
         }
         else {
             newObj[key] = function () {
-                let objName = obj.toString().slice(8, -1).replace(/[A-Z]+/g, ($0) => {
-                    return $0[$0.length - 1].toLocaleLowerCase();
-                });
+                let objName = obj.toString().slice(8, -1).replace(
+                    /[A-Z]+/g, $0 => $0[$0.length - 1].toLocaleLowerCase()
+                );
                 throw new Error(`组件内禁止使用${objName}.${key}`);
             };
         }

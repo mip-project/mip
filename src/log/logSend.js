@@ -12,8 +12,9 @@ export default {
 
     /**
      * 数据上报逻辑
-     * @param {*} type type
-     * @param {*} msg msg
+     *
+     * @param {*} type type type
+     * @param {*} msg msg message
      */
     sendLog(type, msg = {}) {
         if (!type) {
