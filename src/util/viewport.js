@@ -102,23 +102,19 @@ let viewport = {
 /**
  * 触发 scroll 事件
  */
-let scrollEvent = fn.throttle(function (event) {
-    this.trigger('scroll', event);
-}, 1000 / 60);
+let scrollEvent = fn.throttle(event => this.trigger('scroll', event), 1000 / 60);
 
 /**
  * 触发 changed 事件
  */
-let changedEvent = fn.throttle(function (event) {
-    this.trigger('changed', event);
-}, 200);
+let changedEvent = fn.throttle(event => this.trigger('changed', event), 200);
 
 /**
  * 滚动事件回调
  *
  * @param {Object} event 事件对象
  */
-let scrollHandle = function (event) {
+let scrollHandle = event => {
     scrollEvent.call(this, event);
     changedEvent.call(this, event);
 };
@@ -128,9 +124,7 @@ let scrollHandle = function (event) {
  *
  * @param {Object} event 事件对象
  */
-let resizeEvent = fn.throttle(function (event) {
-    this.trigger('resize', event);
-}, 200);
+let resizeEvent = fn.throttle(event => this.trigger('resize', event), 200);
 
 /**
  * Initialize the viewport

@@ -10,7 +10,9 @@ export function getAttributes(children) {
     const attributes = {};
 
     toArray(children.attributes).forEach(attribute => {
-        attributes[attribute.nodeName === 'vue-slot' ? 'slot' : attribute.nodeName] = attribute.nodeValue;
+        attributes[attribute.nodeName === 'vue-slot'
+            ? 'slot'
+            : attribute.nodeName] = attribute.nodeValue;
     });
 
     return attributes;
@@ -41,7 +43,6 @@ export function getSlots(children = [], createElement) {
 
             slots.push(createElement(child.tagName, elementOptions));
         }
-
     });
 
     return slots;

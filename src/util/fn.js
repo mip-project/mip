@@ -23,7 +23,7 @@ function throttle(fn, delay) {
         execTime = Date.now();
         fn.apply(context, args);
     }
-    return function () {
+    return () => {
         let delta = Date.now() - execTime;
         context = this;
         args = arguments;

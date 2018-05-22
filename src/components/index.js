@@ -40,9 +40,7 @@ function install(Vue) {
             tag: 'mip-data',
             component: mipData
         }
-    ].forEach(element => {
-        Vue.customElement(element.tag, element.component);
-    });
+    ].forEach(element => Vue.customElement(element.tag, element.component));
 }
 
 export default install;

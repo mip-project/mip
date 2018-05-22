@@ -48,7 +48,7 @@ function createBaseElementProto() {
     /**
      * Created callback of MIPElement. It will initialize the element.
      */
-    proto.createdCallback = function () {
+    proto.createdCallback = () => {
         let CustomEle = customElements[this.name];
         this.classList.add('mip-element');
 
@@ -91,7 +91,7 @@ function createBaseElementProto() {
     /**
      * When the element is inserted into the DOM, initialize the layout and add the element to the '_resources'.
      */
-    proto.attachedCallback = function () {
+    proto.attachedCallback = () => {
         // Apply layout for this.
         this._layout = layout.applyLayout(this);
         this.customElement.attachedCallback();
@@ -102,13 +102,13 @@ function createBaseElementProto() {
     /**
      * When the element is removed from the DOM, remove it from '_resources'.
      */
-    proto.detachedCallback = function () {
+    proto.detachedCallback = () => {
         this.customElement.detachedCallback();
         this._resources.remove(this);
         performance.fsElementLoaded(this);
     };
 
-    proto.attributeChangedCallback = function (attributeName, oldValue, newValue, namespace) {
+    proto.attributeChangedCallback = (attributeName, oldValue, newValue, namespace) => {
         let ele = this.customElement;
         ele.attributeChangedCallback.apply(ele, arguments);
     };
@@ -118,9 +118,7 @@ function createBaseElementProto() {
      *
      * @return {boolean}
      */
-    proto.inViewport = function () {
-        return this._inViewport;
-    };
+    proto.inViewport = () => this._inViewport;
 
     /**
      * Called when the element enter or exit the viewport.
@@ -128,7 +126,7 @@ function createBaseElementProto() {
      * @param {boolean} inViewport whether in viewport or not
      * And it will call the firstInviewCallback and viewportCallback of the custom element.
      */
-    proto.viewportCallback = function (inViewport) {
+    proto.viewportCallback = inViewport => {
         this._inViewport = inViewport;
         if (!this._firstInViewport) {
             this._firstInViewport = true;
@@ -142,18 +140,14 @@ function createBaseElementProto() {
      *
      * @return {boolean}
      */
-    proto.isBuilt = function () {
-        return this._built;
-    };
+    proto.isBuilt = () => this._built;
 
     /**
      * Check whether the element need to be rendered in advance.
      *
      * @return {boolean}
      */
-    proto.prerenderAllowed = function () {
-        return this.customElement.prerenderAllowed();
-    };
+    proto.prerenderAllowed = () => this.customElement.prerenderAllowed();
 
     /**
      * Build the element and the custom element.
@@ -178,14 +172,14 @@ function createBaseElementProto() {
      *
      * @param {Object} action event action
      */
-    proto.executeEventAction = function (action) {
+    proto.executeEventAction = action => {
         this.customElement.executeEventAction(action);
     };
 
     /**
      * Called by customElement. And tell the performance that element is loaded.
      */
-    proto.resourcesComplete = function () {
+    proto.resourcesComplete = () => {
         performance.fsElementLoaded(this);
     };
 

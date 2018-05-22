@@ -8,7 +8,7 @@ import customElement from './custom-element/index';
 import customElementBuildInComponents from './components';
 import util from './util';
 import sandbox from './util/sandbox';
-import templates from './util/templates';
+import layout from './util/layout';
 import hash from './util/hash';
 import viewer from './util/viewer';
 import viewport from './util/viewport';
@@ -75,26 +75,24 @@ Vue.use(customElementBuildInComponents);
 util.dom.waitDocumentReady(() => {
     // Initialize sleepWakeModule
     sleepWakeModule.init();
+
     // Initialize viewer
     viewer.init();
+
     // Find the default-hidden elements.
     let hiddenElements = Array.prototype.slice.call(document.getElementsByClassName('mip-hidden'));
+
     // Regular for checking mip elements.
     let mipTagReg = /mip-/i;
+
     // Apply layout for default-hidden elements.
-    hiddenElements.forEach(function (element) {
-        if (element.tagName.search(mipTagReg) > -1) {
-            layout.applyLayout(element);
-        }
-    });
+    hiddenElements.forEach(element => element.tagName.search(mipTagReg) > -1 && layout.applyLayout(element));
+
     // Register builtin extensions
     // components.register();
 
     performance.start(window._mipStartTiming);
-
-    performance.on('update', function (timing) {
-        viewer.sendMessage('performance_update', timing);
-    });
+    performance.on('update', timing => viewer.sendMessage('performance_update', timing));
 
     // Show page
     viewer.show();

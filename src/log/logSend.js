@@ -12,6 +12,7 @@ export default {
 
     /**
      * 数据上报逻辑
+     *
      * @param {*} type type
      * @param {*} msg msg
      */

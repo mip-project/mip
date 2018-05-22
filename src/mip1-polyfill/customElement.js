@@ -31,7 +31,7 @@ function customElement(element) {
  * @param {HTMLElement} ele element
  * @param {boolean} isReplaced whether replaced or not
  */
-customElement.prototype.applyFillContent = function (ele, isReplaced) {
+customElement.prototype.applyFillContent = (ele, isReplaced) => {
     ele.classList.add('mip-fill-content');
     if (isReplaced) {
         ele.classList.add('mip-replaced-content');
@@ -41,41 +41,39 @@ customElement.prototype.applyFillContent = function (ele, isReplaced) {
 /**
  * Called when the MIPElement is created.
  */
-customElement.prototype.createdCallback = function () {};
+customElement.prototype.createdCallback = () => {};
 
 /**
  * Called when the MIPElement is inserted into the DOM.
  */
-customElement.prototype.attachedCallback = function () {};
+customElement.prototype.attachedCallback = () => {};
 
 /**
  * Called when the MIPElement is removed from the DOM.
  */
-customElement.prototype.detachedCallback = function () {};
+customElement.prototype.detachedCallback = () => {};
 
 /**
  * Called when the MIPElement's attribute is changed.
  */
-customElement.prototype.attributeChangedCallback = function () {};
+customElement.prototype.attributeChangedCallback = () => {};
 
 /**
  * Called when the MIPElement first enters the viewport.
  */
-customElement.prototype.firstInviewCallback = function () {};
+customElement.prototype.firstInviewCallback = () => {};
 
 /**
  * Called when the MIPElement has entered or exited the viewport.
  */
-customElement.prototype.viewportCallback = function () {};
+customElement.prototype.viewportCallback = () => {};
 
 /**
  * Control whether the MIPElement is rendred ahead.
  *
  * @return {boolean} If the result is TRUE, the element will be rendred ahead.
  */
-customElement.prototype.prerenderAllowed = function () {
-    return false;
-};
+customElement.prototype.prerenderAllowed = () => false;
 
 /**
  * Return the current component containing resources.
@@ -83,14 +81,12 @@ customElement.prototype.prerenderAllowed = function () {
  *
  * @return {boolean} whether has resource or not
  */
-customElement.prototype.hasResources = function () {
-    return false;
-};
+customElement.prototype.hasResources = () => false;
 
 /**
  * Called when the MIPElement is first inserted into the document.
  */
-customElement.prototype.build = function () {};
+customElement.prototype.build = () => {};
 
 /**
  * Expend current element's attributes which selected by attrs to an other object.
@@ -99,7 +95,7 @@ customElement.prototype.build = function () {};
  * @param {Object} element The target element
  * @return {Object}
  */
-customElement.prototype.expendAttr = function (attrs, element) {
+customElement.prototype.expendAttr = (attrs, element) => {
     for (let i = 0; i < attrs.length; i++) {
         let attr = attrs[i];
         if (this.element.hasAttribute(attr)) {
@@ -118,7 +114,7 @@ customElement.prototype.expendAttr = function (attrs, element) {
  * @param {string} name event name
  * @param {Function} handler event handler
  */
-customElement.prototype.addEventAction = function () {
+customElement.prototype.addEventAction = () => {
     let evt = this._actionEvent;
     if (!evt) {
         evt = this._actionEvent = new EventEmitter();
@@ -133,7 +129,7 @@ customElement.prototype.addEventAction = function () {
  *
  * @param {string} action The action's name
  */
-customElement.prototype.executeEventAction = function (action) {
+customElement.prototype.executeEventAction = action => {
     let eventObj = this._actionEvent;
     if (action && eventObj) {
         eventObj.trigger(action.handler, action.event, action.arg);
@@ -143,7 +139,7 @@ customElement.prototype.executeEventAction = function (action) {
 /**
  * Notice that resources are loaded.
  */
-customElement.prototype.resourcesComplete = function () {
+customElement.prototype.resourcesComplete = () => {
     this.element.resourcesComplete();
 };
 

@@ -1,10 +1,7 @@
 /**
  * @file Resource Function
- *
  * @author xx
  */
-
-'use strict';
 
 import fn from '../util/fn';
 import Gesture from '../util/gesture';
@@ -39,7 +36,7 @@ function Resources() {
      * @private
      * @type {number}
      */
-    this._rid = counter ++;
+    this._rid = counter++;
 
     /**
      * Element id
@@ -70,12 +67,15 @@ function Resources() {
     this._bindEvent();
 }
 
+/* eslint-disable fecs-valid-constructor */
 Resources.prototype = {
 
     /**
      * Bind the events of current object.
      */
-    _bindEvent: function () {
+    /* eslint-disable fecs-camelcase */
+    _bindEvent() {
+    /* eslint-enable fecs-camelcase */
         let self = this;
         let timer;
         this._viewport.on('changed resize', this.updateState);
@@ -95,8 +95,8 @@ Resources.prototype = {
      *
      * @param {MIPElement} element A mip element
      */
-    add: function (element) {
-        element._eid = this._eid ++;
+    add(element) {
+        element._eid = this._eid++;
         resources[this._rid][element._eid] = element;
         element.build();
         // this.updateState();
@@ -111,14 +111,13 @@ Resources.prototype = {
      * @param {MIPElement|string} element Mip element or _eid of element
      * @return {boolean} the removed state of element
      */
-    remove: function (element/* or eid */) {
+    remove(element) {
         let id = element._eid || element;
         if (Number.isFinite(+id) && resources[this._rid][id]) {
             delete resources[this._rid][id];
             return true;
-        } else {
-            return false;
         }
+        return false;
     },
 
     /**
@@ -126,7 +125,7 @@ Resources.prototype = {
      *
      * @return {Array}
      */
-    getResources: function () {
+    getResources() {
         return resources[this._rid];
     },
 
@@ -135,7 +134,7 @@ Resources.prototype = {
      *
      * @return {Array}
      */
-    getResourcesList: function () {
+    getResourcesList() {
         return fn.values(this.getResources());
     },
 
@@ -145,7 +144,7 @@ Resources.prototype = {
      * @param {MIPElement} element element
      * @param {boolean} inViewport inViewport
      */
-    setInViewport: function (element, inViewport) {
+    setInViewport(element, inViewport) {
         if (element.inViewport() !== inViewport) {
             element.viewportCallback(inViewport);
         }
@@ -153,9 +152,10 @@ Resources.prototype = {
 
     /**
      * Update elements's viewport state.
-     *
      */
-    _update: function () {
+    /* eslint-disable fecs-camelcase */
+    _update() {
+    /* eslint-enable fecs-camelcase */
         let resources = this.getResources();
         let viewportRect = this._viewport.getRect();
         for (let i in resources) {

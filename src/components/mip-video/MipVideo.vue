@@ -5,6 +5,7 @@
  */
 
 <template>
+    <!--htmlcs-disable-->
     <div class="mip-video">
         <video
             v-if="renderInView"
@@ -15,12 +16,11 @@
             :autoplay="autoplay"
             :autobuffer="autobuffer"
             :crossorigin="crossorigin"
-            :height="height"
             :muted="muted"
             :preload="preload"
             :poster="poster"
+            :height="vheight"
             width="100%"
-            height="100%"
         >
             <slot></slot>
             Your browser does not support the video tag.
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+/* eslint-disable fecs-esnext-ext,fecs-valid-jsdoc */
 import util from '../../util';
 const httpsReg = /^https:|^\/\//;
 const windowInIframe = util.viewer.isIframed;
@@ -97,6 +98,10 @@ export default {
         // autoplay 未设置，强行设置controls属性
         ctl() {
             return this.autoplay === undefined ? true : this.controls;
+        },
+
+        vheight() {
+            return this.height || '100%';
         }
 
     },
@@ -157,7 +162,6 @@ export default {
         transform: translate(-50%, -50%);
         background-color: rgba(0, 0, 0, 0.3);
         -webkit-tap-highlight-color: rbga(0, 0, 0, 0.3);
-        tap-highlight-color: rbga(0, 0, 0, 0.3);
         &:before {
             content: '';
             position: absolute;

@@ -8,11 +8,11 @@
     <img
         class="mip-pix"
         :src="realSrc"
-    ></img>
+    />
 </template>
 
 <script>
-
+/* eslint-disable fecs-esnext-ext,fecs-valid-jsdoc */
 /**
  * 替换请求链接中的参数
  *

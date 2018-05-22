@@ -3,8 +3,6 @@
  * @author zhulei05(zhulei05@baidu.com)
  */
 
-'use scrict';
-
 /**
  * Naboo类，抽象出来的一个动画控制和执行的对象
  *
@@ -46,7 +44,7 @@ Naboo.prototype.next = function () {
         this.trigger('end');
     }
     else {
-        var currentStep = this.steps[this._index];
+        let currentStep = this.steps[this._index];
         currentStep.call(this);
     }
 };
@@ -80,16 +78,16 @@ Naboo.prototype.off = function (name, fn) {
         this._handlers = {};
     }
     else {
-        var handlers = this._handlers[name];
+        let handlers = this._handlers[name];
         if (!fn) {
             this._handlers[name] = [];
         }
         else if (Object.prototype.toString.call(handlers) === '[object Array]') {
-            for (var i = 0, len = handlers.length; i < len; i++) {
+            let i = 0;
+            for (let len = handlers.length; i < len; i++) {
                 if (handlers[i] === fn) {
                     break;
                 }
-
             }
             this._handlers[name].splice(i, 1);
         }
@@ -103,7 +101,7 @@ Naboo.prototype.off = function (name, fn) {
  * @param {*=} data - 触发事件时需要传递的数据
  */
 Naboo.prototype.trigger = function (name, data) {
-    var handlers = this._handlers[name];
+    let handlers = this._handlers[name];
     if (handlers) {
         handlers.forEach(function (fn, i) {
             fn.call(null, data);
@@ -120,12 +118,12 @@ Naboo.prototype.trigger = function (name, data) {
  */
 Naboo.register = function (name, fn) {
     Naboo[name] = function () {
-        var ret = new Naboo();
+        let ret = new Naboo();
         ret[name].apply(ret, arguments);
         return ret;
     };
     Naboo.prototype[name] = function () {
-        var args = Array.prototype.slice.call(arguments, 0);
+        let args = Array.prototype.slice.call(arguments, 0);
         args.unshift(this.next.bind(this));
         this.steps.push(function () {
             fn.apply(this, args);
@@ -139,8 +137,8 @@ Naboo.register = function (name, fn) {
  * Naboo的并行插件
  */
 Naboo.register('p', function (next) {
-    var args = Array.prototype.slice.call(arguments, 1);
-    var n = args.length;
+    let args = Array.prototype.slice.call(arguments, 1);
+    let n = args.length;
     args.forEach(function (naboo) {
         naboo.start(function () {
             n--;
@@ -162,14 +160,14 @@ Naboo.register('done', function (next, fn) {
 
 Naboo.tool = (function () {
     // 定义一批检测浏览器特性需要的变量
-    var prefix = '';
-    var eventPrefix = '';
-    var vendors = {
+    let prefix = '';
+    let eventPrefix = '';
+    let vendors = {
         Webkit: 'webkit',
         Moz: '',
         O: 'o'
     };
-    var testEl = document.createElement('div');
+    let testEl = document.createElement('div');
 
     function dasherize(str) {
         return str.replace(/([A-Z])/g, '-$1').toLowerCase();
@@ -181,7 +179,8 @@ Naboo.tool = (function () {
 
     // 检测浏览器特性
     if (testEl.style.transform === undefined) {
-        for (var prop in vendors) {
+        /* eslint-disable fecs-valid-map-set */
+        for (let prop in vendors) {
             if (testEl.style[prop + 'TransitionProperty'] !== undefined) {
                 prefix = '-' + prop.toLowerCase() + '-';
                 eventPrefix = vendors[prop];
@@ -192,7 +191,7 @@ Naboo.tool = (function () {
     }
 
     // 是否不支持transition
-    var off = eventPrefix === undefined && testEl.style.transitionProperty === undefined;
+    let off = eventPrefix === undefined && testEl.style.transitionProperty === undefined;
 
     /**
      * 设置dom对象的css
@@ -203,9 +202,9 @@ Naboo.tool = (function () {
      * @param {Object} obj 存放css信息的对象
      */
     function setCss(dom, obj) {
-        var css = '';
+        let css = '';
 
-        for (var key in obj) {
+        for (let key in obj) {
             if (!obj[key] && obj[key] !== 0) {
                 dom.style.removeProperty(dasherize(key));
             }
@@ -231,8 +230,8 @@ Naboo.tool = (function () {
         }
 
         testEl.style[prop] = 0;
-        var propValue = testEl.style[prop];
-        var match = propValue.match && propValue.match(/^\d+([a-zA-Z]+)/);
+        let propValue = testEl.style[prop];
+        let match = propValue.match && propValue.match(/^\d+([a-zA-Z]+)/);
         if (match) {
             return val + match[1];
         }
@@ -243,17 +242,17 @@ Naboo.tool = (function () {
     /**
      * 获取正确的css属性名
      *
-     * @param {string} 属性名
+     * @param {string} prop 属性名
      * @return {string | undefined} 自动添加前缀后的属性名或者undefined
      */
     function getPropName(prop) {
-        var res;
+        let res;
         if (testEl.style[prop] !== undefined) {
             res = prop;
         }
         else {
-            for (var key in vendors) {
-                var val = '-' + vendors[key] + '-';
+            for (let key in vendors) {
+                let val = '-' + vendors[key] + '-';
                 if (testEl.style[val + prop] !== undefined) {
                     res = val + prop;
                     break;
@@ -265,18 +264,19 @@ Naboo.tool = (function () {
     }
 
     return {
-        prefix: prefix,
-        dasherize: dasherize,
-        normalizeEvent: normalizeEvent,
-        off: off,
-        setCss: setCss,
-        handleUnit: handleUnit,
-        getPropName: getPropName
+        prefix,
+        dasherize,
+        normalizeEvent,
+        off,
+        setCss,
+        handleUnit,
+        getPropName
     };
 })();
 
 /**
  * Naboo提供的执行css3 transiton动画的函数
+ *
  * @param {Object} dom - 需要进行动画的dom元素
  * @param {Object} property - 需要进行动画的css属性键值对对象
  * @param {number=} duration - 动画时长，单位ms
@@ -285,17 +285,17 @@ Naboo.tool = (function () {
  * @param {Function=} cb - 动画完成后的回调函数
  */
 Naboo.transition = (function () {
-    var prefix = Naboo.tool.prefix;
+    let prefix = Naboo.tool.prefix;
 
     // css transition各属性名
-    var transitionProperty = prefix + 'transition-property';
-    var transitionDuration = prefix + 'transition-duration';
-    var transitionDelay = prefix + 'transition-delay';
-    var transitionTiming = prefix + 'transition-timing-function';
-    var transitionEnd = Naboo.tool.normalizeEvent('TransitionEnd');
+    let transitionProperty = prefix + 'transition-property';
+    let transitionDuration = prefix + 'transition-duration';
+    let transitionDelay = prefix + 'transition-delay';
+    let transitionTiming = prefix + 'transition-timing-function';
+    let transitionEnd = Naboo.tool.normalizeEvent('TransitionEnd');
 
     // 动画完成后清空设置
-    var cssReset = {};
+    let cssReset = {};
     cssReset[transitionProperty] = '';
     cssReset[transitionDuration] = '';
     cssReset[transitionDelay] = '';
@@ -304,18 +304,18 @@ Naboo.transition = (function () {
     return function (dom, property, opt) {
         if (dom && Object.prototype.toString.call(property) === '[object Object]') {
             opt = opt || {};
-            var duration = parseInt(opt.duration) || 400;
-            var easeArr = [
+            let duration = parseInt(opt.duration, 10) || 400;
+            let easeArr = [
                 'ease',
                 'linear',
                 'ease-in',
                 'ease-out',
                 'ease-in-out'
             ];
-            var ease = (easeArr.indexOf(opt.ease) > -1) ? opt.ease : 'ease';
-            var delay = parseInt(opt.delay) || 0;
-            var cb = (typeof opt.cb === 'function') ? opt.cb : function () {};
-            var nabooNum = dom.getAttribute('data-naboo');
+            let ease = (easeArr.indexOf(opt.ease) > -1) ? opt.ease : 'ease';
+            let delay = parseInt(opt.delay, 10) || 0;
+            let cb = (typeof opt.cb === 'function') ? opt.cb : function () {};
+            let nabooNum = dom.getAttribute('data-naboo');
             if (nabooNum !== +nabooNum) {
                 nabooNum = 0;
             }
@@ -330,37 +330,37 @@ Naboo.transition = (function () {
             duration /= 1000;
             delay /= 1000;
 
-            var cssProperty = [];
-            var cssValues = {};
-            for (var key in property) {
+            let cssProperty = [];
+            let cssValues = {};
+            for (let key in property) {
                 if (!property.hasOwnProperty(key)) {
                     continue;
                 }
 
-                var originKey = key;
+                let originKey = key;
                 key = Naboo.tool.getPropName(key);
-                var value = Naboo.tool.handleUnit(key, property[originKey]);
+                let value = Naboo.tool.handleUnit(key, property[originKey]);
                 cssValues[key] = value;
                 cssProperty.push(Naboo.tool.dasherize(key));
             }
             if (duration > 0) {
-                var transitionPropertyVal = dom.style[transitionProperty];
+                let transitionPropertyVal = dom.style[transitionProperty];
                 transitionPropertyVal && (transitionPropertyVal += ', ');
                 cssValues[transitionProperty] = transitionPropertyVal + cssProperty.join(', ');
 
-                var transitionDurationVal = dom.style[transitionDuration];
-                if (transitionDurationVal || (parseInt(transitionDurationVal) === 0)) {
+                let transitionDurationVal = dom.style[transitionDuration];
+                if (transitionDurationVal || (parseInt(transitionDurationVal, 10) === 0)) {
                     transitionDurationVal += ', ';
                 }
 
                 cssValues[transitionDuration] = transitionDurationVal + duration + 's';
 
-                var transitionTimingVal = dom.style[transitionTiming];
+                let transitionTimingVal = dom.style[transitionTiming];
                 transitionTimingVal && (transitionTimingVal += ', ');
                 cssValues[transitionTiming] = transitionTimingVal + ease;
 
-                var transitonDelayVal = dom.style[transitionDelay];
-                if (transitonDelayVal || (parseInt(transitonDelayVal) === 0)) {
+                let transitonDelayVal = dom.style[transitionDelay];
+                if (transitonDelayVal || (parseInt(transitonDelayVal, 10) === 0)) {
                     transitonDelayVal += ', ';
                 }
 
@@ -368,12 +368,12 @@ Naboo.transition = (function () {
             }
 
             // 回调是否执行
-            var fired = false;
+            let fired = false;
 
-            var setCss = Naboo.tool.setCss;
+            let setCss = Naboo.tool.setCss;
 
             // 包装后的回调函数
-            var wrappedCallback = function (event) {
+            let wrappedCallback = function (event) {
                 if (event && (event.elapsedTime !== (duration + delay))) {
                     return;
                 }
@@ -429,7 +429,7 @@ Naboo.transition = (function () {
  */
 Naboo.register('animate', function (next, dom, prop, opt) {
     opt = opt || {};
-    var cb = opt.cb;
+    let cb = opt.cb;
     opt.cb = function () {
         cb && cb();
         next();

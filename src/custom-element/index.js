@@ -13,7 +13,7 @@ import EventEmitter from '../util/event-emitter';
 const firstInviewCallbackLifeCircleName = 'firstInviewCallback';
 
 function install(Vue, router) {
-    Vue.customElement = function vueCustomElement(tag, componentDefinition) {
+    Vue.customElement = (tag, componentDefinition) => {
 
         // 如果不设置 template 和 render 函数，默认设置 render 函数返回 null，避免 warning
         let {template, render} = componentDefinition;

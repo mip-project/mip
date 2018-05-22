@@ -3,8 +3,6 @@
  * @author sekiyika(pengxing@baidu.com)
  */
 
-'use strict';
-
 import EventEmitter from '../event-emitter';
 import Recognizer from './gesture-recognizer';
 import dataProcessor from './data-processor';
@@ -101,7 +99,7 @@ proto._opt = {
 /**
  * Cleanup the events.
  */
-proto.cleanup = function () {
+proto.cleanup = () => {
     let element = this._element;
     listenersHelp(element, 'touchstart touchmove touchend touchcancel', this._boundTouchEvent, false);
     this.off();
@@ -113,7 +111,7 @@ proto.cleanup = function () {
  *
  * @param {string} name name
  */
-proto._createEventCallback = function (name) {
+proto._createEventCallback = name => {
     if (this._hasRegister(name)) {
         return;
     }
@@ -139,7 +137,7 @@ proto._createEventCallback = function (name) {
  *
  * @param {string} name name
  */
-proto._removeEventCallback = function (name) {
+proto._removeEventCallback = name => {
     let recognizer;
     if (name === undefined) {
         this._recognizers = {};
@@ -158,16 +156,14 @@ proto._removeEventCallback = function (name) {
  * @param {string} name name
  * @return {boolean}
  */
-proto._hasRegister = function (name) {
-    return !!this._recognizers[Recognizer.getByEventname(name)];
-};
+proto._hasRegister = name => !!this._recognizers[Recognizer.getByEventname(name)];
 
 /**
  * Recognize the gesture data.
  *
  * @param {Object} data data
  */
-proto._recognize = function (data) {
+proto._recognize = data => {
     let recognizers = this._recognizers;
     for (let i in recognizers) {
         let recognizer = recognizers[i];
