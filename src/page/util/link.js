@@ -6,9 +6,9 @@ function guardEvent(e, $a) {
         return;
     }
     // don't redirect when preventDefault called
-    if (e.defaultPrevented) {
-        return;
-    }
+    // if (e.defaultPrevented) {
+    //     return;
+    // }
     // don't redirect if `target="_blank"`
     if ($a.getAttribute) {
         const target = $a.getAttribute('target');

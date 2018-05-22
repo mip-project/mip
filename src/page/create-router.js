@@ -15,6 +15,7 @@ import fixedElement from '../fixed-element';
 
 const {window: sandWin, document: sandDoc} = sandbox;
 const FIRST_PAGE_ID = util.getPath(window.location.href);
+const loadedPages = [FIRST_PAGE_ID]; // TODO with error
 
 /**
  * extract route object from current DOM tree or raw HTML.
@@ -57,18 +58,35 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
     return Object.assign({
         component: {
             beforeRouteEnter(to, from, next) {
-                if (to.fullPath !== FIRST_PAGE_ID) {
-                    util.createIFrame(to.fullPath);
-                };
+                let target = to.fullPath;
+                let source = from.fullPath;
+
+                if (loadedPages.indexOf(target) === -1) {
+                    let targetFrame = util.createIFrame(target);
+                    loadedPages.push(target);
+
+                    util.frameMoveIn(targetFrame, {
+                        newPage: true
+                    });
+                }
+                else {
+                    if (target === FIRST_PAGE_ID) {
+                        util.frameMoveOut(source);
+                    }
+                    else {
+                        util.frameMoveIn(target);
+                    }
+                }
+
                 // Set title
                 document.title = shellConfig.header.title || defaultTitle;
                 next();
             },
             beforeRouteLeave(to, from, next) {
                 // Set leave transition type
-                shellConfig.view.transition.effect = shellConfig.view.transition.mode === 'slide'
-                    ? (util.isForward(to, from) ? 'slide-left' : 'slide-right')
-                    : shellConfig.view.transition.mode;
+                // shellConfig.view.transition.effect = shellConfig.view.transition.mode === 'slide'
+                //     ? (util.isForward(to, from) ? 'slide-left' : 'slide-right')
+                //     : shellConfig.view.transition.mode;
 
                 next();
             }

@@ -5,6 +5,7 @@
 
 import {generateScope, getScopedStyles} from './style';
 import {getPath} from './url';
+import css from '../../util/dom/css';
 
 import {
     MIP_CONTAINER_ID,
@@ -14,9 +15,11 @@ import {
     MIP_IFRAME_CONTAINER
 } from '../const';
 
+let activeZIndex = 10000;
+
 export function createIFrame(path) {
-    // let path = getPath(href);
     let container = document.querySelector(`.${MIP_IFRAME_CONTAINER}[data-page-id="${path}"]`);
+
     if (!container) {
         container = document.createElement('iframe');
         container.setAttribute('src', path);
@@ -202,4 +205,56 @@ function getSandboxFunction(script) {
 
         ${script}
     `);
+}
+
+export function frameMoveIn(iframe, options = {}) {
+    iframe = getIFrame(iframe);
+    let width = window.innerWidth;
+
+    let exec = () => {
+        css(iframe, {
+            'z-index': activeZIndex++,
+            transform: `translateX(${width}px)`,
+            display: 'block',
+            transition: 'all 0.35s ease'
+        });
+
+        setTimeout(() => {
+            css(iframe, {
+                transform: 'translateX(0)'
+            })
+        }, 20);
+    };
+
+    if (options.newPage) {
+        iframe.onload = exec;
+    }
+    else {
+        exec();
+    }
+}
+
+export function frameMoveOut(iframe) {
+    iframe = getIFrame(iframe);
+    let width = window.innerWidth;
+
+    css(iframe, {
+        transform: `translateX(-${width}px)`
+    });
+    setTimeout(() => {
+        css(iframe, {
+            display: 'none',
+            'z-index': 10000,
+            transform: 'translateX(0)',
+            transition: 'none'
+        })
+    }, 350);
+}
+
+function getIFrame(iframe) {
+    if (typeof iframe === 'string') {
+        return document.querySelector(`.${MIP_IFRAME_CONTAINER}[data-page-id="${iframe}"]`);
+    }
+
+    return iframe;
 }
