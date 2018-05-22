@@ -6,7 +6,7 @@
 import {getPropsData, reactiveProps} from './props';
 import {getSlots} from './slots';
 import {customEmit} from './custom-event';
-import viewer from '../../util/viewer';
+import viewer from '../../viewer';
 
 export default function createVueInstance(
     element,

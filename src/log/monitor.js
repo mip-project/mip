@@ -14,9 +14,7 @@ if (!Array.isArray(tags)) {
     tags = [];
 }
 
-tags = tags.filter(function (it = '') {
-    return !!it.trim();
-});
+tags = tags.filter((it = '') => !!it.trim());
 
 /**
  * MIP错误捕获处理
@@ -57,9 +55,7 @@ function errorHandle(e = {}) {
             col: colno || (window.event && window.event.errorCharacter) || 0,
             href: window.location.href
         };
-        setTimeout(function () {
-            ls.sendLog('mip-stability', logData);
-        }, 0);
+        setTimeout(() => ls.sendLog('mip-stability', logData), 0);
         // 其他善后处理
     }
 }

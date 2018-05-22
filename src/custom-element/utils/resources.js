@@ -5,7 +5,7 @@
  */
 'use strict';
 
-import viewport from '../../util/viewport';
+import viewport from '../../viewport';
 import rect from '../../util/dom/rect';
 import Gesture from '../../util/gesture';
 
@@ -51,9 +51,7 @@ class Resources {
                 return;
             }
 
-            setTimeout(() => {
-                scrollLock = false;
-            }, 30);
+            setTimeout(() => scrollLock = false, 30);
             scrollLock = true;
             this.updateState();
 
@@ -81,9 +79,7 @@ class Resources {
 
         element.eid = this.eid++;
         resources[element.eid] = element;
-        setTimeout(() => {
-            this.updateState();
-        });
+        setTimeout(() => this.updateState());
     }
 
     /**
@@ -155,7 +151,6 @@ class Resources {
             }
         }
     }
-
 }
 
 export default new Resources();

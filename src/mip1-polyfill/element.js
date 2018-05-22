@@ -7,7 +7,7 @@
 'use strict';
 
 import cssLoader from '../util/dom/css-loader';
-import layout from '../util/layout';
+import layout from '../layout';
 import performance from '../performance';
 import Resources from './resources';
 
@@ -178,14 +178,14 @@ function createBaseElementProto() {
      *
      * @param {Object} action event action
      */
-    proto.executeEventAction = function (action) {
+    proto.executeEventAction = action => {
         this.customElement.executeEventAction(action);
     };
 
     /**
      * Called by customElement. And tell the performance that element is loaded.
      */
-    proto.resourcesComplete = function () {
+    proto.resourcesComplete = () => {
         performance.fsElementLoaded(this);
     };
 

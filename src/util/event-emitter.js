@@ -178,18 +178,14 @@ let proto = EventEmitter.prototype = {
      * @param {string} name Event name
      * @param {Array.<Function>} handlers The bound handlers
      */
-    _createEventCallback(name, handlers) {
-
-    },
+    _createEventCallback(name, handlers) {},
 
     /**
      * Called when an event is removed.
      *
      * @param {string} name Event name
      */
-    _removeEventCallback(name) {
-
-    },
+    _removeEventCallback(name) {},
 
     /**
      * Called when an event is binding.
@@ -205,7 +201,7 @@ let proto = EventEmitter.prototype = {
     'off unbind',
     'once one',
     'trigger fire emit'
-].forEach(function (value) {
+].forEach(value => {
     value = value.split(' ');
     for (let i = 1; i < value.length; i++) {
         proto[value[i]] = proto[value[0]];
@@ -226,7 +222,7 @@ let keys = Object.keys(proto);
  * @param {Object} obj obj
  * @return {Object}
  */
-EventEmitter.mixin = function (obj) {
+EventEmitter.mixin = obj => {
     for (let i = 0; i < keys.length; i++) {
         if (!(keys[i] in obj)) {
             obj[keys[i]] = proto[keys[i]];

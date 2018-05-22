@@ -7,13 +7,13 @@ import createVueInstance from './utils/create-vue-instance';
 import {getProps, convertAttributeValue} from './utils/props';
 import {camelize} from './utils/helpers';
 import resources from './utils/resources';
-import layout from '../util/layout';
+import layout from '../layout';
 import EventEmitter from '../util/event-emitter';
 
 const firstInviewCallbackLifeCircleName = 'firstInviewCallback';
 
 function install(Vue, router) {
-    Vue.customElement = function vueCustomElement(tag, componentDefinition) {
+    Vue.customElement = (tag, componentDefinition) => {
 
         // 如果不设置 template 和 render 函数，默认设置 render 函数返回 null，避免 warning
         let {template, render} = componentDefinition;

@@ -33,7 +33,7 @@
 </template>
 
 <script>
-
+/* eslint-disable fecs-esnext-ext,fecs-valid-jsdoc */
 import resources from '../../custom-element/utils/resources';
 
 const defaultDefer = 4000;
