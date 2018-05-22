@@ -8,8 +8,6 @@ import Router from '../router/index';
 import createRouter from './create-router';
 import '../styles/mip.less';
 
-export const CURRENT_PAGE_ID = util.getPath(window.location.href);
-
 function start() {
     // Set global mark
     window.__MIP__ = 2;
@@ -30,6 +28,7 @@ function start() {
         router.init();
         window.MIP_ROUTER = router;
     }
+
     document.body.setAttribute('mip-ready', '');
     util.installMipLink(router);
 
