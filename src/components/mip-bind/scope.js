@@ -19,22 +19,18 @@ class Scope {
         });
         _data = Object.create(this._parent, _data);
 
-        this.data = Object.assign(this.data || {}, data);
+        this.data = Object.assign(this.data || {}, _data);
     }
 }
 
 function setGlobalState(data) {
-    Object.assign(window.m, data);
+    window.g = window.g || {};
+    Object.assign(window.g, data);
 }
 
 function setPageState(data) {
-    if (!pageScope) {
-        pageScope = new Scope(data, window.m);
-    }
-    else {
-        pageScope.addDataToScope(data);
-    }
-    Object.assign(window.m, pageScope.data);
+    Object.assign(window.m, data);
+    window.m.__proto__ = window.g;
 }
 
 function destroyPageScope() {
@@ -53,5 +49,6 @@ function destroyPageScope() {
 export {
     setGlobalState,
     setPageState,
-    destroyPageScope
+    destroyPageScope,
+    pageScope
 };

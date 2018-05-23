@@ -80,7 +80,6 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
                     // Add custom script
                     if (MIPWatchHandler) {
                         if (MIPWatchHandlerFlag) {
-                            console.log('addEventListener', routeOptions.path)
                             window.addEventListener('ready-to-watch', MIPWatchHandler);
                         }
                         else {

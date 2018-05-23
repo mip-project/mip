@@ -42,7 +42,7 @@ let mip = {
     viewport,
     hash,
     // 当前是否在 iframe 中
-    isIframed: window === top,
+    isIframed: window !== top,
     standalone: window === top,
     sandbox,
     css: {}

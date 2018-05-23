@@ -7,10 +7,6 @@ import Compile from './compile';
 import Observer from './observer';
 import Watcher from './watcher';
 import util from '../../util';
-import {
-    setGlobalState, setPageState,
-    destroyPageScope, assign
-} from './scope';
 
 /* global MIP */
 class Bind {
@@ -35,15 +31,6 @@ class Bind {
         };
         MIP.watch = function (target, cb) {
             me._bindWatch(target, cb);
-        };
-        MIP.unwatchAll = function () {
-            me._watchers.forEach(watcher => watcher.teardown());
-            me._watcherIds = [];
-            // 只保留 global 数据，并去掉 __ob__
-            destroyPageScope();
-            me._win.m = JSON.parse(
-                JSON.stringify(m).replace(/,"__ob__":\{\}/g, '')
-            );
         };
     }
 
@@ -76,18 +63,106 @@ class Bind {
             this._compile.upadteData(JSON.parse(origin));
             let classified = this._normalize(data);
             if (compile) {
-                setGlobalState(classified.globalData);
-                setPageState(classified.pageData);
-                this._observer.start(this._win.m);
-                this._compile.start(this._win.m);
+                this._setGlobalState(classified.globalData);
+                this._setPageState(classified.pageData);
+                this.observerM = Object.assign(
+                    {},
+                    mip.isIframed ? this._win.parent.g || {} : this._win.g || {},
+                    this._win.m
+                );
+                this._observer.start(this.observerM);
+                this._compile.start(this.observerM);
             }
             else {
-                this._assign(window.m, data);
+                if (classified.globalData) {
+                    this._assign(this._win.parent.g, classified.globalData);
+                }
+                data = classified.pageData;
+                for (let field of Object.keys(data)) {
+                    if (this._win.m.hasOwnProperty(field)) {
+                        // this._assign(this._win.m, {[field]: data[field]});
+                        this._assign(this.observerM, {[field]: data[field]});
+                    }
+                    else {
+                        this._dispatch(field, data[field]);
+                    }
+                }
             }
         }
         else {
             console.error('setData method must accept an object!');
         }
+    }
+
+    _bindWatch(target, cb) {
+        if (target.constructor === Array) {
+            for (let key of target) {
+                MIP.watch(key, cb);
+            }
+            return;
+        }
+        if (typeof target !== 'string') {
+            return;
+        }
+        if (!cb || typeof cb !== 'function') {
+            return;
+        }
+
+        let reg = target.split('.').reduce((total, current) => {
+            if (total) {
+                total += '\{("[^\{\}:]+":\{[^\{\}]+\},)*';
+            }
+            return total + `"${current}":`;
+        }, '');
+        // if (!JSON.stringify(this._win.m).match(new RegExp(reg))) {
+        if (!JSON.stringify(this.observerM).match(new RegExp(reg))) { 
+            return;
+        }
+
+        let watcherId = `${target}${cb.toString()}`.replace(/[\n\t\s]/g, '');
+        if (this._watcherIds.indexOf(watcherId) !== -1) {
+            return;
+        }
+
+        this._watcherIds.push(watcherId);
+        this._watchers.push(new Watcher(
+            null,
+            // this._win.m,
+            this.observerM,
+            '',
+            target,
+            cb
+        ));
+    }
+
+    _dispatch(key, val) {
+        let win = this._win;
+        if (win.g && win.g.hasOwnProperty(key)) {
+            this._assign(win.g, {[key]: val});
+        }
+        else if (mip.isIframed && win.parent.g && win.parent.g.hasOwnProperty(key)) {
+            this._assign(win.parent.g, {[key]: val});
+        }
+        else {
+            Object.assign(win.m, {[key]: val});
+        }
+    }
+
+    _setGlobalState(data) {
+        let win = this._win;
+        if (mip.isIframed) {
+            Object.assign(win.parent.g, data);
+        }
+        else {
+            win.g = win.g || {};
+            Object.assign(win.g, data);
+        }
+    }
+
+    _setPageState(data) {
+        let win = this._win;
+        Object.assign(win.m, data);
+        win.m.__proto__ = win.parent.g;
     }
 
     _normalize(data) {
@@ -109,7 +184,6 @@ class Bind {
         }
     }
 
-    // deepClone
     _assign(oldData, newData) {
         for (let k of Object.keys(newData)) {
             if (isObj(newData[k]) && oldData[k]) {
@@ -119,46 +193,6 @@ class Bind {
                 oldData[k] = newData[k];
             }
         }
-    }
-
-    _bindWatch(target, cb) {
-        if (target.constructor === Array) {
-            for (let key of target) {
-                MIP.watch(key, cb);
-            }
-            return;
-        }
-        if (typeof target !== 'string') {
-            return;
-        }
-        if (!cb || typeof cb !== 'function') {
-            return;
-        }
-
-        // TODO 去重
-        let reg = target.split('.').reduce((total, current) => {
-            if (total) {
-                total += '\{("[^\{\}:]+":\{[^\{\}]+\},)*';
-            }
-            return total + `"${current}":`;
-        }, '');
-        if (!JSON.stringify(this._win.m).match(new RegExp(reg))) {
-            return;
-        }
-
-        let watcherId = `${target}${cb.toString()}`.replace(/[\n\t\s]/g, '');
-        if (this._watcherIds.indexOf(watcherId) !== -1) {
-            return;
-        }
-
-        this._watcherIds.push(watcherId);
-        this._watchers.push(new Watcher(
-            null,
-            this._win.m,
-            '',
-            target,
-            cb // args: (dir, newVal, oldVal)
-        ));
     }
 
     _eventEmit() {

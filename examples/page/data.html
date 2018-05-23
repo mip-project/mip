@@ -81,15 +81,18 @@
         </script>
     </mip-data>
 
-    <mip-complevel1 m-bind:userinfo="userInfo"></mip-complevel1>
+    <!-- <mip-complevel1 m-bind:userinfo="userInfo"></mip-complevel1>
 
     <span>group.info.name will show below which is a global state shared from index.html:</span>
-    <span m-text="group.info.name"></span>
+    <span m-text="group.info.name"></span> -->
 
     <br><br>
     <h1 m-text="title"></h1>
 
-    <p m-text="num"></p>
+    <p m-text="size.small"></p>
+    <div on="tap:MIP.setData({size:{small:2}})" class="button">click change size.small</div>
+
+    <!-- <p m-text="num"></p>
     <div on="tap:MIP.setData({num:2})" class="button">click change num</div>
 
     <p m-text="num2"></p>
@@ -105,7 +108,7 @@
     <div on="tap:MIP.setData({comments:'ckkk'})" class="button">click change comments</div>
 
     <p m-text="img.first"></p>
-    <div on="tap:MIP.setData({img:{first:1}})" class="button">click change img.first</div>
+    <div on="tap:MIP.setData({img:{first:1}})" class="button">click change img.first</div> -->
 
     <br><br>
     <a href="./index.html" class="link" mip>Back to Index</a>
@@ -142,8 +145,10 @@
         </script>
     </mip-shell>
 
+    <!-- <iframe src="./data2.html" id="data2-page"></iframe> -->
+    <!-- <iframe src="./data3.html" id="data3-page"></iframe> -->
+
     <script type="application/mip-script">
-        console.log('watch data in data.html')
         MIP.watch('num', function () {
             console.log('num changed callback')
             MIP.setData({
@@ -177,4 +182,22 @@
     <script src="../../dist/mip.js"></script>
     <script src="./components/mip-complevel1.js"></script>
     <script src="./components/mip-complevel2.js"></script>
+    <script>
+        setTimeout(() => {
+            var iframe = document.createElement('iframe');
+            iframe.src = "./data2.html";
+            iframe.setAttribute('id', 'data2-page');
+            iframe.style.position = 'relative';
+            iframe.style.top = '300px';
+            document.body.appendChild(iframe);
+        }, 1000);
+        setTimeout(() => {
+            var iframe = document.createElement('iframe');
+            iframe.src = "./data3.html";
+            iframe.setAttribute('id', 'data3-page');
+            iframe.style.position = 'relative';
+            iframe.style.top = '300px';
+            document.body.appendChild(iframe);
+        }, 1500);
+    </script>
 </body>
