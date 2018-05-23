@@ -4,8 +4,6 @@
  * @author schoeu
  */
 
-'use strict';
-
 const ls = require('./logSend');
 let tags = require('./coreTags');
 const RATE = 0.1;
@@ -24,14 +22,17 @@ tags = tags.filter((it = '') => !!it.trim());
 function errorHandle(e = {}) {
     // 报错文件请求路径, 跨域js文件中错误无信息暂不上报
     let filename = e.filename || '';
+
     if (!filename) {
         return;
     }
 
     // 错误信息
     let message = e.message || '';
+
     // 错误行号
     let lineno = e.lineno || '';
+
     // 错误列号
     let colno = e.colno || 0;
 
@@ -42,7 +43,6 @@ function errorHandle(e = {}) {
 
     let tagInfo = /\/(mip-.+)\//g.exec(filename) || [];
     let tagName = tagInfo[1] || '';
-
     let sampling = Math.random() <= RATE;
 
     // 只记录官方组件错误

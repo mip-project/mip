@@ -1,9 +1,7 @@
 /**
  * @file Resource manager
- *
  * @author zhangzhiqiang37(zhiqiangzhang37@163.com)
  */
-'use strict';
 
 import viewport from '../../viewport';
 import rect from '../../util/dom/rect';
@@ -46,7 +44,6 @@ class Resources {
     bindEvent() {
         let scrollLock = false;
         viewport.on('resize scroll', () => {
-
             if (scrollLock) {
                 return;
             }
@@ -72,7 +69,6 @@ class Resources {
      * @param {MIPElement} element A mip element
      */
     add(element) {
-
         if (!element) {
             return;
         }

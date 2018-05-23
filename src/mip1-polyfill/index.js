@@ -3,8 +3,6 @@
  * @author sekiyika(pengxing@baidu.com)
  */
 
-'use strict';
-
 import 'script-loader!zepto';
 import 'script-loader!esljs';
 
@@ -40,7 +38,6 @@ window.define('fixed-element', () => fixedElement);
 window.define('naboo', () => naboo);
 
 export default function install(mip) {
-
     Object.assign(mip, {
         registerMipElement(name, customClass, css) {
             if (templates.isTemplateClass(customClass)) {
@@ -53,6 +50,5 @@ export default function install(mip) {
 
         prerenderElement: Resources.prerenderElement
     });
-
 }
 
