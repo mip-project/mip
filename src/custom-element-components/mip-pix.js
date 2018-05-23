@@ -4,8 +4,7 @@
  */
 
 import util from '../util';
-import customElementClass from '../mip1-polyfill/customElement';
-let customElem = customElementClass.create();
+import BaseElement from './base-element';
 
 /**
  * 替换请求链接中的参数
@@ -35,9 +34,9 @@ function getBodyAttr(attr) {
     return body.getAttribute(attr) || 'default';
 }
 
-class MipPix extends customElem {
+class MipPix extends BaseElement {
 
-    firstInviewCallback = function () {
+    firstInviewCallback() {
         // 获取统计所需参数
         let ele = this.element;
         let src = ele.getAttribute('src');

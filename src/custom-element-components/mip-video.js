@@ -6,10 +6,9 @@
  */
 import util from '../util';
 import viewer from '../viewer';
-import customElementClass from '../mip1-polyfill/customElement';
+import BaseElement from './base-element';
 
 let windowInIframe = viewer.isIframed;
-let customElem = customElementClass.create();
 let videoAttributes = [
     'ads',
     'src',
@@ -46,7 +45,7 @@ function getAttributeSet(attributes) {
     return attrs;
 }
 
-class MipVideo extends customElem {
+class MipVideo extends BaseElement {
 
     firstInviewCallback() {
         this.attributes = getAttributeSet(this.element.attributes);

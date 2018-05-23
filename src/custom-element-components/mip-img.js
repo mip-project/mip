@@ -4,7 +4,7 @@
  */
 
 import util from '../util';
-import customElementClass from '../mip1-polyfill/customElement';
+import BaseElement from './base-element';
 import naboo from '../mip1-polyfill/naboo';
 import viewport from '../viewport';
 import viewer from '../viewer';
@@ -13,8 +13,6 @@ let errHandle;
 let Gesture = util.Gesture;
 let css = util.css;
 let rect = util.rect;
-let customElem = customElementClass.create();
-
 
 // 取值根据 https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement
 let imgAttributes = [
@@ -236,7 +234,7 @@ class Placeholder {
 
 }
 
-class MipImg extends customElem {
+class MipImg extends BaseElement {
 
     firstInviewCallback() {
         let ele = this.element.querySelector('img');

@@ -6,8 +6,7 @@
  */
 
 import resources from '../mip1-polyfill/resources';
-import customElementClass from '../mip1-polyfill/customElement';
-let customElem = customElementClass.create();
+import BaseElement from './base-element';
 
 let carouselParas = {
     boxClass: 'mip-carousel-container',
@@ -116,7 +115,7 @@ function changeIndicatorStyle(startDot, endDot, className) {
     addClass(endDot, className);
 }
 
-class MipCarousel extends customElem {
+class MipCarousel extends BaseElement {
 
     /* eslint-disable fecs-max-statements */
     build() {

@@ -4,12 +4,11 @@
  */
 
 import util from '../util';
-import customElementClass from '../mip1-polyfill/customElement';
+import BaseElement from './base-element';
 
-let customElem = customElementClass.create();
 let attrList = ['allowfullscreen', 'allowtransparency', 'sandbox'];
 
-class MipIframe extends customElem {
+class MipIframe extends BaseElement {
 
     build() {
         let element = this.element;
