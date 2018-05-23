@@ -4,28 +4,30 @@
 
 ----------
 
-#####升级点：
-1.  使用 `MIP.setData(data)` 设置数据时，支持多层级的复杂对象的数据源覆盖。
+####**升级点：**
+
+1. 使用 `MIP.setData(data)` 设置数据时，支持多层级的复杂对象的数据源覆盖。
 
 2. 新增 `MIP.watch(value, cb)` 方法来实现观察数据变化，并执行相应的操作。 `value` 为数据源中的属性名，多层数据可以以 `.` 连接，允许是单个字符串或字符串数组。`cb` 接收三个参数，分别是`directive` (默认为 null )， `oldVal`，`newVal`。
 
 3. 支持开发者在 MIP 页面中编写 JS 操作 state，要求使用以下 type 作为标识：
 
-	`<script type="application/mip-script"></script>`
+    `<script type="application/mip-script"></script>`
 
 	在这个特殊 type 的 script 中仅允许操作 state。建议操作有 `MIP.watch` 和 `MIP.setData`
 
-4.  支持多页共享 state：
+4. 支持多页共享 state：
 	
 	在 mip2 的环境里，我们提供整站沉浸式的体验，如果要打造复杂的业务场景，页面与页面之间共享数据是必不可少的
+
 	6. 在原 `mip-data` 的基础上，mip2 有整站共享数据的概念。设置数据时，在需要共享的数据前添加 # 标识（仅检测数据第一层），该数据将被提升成共享态：
-  ```javascript
-  <mip-data>
-     <script type="application/json">
-         {
-             "#globalState": {},
-             "pageState": []
-         }
+```javascript
+<mip-data>
+    <script type="application/json">
+        {
+            "#globalState": {},
+            "pageState": []
+        }
      </script>
  </mip-data>
  ```
