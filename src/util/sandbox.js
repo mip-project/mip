@@ -97,10 +97,11 @@ function getSafeObjCopy(obj, exclude) {
             };
         }
         else {
-            newObj[key] = function () {
-                let objName = obj.toString().slice(8, -1).replace(/[A-Z]+/g, ($0) => {
-                    return $0[$0.length - 1].toLocaleLowerCase();
-                });
+            newObj[key] = () => {
+                let objName = obj.toString().slice(8, -1).replace(
+                    /[A-Z]+/g,
+                    $0 => $0[$0.length - 1].toLocaleLowerCase()
+                );
                 throw new Error(`组件内禁止使用${objName}.${key}`);
             };
         }
@@ -138,8 +139,7 @@ function processDocumentObj(doc) {
  * @return {Function}    延时函数体
  */
 function timeoutFun(type, self) {
-    return function (fn, delay, ...args) {
-
+    return (fn, delay, ...args) => {
         if (!isFun(fn)) {
             /* eslint-disable no-console */
             console.warn(`${type}请使用函数作参数`);
@@ -147,10 +147,7 @@ function timeoutFun(type, self) {
             return;
         }
 
-        return window[type](() => {
-            fn.apply(self, args);
-        }, delay);
-
+        return window[type](() => fn.apply(self, args), delay);
     };
 }
 
@@ -221,7 +218,6 @@ class Sandbox {
             }
         );
     }
-
 }
 
 export default new Sandbox();

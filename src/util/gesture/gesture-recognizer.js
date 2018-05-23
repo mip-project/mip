@@ -3,8 +3,6 @@
  * @author sekiyika(pengxing@baidu.com)
  */
 
-'use strict';
-
 import fn from '../fn';
 
 // Save native functions.

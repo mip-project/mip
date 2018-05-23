@@ -33,7 +33,7 @@
 </template>
 
 <script>
-
+/* eslint-disable fecs-esnext-ext,fecs-valid-jsdoc */
 import resources from '../../custom-element/utils/resources';
 
 const defaultDefer = 4000;
@@ -86,12 +86,6 @@ export default {
     },
 
     props: {
-        layout: {
-            default() {
-                return 'responsive';
-            },
-            type: String
-        },
         width: [String, Number],
         height: [String, Number],
         autoplay: {
@@ -194,7 +188,7 @@ export default {
                 this.allWidth = carouselWrapper.offsetWidth;
                 this.translateToIdx(1);
                 this.imgIndex = 1;
-        }, 20);
+            }, 20);
 
         },
 

@@ -5,11 +5,9 @@
  */
 'use strict';
 
-import viewport from '../../util/viewport';
+import viewport from '../../viewport';
 import rect from '../../util/dom/rect';
 import Gesture from '../../util/gesture';
-
-const firstInviewPropName = 'firstInview';
 
 /**
  * Store the resources.
@@ -35,8 +33,6 @@ class Resources {
          */
         this.eid = 0;
 
-        this.firstInviewPropName = firstInviewPropName;
-
         this.gesture = new Gesture(document.body, {
             preventX: false
         });
@@ -55,9 +51,7 @@ class Resources {
                 return;
             }
 
-            setTimeout(() => {
-                scrollLock = false;
-            }, 30);
+            setTimeout(() => scrollLock = false, 30);
             scrollLock = true;
             this.updateState();
 
@@ -85,9 +79,7 @@ class Resources {
 
         element.eid = this.eid++;
         resources[element.eid] = element;
-        setTimeout(() => {
-            this.updateState();
-        });
+        setTimeout(() => this.updateState());
     }
 
     /**
@@ -125,6 +117,8 @@ class Resources {
     setInViewport(element, inViewport) {
         if (element.inViewport && element.parentNode && element.inViewport() !== inViewport) {
             element.viewportCallback(inViewport);
+            // 已经调用过firstInviewCallback从resource中移除
+            this.remove(element.eid);
         }
     }
 
@@ -157,7 +151,6 @@ class Resources {
             }
         }
     }
-
 }
 
 export default new Resources();

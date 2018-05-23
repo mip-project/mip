@@ -34,7 +34,6 @@
 import AppHeader from './AppHeader.vue';
 import Loading from './Loading.vue';
 import {restoreContainerScrollPosition, restoreBodyScrollPosition} from '../util';
-import Store from '../../vuex/index';
 import {MIP_CONTAINER_ID, DEFAULT_SHELL_CONFIG} from '../const';
 
 export default {

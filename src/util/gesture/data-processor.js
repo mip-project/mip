@@ -3,8 +3,6 @@
  * @author sekiyika(pengxing@baidu.com)
  */
 
-'use strict';
-
 const round = Math.round;
 const max = Math.max;
 const abs = Math.abs;

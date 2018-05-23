@@ -150,6 +150,7 @@ export default {
 
 <style lang="less" scoped>
 @import '../../styles/variable.less';
+
 mip-img {
     font-size: 0;
     background: @placeholder-bg;
@@ -177,12 +178,14 @@ mip-img {
                 opacity: 1;
             }
         }
+
         img {
             position: absolute;
             transition: all ease .4s;
             max-width: 100%;
             max-height: 100%;
         }
+
         .mip-img-popup-innerimg {
             width: 100% !important;
             top: 50% !important;
