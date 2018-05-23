@@ -3,8 +3,6 @@
  * @author sekiyika(pengxing@baidu.com)
  */
 
-'use strict';
-
 import EventEmitter from '../event-emitter';
 import Recognizer from './gesture-recognizer';
 import dataProcessor from './data-processor';
@@ -174,6 +172,5 @@ proto._recognize = function (data) {
         recognizer.recognize(data);
     }
 };
-
 
 export default Gesture;

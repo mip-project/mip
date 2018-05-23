@@ -20,6 +20,7 @@
 </template>
 
 <script>
+/* eslint-disable fecs-esnext-ext,fecs-valid-jsdoc */
 export default {
     props: {
         src: String,

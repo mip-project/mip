@@ -1,11 +1,9 @@
 /**
  * @file Resource manager
- *
  * @author zhangzhiqiang37(zhiqiangzhang37@163.com)
  */
-'use strict';
 
-import viewport from '../../util/viewport';
+import viewport from '../../viewport';
 import rect from '../../util/dom/rect';
 import Gesture from '../../util/gesture';
 
@@ -46,14 +44,11 @@ class Resources {
     bindEvent() {
         let scrollLock = false;
         viewport.on('resize scroll', () => {
-
             if (scrollLock) {
                 return;
             }
 
-            setTimeout(() => {
-                scrollLock = false;
-            }, 30);
+            setTimeout(() => scrollLock = false, 30);
             scrollLock = true;
             this.updateState();
 
@@ -74,16 +69,13 @@ class Resources {
      * @param {MIPElement} element A mip element
      */
     add(element) {
-
         if (!element) {
             return;
         }
 
         element.eid = this.eid++;
         resources[element.eid] = element;
-        setTimeout(() => {
-            this.updateState();
-        });
+        setTimeout(() => this.updateState());
     }
 
     /**
@@ -155,7 +147,6 @@ class Resources {
             }
         }
     }
-
 }
 
 export default new Resources();

@@ -3,8 +3,6 @@
  * @author sekiyika(pengxing@baidu.com)
  */
 
-'use strict';
-
 /**
  * Save documentElement.
  *
@@ -47,10 +45,8 @@ function matches(element, selector) {
  * @return {?HTMLElement}
  */
 let closest = docElem.closest
-    ? function (element, selector) {
-        return element.closest(selector);
-    }
-    : function (element, selector) {
+    ? (element, selector) => element.closest(selector)
+    : (element, selector) => {
         while (element) {
             if (matches(element, selector)) {
                 return element;
@@ -154,7 +150,7 @@ function waitDocumentReady(cb) {
         cb();
         return;
     }
-    let interval = window.setInterval(function () {
+    let interval = window.setInterval(() => {
         if (document.body) {
             window.clearInterval(interval);
             cb();

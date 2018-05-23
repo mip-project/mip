@@ -3,7 +3,6 @@
  * @author sekiyika(pengxing@baidu.com)
  */
 
-
 /**
  * Returns true if the element is in the array and false otherwise.
  *
@@ -15,10 +14,11 @@
 function includes(value, fromIndex = 0) {
     let len = this.length;
     let i = fromIndex >= 0 ? fromIndex : Math.max(len + fromIndex, 0);
+
     for (; i < len; i++) {
         let other = this[i];
         // If value has been found OR (value is NaN AND other is NaN)
-        /*eslint "no-self-compare": 0*/
+        /* eslint-disable no-self-compare */
         if (other === value || (value !== value && other !== other)) {
             return true;
         }

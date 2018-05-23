@@ -69,10 +69,7 @@ export function getProps(componentDefinition = {}) {
     if (componentDefinition.mixins) {
         componentDefinition.mixins.forEach(mixin => extractProps(mixin.props, props));
     }
-
-    if (componentDefinition.extends
-        && componentDefinition.extends.props
-    ) {
+    if (componentDefinition.extends && componentDefinition.extends.props) {
         let parentProps = componentDefinition.extends.props;
         extractProps(parentProps, props);
     }
@@ -94,12 +91,7 @@ export function reactiveProps(element, props) {
                 return this.vm[name];
             },
             set(value) {
-                if (
-                    (typeof value === 'object'
-                        || typeof value === 'function'
-                    )
-                    && this.vm
-                ) {
+                if ((typeof value === 'object' || typeof value === 'function') && this.vm) {
                     let propName = props.camelCase[index];
                     this.vm[propName] = value;
                 }

@@ -5,13 +5,12 @@
  * @author schoeu
  */
 
-'use strict';
-
 export default {
     data: {},
 
     /**
      * 数据上报逻辑
+     *
      * @param {*} type type
      * @param {*} msg msg
      */
