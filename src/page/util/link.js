@@ -20,40 +20,42 @@ function guardEvent(e, $a) {
     return true;
 }
 
-export function installMipLink(router) {
+export function installMipLink(router, {isRootPage, postMessage}) {
     event.delegate(document, 'a', 'click', function (e) {
         let $a = e.target;
+        let to = $a.getAttribute('href');
+        const location = router.resolve(to, router.currentRoute, false).location;
         if ($a.hasAttribute('mip-link')) {
-            let to = $a.getAttribute('href');
             if (guardEvent(e, $a)) {
-                const location = router.resolve(to, router.currentRoute, false).location;
                 if ($a.hasAttribute('replace')) {
-                    if (router.rootPage) {
+                    if (isRootPage) {
                         router.replace(location);
                     }
                     else {
-                        parent.postMessage({
+                        postMessage({
                             type: 'router-replace',
-                            data: {
-                                location
-                            }
-                        }, window.location.origin);
+                            data: {location}
+                        });
                     }
                 }
                 else {
-                    if (router.rootPage) {
+                    if (isRootPage) {
                         router.push(location);
                     }
                     else {
-                        parent.postMessage({
+                        postMessage({
                             type: 'router-push',
-                            data: {
-                                location
-                            }
-                        }, window.location.origin);
+                            data: {location}
+                        });
                     }
                 }
             }
+        }
+        else {
+            postMessage({
+                type: 'router-force',
+                data: {location}
+            })
         }
     });
 }

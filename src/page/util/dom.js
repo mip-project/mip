@@ -259,3 +259,5 @@ function getIFrame(iframe) {
 
     return iframe;
 }
+
+export const inBrowser = typeof window !== 'undefined';

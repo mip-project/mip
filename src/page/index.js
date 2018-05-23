@@ -4,41 +4,89 @@
  */
 
 import * as util from './util';
-import Router from '../router/index';
-import createRouter from './create-router';
+import Router from './router';
+import AppShell from './appshell';
 import '../styles/mip.less';
 
 class Page {
     constructor() {
         this.pageId = util.getPath(window.location.href);
+        if (window.parent && window.parent.MIP_ROOT_PAGE) {
+            this.isRootPage = false;
+        }
+        else {
+            window.MIP_ROOT_PAGE = true;
+            this.isRootPage = true;
+        }
+        this.data = {
+            appshell: {}
+        };
 
         // root page
-        this.isRootPage = false;
+        this.appshell = null;
         this.children = [];
         this.currentChildPageId = null;
+        this.messageHandlers = [];
     }
 
     initRouter() {
         let router;
-        // inside iframe
-        if (window.parent && window.parent.MIP_ROUTER) {
-            router = window.parent.MIP_ROUTER;
-            router.rootPage.addChild(this);
-        }
         // outside iframe
-        else {
-            router = createRouter(Router);
+        if (this.isRootPage) {
+            router = new Router({
+                routes: [
+                    {
+                        path: window.location.pathname
+                    }
+                ]
+            });
             router.rootPage = this;
-            router.ROOT_PAGE_ID = this.pageId;
             router.init();
-            router.history.listen(this.render.bind(this));
+            router.listen(this.render.bind(this));
 
             window.MIP_ROUTER = router;
 
-            this.isRootPage = true;
+            this.messageHandlers.push((type, data) => {
+                if (type === 'router-push') {
+                    router.push(data.location);
+                }
+                else if (type === 'router-replace') {
+                    router.replace(data.location);
+                }
+                else if (type === 'router-force') {
+                    window.location.href = data.location.fullpath;
+                }
+            });
+        }
+        // inside iframe
+        else {
+            router = window.parent.MIP_ROUTER;
+            router.rootPage.addChild(this);
         }
 
-        util.installMipLink(router);
+        util.installMipLink(router, this);
+    }
+
+    initAppShell() {
+        this.data.appshell = util.getMIPShellConfig();
+        if (this.isRootPage) {
+            this.messageHandlers.push((type, data) => {
+                if (type === 'appshell-refresh') {
+                    this.refreshAppShell(data);
+                }
+            });
+            this.refreshAppShell(this.data.appshell);
+        }
+        else {
+            this.postMessage({
+                type: 'appshell-refresh',
+                data: this.data.appshell
+            });
+        }
+    }
+
+    postMessage(data) {
+        parent.postMessage(data, window.location.origin);
     }
 
     start() {
@@ -51,24 +99,39 @@ class Page {
         }
 
         this.initRouter();
+        this.initAppShell();
         document.body.setAttribute('mip-ready', '');
-    }
 
-    hasChild(pageId) {
-        return this.children.find(child => child.pageId === pageId);
-    }
-
-    addChild(page) {
         if (this.isRootPage) {
-            this.children.push(page);
+            // listen message from iframes
+            window.addEventListener('message', (e) => {
+                if (e.source.origin === window.location.origin) {
+                    this.messageHandlers.forEach(handler => {
+                        handler.call(this, e.data.type, e.data.data || {});
+                    });
+                }
+            }, false);
         }
     }
 
-    render(route) {
-        let targetPageId = route.fullPath;
-        if (this.pageId !== targetPageId
-            && !this.hasChild(targetPageId)) {
+    /**** Root Page methods ****/
+
+    refreshAppShell(appshellData) {
+        if (!this.appshell) {
+            this.appshell = new AppShell({data: appshellData});
+        }
+        this.appshell.refresh(appshellData);
+    }
+
+    applyTransition(targetPageId, shouldCreateNewPage) {
+        if (shouldCreateNewPage) {
             let targetFrame = util.createIFrame(targetPageId);
+
+            if (this.data.appshell
+                && this.data.appshell.header
+                && !this.data.appshell.header.hidden) {
+                targetFrame.classList.add('mip-page__iframe-with-header');
+            }
 
             util.frameMoveIn(targetFrame, {
                 newPage: true
@@ -80,7 +143,32 @@ class Page {
             }
             util.frameMoveIn(targetPageId);
         }
-        this.currentChildPageId = targetPageId
+        this.currentChildPageId = targetPageId;
+    }
+
+    addChild(page) {
+        if (this.isRootPage) {
+            this.children.push(page);
+        }
+    }
+
+    getPageById(pageId) {
+        return pageId === this.pageId ?
+            this : this.children.find(child => child.pageId === pageId);
+    }
+    //
+    // findChild(pageId) {
+    //     return
+    // }
+
+    render(route) {
+        let targetPageId = route.fullPath;
+        let targetPage = this.getPageById(targetPageId);
+
+        if (targetPage) {
+            this.refreshAppShell(targetPage.data.appshell);
+        }
+        this.applyTransition(targetPageId, !targetPage);
     }
 }
 
