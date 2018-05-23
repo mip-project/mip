@@ -171,7 +171,6 @@ Naboo.tool = (() => {
                 eventPrefix = vendors[prop];
                 break;
             }
-
         }
     }
 
@@ -242,9 +241,9 @@ Naboo.tool = (() => {
                     res = val + prop;
                     break;
                 }
-
             }
         }
+
         return res;
     }
 
@@ -311,7 +310,6 @@ Naboo.transition = (() => {
             }
 
             duration = Math.max(duration, 0);
-
             duration /= 1000;
             delay /= 1000;
 
@@ -354,7 +352,6 @@ Naboo.transition = (() => {
 
             // 回调是否执行
             let fired = false;
-
             let setCss = Naboo.tool.setCss;
 
             // 包装后的回调函数
