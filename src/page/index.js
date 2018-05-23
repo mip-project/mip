@@ -118,9 +118,13 @@ class Page {
 
     refreshAppShell(appshellData) {
         if (!this.appshell) {
-            this.appshell = new AppShell({data: appshellData});
+            this.appshell = new AppShell({
+                data: appshellData
+            });
         }
-        this.appshell.refresh(appshellData);
+        else {
+            this.appshell.refresh(appshellData);
+        }
     }
 
     applyTransition(targetPageId, shouldCreateNewPage) {
@@ -156,10 +160,6 @@ class Page {
         return pageId === this.pageId ?
             this : this.children.find(child => child.pageId === pageId);
     }
-    //
-    // findChild(pageId) {
-    //     return
-    // }
 
     render(route) {
         let targetPageId = route.fullPath;

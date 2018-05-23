@@ -22,7 +22,7 @@ function guardEvent(e, $a) {
 
 export function installMipLink(router, {isRootPage, postMessage}) {
     event.delegate(document, 'a', 'click', function (e) {
-        let $a = e.target;
+        let $a = this;
         let to = $a.getAttribute('href');
         const location = router.resolve(to, router.currentRoute, false).location;
         if ($a.hasAttribute('mip-link')) {

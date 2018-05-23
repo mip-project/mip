@@ -13,6 +13,7 @@ export default class AppShell {
 
     init() {
         this.$wrapper = document.createElement('div');
+        this.$wrapper.classList.add('mip-appshell-header-wrapper');
 
         if (!this.data.header.hidden) {
             this.header = new Header({
@@ -20,7 +21,8 @@ export default class AppShell {
                 data: {
                     ...this.data.header,
                     showBackIcon: !this.data.view.isIndex
-                }
+                },
+                clickButtonCallback: this.handleClickHeaderButton
             });
             this.header.init();
         }
@@ -29,7 +31,17 @@ export default class AppShell {
     }
 
     refresh(data) {
-        let {header: {hidden}} = data;
-            // this.$header.
+        let {header, view} = data;
+        this.header.update({
+            ...header,
+            showBackIcon: !view.isIndex
+        });
+    }
+
+    handleClickHeaderButton(buttonName) {
+        // TODO: should emit relative CustomEvent so that other CustomElement can receive
+        if (buttonName === 'back') {
+            window.MIP_ROUTER.go(-1);
+        }
     }
 }
