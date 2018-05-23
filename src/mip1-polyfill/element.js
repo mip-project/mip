@@ -1,10 +1,7 @@
 /**
  * @file Element Function
- *
  * @author xx
  */
-
-'use strict';
 
 import cssLoader from '../util/dom/css-loader';
 import layout from '../layout';
@@ -178,14 +175,14 @@ function createBaseElementProto() {
      *
      * @param {Object} action event action
      */
-    proto.executeEventAction = action => {
+    proto.executeEventAction = function (action) {
         this.customElement.executeEventAction(action);
     };
 
     /**
      * Called by customElement. And tell the performance that element is loaded.
      */
-    proto.resourcesComplete = () => {
+    proto.resourcesComplete = function () {
         performance.fsElementLoaded(this);
     };
 
