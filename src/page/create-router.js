@@ -12,9 +12,7 @@ import {
 import ErrorPage from './vue-components/Error.vue';
 import fixedElement from '../fixed-element';
 
-
 const {window: sandWin, document: sandDoc} = sandbox;
-const FIRST_PAGE_ID = util.getPath(window.location.href);
 
 /**
  * extract route object from current DOM tree or raw HTML.
@@ -57,9 +55,7 @@ function getRoute(rawHTML, routeOptions = {}, shellConfig) {
     return Object.assign({
         component: {
             beforeRouteEnter(to, from, next) {
-                if (to.fullPath !== FIRST_PAGE_ID) {
-                    util.createIFrame(to.fullPath);
-                };
+                router.rootPage.render(to.fullPath);
                 // Set title
                 document.title = shellConfig.header.title || defaultTitle;
                 next();
@@ -107,16 +103,27 @@ function getErrorRoute() {
     }
 }
 
-export default function createRouter(Router) {
+export default function createRouter(Router, page) {
     let shellConfig = util.getMIPShellConfig();
     let view = shellConfig.view;
-
+    //
     // Build routes
+    // let routes = [
+    //     getRoute(page, undefined, {
+    //         path: window.location.pathname
+    //     }, shellConfig),
+    //     getErrorRoute(page)
+    // ];
+
     let routes = [
-        getRoute(undefined, {
-            path: window.location.pathname
-        }, shellConfig),
-        getErrorRoute()
+        {
+            path: window.location.pathname,
+            component: {}
+        },
+        {
+            path: './tree.html',
+            component: {}
+        }
     ];
 
     // Create router instance and register onMatchMiss hook (add dynamic routes)
@@ -126,39 +133,39 @@ export default function createRouter(Router) {
         util.initHistory({base: router.options.base});
     }
 
-    router.onMatchMiss = function(to, from, next) {
-        // add current loaded components
-        // util.addLoadedComponents();
-
-        let handleError = error => next({
-            path: MIP_ERROR_ROUTE_PATH,
-            params: {
-                error
-            }
-        });
-
-        fetch(to.path).then(res => {
-            if (!res.ok) {
-                handleError({message: '404'});
-                return;
-            }
-
-            res.text().then(async function(targetHTML) {
-                // let newComponents = util.getNewComponents(targetHTML);
-                // if (newComponents.length !== 0) {
-                //     await util.loadScripts(newComponents);
-                // }
-                router.addRoutes([
-                    getRoute(targetHTML, {
-                        path: to.path
-                    })
-                ]);
-
-                next();
-            });
-        }, handleError);
-
-    };
+    // router.onMatchMiss = function(to, from, next) {
+    //     // add current loaded components
+    //     // util.addLoadedComponents();
+    //
+    //     let handleError = error => next({
+    //         path: MIP_ERROR_ROUTE_PATH,
+    //         params: {
+    //             error
+    //         }
+    //     });
+    //
+    //     fetch(to.path).then(res => {
+    //         if (!res.ok) {
+    //             handleError({message: '404'});
+    //             return;
+    //         }
+    //
+    //         res.text().then(async function(targetHTML) {
+    //             // let newComponents = util.getNewComponents(targetHTML);
+    //             // if (newComponents.length !== 0) {
+    //             //     await util.loadScripts(newComponents);
+    //             // }
+    //             router.addRoutes([
+    //                 getRoute(targetHTML, {
+    //                     path: to.path
+    //                 })
+    //             ]);
+    //
+    //             next();
+    //         });
+    //     }, handleError);
+    //
+    // };
 
     // register message handler
     window.addEventListener('message', (e) => {

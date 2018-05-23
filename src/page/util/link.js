@@ -1,7 +1,5 @@
 import event from '../../util/dom/event';
 
-import {CURRENT_PAGE_ID} from '../index';
-
 function guardEvent(e, $a) {
     // don't redirect with control keys
     if (e.metaKey || e.altKey || e.ctrlKey || e.shiftKey) {
@@ -30,7 +28,7 @@ export function installMipLink(router) {
             if (guardEvent(e, $a)) {
                 const location = router.resolve(to, router.currentRoute, false).location;
                 if ($a.hasAttribute('replace')) {
-                    if (router.ROOT_PAGE_ID === CURRENT_PAGE_ID) {
+                    if (router.rootPage) {
                         router.replace(location);
                     }
                     else {
@@ -43,7 +41,7 @@ export function installMipLink(router) {
                     }
                 }
                 else {
-                    if (router.ROOT_PAGE_ID === CURRENT_PAGE_ID) {
+                    if (router.rootPage) {
                         router.push(location);
                     }
                     else {
