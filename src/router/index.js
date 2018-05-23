@@ -1,4 +1,3 @@
-import {install} from './install';
 import {START} from './util/route';
 import {assert} from './util/warn';
 import {inBrowser} from './util/dom';
@@ -139,9 +138,3 @@ function createHref(base, fullPath, mode) {
     var path = mode === 'hash' ? '#' + fullPath : fullPath;
     return base ? cleanPath(base + '/' + path) : path;
 }
-
-// MIPRouter.install = install;
-//
-// if (inBrowser && window.mip) {
-//     window.mip.Vue.use(MIPRouter);
-// }

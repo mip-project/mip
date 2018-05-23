@@ -267,9 +267,14 @@ let viewer = {
                 return;
             }
             e.preventDefault();
+            // MIP1
             if (this.hasAttribute('mip-link') || this.getAttribute('data-type') === 'mip') {
                 let message = self._getMessageData.call(this);
                 self.sendMessage(message.messageKey, message.messageData);
+            }
+            // MIP2
+            else if (this.hasAttribute('mip')) {
+                console.log('mip2 link. Maybe send message to top');
             }
             else {
                 // other jump through '_top'

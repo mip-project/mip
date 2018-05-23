@@ -11,8 +11,11 @@ import '../styles/mip.less';
 class Page {
     constructor() {
         this.pageId = util.getPath(window.location.href);
+
+        // root page
         this.isRootPage = false;
         this.children = [];
+        this.currentChildPageId = null;
     }
 
     initRouter() {
@@ -62,32 +65,22 @@ class Page {
     }
 
     render(route) {
-        let toPageId = route.fullPath;
-        if (!hasChild(toPageId)) {
-            util.createIFrame(toPageId);
-        }
+        let targetPageId = route.fullPath;
+        if (this.pageId !== targetPageId
+            && !this.hasChild(targetPageId)) {
+            let targetFrame = util.createIFrame(targetPageId);
 
-        // this.children.forEach(child => {
-        //     if (!child.pageId === toPageId) {
-        //         child.hideIFrame();
-        //     }
-        //     else {
-        //         child.showIFrame();
-        //     }
-        // });
-    }
-
-    showIFrame() {
-        if (!this.$iframe) {
-            this.$iframe = util.createIFrame(this.pageId);
+            util.frameMoveIn(targetFrame, {
+                newPage: true
+            });
         }
         else {
-            this.$iframe.show();
+            if (this.currentChildPageId) {
+                util.frameMoveOut(this.currentChildPageId);
+            }
+            util.frameMoveIn(targetPageId);
         }
-    }
-
-    hideIFrame() {
-
+        this.currentChildPageId = targetPageId
     }
 }
 
