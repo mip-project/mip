@@ -68,10 +68,10 @@ function getAttributeSet(attributes) {
     return attrs;
 }
 
-let getImgOffset = function (img) {
+function getImgOffset(img) {
     let imgOffset = rect.getElementOffset(img);
     return imgOffset;
-};
+}
 
 // 创建弹层 dom
 function createPopup(element, img) {
@@ -153,7 +153,7 @@ function bindPopup(element, img) {
     }, false);
 }
 
-let bindLoad = function (element, img, mipEle) {
+function bindLoad(element, img, mipEle) {
     img.addEventListener('load', function () {
         img.classList.remove('mip-img-loading');
         element.classList.add('mip-img-loaded');
@@ -165,7 +165,7 @@ let bindLoad = function (element, img, mipEle) {
     // Set image visibility hidden in order to hidden extra style
     errHandle = errorHandle.bind(null, img);
     img.addEventListener('error', errHandle, false);
-};
+}
 
 /**
  * Trigger when image load error
@@ -186,56 +186,6 @@ function errorHandle(img) {
     img.removeEventListener('error', errHandle);
 }
 
-function firstInviewCallback() {
-    let ele = this.element.querySelector('img');
-    if (ele) {
-        return;
-    }
-
-    ele = this.element;
-    let img = new Image();
-
-    if (this.placeholder) {
-        img.classList.add('mip-img-loading');
-    }
-
-    this.applyFillContent(img, true);
-
-     // transfer attributes from mip-img to img tag
-    this.attributes = getAttributeSet(this.element.attributes);
-    for (let k in this.attributes) {
-        if (this.attributes.hasOwnProperty(k) && imgAttributes.indexOf(k) > -1) {
-            if (k === 'src') {
-                // src attribute needs to be mip-cached
-                let imgsrc = util.makeCacheUrl(this.attributes.src, 'img');
-                img.setAttribute(k, imgsrc);
-            }
-            else if (k === 'srcset') {
-                let imgSrcset = this.attributes.srcset;
-                let reg = /[\w-/]+\.(jpg|jpeg|png|gif|webp|bmp|tiff) /g;
-                let srcArr = imgSrcset.replace(reg, function (url) {
-                    return util.makeCacheUrl(url, 'img');
-                });
-                img.setAttribute('srcset', srcArr);
-
-            }
-            else {
-                img.setAttribute(k, this.attributes[k]);
-            }
-        }
-    }
-
-
-    ele.appendChild(img);
-    if (ele.hasAttribute('popup')) {
-        bindPopup(ele, img);
-    }
-
-    bindLoad(ele, img, this);
-}
-
-customElem.prototype.firstInviewCallback = firstInviewCallback;
-
 /**
  * Placeholder 占位
  *
@@ -243,67 +193,122 @@ customElem.prototype.firstInviewCallback = firstInviewCallback;
  *
  * @param {Object} element 要添加占位的元素
  */
-let Placeholder = function (element) {
-    this.targetEle = element;
-};
+class Placeholder {
 
-Placeholder.prototype.init = function () {
-    this.imgType = this._getImgType(this.targetEle);
-    this._add(this.imgType);
-};
+    constructor(element) {
+        this.targetEle = element;
+    }
 
-Placeholder.prototype._add = function (type) {
-    let placeholder = this.placeholder = document.createElement('div');
-    placeholder.classList.add('mip-placeholder');
-    placeholder.classList.add('mip-placeholder-' + type);
+    init() {
+        this.imgType = this._getImgType(this.targetEle);
+        this._add(this.imgType);
+    }
 
-    this.targetEle.appendChild(placeholder);
-};
+    _add(type) {
+        let placeholder = this.placeholder = document.createElement('div');
+        placeholder.classList.add('mip-placeholder');
+        placeholder.classList.add('mip-placeholder-' + type);
 
-Placeholder.prototype.remove = function () {
-    let parent = this.placeholder.parentElement;
-    parent && parent.removeChild(this.placeholder);
-};
+        this.targetEle.appendChild(placeholder);
+    }
 
-/**
- * read img src/srcset and get img type
- *
- * @param  {Object} ele target mip-img element
- * @return {string}     type of img
- */
-Placeholder.prototype._getImgType = function (ele) {
-    let srcString = ele.getAttribute('src') || ele.getAttribute('srcset');
-    let imgType = '';
-    for (let type in imgRatio) {
-        if (srcString.match(type)) {
-            imgType = type;
+    remove() {
+        let parent = this.placeholder.parentElement;
+        parent && parent.removeChild(this.placeholder);
+    }
+
+    /**
+     * read img src/srcset and get img type
+     *
+     * @param  {Object} ele target mip-img element
+     * @return {string}     type of img
+     */
+    _getImgType(ele) {
+        let srcString = ele.getAttribute('src') || ele.getAttribute('srcset');
+        let imgType = '';
+        for (let type in imgRatio) {
+            if (srcString.match(type)) {
+                imgType = type;
+            }
+        }
+        return imgType || 'other';
+    }
+
+}
+
+class MipImg extends customElem {
+
+    firstInviewCallback() {
+        let ele = this.element.querySelector('img');
+        if (ele) {
+            return;
+        }
+
+        ele = this.element;
+        let img = new Image();
+
+        if (this.placeholder) {
+            img.classList.add('mip-img-loading');
+        }
+
+        this.applyFillContent(img, true);
+
+         // transfer attributes from mip-img to img tag
+        this.attributes = getAttributeSet(this.element.attributes);
+        for (let k in this.attributes) {
+            if (this.attributes.hasOwnProperty(k) && imgAttributes.indexOf(k) > -1) {
+                if (k === 'src') {
+                    // src attribute needs to be mip-cached
+                    let imgsrc = util.makeCacheUrl(this.attributes.src, 'img');
+                    img.setAttribute(k, imgsrc);
+                }
+                else if (k === 'srcset') {
+                    let imgSrcset = this.attributes.srcset;
+                    let reg = /[\w-/]+\.(jpg|jpeg|png|gif|webp|bmp|tiff) /g;
+                    let srcArr = imgSrcset.replace(reg, function (url) {
+                        return util.makeCacheUrl(url, 'img');
+                    });
+                    img.setAttribute('srcset', srcArr);
+
+                }
+                else {
+                    img.setAttribute(k, this.attributes[k]);
+                }
+            }
+        }
+
+
+        ele.appendChild(img);
+        if (ele.hasAttribute('popup')) {
+            bindPopup(ele, img);
+        }
+
+        bindLoad(ele, img, this);
+    }
+
+    createdCallback() {
+        let element = this.element;
+        let layoutAttr = element.getAttribute('layout');
+        let heightAttr = element.getAttribute('height');
+        if (layoutAttr || heightAttr) {
+            // do nothing, use layout as placeholder: Layout.applyLayout
+        }
+        else {
+            // 如果没有layout，则增加默认占位
+            this.placeholder = new Placeholder(element);
+            this.placeholder.init();
         }
     }
-    return imgType || 'other';
-};
 
-customElem.prototype.createdCallback = function () {
-    let element = this.element;
-    let layoutAttr = element.getAttribute('layout');
-    let heightAttr = element.getAttribute('height');
-    if (layoutAttr || heightAttr) {
-        // do nothing, use layout as placeholder: Layout.applyLayout
+    attributeChangedCallback(attributeName, oldValue, newValue, namespace) {
+        if (attributeName === 'src' && oldValue !== newValue) {
+            this.element.querySelector('img').src = newValue;
+        }
     }
-    else {
-        // 如果没有layout，则增加默认占位
-        this.placeholder = new Placeholder(element);
-        this.placeholder.init();
+
+    hasResources() {
+        return true;
     }
-};
+}
 
-customElem.prototype.attributeChangedCallback = function (attributeName, oldValue, newValue, namespace) {
-    if (attributeName === 'src' && oldValue !== newValue) {
-        this.element.querySelector('img').src = newValue;
-    }
-};
-
-customElem.prototype.hasResources = function () {
-    return true;
-};
-
-export default customElem;
+export default MipImg;

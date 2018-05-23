@@ -35,41 +35,45 @@ function getBodyAttr(attr) {
     return body.getAttribute(attr) || 'default';
 }
 
-customElem.prototype.firstInviewCallback = function () {
-    // 获取统计所需参数
-    let ele = this.element;
-    let src = ele.getAttribute('src');
-    let host = window.location.href;
-    let title = (document.querySelector('title') || {}).innerHTML || '';
-    let time = Date.now();
+class MipPix extends customElem {
 
-    // 替换通用参数
-    src = addParas(src, 'TIME', time);
-    src = addParas(src, 'TITLE', encodeURIComponent(title));
-    src = addParas(src, 'HOST', encodeURIComponent(host));
+    firstInviewCallback = function () {
+        // 获取统计所需参数
+        let ele = this.element;
+        let src = ele.getAttribute('src');
+        let host = window.location.href;
+        let title = (document.querySelector('title') || {}).innerHTML || '';
+        let time = Date.now();
 
-    // 增加对<mip-experiment>支持，获取实验分组
-    let expReg = /MIP-X-((\w|-|\d|_)+)/g;
-    let matchExpArr = src.match(expReg);
-    for (let i in matchExpArr) {
-        let matchExp = matchExpArr[i];
-        src = addParas(src, matchExp, getBodyAttr(matchExp));
+        // 替换通用参数
+        src = addParas(src, 'TIME', time);
+        src = addParas(src, 'TITLE', encodeURIComponent(title));
+        src = addParas(src, 'HOST', encodeURIComponent(host));
+
+        // 增加对<mip-experiment>支持，获取实验分组
+        let expReg = /MIP-X-((\w|-|\d|_)+)/g;
+        let matchExpArr = src.match(expReg);
+        for (let i in matchExpArr) {
+            let matchExp = matchExpArr[i];
+            src = addParas(src, matchExp, getBodyAttr(matchExp));
+        }
+
+        // 去除匹配失败的其餘{參數}
+        src = src.replace(/\$?{.+?}/g, '');
+        // 去除其餘 '${', '{', '}' 確保輸出不包含 MIP 定义的语法
+        src = src.replace(/\$?{|}/g, '');
+
+        // 创建请求img
+        let image = new Image();
+        image.src = src;
+        image.setAttribute('width', 0);
+        image.setAttribute('height', 0);
+        ele.setAttribute('width', '');
+        ele.setAttribute('height', '');
+        ele.appendChild(image);
+        util.css(ele, {display: 'none'});
     }
 
-    // 去除匹配失败的其餘{參數}
-    src = src.replace(/\$?{.+?}/g, '');
-    // 去除其餘 '${', '{', '}' 確保輸出不包含 MIP 定义的语法
-    src = src.replace(/\$?{|}/g, '');
+}
 
-    // 创建请求img
-    let image = new Image();
-    image.src = src;
-    image.setAttribute('width', 0);
-    image.setAttribute('height', 0);
-    ele.setAttribute('width', '');
-    ele.setAttribute('height', '');
-    ele.appendChild(image);
-    util.css(ele, {display: 'none'});
-};
-
-export default customElem;
+export default MipPix;

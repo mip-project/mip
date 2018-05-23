@@ -10,17 +10,16 @@ import MipCarousel from './mip-carousel';
 import MipIframe from './mip-iframe';
 import MipPix from './mip-pix';
 
-/**
- * Register the builtin components.
- */
-function register() {
-    registerEle('mip-pix', MipPix);
-    registerEle('mip-img', MipImg);
-    registerEle('mip-carousel', MipCarousel);
-    registerEle('mip-iframe', MipIframe);
-    registerEle('mip-video', MipVideo);
-}
-
 export default {
-    register
+
+    /**
+     * Register the builtin components.
+     */
+    register() {
+        registerEle('mip-pix', MipPix);
+        registerEle('mip-img', MipImg);
+        registerEle('mip-carousel', MipCarousel);
+        registerEle('mip-iframe', MipIframe);
+        registerEle('mip-video', MipVideo);
+    }
 };
