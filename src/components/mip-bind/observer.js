@@ -11,10 +11,9 @@ class Observer {
             return;
         }
 
-        let me = this;
-        Object.keys(data).forEach(function (key) {
-            me._define(data, key, data[key]);
-        });
+        for (let key in data) {
+            this._define(data, key, data[key]);
+        }
     }
 
     _define(data, key, value) {

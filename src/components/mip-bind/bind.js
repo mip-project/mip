@@ -65,23 +65,17 @@ class Bind {
             if (compile) {
                 this._setGlobalState(classified.globalData);
                 this._setPageState(classified.pageData);
-                this.observerM = Object.assign(
-                    {},
-                    mip.isIframed ? this._win.parent.g || {} : this._win.g || {},
-                    this._win.m
-                );
-                this._observer.start(this.observerM);
-                this._compile.start(this.observerM);
+                this._observer.start(this._win.m);
+                this._compile.start(this._win.m);
             }
             else {
-                if (classified.globalData) {
+                if (classified.globalData && notEmpty(classified.globalData)) {
                     this._assign(this._win.parent.g, classified.globalData);
                 }
                 data = classified.pageData;
                 for (let field of Object.keys(data)) {
                     if (this._win.m.hasOwnProperty(field)) {
-                        // this._assign(this._win.m, {[field]: data[field]});
-                        this._assign(this.observerM, {[field]: data[field]});
+                        this._assign(this._win.m, {[field]: data[field]});
                     }
                     else {
                         this._dispatch(field, data[field]);
@@ -114,8 +108,7 @@ class Bind {
             }
             return total + `"${current}":`;
         }, '');
-        // if (!JSON.stringify(this._win.m).match(new RegExp(reg))) {
-        if (!JSON.stringify(this.observerM).match(new RegExp(reg))) { 
+        if (!JSON.stringify(this._win.m).match(new RegExp(reg))) {
             return;
         }
 
@@ -127,8 +120,7 @@ class Bind {
         this._watcherIds.push(watcherId);
         this._watchers.push(new Watcher(
             null,
-            // this._win.m,
-            this.observerM,
+            this._win.m,
             '',
             target,
             cb
@@ -204,6 +196,9 @@ class Bind {
 
 function isObj(obj) {
     return Object.prototype.toString.call(obj) === '[object Object]';
+}
+function notEmpty(obj) {
+    return isObj(obj) && Object.keys(obj).length !== 0;
 }
 
 export default Bind;
