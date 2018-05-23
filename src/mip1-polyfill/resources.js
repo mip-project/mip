@@ -158,6 +158,7 @@ Resources.prototype = {
     /* eslint-enable fecs-camelcase */
         let resources = this.getResources();
         let viewportRect = this._viewport.getRect();
+
         for (let i in resources) {
             // Compute the viewport state of current element.
             // If current element`s prerenderAllowed returns `true` always set the state to be `true`.
