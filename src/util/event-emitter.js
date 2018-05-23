@@ -3,7 +3,8 @@
  * @author sekiyika(pengxing@baidu.com)
  */
 
-/* eslint-disable fecs-camelcase, fecs-valid-constructor */
+/* eslint-disable fecs-camelcase */
+
 
 /**
  * For determining whether a string is splitted by space or not.
@@ -14,49 +15,48 @@
  */
 const MULTI_REG = /\s+/;
 
-/**
- * If a string is splitted by space, convert string to array and
- * execute function N(n = Array.length) times with the args.
- * Return the result that the string is multiple or not.
- *
- * @param {Object} obj The execute context
- * @param {Function} fn The function to be runned
- * @param {string} name name
- * @param {Array} args args
- * @return {boolean}
- */
-function multiArgs(obj, fn, name, args) {
-    if (MULTI_REG.test(name)) {
-        let nameList = name.split(MULTI_REG);
-        let isApply = typeof args !== 'function';
-        for (let i = 0; i < nameList.length; i++) {
-            isApply
-                ? fn.apply(obj, [nameList[i]].concat(args))
-                : fn.call(obj, nameList[i], args);
+class EventEmitter {
+
+    /**
+     * EventEmitter
+     *
+     * @constructor
+     * @param {?Object} opt Options
+     */
+    constructor(opt) {
+        if (opt) {
+            opt.context && this.setEventContext(opt.context);
+
+            opt.createEventCallback && (this._createEventCallback = opt.createEventCallback);
+            opt.removeEventCallback && (this._removeEventCallback = opt.removeEventCallback);
+            opt.bindEventCallback && (this._bindEventCallback = opt.bindEventCallback);
         }
-        return true;
     }
-    return false;
-}
 
+    /**
+     * Mix EventEmitter's prototype into target object
+     *
+     * @static
+     * @param {Object} obj destination obj
+     * @return {Object}
+     */
+    static mixin(obj) {
+        let whitelist = [
+            'on', 'off', 'once', 'trigger', 'setEventContext',
+            '_bindEventCallback', '_createEventCallback',
+            '_getEvent', '_removeEventCallback'
+        ];
 
-/**
- * Custom event
- *
- * @class
- * @param {?Object} opt Options
- */
-function EventEmitter(opt) {
-    if (opt) {
-        opt.context && this.setEventContext(opt.context);
+        for (let key of whitelist) {
+            if (obj[key]) {
+                continue;
+            }
 
-        opt.createEventCallback && (this._createEventCallback = opt.createEventCallback);
-        opt.removeEventCallback && (this._removeEventCallback = opt.removeEventCallback);
-        opt.bindEventCallback && (this._bindEventCallback = opt.bindEventCallback);
+            obj[key] = EventEmitter.prototype[key];
+        }
+
+        return obj;
     }
-}
-
-let proto = EventEmitter.prototype = {
 
     /**
      * Add handler to events
@@ -72,7 +72,7 @@ let proto = EventEmitter.prototype = {
         this._getEvent(name).push(handler);
         this._bindEventCallback(name, handler);
         return this;
-    },
+    }
 
     /**
      * Remove handler from events.
@@ -106,7 +106,7 @@ let proto = EventEmitter.prototype = {
             this._removeEventCallback(name);
         }
         return name ? this.__events && this.__events[name] : null;
-    },
+    }
 
     /**
      * Add a one-off handler to events
@@ -124,7 +124,7 @@ let proto = EventEmitter.prototype = {
             self.off(name, cb);
             cb = self = null;
         };
-    },
+    }
 
     /**
      * Trigger events.
@@ -144,7 +144,7 @@ let proto = EventEmitter.prototype = {
                 list.splice(i, 1);
             }
         }
-    },
+    }
 
     /**
      * Set the handlers' context
@@ -153,7 +153,7 @@ let proto = EventEmitter.prototype = {
      */
     setEventContext(context) {
         this.__eventContext = context || this;
-    },
+    }
 
     /**
      * Get an event's handler list. If not exist, create it.
@@ -170,7 +170,7 @@ let proto = EventEmitter.prototype = {
             this._createEventCallback(name, this.__events[name]);
         }
         return this.__events[name];
-    },
+    }
 
     /**
      * Called when an event is created.
@@ -178,14 +178,14 @@ let proto = EventEmitter.prototype = {
      * @param {string} name Event name
      * @param {Array.<Function>} handlers The bound handlers
      */
-    _createEventCallback(name, handlers) {},
+    _createEventCallback(name, handlers) {}
 
     /**
      * Called when an event is removed.
      *
      * @param {string} name Event name
      */
-    _removeEventCallback(name) {},
+    _removeEventCallback(name) {}
 
     /**
      * Called when an event is binding.
@@ -194,41 +194,49 @@ let proto = EventEmitter.prototype = {
      * @param {Function} handler Event handler
      */
     _bindEventCallback(name, handler) {}
-};
 
-[
-    'on bind',
-    'off unbind',
-    'once one',
-    'trigger fire emit'
-].forEach(value => {
-    value = value.split(' ');
-    for (let i = 1; i < value.length; i++) {
-        proto[value[i]] = proto[value[0]];
-    }
-});
+}
+
 
 /**
- * Keys for extending to another object.
+ * If a string is splitted by space, convert string to array and
+ * execute function N(n = Array.length) times with the args.
+ * Return the result that the string is multiple or not.
  *
- * @inner
- * @type {Ojbect}
+ * @param {Object} obj The execute context
+ * @param {Function} fn The function to be runned
+ * @param {string} name name
+ * @param {Array} args args
+ * @return {boolean}
  */
-let keys = Object.keys(proto);
-
-/**
- * Mix EventEmitter's prototype into target object
- *
- * @param {Object} obj obj
- * @return {Object}
- */
-EventEmitter.mixin = obj => {
-    for (let i = 0; i < keys.length; i++) {
-        if (!(keys[i] in obj)) {
-            obj[keys[i]] = proto[keys[i]];
+function multiArgs(obj, fn, name, args) {
+    if (MULTI_REG.test(name)) {
+        let nameList = name.split(MULTI_REG);
+        let isApply = typeof args !== 'function';
+        for (let i = 0; i < nameList.length; i++) {
+            isApply
+                ? fn.apply(obj, [nameList[i]].concat(args))
+                : fn.call(obj, nameList[i], args);
         }
+        return true;
     }
-    return obj;
-};
+    return false;
+}
+
+
+// 这种写法就应该去掉，提供 on off once trigger 一套就行了
+// 为什么要提供这么多，让代码越来越乱，越来越难读？
+// [
+//     'on bind',
+//     'off unbind',
+//     'once one',
+//     'trigger fire emit'
+// ].forEach(value => {
+//     value = value.split(' ');
+//     for (let i = 1; i < value.length; i++) {
+//         proto[value[i]] = proto[value[0]];
+//     }
+// });
+
 
 export default EventEmitter;
