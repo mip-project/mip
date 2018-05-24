@@ -62,6 +62,10 @@ export default class Router {
             href
         };
     }
+
+    addRoute(route) {
+        this.matcher.addRoutes([route]);
+    }
 }
 
 function createHref(base, fullPath, mode) {

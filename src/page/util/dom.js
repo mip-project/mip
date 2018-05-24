@@ -37,19 +37,18 @@ export function createIFrame(path) {
     return container;
 }
 
-export function getMIPShellConfig(rawHTML) {
-    let rawJSON;
-    if (rawHTML) {
-        let match = rawHTML.match(/<\bmip-shell\b.*>\s*<script.*>([\s\S]+)<\/script>\s*<\/mip-shell>/i);
-        if (match) {
-            rawJSON = match[1];
-        }
+export function removeIFrame(pageId) {
+    let container = document.querySelector(`.${MIP_IFRAME_CONTAINER}[data-page-id="${pageId}"]`);
+    if (container) {
+        container.parentNode.removeChild(container);
     }
-    else {
-        let $shell = document.body.querySelector('mip-shell');
-        if ($shell) {
-            rawJSON = $shell.children[0].innerHTML;
-        }
+}
+
+export function getMIPShellConfig() {
+    let rawJSON;
+    let $shell = document.body.querySelector('mip-shell');
+    if ($shell) {
+        rawJSON = $shell.children[0].innerHTML;
     }
     try {
         return JSON.parse(rawJSON);
@@ -86,48 +85,117 @@ function getSandboxFunction(script) {
     `);
 }
 
-export function frameMoveIn(iframe, options = {}) {
-    iframe = getIFrame(iframe);
-    let width = window.innerWidth;
+let transitionProp = 'transition';
+let transitionEndEvent = 'transitionend';
+let animationProp = 'animation';
+let animationEndEvent = 'animationend';
 
-    let exec = () => {
-        css(iframe, {
-            'z-index': activeZIndex++,
-            transform: `translateX(${width}px)`,
-            display: 'block',
-            transition: 'all 0.35s ease'
-        });
+if (window.ontransitionend === undefined
+    && window.onwebkittransitionend !== undefined) {
+    transitionProp = 'WebkitTransition';
+    transitionEndEvent = 'webkitTransitionEnd';
+}
 
-        setTimeout(() => {
-            css(iframe, {
-                transform: 'translateX(0)'
-            })
-        }, 100);
-    };
+if (window.onanimationend === undefined
+    && window.onwebkitanimationend !== undefined) {
+    animationProp = 'WebkitAnimation';
+    animationEndEvent = 'webkitAnimationEnd';
+}
 
-    if (options.newPage) {
-        iframe.onload = exec;
+const raf = inBrowser
+    ? window.requestAnimationFrame
+        ? window.requestAnimationFrame.bind(window)
+        : setTimeout
+    : fn => fn();
+
+export function nextFrame(fn) {
+    raf(() => {
+        raf(fn);
+    });
+}
+
+function whenTransitionEnds(el, type, cb) {
+    if (!type) {
+        return cb();
     }
-    else {
-        exec();
+
+    const event = type === 'transition' ? transitionEndEvent : animationEndEvent;
+    const onEnd = e => {
+        if (e.target === el) {
+            end();
+        }
+    };
+    const end = () => {
+        el.removeEventListener(event, onEnd);
+        cb();
+    };
+    el.addEventListener(event, onEnd);
+}
+
+export function frameMoveIn(pageId, {newPage, onComplete} = {}) {
+    let iframe = getIFrame(pageId);
+
+    if (iframe) {
+        let width = window.innerWidth;
+
+        let exec = () => {
+            css(iframe, {
+                'z-index': activeZIndex++,
+                display: 'block'
+            });
+            iframe.classList.add('slide-enter');
+            iframe.classList.add('slide-enter-active');
+
+            // trigger layout
+            iframe.offsetWidth;
+
+            whenTransitionEnds(iframe, 'transition', () => {
+                iframe.classList.remove('slide-enter-to');
+                iframe.classList.remove('slide-enter-active');
+                onComplete && onComplete();
+            });
+
+            nextFrame(() => {
+                iframe.classList.add('slide-enter-to');
+                iframe.classList.remove('slide-enter');
+            });
+        };
+
+        if (newPage) {
+            iframe.onload = exec;
+        }
+        else {
+            exec();
+        }
     }
 }
 
-export function frameMoveOut(iframe) {
-    iframe = getIFrame(iframe);
-    let width = window.innerWidth;
+export function frameMoveOut(pageId, {onComplete} = {}) {
+    let iframe = getIFrame(pageId);
+    if (iframe) {
+        let width = window.innerWidth;
 
-    css(iframe, {
-        transform: `translateX(-${width}px)`
-    });
-    setTimeout(() => {
-        css(iframe, {
-            display: 'none',
-            'z-index': 10000,
-            transform: 'translateX(0)',
-            transition: 'none'
-        })
-    }, 350);
+        iframe.classList.add('slide-leave');
+        iframe.classList.add('slide-leave-active');
+
+        // trigger layout
+        iframe.offsetWidth;
+
+        whenTransitionEnds(iframe, 'transition', () => {
+            css(iframe, {
+                display: 'none',
+                'z-index': 10000
+            })
+            iframe.classList.remove('slide-leave-to');
+            iframe.classList.remove('slide-leave-active');
+            onComplete && onComplete();
+        });
+
+        nextFrame(() => {
+            iframe.classList.add('slide-leave-to');
+            iframe.classList.remove('slide-leave');
+        });
+    }
 }
 
 function getIFrame(iframe) {
