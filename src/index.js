@@ -34,7 +34,6 @@ import './polyfills';
 Vue.use(Router);
 
 let mip = {
-    Vue,
     customElement(tag, component) {
         Vue.customElement(tag, component);
     },
@@ -42,8 +41,7 @@ let mip = {
     viewer,
     viewport,
     hash,
-    // 当前是否在 iframe 中
-    isIframed: window === top,
+    // 当前是否是独立站
     standalone: window === top,
     sandbox,
     css: {}
