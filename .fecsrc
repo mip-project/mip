@@ -24,7 +24,8 @@
             "fecs-prefer-class": "off",
             "fecs-prefer-destructure": "off",
             "fecs-prefer-assign-pattern": "off",
-            "fecs-use-computed-property": "off"
+            "fecs-use-computed-property": "off",
+            "fecs-valid-map-set": "off"
         }
     }
 }

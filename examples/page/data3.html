@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html mip>
+
+<head>
+    <meta charset="utf-8">
+    <title>MIP Data Page</title>
+    <meta name="keywords" content="vue,mip,store">
+    <meta name="description" content="mip-store">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <link rel="stylesheet" href="../../dist/mip.css">
+    <style mip-custom>
+        .link {
+            text-align: center;
+            margin-top: 20px;
+            display: block;
+        }
+
+        p,
+        .button {
+            width: 150px;
+            display: inline-block;
+            margin: 20px 0 0 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <mip-data>
+    </mip-data>
+    <p m-text="size.small"></p>
+    <div on="tap:MIP.setData({size:{small:4}})" class="button">click change size.small</div>
+    <script src="../../dist/mip.js"></script>
+    <script src="./components/mip-complevel1.js"></script>
+    <script src="./components/mip-complevel2.js"></script>
+</body>

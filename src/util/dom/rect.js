@@ -3,8 +3,6 @@
  * @author sekiyika(pengxing@baidu.com)
  */
 
-'use strict';
-
 import platform from '../platform';
 
 // Save the native object or method.
@@ -68,10 +66,10 @@ export default {
         width = round(width);
         height = round(height);
         return {
-            left: left,
-            top: top,
-            width: width,
-            height: height,
+            left,
+            top,
+            width,
+            height,
             right: left + width,
             bottom: top + height
         };

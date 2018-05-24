@@ -182,7 +182,6 @@ export function frameMoveOut(pageId, {onComplete} = {}) {
         iframe.offsetWidth;
 
         whenTransitionEnds(iframe, 'transition', () => {
-            console.log('leave finish...')
             css(iframe, {
                 display: 'none',
                 'z-index': 10000

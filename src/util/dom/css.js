@@ -3,8 +3,6 @@
  * @author sekiyika(pengxing@baidu.com)
  */
 
-'use strict';
-
 let camelReg = /(?:(^-)|-)+(.)?/g;
 
 /**
@@ -26,13 +24,14 @@ let prefixCache = {};
  * @return {string} the property or its prefixed version
  */
 function prefixProperty(property) {
-    property = property.replace(camelReg, function (match, first, char) {
-        return first ? char : char.toUpperCase();
-    });
+    property = property.replace(camelReg, (match, first, char) => (first ? char : char.toUpperCase()));
+
     if (prefixCache[property]) {
         return prefixCache[property];
     }
+
     let prop;
+
     if (!(property in supportElement.style)) {
         for (let i = 0; i < PREFIX_TYPE.length; i++) {
             let prefixedProp = PREFIX_TYPE[i]
@@ -65,15 +64,20 @@ function unitProperty(property, value) {
     if (value !== +value) {
         return value;
     }
+
     if (unitCache[property]) {
         return value + unitCache[property];
     }
+
     supportElement.style[property] = 0;
+
     let propValue = supportElement.style[property];
     let match = propValue.match && propValue.match(UNIT_REG);
+
     if (match) {
         return value + (unitCache[property] = match[1]);
     }
+
     return value;
 }
 
@@ -128,5 +132,6 @@ export default function css(elements, property, value) {
         return element;
     }
     property = prefixProperty(property);
+
     return element.style[property] || document.defaultView.getComputedStyle(element)[property];
 }

@@ -21,8 +21,15 @@ module.exports = {
 
     module: {
         rules: [
-            { test: /\.js$/, exclude: /node_modules|fetch.js/, loader: 'babel-loader' },
-            { test: /\.vue$/, loader: 'vue-loader' },
+            {
+                test: /\.js$/,
+                exclude: /node_modules|fetch.js/,
+                loader: 'babel-loader'
+            },
+            {
+                test: /\.vue$/,
+                loader: 'vue-loader'
+            },
             {
                 test: /\.less$/,
                 use: [

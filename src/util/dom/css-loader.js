@@ -3,8 +3,6 @@
  * @author sekiyika(pengxing@baidu.com)
  */
 
-'use strict';
-
 /**
  * Creates the properly configured style element.
  *
@@ -17,8 +15,10 @@
 */
 function insertStyleElement(doc, cssRoot, cssText, name, isRuntimeCss) {
     let style = doc.createElement('style');
-    style.textContent = cssText;
     let afterElement = null;
+
+    style.textContent = cssText;
+
     if (isRuntimeCss) {
         style.setAttribute('mip-main', '');
     }
@@ -32,18 +32,11 @@ function insertStyleElement(doc, cssRoot, cssText, name, isRuntimeCss) {
 }
 
 function insertAfterOrAtStart(styleRoot, styleElement, afterElement) {
-    if (afterElement) {
-        if (afterElement.nextSibling) {
-            styleRoot.insertBefore(styleElement, afterElement.nextSibling);
-        }
-        else {
-            styleRoot.appendChild(styleElement);
-        }
-    }
-    else {
-        // Add to the styleRoot element as first child
-        styleRoot.insertBefore(styleElement, styleRoot.firstChild);
-    }
+    afterElement
+        ? afterElement.nextSibling
+            ? styleRoot.insertBefore(styleElement, afterElement.nextSibling)
+            : styleRoot.appendChild(styleElement)
+        : styleRoot.insertBefore(styleElement, styleRoot.firstChild);
 }
 
 export default {

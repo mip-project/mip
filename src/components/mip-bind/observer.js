@@ -11,18 +11,17 @@ class Observer {
             return;
         }
 
-        let me = this;
-        Object.keys(data).forEach(function (key) {
-            me._define(data, key, data[key]);
-        });
+        for (let key in data) {
+            this._define(data, key, data[key]);
+        }
     }
 
     _define(data, key, value) {
-        // if value has observed, stop it
-        if (value && value.__ob__) {
-            return;
-        }
-
+        // // if value has observed, stop it
+        // if (value && value.__ob__) {
+        //     return;
+        // }
+ 
         // if value is object, define it's value
         let me = this;
         if (value && typeof value === 'object') {
@@ -52,21 +51,21 @@ class Observer {
                 if (newVal === value) {
                     return;
                 }
-                value = newVal;
                 if (setter) {
                     setter.call(data, newVal);
                 }
                 else {
-                    me._walk(newVal);
-                    deps.notify();
+                    value = newVal;
                 }
+                me._walk(newVal);
+                deps.notify();
             }
         });
 
-        try {
-            value.__ob__ = this;
-        }
-        catch (e) {}
+        // try {
+        //     value.__ob__ = this;
+        // }
+        // catch (e) {}
     }
 
     start(data) {

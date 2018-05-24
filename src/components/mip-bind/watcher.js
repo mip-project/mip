@@ -32,7 +32,12 @@ class Watcher {
         let oldVal = this._value;
         if (newVal !== oldVal) {
             this._value = newVal;
-            this._cb.call(this._data, this._dir, newVal, oldVal);
+            if (this._dir) {
+                this._cb.call(this._data, this._dir, newVal, oldVal);
+            }
+            else {
+                this._cb.call(this._data, newVal, oldVal);
+            }
         }
     }
 

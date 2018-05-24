@@ -19,13 +19,13 @@
             @before-enter="onBeforeEnter"
             @after-enter="onAfterEnter"
             @before-leave="onBeforeLeave">
-            <keep-alive>
-                <mip-view
-                    :class="routerViewClass"
-                    :key="routerViewKey"
-                    :data-page-id="$route.fullPath">
-                </mip-view>
-            </keep-alive>
+            <!-- <keep-alive> -->
+            <mip-view
+                :class="routerViewClass"
+                :key="routerViewKey"
+                :data-page-id="$route.fullPath">
+            </mip-view>
+            <!-- </keep-alive> -->
         </transition>
     </div>
 </template>
@@ -34,7 +34,6 @@
 import AppHeader from './AppHeader.vue';
 import Loading from './Loading.vue';
 import {restoreContainerScrollPosition, restoreBodyScrollPosition} from '../util';
-import Store from '../../vuex/index';
 import {MIP_CONTAINER_ID, DEFAULT_SHELL_CONFIG} from '../const';
 
 export default {

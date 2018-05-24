@@ -26,9 +26,6 @@ export default {
     props: {
         mipsrc: String
     },
-    // mounted() {
-    //     this.bind.start();
-    // },
     methods: {
         getDataBySrc(url) {
             if (!url) {

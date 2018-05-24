@@ -12,26 +12,26 @@ import mipData from './mip-bind';
 
 function install(Vue) {
     [
-        {
-            tag: 'mip-img',
-            component: mipImg
-        },
-        {
-            tag: 'mip-iframe',
-            component: mipIframe
-        },
-        {
-            tag: 'mip-pix',
-            component: mipPix
-        },
-        {
-            tag: 'mip-carousel',
-            component: mipCarousel
-        },
-        {
-            tag: 'mip-video',
-            component: mipVideo
-        },
+        // {
+        //     tag: 'mip-img',
+        //     component: mipImg
+        // },
+        // {
+        //     tag: 'mip-iframe',
+        //     component: mipIframe
+        // },
+        // {
+        //     tag: 'mip-pix',
+        //     component: mipPix
+        // },
+        // {
+        //     tag: 'mip-carousel',
+        //     component: mipCarousel
+        // },
+        // {
+        //     tag: 'mip-video',
+        //     component: mipVideo
+        // },
         {
             tag: 'mip-template',
             component: {props: ['data']}
@@ -40,9 +40,7 @@ function install(Vue) {
             tag: 'mip-data',
             component: mipData
         }
-    ].forEach(element => {
-        Vue.customElement(element.tag, element.component);
-    });
+    ].forEach(element => Vue.customElement(element.tag, element.component));
 }
 
 export default install;

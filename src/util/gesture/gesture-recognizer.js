@@ -3,13 +3,6 @@
  * @author sekiyika(pengxing@baidu.com)
  */
 
-'use strict';
-
-import fn from '../fn';
-
-// Save native functions.
-const create = Object.create;
-
 /**
  * Mean recognizer is at the beginning of the state.
  *
@@ -86,65 +79,159 @@ const DIRECTION_STR = {
 
 
 /**
- * Recognizer class.
+ * For storing recognizers.
  *
- * @class
- * @param {Gesture} gesture gesture
+ * @inner
+ * @type {Object}
  */
-function Recognizer(gesture) {
-    /**
-     * Sign the recognizer's state. Default is 'start'.
-     *
-     * @private
-     * @type {number}
-     */
-    this._state = STATE_START;
+let recognizerList = {};
+
+/**
+ * For storing the event names of recognizers.
+ * @inner
+ * @type {Object}
+ */
+let eventList = {};
+
+
+class Recognizer {
 
     /**
-     * The bound gesture.
+     * Recognizer class.
      *
-     * @type {Gesture}
+     * @constructor
+     * @param {Gesture} gesture gesture
      */
-    this.gesture = gesture;
+    constructor(gesture) {
+        /**
+         * Sign the recognizer's state. Default is 'start'.
+         *
+         * @private
+         * @type {number}
+         */
+        this._state = STATE_START;
 
-    /**
-     * The conflicting list that records the conflicting recognizers in the same gesture object.
-     *
-     * @type {Object}
-     */
-    this.conflictList = {};
-}
+        /**
+         * The bound gesture.
+         *
+         * @type {Gesture}
+         */
+        this.gesture = gesture;
 
-/* eslint-disable */
-fn.extend(Recognizer.prototype, {
-/* eslint-enable */
-    /**
-     * Recognizer name.
-     * @type {string}
-     */
-    name: '',
+        /**
+         * The conflicting list that records the conflicting recognizers in the same gesture object.
+         *
+         * @type {Object}
+         */
+        this.conflictList = {};
+
+        /**
+         * Recognizer name.
+         *
+         * @type {string}
+         */
+        this.name = '';
+
+        /**
+         * Mark whether an automatic reset is required.
+         *
+         * @type {boolean}
+         */
+        this.needAutoReset = true;
+
+        /**
+         * The conflicting level. When the recognizer is conflicted by another,
+         * use it to decision which one is to hold.
+         *
+         * @type {number}
+         */
+        this.level = 0;
+    }
 
     /**
      * The event list of current recognizer.
      *
      * @type {Array.<string>}
+     * @private
      */
-    eventList: [],
+    get eventList() {
+        return this._eventList || [];
+    }
 
     /**
-     * Mark whether an automatic reset is required.
+     * setter
      *
-     * @type {boolean}
+     * @param {Array} eventList event list
      */
-    needAutoReset: true,
+    set eventList(eventList) {
+        this._eventList = eventList;
+    }
 
     /**
-     * The conflicting level. When the recognizer is conflicted by another,
-     * use it to decision which one is to hold.
+     * Register also as the control of recognizers.
+     * Recognizer.xxx means the control's method.
+     * This method is used to register Recognizer class.
      *
-     * @type {number}
+     * @param {Function} Rec recognizer
+     * @param {string} name name
      */
-    level: 0,
+    static register(Rec, name) {
+        !Rec.conflictList && (Rec.conflictList = []);
+        Rec.recName = Rec.prototype.recName = name;
+        recognizerList[name] = Rec;
+        let evlist = Rec.prototype.eventList;
+        for (let i = 0; i < evlist.length; i++) {
+            eventList[evlist[i]] = Rec;
+        }
+    }
+
+    /**
+     * Get the conflicting list of a recognizer class.
+     *
+     * @param {string} name name
+     * @return {?Array.<Object>}
+     */
+    static getConflictList(name) {
+        return recognizerList[name] && recognizerList[name].conflictList;
+    }
+
+    /**
+     * Get recognizer class by name.
+     *
+     * @param {string} name name
+     * @return {Function}
+     */
+    static get(name) {
+        return recognizerList[name];
+    }
+
+    /**
+     * Get recognizer class by event name.
+     *
+     * @param {string} event Event name
+     * @return {Function}
+     */
+    static getByEventname(event) {
+        return eventList[event];
+    }
+
+    /**
+     * Conflict a and b.
+     *
+     * @param {Function} a a
+     * @param {Function} b b
+     */
+    static conflict(a, b) {
+        if (typeof a === 'string') {
+            a = Recognizer.get(a);
+            b = Recognizer.get(b);
+        }
+        if (!a || !b) {
+            return;
+        }
+        a.conflictList.push(b.recName);
+        b.conflictList.push(a.recName);
+    }
 
     /**
      * Recognize event data.
@@ -169,7 +256,7 @@ fn.extend(Recognizer.prototype, {
         if (this.emitCheck()) {
             this.emit(data);
         }
-    },
+    }
 
     /**
      * Determine that current recognizer is at [xxx] state or not.
@@ -187,7 +274,7 @@ fn.extend(Recognizer.prototype, {
             }
         }
         return false;
-    },
+    }
 
     /**
      * Set state by string or number.
@@ -201,7 +288,7 @@ fn.extend(Recognizer.prototype, {
             this._state = st;
         }
         return this._state;
-    },
+    }
 
     /**
      * Check whether the recognizer can be emitted.
@@ -220,7 +307,7 @@ fn.extend(Recognizer.prototype, {
         }
 
         return true;
-    },
+    }
 
     /**
      * Process the event data. The main method of recognizer.
@@ -231,7 +318,7 @@ fn.extend(Recognizer.prototype, {
      */
     process(data) {
         return this._state;
-    },
+    }
 
     /**
      * Emit with event data.
@@ -240,13 +327,12 @@ fn.extend(Recognizer.prototype, {
      */
     emit(data) {
         // emtting
-    },
+    }
 
     /**
      * Reset the recognizer.
      */
-    reset() {
-    },
+    reset() {}
 
     /**
      * Put the state into hold.
@@ -255,7 +341,7 @@ fn.extend(Recognizer.prototype, {
      */
     hold() {
         return this._state = STATE_HOLD;
-    },
+    }
 
     /**
      * Trigger the gesture's event.
@@ -265,90 +351,8 @@ fn.extend(Recognizer.prototype, {
     trigger(data) {
         this.gesture.trigger(data.type, data.event, data);
     }
-});
 
-
-/**
- * For storing recognizers.
- *
- * @inner
- * @type {Object}
- */
-let recognizerList = {};
-
-/**
- * For storing the event names of recognizers.
- * @inner
- * @type {Object}
- */
-let eventList = {};
-
-/**
- * Register also as the control of recognizers.
- * Recognizer.xxx means the control's method.
- * This method is used to register Recognizer class.
- *
- * @param {Function} Rec recognizer
- * @param {string} name name
- */
-Recognizer.register = function (Rec, name) {
-    !Rec.conflictList && (Rec.conflictList = []);
-    Rec.recName = Rec.prototype.recName = name;
-    recognizerList[name] = Rec;
-    let evlist = Rec.prototype.eventList;
-    for (let i = 0; i < evlist.length; i++) {
-        eventList[evlist[i]] = Rec;
-    }
-};
-
-/**
- * Get the conflicting list of a recognizer class.
- *
- * @param {string} name name
- * @return {?Array.<Object>}
- */
-Recognizer.getConflictList = function (name) {
-    return recognizerList[name] && recognizerList[name].conflictList;
-};
-
-/**
- * Get recognizer class by name.
- *
- * @param {string} name name
- * @return {Function}
- */
-Recognizer.get = function (name) {
-    return recognizerList[name];
-};
-
-/**
- * Get recognizer class by event name.
- *
- * @param {string} event Event name
- * @return {Function}
- */
-Recognizer.getByEventname = function (event) {
-    return eventList[event];
-};
-
-/**
- * Conflict a and b.
- *
- * @param {Function} a a
- * @param {Function} b b
- */
-Recognizer.conflict = function (a, b) {
-    if (typeof a === 'string') {
-        a = Recognizer.get(a);
-        b = Recognizer.get(b);
-    }
-    if (!a || !b) {
-        return;
-    }
-    a.conflictList.push(b.recName);
-    b.conflictList.push(a.recName);
-};
-
+}
 
 
 /**
@@ -359,67 +363,75 @@ function holdTimeFn() {
     this.emit();
 }
 
-/**
- * Tap
- *
- * @class
- */
-function TapRecognizer() {
-    Recognizer.apply(this, arguments);
-    this.boundHoldTimeFn = holdTimeFn.bind(this);
-}
+class TapRecognizer extends Recognizer {
 
-TapRecognizer.prototype = fn.extend(create(Recognizer.prototype), {
     /**
+     * Recognizer class.
+     *
+     * @constructor
+     * @param {Gesture} gesture gesture
+     */
+    constructor(gesture) {
+        super(gesture);
+
+        this.boundHoldTimeFn = holdTimeFn.bind(this);
+
+        /**
+         * The count of tap.
+         *
+         * @type {number}
+         */
+        this.taps = 1;
+
+        /**
+         * The count of user tap.
+         *
+         * @type {number}
+         */
+        this.count = 0;
+
+        /**
+         * If the gesture has several tap recognizer,
+         * we need to wait some time to recognize.
+         *
+         * @type {number}
+         */
+        this.holdTime = 300;
+
+        /**
+         * The tap time. It will failed when the time is over this.
+         *
+         * @type {number}
+         */
+        this.time = 250;
+
+        /**
+         * The move range of finger.
+         *
+         * @type {number}
+         */
+        this.moveRange = 10;
+
+        /**
+         * @override
+         */
+        this.level = 1;
+
+        /**
+         * @override
+         */
+        this.needAutoReset = false;
+    }
+
+    /**
+     * The event list of current recognizer.
+     *
+     * @type {Array.<string>}
      * @override
      */
-    eventList: ['tap'],
-
-    /**
-     * The count of tap.
-     *
-     * @type {number}
-     */
-    taps: 1,
-
-    /**
-     * The count of user tap.
-     *
-     * @type {number}
-     */
-    count: 0,
-
-    /**
-     * If the gesture has several tap recognizer,
-     * we need to wait some time to recognize.
-     *
-     * @type {number}
-     */
-    holdTime: 300,
-
-    /**
-     * The tap time. It will failed when the time is over this.
-     *
-     * @type {number}
-     */
-    time: 250,
-
-    /**
-     * The move range of finger.
-     *
-     * @type {number}
-     */
-    moveRange: 10,
-
-    /**
-     * @override
-     */
-    level: 1,
-
-    /**
-     * @override
-     */
-    needAutoReset: false,
+    get eventList() {
+        return this._eventList || ['tap'];
+    }
 
     /**
      * Process the event data. The processing result are determined based on the data.
@@ -458,7 +470,7 @@ TapRecognizer.prototype = fn.extend(create(Recognizer.prototype), {
             this.holdTimer = setTimeout(this.boundHoldTimeFn, this.holdTime);
             return STATE_WAIT;
         }
-    },
+    }
 
     /**
      * @override
@@ -468,7 +480,7 @@ TapRecognizer.prototype = fn.extend(create(Recognizer.prototype), {
         this.count = 0;
         this._state = STATE_START;
         clearTimeout(this.holdTimer);
-    },
+    }
 
     /**
      * @override
@@ -476,83 +488,100 @@ TapRecognizer.prototype = fn.extend(create(Recognizer.prototype), {
     emit() {
         if (this._state === STATE_END) {
             let data = this._data;
-            let eventData = create(data);
+            let eventData = Object.create(data);
             eventData.type = this.eventList[0];
             this._data = null;
             this.trigger(eventData);
             this.reset();
         }
     }
-});
 
-
-/**
- * The double-tap-recognizer. It inherits from TapRecognizer.
- *
- * @class
- */
-function DoubleTapRecognizer() {
-    TapRecognizer.apply(this, arguments);
 }
 
-DoubleTapRecognizer.prototype = fn.extend(create(TapRecognizer.prototype), {
+
+class DoubleTapRecognizer extends TapRecognizer {
+
     /**
-     * The tap number is 2.
+     * The double-tap-recognizer. It inherits from TapRecognizer.
      *
-     * @override
+     * @constructor
+     * @param {Gesture} gesture gesture instance
      */
-    taps: 2,
+    constructor(gesture) {
+        super(gesture);
+
+        /**
+         * The tap number is 2.
+         *
+         * @override
+         */
+        this.taps = 2;
+
+        /**
+         * The level is 2. Then, if a gesture has tap and doubletap, the doubletap is high level.
+         *
+         * @override
+         */
+        this.level = 2;
+    }
 
     /**
-     * @override
-     */
-    eventList: ['doubletap'],
-
-    /**
-     * The level is 2. Then, if a gesture has tap and doubletap, the doubletap is high level.
+     * The event list of current recognizer.
      *
+     * @type {Array.<string>}
      * @override
      */
-    level: 2
-});
+    get eventList() {
+        return this._eventList || ['doubletap'];
+    }
 
-
-/**
- * Swipe recognizer.
- *
- * @class
- */
-function SwipeRecognizer() {
-    Recognizer.apply(this, arguments);
 }
 
-SwipeRecognizer.prototype = fn.extend(create(Recognizer.prototype), {
+class SwipeRecognizer extends Recognizer {
+
     /**
+     * Swipe recognizer.
+     *
+     * @constructor
+     * @param {Gesture} gesture gesture instance
+     */
+    constructor(gesture) {
+        super(gesture);
+
+        /**
+         * The speed of finger.
+         *
+         * @type {number}
+         */
+        this.velocity = 0.03;
+
+        /**
+         * Minimum distance.
+         *
+         * @type {number}
+         */
+        this.distance = 30;
+
+        /**
+         * Time limit.
+         *
+         * @type {number}
+         */
+        this.duration = 1000;
+    }
+
+    /**
+     * The event list of current recognizer.
      * Swipe has 5 events. Swipe and another event will be triggered every time.
+     *
+     * @type {Array.<string>}
      * @override
      */
-    eventList: ['swipe', 'swipeup', 'swiperight', 'swipeleft', 'swipedown'],
+    get eventList() {
+        return this._eventList || ['swipe', 'swipeup', 'swiperight', 'swipeleft', 'swipedown'];
+    }
 
-    /**
-     * The speed of finger.
-     *
-     * @type {number}
-     */
-    velocity: 0.03,
 
-    /**
-     * Minimum distance.
-     *
-     * @type {number}
-     */
-    distance: 30,
-
-    /**
-     * Time limit.
-     *
-     * @type {number}
-     */
-    duration: 1000,
 
     /**
      * @override
@@ -566,25 +595,26 @@ SwipeRecognizer.prototype = fn.extend(create(Recognizer.prototype), {
                 return STATE_END;
             }
         }
-    },
+    }
 
     /**
      * @override
      */
     emit(data) {
         if (this._state === STATE_END) {
-            let dataSwipe = create(data);
+            let dataSwipe = Object.create(data);
             dataSwipe.type = 'swipe';
             dataSwipe.swipeDirection = DIRECTION_STR[data.direction];
             this.trigger(dataSwipe);
 
-            let dataSwipeDir = create(data);
+            let dataSwipeDir = Object.create(data);
             dataSwipeDir.type = 'swipe' + DIRECTION_STR[data.direction];
             dataSwipeDir.swipeDirection = DIRECTION_STR[data.direction];
             this.trigger(dataSwipeDir);
         }
     }
-});
+
+}
 
 Recognizer.register(TapRecognizer, 'tap');
 Recognizer.register(DoubleTapRecognizer, 'doubletap');
