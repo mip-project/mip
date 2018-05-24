@@ -113,7 +113,6 @@ class Compile {
         }
         let attr = result[1];
         if (attr !== 'disabled' && node.disabled) {
-            // fn.extend(window.m, this.origin);
             Object.assign(window.m, this.origin);
             return;
         }
