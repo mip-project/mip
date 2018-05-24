@@ -25,7 +25,7 @@ export function installMipLink(router, {isRootPage, postMessage}) {
         let $a = this;
         let to = $a.getAttribute('href');
         const location = router.resolve(to, router.currentRoute, false).location;
-        if ($a.hasAttribute('mip-link')) {
+        if ($a.hasAttribute('mip-link') || $a.getAttribute('data-type') === 'mip') {
             if (guardEvent(e, $a)) {
                 if ($a.hasAttribute('replace')) {
                     if (isRootPage) {
