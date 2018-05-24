@@ -34,6 +34,7 @@ import './polyfills';
 Vue.use(Router);
 
 let mip = {
+    Vue,
     customElement(tag, component) {
         Vue.customElement(tag, component);
     },
