@@ -17,6 +17,30 @@
     &.mip-page__iframe-with-header {
         top: @appshell-header-height;
     }
+
+    &.slide-enter {
+        transform: translate(100%, 0);
+    }
+
+    &.slide-enter-active {
+        transition: all 0.35s ease;
+    }
+
+    &.slide-enter-to {
+        transform: translate(0, 0);
+    }
+
+    &.slide-leave {
+        transform: translate(0, 0);
+    }
+
+    &.slide-leave-active {
+        transition: all 0.35s ease;
+    }
+
+    &.slide-leave-to {
+        transform: translate(-100%, 0);
+    }
 }
 
 @appshell-header-dropdown-height: 30px;

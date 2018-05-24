@@ -61,6 +61,9 @@ class Page {
         // inside iframe
         else {
             router = window.parent.MIP_ROUTER;
+            router.addRoute({
+                path: window.location.pathname
+            });
             router.rootPage.addChild(this);
         }
 
@@ -100,6 +103,7 @@ class Page {
 
         this.initRouter();
         this.initAppShell();
+        util.addMIPCustomScript();
         document.body.setAttribute('mip-ready', '');
 
         if (this.isRootPage) {
@@ -127,27 +131,24 @@ class Page {
         }
     }
 
-    applyTransition(targetPageId, shouldCreateNewPage) {
-        if (shouldCreateNewPage) {
-            let targetFrame = util.createIFrame(targetPageId);
-
-            if (this.data.appshell
-                && this.data.appshell.header
-                && !this.data.appshell.header.hidden) {
-                targetFrame.classList.add('mip-page__iframe-with-header');
-            }
-
-            util.frameMoveIn(targetFrame, {
-                newPage: true
+    applyTransition(targetPageId) {
+        if (this.currentChildPageId) {
+            util.frameMoveOut(this.currentChildPageId, {
+                onComplete: () => {
+                    // 没有引用 mip.js 的错误页
+                    if (!this.getPageById(this.currentChildPageId)) {
+                        util.removeIFrame(this.currentChildPageId);
+                    }
+                    this.currentChildPageId = targetPageId;
+                }
             });
         }
-        else {
-            if (this.currentChildPageId) {
-                util.frameMoveOut(this.currentChildPageId);
+
+        util.frameMoveIn(targetPageId, {
+            onComplete: () => {
+                this.currentChildPageId = targetPageId;
             }
-            util.frameMoveIn(targetPageId);
-        }
-        this.currentChildPageId = targetPageId;
+        });
     }
 
     addChild(page) {
@@ -165,10 +166,20 @@ class Page {
         let targetPageId = route.fullPath;
         let targetPage = this.getPageById(targetPageId);
 
-        if (targetPage) {
+        if (!targetPage) {
+            let targetFrame = util.createIFrame(targetPageId);
+
+            if (this.data.appshell
+                && this.data.appshell.header
+                && !this.data.appshell.header.hidden) {
+                targetFrame.classList.add('mip-page__iframe-with-header');
+            }
+        }
+        else {
             this.refreshAppShell(targetPage.data.appshell);
         }
-        this.applyTransition(targetPageId, !targetPage);
+
+        this.applyTransition(targetPageId);
     }
 }
 

@@ -32,6 +32,9 @@ export default class AppShell {
 
     refresh(data) {
         let {header, view} = data;
+        if (header.title) {
+            document.title = header.title;
+        }
         this.header.update({
             ...header,
             showBackIcon: !view.isIndex
