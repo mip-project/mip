@@ -61,6 +61,9 @@ class Page {
         // inside iframe
         else {
             router = window.parent.MIP_ROUTER;
+            router.addRoute({
+                path: window.location.pathname
+            });
             router.rootPage.addChild(this);
         }
 
@@ -137,17 +140,31 @@ class Page {
                 targetFrame.classList.add('mip-page__iframe-with-header');
             }
 
-            util.frameMoveIn(targetFrame, {
-                newPage: true
+            util.frameMoveIn(targetPageId, {
+                newPage: true,
+                onComplete: () => {
+                    this.currentChildPageId = targetPageId;
+                }
             });
         }
         else {
             if (this.currentChildPageId) {
-                util.frameMoveOut(this.currentChildPageId);
+                util.frameMoveOut(this.currentChildPageId, {
+                    onComplete: () => {
+                        // 没有引用 mip.js 的错误页
+                        if (!this.getPageById(this.currentChildPageId)) {
+                            util.removeIFrame(this.currentChildPageId);
+                        }
+                        this.currentChildPageId = targetPageId;
+                    }
+                });
             }
-            util.frameMoveIn(targetPageId);
+            util.frameMoveIn(targetPageId, {
+                onComplete: () => {
+                    this.currentChildPageId = targetPageId;
+                }
+            });
         }
-        this.currentChildPageId = targetPageId;
     }
 
     addChild(page) {
