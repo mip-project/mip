@@ -28,16 +28,10 @@ $ npm install -g mip2
 ### 创建项目脚手架
 
 ``` bash
-$ mip2 init [project-name]
+$ mip2 init
 ```
 
-示例：
-
-``` bash
-$ mip2 init myproject
-```
-
-生成项目结构如下
+根据提示输入项目名 `myproject`，生成项目结构如下
 
 ```
 myproject
