@@ -37,12 +37,14 @@ const windowExcludeKey = [
     'confirm',
     'prompt',
     'eval',
+    'parent',
+    'opener',
+    'top',
     // 特殊型
     'document',
     'setTimeout',
     'setInterval',
-    'self',
-    'top'
+    'self'
 ];
 
 /**
@@ -87,12 +89,18 @@ function getSafeObjCopy(obj, exclude) {
     /* eslint-enable fecs-use-for-of */
         if (exclude.indexOf(key) === -1) {
             properties[key] = {
+                // 取值通过getter，如果是函数还需要bind
                 get() {
                     let value = obj[key];
                     if (isFun(value)) {
                         return value.bind(obj);
                     }
                     return value;
+                },
+
+                // 写值通过setter
+                set(val) {
+                    obj[key] = val;
                 }
             };
         }
