@@ -17,24 +17,26 @@ import {
 
 let activeZIndex = 10000;
 
-export function createIFrame(path) {
+export async function createIFrame(path) {
     let container = document.querySelector(`.${MIP_IFRAME_CONTAINER}[data-page-id="${path}"]`);
 
-    if (!container) {
-        container = document.createElement('iframe');
-        container.setAttribute('src', path);
-        container.setAttribute('class', MIP_IFRAME_CONTAINER);
-        container.setAttribute('data-page-id', path);
-        container.setAttribute('sandbox', 'allow-top-navigation allow-popups allow-scripts allow-forms allow-pointer-lock allow-popups-to-escape-sandbox allow-same-origin allow-modals')
-        document.body.appendChild(container);
-    }
-    else {
-        // client hydrating
-        container.setAttribute('data-server-rendered', '');
-        // oldContainer.innerHTML = '';
-    }
-
-    return container;
+    return new Promise((resolve, reject) => {
+        if (!container) {
+            container = document.createElement('iframe');
+            container.onload = () => {
+                resolve(container);
+            };
+            container.onerror = reject;
+            container.setAttribute('src', path);
+            container.setAttribute('class', MIP_IFRAME_CONTAINER);
+            container.setAttribute('data-page-id', path);
+            container.setAttribute('sandbox', 'allow-top-navigation allow-popups allow-scripts allow-forms allow-pointer-lock allow-popups-to-escape-sandbox allow-same-origin allow-modals')
+            document.body.appendChild(container);
+        }
+        else {
+            resolve(container);
+        }
+    });
 }
 
 export function removeIFrame(pageId) {
@@ -132,41 +134,32 @@ function whenTransitionEnds(el, type, cb) {
     el.addEventListener(event, onEnd);
 }
 
-export function frameMoveIn(pageId, {newPage, onComplete} = {}) {
+export function frameMoveIn(pageId, {onComplete} = {}) {
     let iframe = getIFrame(pageId);
 
     if (iframe) {
         let width = window.innerWidth;
 
-        let exec = () => {
-            css(iframe, {
-                'z-index': activeZIndex++,
-                display: 'block'
-            });
-            iframe.classList.add('slide-enter');
-            iframe.classList.add('slide-enter-active');
+        css(iframe, {
+            'z-index': activeZIndex++,
+            display: 'block'
+        });
+        iframe.classList.add('slide-enter');
+        iframe.classList.add('slide-enter-active');
 
-            // trigger layout
-            iframe.offsetWidth;
+        // trigger layout
+        iframe.offsetWidth;
 
-            whenTransitionEnds(iframe, 'transition', () => {
-                iframe.classList.remove('slide-enter-to');
-                iframe.classList.remove('slide-enter-active');
-                onComplete && onComplete();
-            });
+        whenTransitionEnds(iframe, 'transition', () => {
+            iframe.classList.remove('slide-enter-to');
+            iframe.classList.remove('slide-enter-active');
+            onComplete && onComplete();
+        });
 
-            nextFrame(() => {
-                iframe.classList.add('slide-enter-to');
-                iframe.classList.remove('slide-enter');
-            });
-        };
-
-        if (newPage) {
-            iframe.onload = exec;
-        }
-        else {
-            exec();
-        }
+        nextFrame(() => {
+            iframe.classList.add('slide-enter-to');
+            iframe.classList.remove('slide-enter');
+        });
     }
 }
 

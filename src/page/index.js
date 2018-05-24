@@ -130,9 +130,9 @@ class Page {
         }
     }
 
-    applyTransition(targetPageId, shouldCreateNewPage) {
+    async applyTransition(targetPageId, shouldCreateNewPage) {
         if (shouldCreateNewPage) {
-            let targetFrame = util.createIFrame(targetPageId);
+            let targetFrame = await util.createIFrame(targetPageId);
 
             if (this.data.appshell
                 && this.data.appshell.header
@@ -141,7 +141,6 @@ class Page {
             }
 
             util.frameMoveIn(targetPageId, {
-                newPage: true,
                 onComplete: () => {
                     this.currentChildPageId = targetPageId;
                 }
@@ -185,6 +184,7 @@ class Page {
         if (targetPage) {
             this.refreshAppShell(targetPage.data.appshell);
         }
+
         this.applyTransition(targetPageId, !targetPage);
     }
 }
