@@ -1,5 +1,6 @@
 /**
  * @file promise polyfill
+ * @author sfe
  */
 
 'use strict';

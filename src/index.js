@@ -5,22 +5,22 @@
 
 import Vue from 'vue';
 import customElement from './custom-element/index';
-import customElementBuildInComponents from './components';
+// import customElementBuildInComponents from './components';
 import util from './util';
 import sandbox from './util/sandbox';
-import templates from './util/templates';
+import layout from './layout';
 import hash from './util/hash';
-import viewer from './util/viewer';
-import viewport from './util/viewport';
+import viewer from './viewer';
+import viewport from './viewport';
 import page from './page/index';
+import builtinComponents from './custom-element-components';
 
 import sleepWakeModule from './sleepWakeModule';
-import Resources from './resources';
 import performance from './performance';
 
 import './log/monitor';
 
-import 'script-loader!../deps/fetch.js';
+import 'script-loader!deps/fetch.js';
 import 'script-loader!fetch-jsonp';
 import 'script-loader!document-register-element/build/document-register-element';
 
@@ -42,8 +42,7 @@ let mip = {
     isIframed: window === top,
     standalone: window === top,
     sandbox,
-    css: {},
-    prerenderElement: Resources.prerenderElement
+    css: {}
 };
 
 if (window.MIP) {
@@ -66,31 +65,30 @@ mip.push = function (extensions) {
 mip1PolyfillInstall(mip);
 
 Vue.use(customElement);
-Vue.use(customElementBuildInComponents);
+// Vue.use(customElementBuildInComponents);
+builtinComponents.register();
 
 util.dom.waitDocumentReady(() => {
     // Initialize sleepWakeModule
     sleepWakeModule.init();
+
     // Initialize viewer
     viewer.init();
+
     // Find the default-hidden elements.
     let hiddenElements = Array.prototype.slice.call(document.getElementsByClassName('mip-hidden'));
+
     // Regular for checking mip elements.
     let mipTagReg = /mip-/i;
+
     // Apply layout for default-hidden elements.
-    hiddenElements.forEach(function (element) {
-        if (element.tagName.search(mipTagReg) > -1) {
-            layout.applyLayout(element);
-        }
-    });
+    hiddenElements.forEach(element => element.tagName.search(mipTagReg) > -1 && layout.applyLayout(element));
+
     // Register builtin extensions
     // components.register();
 
     performance.start(window._mipStartTiming);
-
-    performance.on('update', function (timing) {
-        viewer.sendMessage('performance_update', timing);
-    });
+    performance.on('update', timing => viewer.sendMessage('performance_update', timing));
 
     // Show page
     viewer.show();

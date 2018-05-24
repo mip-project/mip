@@ -61,7 +61,9 @@ const LOADING_ELEMENTS = {
 class Layout {
 
     /**
-     * @param {string} s
+     * get layout name
+     *
+     * @param {string} s layout type string
      * @return {Layout|undefined} Returns undefined in case of failure to parse
      *   the layout string.
      */
@@ -75,7 +77,9 @@ class Layout {
     }
 
     /**
-     * @param {Layout} layout
+     * get layout class by layout name
+     *
+     * @param {Layout} layout layout name
      * @return {string}
      */
     getLayoutClass(layout) {
@@ -84,7 +88,8 @@ class Layout {
 
     /**
      * Whether an element with this layout inherently defines the size.
-     * @param {Layout} layout
+     *
+     * @param {Layout} layout layout name
      * @return {boolean}
      */
     isLayoutSizeDefined(layout) {
@@ -98,7 +103,8 @@ class Layout {
     /**
      * Parses the CSS length value. If no units specified, the assumed value is
      * "px". Returns undefined in case of parsing error.
-     * @param {string|undefined} s
+     *
+     * @param {string|undefined} s length string
      * @return {!LengthDef|undefined}
      */
     parseLength(s) {
@@ -120,7 +126,8 @@ class Layout {
 
     /**
      * Returns the numeric value of a CSS length value.
-     * @param {string} length
+     *
+     * @param {string} length length string
      * @return {number}
      */
     getLengthNumeral(length) {
@@ -131,6 +138,7 @@ class Layout {
     /**
      * Determines whether the tagName is a known element that has natural dimensions
      * in our runtime or the browser.
+     *
      * @param {string} tagName The element tag name.
      * @return {DimensionsDef}
      */
@@ -145,7 +153,8 @@ class Layout {
      * different browser implementations, like <audio> for instance.
      * This operation can only be completed for an element whitelisted by
      * `hasNaturalDimensions`.
-     * @param {!Element} element
+     *
+     * @param {!Element} element html element
      * @return {DimensionsDef}
      */
     getNaturalDimensions(element) {
@@ -161,7 +170,7 @@ class Layout {
             doc.body.appendChild(temp);
             NATURAL_DIMENSIONS[tagName] = {
                 width: (temp.offsetWidth || 1) + 'px',
-                height: (temp.offsetHeight || 1) + 'px',
+                height: (temp.offsetHeight || 1) + 'px'
             };
             doc.body.removeChild(temp);
         }
@@ -173,6 +182,7 @@ class Layout {
      * Whether the loading can be shown for the specified elemeent. This set has
      * to be externalized since the element's implementation may not be
      * downloaded yet.
+     *
      * @param {string} tagName The element tag name.
      * @return {boolean}
      */
@@ -182,7 +192,8 @@ class Layout {
 
     /**
      * Apply layout for a MIPElement.
-     * @param {MIPElement} element
+     *
+     * @param {MIPElement} element html element
      * @return {string}
      */
     applyLayout(element) {
@@ -259,7 +270,11 @@ class Layout {
         }
         else if (layout === LAYOUT.RESPONSIVE) {
 
-            if (element.firstChild.tagName.toLowerCase() === SPACE_TAG_NAME) {
+            if (
+                element.firstChild
+                && element.firstChild.tagName
+                && element.firstChild.tagName.toLowerCase() === SPACE_TAG_NAME
+            ) {
                 return;
             }
 

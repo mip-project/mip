@@ -5,14 +5,14 @@
 
 /* eslint-disable fecs-valid-jsdoc, fecs-camelcase */
 
-import event from './dom/event';
-import css from './dom/css';
-import Gesture from './gesture';
-import platform from './platform';
+import event from './util/dom/event';
+import css from './util/dom/css';
+import Gesture from './util/gesture';
+import platform from './util/platform';
 import viewport from './viewport';
-import EventAction from './event-action';
-import EventEmitter from './event-emitter';
-import fn from './fn';
+import EventAction from './util/event-action';
+import EventEmitter from './util/event-emitter';
+import fn from './util/fn';
 
 /**
  * Save window.
@@ -88,7 +88,7 @@ let viewer = {
         let needBackReload = (iosVersion === '8' && platform.isUc() && screen.width === 320)
             || (iosVersion === '9' && platform.isSafari());
         if (needBackReload) {
-            window.addEventListener('pageshow', function (e) {
+            window.addEventListener('pageshow', e => {
                 if (e.persisted) {
                     document.body.style.display = 'none';
                     location.reload();
@@ -134,23 +134,23 @@ let viewer = {
         if (hasTouch) {
             // In mobile phone, bind Gesture-tap which listen to touchstart/touchend event
             // istanbul ignore next
-            this._gesture.on('tap', function (event) {
+            this._gesture.on('tap', event => {
                 eventAction.execute('tap', event.target, event);
             });
         }
         else {
             // In personal computer, bind click event, then trigger event. eg. `on=tap:sidebar.open`, when click, trigger open() function of #sidebar
-            document.addEventListener('click', function (event) {
+            document.addEventListener('click', event => {
                 eventAction.execute('tap', event.target, event);
             }, false);
         }
 
-        document.addEventListener('click', function (event) {
+        document.addEventListener('click', event => {
             eventAction.execute('click', event.target, event);
         }, false);
 
         // istanbul ignore next
-        event.delegate(document, 'input', 'change', function (event) {
+        event.delegate(document, 'input', 'change', event => {
             eventAction.execute('change', event.target, event);
         });
     },
@@ -160,7 +160,7 @@ let viewer = {
      */
     handlePreregisteredExtensions() {
         window.MIP = window.MIP || {};
-        window.MIP.push = function (extensions) {
+        window.MIP.push = extensions => {
             if (extensions && typeof extensions.func === 'function') {
                 extensions.func();
             }
@@ -206,7 +206,7 @@ let viewer = {
         let lastScrollTop = 0;
         let wrapper = (platform.needSpecialScroll ? document.body : win);
 
-        wrapper.addEventListener('touchstart', function (event) {
+        wrapper.addEventListener('touchstart', event => {
             scrollTop = viewport.getScrollTop();
             scrollHeight = viewport.getScrollHeight();
         });
@@ -235,12 +235,8 @@ let viewer = {
                 self.sendMessage('mipscroll', {direct: 0});
             }
         }
-        wrapper.addEventListener('touchmove', function (event) {
-            pagemove();
-        });
-        wrapper.addEventListener('touchend', function (event) {
-            pagemove();
-        });
+        wrapper.addEventListener('touchmove', event => pagemove());
+        wrapper.addEventListener('touchend', event => pagemove());
     },
 
     /**
@@ -252,7 +248,7 @@ let viewer = {
         let self = this;
         let regexp = /^http/;
         let telRegexp = /^tel:/;
-        event.delegate(document, 'a', 'click', function (e) {
+        event.delegate(document, 'a', 'click', e => {
             if (!this.href) {
                 return;
             }
@@ -292,6 +288,7 @@ let viewer = {
     _getMessageData() {
         let messageKey = 'loadiframe';
         let messageData = {};
+
         messageData.url = this.href;
         if (this.hasAttribute('mip-link')) {
             let parent = this.parentNode;

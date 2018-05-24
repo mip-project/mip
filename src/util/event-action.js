@@ -3,8 +3,12 @@
  * @author huanghuiquan (huanghuiquan@baidu.com)
  */
 
+ /* global MIP */
+
 import fn from './fn';
 import dom from './dom/dom';
+
+/* global MIP */
 
 /**
  * Regular for parsing params.
@@ -33,10 +37,11 @@ const OPTION_KEYS = ['executeEventAction', 'parse', 'checkTarget', 'getTarget', 
 /**
  * MIP does not support external JavaScript, so we provide EventAction to trigger events between elements.
  * TODO: refactor
+ *
  * @class
- * @param {?Object} opt Options
  */
 class EventAction {
+
     constructor(opt) {
         opt && fn.extend(this, fn.pick(opt, OPTION_KEYS));
         this.attr = 'on';
@@ -74,8 +79,9 @@ class EventAction {
 
     /**
      * Add global target in order to event
-     * @param {string} name
-     * @param {Function} handler
+     *
+     * @param {string} name name
+     * @param {Function} handler handler
      */
     addGlobalTarget(name, handler) {
         /* istanbul ignore next */
@@ -87,6 +93,7 @@ class EventAction {
 
     /**
      * Execute the event-action.
+     *
      * @param {string} type The event's type
      * @param {HTMLElement} target The source element of native event.
      * @param {Event} nativeEvent The native event.
@@ -96,8 +103,8 @@ class EventAction {
             return;
         }
         let attr;
-        let parent;
         let attrSelector = '[' + this.attr + ']';
+
         do {
             if (attr = target.getAttribute(this.attr)) {
                 this._execute(this.parse(attr, type, nativeEvent));
@@ -112,7 +119,8 @@ class EventAction {
 
     /**
      * Ensure the target element is a MIPElement
-     * @param {HTMLElement} target
+     *
+     * @param {HTMLElement} target target
      * @return {boolean}
      */
     checkTarget(target) {
@@ -121,7 +129,8 @@ class EventAction {
 
     /**
      * Get the target element by ID
-     * @param {string} id
+     *
+     * @param {string} id id
      * @return {HTMLElement}
      */
     getTarget(id) {
@@ -131,8 +140,8 @@ class EventAction {
     /**
      * Excute the 'executeEventAction' of a MIPElement.
      *
-     * @param {Object} action
-     * @param {MIPElement} target
+     * @param {Object} action action
+     * @param {MIPElement} target target
      */
     executeEventAction(action, target) {
         target.executeEventAction && target.executeEventAction(action);
@@ -159,12 +168,6 @@ class EventAction {
         }
     }
 
-    /**
-     * Parse the action string.
-     *
-     * @param {string} actionString action name string
-     * @return {Array.<Object>}
-     */
     parse(actionString, type, nativeEvent) {
         if (typeof actionString !== 'string') {
             return [];
@@ -185,7 +188,6 @@ class EventAction {
         }
         return result;
     }
-
 }
 
 export default EventAction;

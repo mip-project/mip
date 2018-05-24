@@ -3,10 +3,7 @@
  * @author sekiyika(pengxing@baidu.com)
  */
 
-'use strict';
-
 import dom from './dom';
-
 
 function delegate(element, selector, event, handler, capture) {
     capture = !!capture;
@@ -18,7 +15,7 @@ function delegate(element, selector, event, handler, capture) {
         }
     }
     element.addEventListener(event, eventHandler, capture);
-    return function () {
+    return () => {
         element.removeEventListener(event, eventHandler);
         /* eslint-disable */
         eventHandler = element = handler = null;

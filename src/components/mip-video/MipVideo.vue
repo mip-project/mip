@@ -5,6 +5,7 @@
  */
 
 <template>
+    <!--htmlcs-disable-->
     <div class="mip-video">
         <video
             v-if="renderInView"
@@ -15,12 +16,11 @@
             :autoplay="autoplay"
             :autobuffer="autobuffer"
             :crossorigin="crossorigin"
-            :height="height"
             :muted="muted"
             :preload="preload"
             :poster="poster"
+            :height="vheight"
             width="100%"
-            height="100%"
         >
             <slot></slot>
             Your browser does not support the video tag.
@@ -37,18 +37,14 @@
 </template>
 
 <script>
+/* eslint-disable fecs-esnext-ext,fecs-valid-jsdoc */
 import util from '../../util';
+import viewer from '../../viewer';
 const httpsReg = /^https:|^\/\//;
-const windowInIframe = util.viewer.isIframed;
+const windowInIframe = viewer.isIframed;
 
 export default {
     props: {
-        layout: {
-            default() {
-                return 'responsive';
-            },
-            type: String
-        },
         ads: String,
         src: String,
         controls: String,
@@ -103,6 +99,10 @@ export default {
         // autoplay 未设置，强行设置controls属性
         ctl() {
             return this.autoplay === undefined ? true : this.controls;
+        },
+
+        vheight() {
+            return this.height || '100%';
         }
 
     },
@@ -151,6 +151,7 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
+
     .mip-video-playbtn {
         display: inline-block;
         width: 60px;
@@ -163,7 +164,6 @@ export default {
         transform: translate(-50%, -50%);
         background-color: rgba(0, 0, 0, 0.3);
         -webkit-tap-highlight-color: rbga(0, 0, 0, 0.3);
-        tap-highlight-color: rbga(0, 0, 0, 0.3);
         &:before {
             content: '';
             position: absolute;
@@ -176,9 +176,11 @@ export default {
             top: 14px;
         }
     }
+
     .mip-video-poster {
         height: 100%;
         width: 100%;
+
         img {
             position: absolute;
             top: 0;

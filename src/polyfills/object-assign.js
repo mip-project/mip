@@ -19,7 +19,7 @@ export function assign(target, ...args) {
 
     let output = Object(target);
     for (let arg of args) {
-        let source = args[i];
+        let source = args[arg];
         if (source != null) {
             Object.keys(source).forEach(key => {
                 if (source.hasOwnProperty(key)) {

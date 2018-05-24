@@ -37,12 +37,14 @@ const windowExcludeKey = [
     'confirm',
     'prompt',
     'eval',
+    'parent',
+    'opener',
+    'top',
     // 特殊型
     'document',
     'setTimeout',
     'setInterval',
-    'self',
-    'top'
+    'self'
 ];
 
 /**
@@ -87,20 +89,27 @@ function getSafeObjCopy(obj, exclude) {
     /* eslint-enable fecs-use-for-of */
         if (exclude.indexOf(key) === -1) {
             properties[key] = {
+                // 取值通过getter，如果是函数还需要bind
                 get() {
                     let value = obj[key];
                     if (isFun(value)) {
                         return value.bind(obj);
                     }
                     return value;
+                },
+
+                // 写值通过setter
+                set(val) {
+                    obj[key] = val;
                 }
             };
         }
         else {
-            newObj[key] = function () {
-                let objName = obj.toString().slice(8, -1).replace(/[A-Z]+/g, ($0) => {
-                    return $0[$0.length - 1].toLocaleLowerCase();
-                });
+            newObj[key] = () => {
+                let objName = obj.toString().slice(8, -1).replace(
+                    /[A-Z]+/g,
+                    $0 => $0[$0.length - 1].toLocaleLowerCase()
+                );
                 throw new Error(`组件内禁止使用${objName}.${key}`);
             };
         }
@@ -138,8 +147,7 @@ function processDocumentObj(doc) {
  * @return {Function}    延时函数体
  */
 function timeoutFun(type, self) {
-    return function (fn, delay, ...args) {
-
+    return (fn, delay, ...args) => {
         if (!isFun(fn)) {
             /* eslint-disable no-console */
             console.warn(`${type}请使用函数作参数`);
@@ -147,10 +155,7 @@ function timeoutFun(type, self) {
             return;
         }
 
-        return window[type](() => {
-            fn.apply(self, args);
-        }, delay);
-
+        return window[type](() => fn.apply(self, args), delay);
     };
 }
 
@@ -221,7 +226,6 @@ class Sandbox {
             }
         );
     }
-
 }
 
 export default new Sandbox();

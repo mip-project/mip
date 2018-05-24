@@ -11,6 +11,7 @@ import {install as installArrayIncludes} from './array-includes';
 // import {install as installMathSign} from './math-sign';
 import {install as installObjectAssign} from './object-assign';
 import {install as installPromise} from './promise';
+import {install as installBabelRuntimeHelpers} from './babel-runtime-helpers';
 
 installArrayIncludes(self);
 // installDOMTokenListToggle(self);
@@ -18,3 +19,4 @@ installArrayIncludes(self);
 // installMathSign(self);
 installObjectAssign(self);
 installPromise(self);
+installBabelRuntimeHelpers(self);
