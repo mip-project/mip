@@ -6,6 +6,7 @@
 import {generateScope, getScopedStyles} from './style';
 import {getPath} from './url';
 import css from '../../util/dom/css';
+import sandbox from '../../util/sandbox';
 
 import {
     MIP_CONTAINER_ID,
@@ -15,28 +16,34 @@ import {
     MIP_IFRAME_CONTAINER
 } from '../const';
 
+let {window: sandWin, document: sandDoc} = sandbox;
 let activeZIndex = 10000;
 
-export async function createIFrame(path) {
+// onLoad, onError 暂时没人用到，再观察一下确定是否删除
+export function createIFrame(path, {onLoad, onError} = {}) {
     let container = document.querySelector(`.${MIP_IFRAME_CONTAINER}[data-page-id="${path}"]`);
 
-    return new Promise((resolve, reject) => {
-        if (!container) {
-            container = document.createElement('iframe');
-            container.onload = () => {
-                resolve(container);
-            };
-            container.onerror = reject;
-            container.setAttribute('src', path);
-            container.setAttribute('class', MIP_IFRAME_CONTAINER);
-            container.setAttribute('data-page-id', path);
-            container.setAttribute('sandbox', 'allow-top-navigation allow-popups allow-scripts allow-forms allow-pointer-lock allow-popups-to-escape-sandbox allow-same-origin allow-modals')
-            document.body.appendChild(container);
+    if (!container) {
+        container = document.createElement('iframe');
+        if (typeof onLoad === 'function') {
+            container.onload = onLoad;
         }
-        else {
-            resolve(container);
+        if (typeof onError === 'function') {
+            container.onerror = onError;
         }
-    });
+        container.setAttribute('src', path);
+        container.setAttribute('class', MIP_IFRAME_CONTAINER);
+        container.setAttribute('data-page-id', path);
+        container.setAttribute('sandbox', 'allow-top-navigation allow-popups allow-scripts allow-forms allow-pointer-lock allow-popups-to-escape-sandbox allow-same-origin allow-modals')
+        document.body.appendChild(container);
+    }
+    else {
+        if (typeof onLoad === 'function') {
+            onLoad();
+        }
+    }
+
+    return container;
 }
 
 export function removeIFrame(pageId) {
@@ -60,23 +67,18 @@ export function getMIPShellConfig() {
     return DEFAULT_SHELL_CONFIG;
 }
 
-export function getMIPCustomScript(rawContent) {
-    if (!rawContent) {
-        let script = document.querySelector('script[type="application/mip-script"]');
-        if (!script) {
-            return;
-        }
-
-        let scriptContent = getSandboxFunction(script.innerHTML);
-        script.remove();
-        return scriptContent;
+export function addMIPCustomScript(win = window) {
+    let doc = win.document;
+    let script = doc.querySelector('script[type="application/mip-script"]');
+    if (!script) {
+        return;
     }
 
-    let match = rawContent.match(/<script[\s\S]+?type=['"]?application\/mip-script['"]?>([\s\S]+?)<\/script>/i);
-    if (match) {
-        let scriptContent = match[1];
-        return getSandboxFunction(scriptContent);
-    }
+    let customFunction = getSandboxFunction(script.innerHTML);
+    script.remove();
+
+    console.log('window.addEventListener');
+    win.addEventListener('ready-to-watch', () => customFunction(sandWin, sandDoc));
 }
 
 function getSandboxFunction(script) {
