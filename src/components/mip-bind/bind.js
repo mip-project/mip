@@ -9,6 +9,7 @@ import Watcher from './watcher';
 import util from '../../util';
 
 /* global MIP */
+/* global MIP_ROOT_PAGE */
 class Bind {
     constructor(id) {
         let me = this;
@@ -132,7 +133,7 @@ class Bind {
         if (win.g && win.g.hasOwnProperty(key)) {
             this._assign(win.g, {[key]: val});
         }
-        else if (mip.isIframed && win.parent.g && win.parent.g.hasOwnProperty(key)) {
+        else if (!MIP_ROOT_PAGE && win.parent.g && win.parent.g.hasOwnProperty(key)) {
             this._assign(win.parent.g, {[key]: val});
         }
         else {
@@ -142,19 +143,19 @@ class Bind {
 
     _setGlobalState(data) {
         let win = this._win;
-        if (mip.isIframed) {
-            Object.assign(win.parent.g, data);
-        }
-        else {
+        if (MIP_ROOT_PAGE) {
             win.g = win.g || {};
             Object.assign(win.g, data);
+        }
+        else {
+            Object.assign(win.parent.g, data);
         }
     }
 
     _setPageState(data) {
         let win = this._win;
         Object.assign(win.m, data);
-        win.m.__proto__ = mip.isIframed ? win.parent.g : win.g;
+        win.m.__proto__ = MIP_ROOT_PAGE ? win.g : win.parent.g;
     }
 
     _normalize(data) {

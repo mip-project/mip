@@ -5,7 +5,7 @@
 
 import Vue from 'vue';
 import customElement from './custom-element/index';
-// import customElementBuildInComponents from './components';
+import customElementBuildInComponents from './components';
 import util from './util';
 import sandbox from './util/sandbox';
 import layout from './layout';
@@ -71,7 +71,7 @@ mip1PolyfillInstall(mip);
 const router = createRouter(Router);
 
 Vue.use(customElement, router);
-// Vue.use(customElementBuildInComponents);
+Vue.use(customElementBuildInComponents);
 builtinComponents.register();
 
 util.dom.waitDocumentReady(() => {
