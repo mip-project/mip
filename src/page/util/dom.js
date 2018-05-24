@@ -6,6 +6,7 @@
 import {generateScope, getScopedStyles} from './style';
 import {getPath} from './url';
 import css from '../../util/dom/css';
+import sandbox from '../../util/sandbox';
 
 import {
     MIP_CONTAINER_ID,
@@ -15,13 +16,20 @@ import {
     MIP_IFRAME_CONTAINER
 } from '../const';
 
+let {window: sandWin, document: sandDoc} = sandbox;
 let activeZIndex = 10000;
 
-export function createIFrame(path) {
+export function createIFrame(path, {onLoad, onError} = {}) {
     let container = document.querySelector(`.${MIP_IFRAME_CONTAINER}[data-page-id="${path}"]`);
 
     if (!container) {
         container = document.createElement('iframe');
+        if (typeof onLoad === 'function') {
+            container.onload = onLoad;
+        }
+        if (typeof onError === 'function') {
+            container.onerror = onError;
+        }
         container.setAttribute('src', path);
         container.setAttribute('class', MIP_IFRAME_CONTAINER);
         container.setAttribute('data-page-id', path);
@@ -29,9 +37,9 @@ export function createIFrame(path) {
         document.body.appendChild(container);
     }
     else {
-        // client hydrating
-        container.setAttribute('data-server-rendered', '');
-        // oldContainer.innerHTML = '';
+        if (typeof onLoad === 'function') {
+            onLoad();
+        }
     }
 
     return container;
@@ -58,23 +66,17 @@ export function getMIPShellConfig() {
     return DEFAULT_SHELL_CONFIG;
 }
 
-export function getMIPCustomScript(rawContent) {
-    if (!rawContent) {
-        let script = document.querySelector('script[type="application/mip-script"]');
-        if (!script) {
-            return;
-        }
-
-        let scriptContent = getSandboxFunction(script.innerHTML);
-        script.remove();
-        return scriptContent;
+export function addMIPCustomScript(win = window) {
+    let doc = win.document;
+    let script = doc.querySelector('script[type="application/mip-script"]');
+    if (!script) {
+        return;
     }
 
-    let match = rawContent.match(/<script[\s\S]+?type=['"]?application\/mip-script['"]?>([\s\S]+?)<\/script>/i);
-    if (match) {
-        let scriptContent = match[1];
-        return getSandboxFunction(scriptContent);
-    }
+    let customFunction = getSandboxFunction(script.innerHTML);
+    script.remove();
+
+    win.addEventListener('ready-to-watch', () => customFunction(sandWin, sandDoc));
 }
 
 function getSandboxFunction(script) {
@@ -132,41 +134,32 @@ export function whenTransitionEnds(el, type, cb) {
     el.addEventListener(event, onEnd);
 }
 
-export function frameMoveIn(pageId, {newPage, onComplete} = {}) {
+export function frameMoveIn(pageId, {onComplete} = {}) {
     let iframe = getIFrame(pageId);
 
     if (iframe) {
         let width = window.innerWidth;
 
-        let exec = () => {
-            css(iframe, {
-                'z-index': activeZIndex++,
-                display: 'block'
-            });
-            iframe.classList.add('slide-enter');
-            iframe.classList.add('slide-enter-active');
+        css(iframe, {
+            'z-index': activeZIndex++,
+            display: 'block'
+        });
+        iframe.classList.add('slide-enter');
+        iframe.classList.add('slide-enter-active');
 
-            // trigger layout
-            iframe.offsetWidth;
+        // trigger layout
+        iframe.offsetWidth;
 
-            whenTransitionEnds(iframe, 'transition', () => {
-                iframe.classList.remove('slide-enter-to');
-                iframe.classList.remove('slide-enter-active');
-                onComplete && onComplete();
-            });
+        whenTransitionEnds(iframe, 'transition', () => {
+            iframe.classList.remove('slide-enter-to');
+            iframe.classList.remove('slide-enter-active');
+            onComplete && onComplete();
+        });
 
-            nextFrame(() => {
-                iframe.classList.add('slide-enter-to');
-                iframe.classList.remove('slide-enter');
-            });
-        };
-
-        if (newPage) {
-            iframe.onload = exec;
-        }
-        else {
-            exec();
-        }
+        nextFrame(() => {
+            iframe.classList.add('slide-enter-to');
+            iframe.classList.remove('slide-enter');
+        });
     }
 }
 

@@ -85,6 +85,7 @@
 
     <span>group.info.name will show below which is a global state shared from index.html:</span>
     <span m-text="group.info.name"></span>
+    <div on="tap:MIP.setData({group:{info:{name:'sfe2018'}}})" class="button">click change global group.info.name</div>
 
     <br><br>
     <h1 m-text="title"></h1>
@@ -139,11 +140,7 @@
         </script>
     </mip-shell>
 
-    <!-- <iframe src="./data2.html" id="data2-page"></iframe> -->
-    <!-- <iframe src="./data3.html" id="data3-page"></iframe> -->
-
     <script type="application/mip-script">
-        console.log('register')
         MIP.watch('num', function () {
             console.log('num changed callback')
             MIP.setData({
@@ -172,22 +169,4 @@
     <script src="../../dist/mip.js"></script>
     <script src="./components/mip-complevel2.js"></script>
     <script src="./components/mip-complevel1.js"></script>
-    <script>
-        // setTimeout(() => {
-        //     var iframe = document.createElement('iframe');
-        //     iframe.src = "./data2.html";
-        //     iframe.setAttribute('id', 'data2-page');
-        //     iframe.style.position = 'relative';
-        //     iframe.style.top = '400px';
-        //     document.body.appendChild(iframe);
-        // }, 1000);
-        // setTimeout(() => {
-        //     var iframe = document.createElement('iframe');
-        //     iframe.src = "./data3.html";
-        //     iframe.setAttribute('id', 'data3-page');
-        //     iframe.style.position = 'relative';
-        //     iframe.style.top = '400px';
-        //     document.body.appendChild(iframe);
-        // }, 1500);
-    </script>
 </body>
