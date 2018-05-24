@@ -22,7 +22,7 @@ export default class AppShell {
                     ...this.data.header,
                     showBackIcon: !this.data.view.isIndex
                 },
-                clickButtonCallback: this.handleClickHeaderButton
+                clickButtonCallback: this.handleClickHeaderButton.bind(this)
             });
             this.header.init();
         }
@@ -35,16 +35,24 @@ export default class AppShell {
         if (header.title) {
             document.title = header.title;
         }
-        this.header.update({
-            ...header,
-            showBackIcon: !view.isIndex
-        });
+        if (this.header) {
+            this.header.update({
+                ...header,
+                showBackIcon: !view.isIndex
+            });
+            this.header.isDropdownShow = false;
+        }
     }
 
     handleClickHeaderButton(buttonName) {
         // TODO: should emit relative CustomEvent so that other CustomElement can receive
         if (buttonName === 'back') {
             window.MIP_ROUTER.go(-1);
+        }
+        else if (buttonName === 'dropdown') {
+            if (this.header) {
+                this.header.toggleDropdown();
+            }
         }
     }
 }

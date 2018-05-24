@@ -72,6 +72,9 @@ class Page {
 
     initAppShell() {
         this.data.appshell = util.getMIPShellConfig();
+        if (!this.data.appshell.header.title) {
+            this.data.appshell.header.title = document.querySelector('title').innerHTML;
+        }
         if (this.isRootPage) {
             this.messageHandlers.push((type, data) => {
                 if (type === 'appshell-refresh') {
