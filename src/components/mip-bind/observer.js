@@ -21,7 +21,7 @@ class Observer {
         // if (value && value.__ob__) {
         //     return;
         // }
-
+ 
         // if value is object, define it's value
         let me = this;
         if (value && typeof value === 'object') {
@@ -51,17 +51,14 @@ class Observer {
                 if (newVal === value) {
                     return;
                 }
-                // value = newVal;
                 if (setter) {
                     setter.call(data, newVal);
                 }
                 else {
                     value = newVal;
                 }
-                // else {
                 me._walk(newVal);
                 deps.notify();
-                // }
             }
         });
 

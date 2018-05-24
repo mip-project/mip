@@ -154,7 +154,7 @@ class Bind {
     _setPageState(data) {
         let win = this._win;
         Object.assign(win.m, data);
-        win.m.__proto__ = win.parent.g;
+        win.m.__proto__ = mip.isIframed ? win.parent.g : win.g;
     }
 
     _normalize(data) {
