@@ -270,7 +270,11 @@ class Layout {
         }
         else if (layout === LAYOUT.RESPONSIVE) {
 
-            if (element.firstChild.tagName.toLowerCase() === SPACE_TAG_NAME) {
+            if (
+                element.firstChild
+                && element.firstChild.tagName
+                && element.firstChild.tagName.toLowerCase() === SPACE_TAG_NAME
+            ) {
                 return;
             }
 
