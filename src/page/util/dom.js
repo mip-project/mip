@@ -224,7 +224,7 @@ export function frameMoveIn(iframe, options = {}) {
             css(iframe, {
                 transform: 'translateX(0)'
             })
-        }, 20);
+        }, 100);
     };
 
     if (options.newPage) {
