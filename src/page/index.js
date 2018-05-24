@@ -167,7 +167,10 @@ class Page {
         let targetPage = this.getPageById(targetPageId);
 
         if (!targetPage) {
-            let targetFrame = util.createIFrame(targetPageId);
+            let me = this;
+            let targetFrame = util.createIFrame(targetPageId, {
+                onLoad: () => me.applyTransition(targetPageId)
+            });
 
             if (this.data.appshell
                 && this.data.appshell.header
@@ -177,9 +180,9 @@ class Page {
         }
         else {
             this.refreshAppShell(targetPage.data.appshell);
+            this.applyTransition(targetPageId);
         }
 
-        this.applyTransition(targetPageId);
     }
 }
 

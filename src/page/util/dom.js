@@ -19,7 +19,6 @@ import {
 let {window: sandWin, document: sandDoc} = sandbox;
 let activeZIndex = 10000;
 
-// onLoad, onError 暂时没人用到，再观察一下确定是否删除
 export function createIFrame(path, {onLoad, onError} = {}) {
     let container = document.querySelector(`.${MIP_IFRAME_CONTAINER}[data-page-id="${path}"]`);
 
@@ -77,7 +76,6 @@ export function addMIPCustomScript(win = window) {
     let customFunction = getSandboxFunction(script.innerHTML);
     script.remove();
 
-    console.log('window.addEventListener');
     win.addEventListener('ready-to-watch', () => customFunction(sandWin, sandDoc));
 }
 
