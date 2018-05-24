@@ -148,6 +148,7 @@ class Bind {
             Object.assign(win.g, data);
         }
         else {
+            win.parent.g = win.parent.g || {};
             Object.assign(win.parent.g, data);
         }
     }
