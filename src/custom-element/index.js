@@ -87,10 +87,12 @@ function install(Vue, router) {
                 }
 
                 componentDefinition[firstInviewCallbackLifeCircleName] && resources.add(this);
+                callLifeCycle(this.vm, 'connectedCallback', this);
             }
 
             disconnectedCallback() {
                 resources.remove(this);
+                callLifeCycle(this.vm, 'disconnectedCallback', this);
             }
 
             attributeChangedCallback(name, oldValue, value) {

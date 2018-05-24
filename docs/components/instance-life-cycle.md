@@ -14,8 +14,8 @@ mip 自定义元素 (Custom Element) 本质上是基于 [Web Component](https://
 - **beforeUpdate**: vue 数据状态发生变化时调用，如果自定义元素上的属性在 vue 组件定义的 prop 列表里，则自定义元素属性变化会触发 vue 数据状态的变化
 - **updated**: vue 重新渲染完成后触发调用
 - **firstInviewCallback**: 自定义元素第一次出现在浏览器窗口时触发调用，参数为自定义元素实例
-- **connnectedCallback**: 自定义元素挂载到 dom 结构时候调用
-- **disconnectedCallback**: 自定义元素从 dom 结构移除后调用
+- **connnectedCallback**: 自定义元素挂载到 dom 结构时候调用,参数为自定义元素实例
+- **disconnectedCallback**: 自定义元素从 dom 结构移除后调用,参数为自定义元素实例
 
 ### 生命周期图示
 
