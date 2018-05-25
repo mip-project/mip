@@ -3,7 +3,6 @@
  * @author wangyisheng@baidu.com (wangyisheng)
  */
 
-import {generateScope, getScopedStyles} from './style';
 import {getPath} from './url';
 import css from '../../util/dom/css';
 import sandbox from '../../sandbox';
