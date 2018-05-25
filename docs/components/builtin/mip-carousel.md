@@ -13,17 +13,17 @@
 ### responsive 布局
 
 ```html
-<mip-carousel 
-    layout="responsive" 
-    width="600" 
+<mip-carousel
+    layout="responsive"
+    width="600"
     height="400">
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_01.jpg">
     </mip-img>
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_02.jpg">
     </mip-img>
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_03.jpg">
     </mip-img>
 </mip-carousel>
@@ -33,17 +33,17 @@
 
 ```html
 <mip-carousel
-    autoplay  
-    layout="responsive" 
-    width="600" 
+    autoplay
+    layout="responsive"
+    width="600"
     height="400">
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_01.jpg">
     </mip-img>
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_02.jpg">
     </mip-img>
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_03.jpg">
     </mip-img>
 </mip-carousel>
@@ -54,17 +54,17 @@
 ```html
 <mip-carousel
     autoplay
-    defer="1000"  
-    layout="responsive" 
-    width="600" 
+    defer="1000"
+    layout="responsive"
+    width="600"
     height="400">
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_01.jpg">
     </mip-img>
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_02.jpg">
     </mip-img>
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_03.jpg">
     </mip-img>
 </mip-carousel>
@@ -75,19 +75,19 @@
 ```html
 <mip-carousel
     autoplay
-    defer="1000"  
-    layout="responsive" 
-    width="600" 
+    defer="1000"
+    layout="responsive"
+    width="600"
     height="400"
     indicator
     >
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_01.jpg">
     </mip-img>
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_02.jpg">
     </mip-img>
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_03.jpg">
     </mip-img>
 </mip-carousel>
@@ -98,20 +98,20 @@
 ```html
 <mip-carousel
     autoplay
-    defer="1000"  
-    layout="responsive" 
-    width="600" 
+    defer="1000"
+    layout="responsive"
+    width="600"
     height="400"
     indicator
     indicatorId="mip-carousel-example"
     >
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_01.jpg">
     </mip-img>
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_02.jpg">
     </mip-img>
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_03.jpg">
     </mip-img>
 </mip-carousel>
@@ -128,20 +128,20 @@
 
 ```html
 <mip-carousel
-    defer="1000"  
-    layout="responsive" 
-    width="600" 
+    defer="1000"
+    layout="responsive"
+    width="600"
     height="400"
     indicator
     buttonController
     >
-   <mip-img 
+   <mip-img
         src="https://www.mipengine.org/static/img/sample_01.jpg">
     </mip-img>
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_02.jpg">
     </mip-img>
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_03.jpg">
     </mip-img>
 </mip-carousel>
@@ -152,25 +152,25 @@
 ```html
 <mip-carousel
     autoplay
-    defer="1000"  
-    layout="responsive" 
-    width="600" 
+    defer="1000"
+    layout="responsive"
+    width="600"
     height="400"
     indicator
     buttonController
     >
     <a target="_blank" href="http://wenda.tianya.cn/m/question/1almfj0foas94gc7vtoq6ejbfbmdk3e78ehaa">
-        <mip-img 
-            src="https://www.mipengine.org/static/img/sample_01.jpg" layout="responsive" 
-        width="600" 
+        <mip-img
+            src="https://www.mipengine.org/static/img/sample_01.jpg" layout="responsive"
+        width="600"
         height="400">
         </mip-img>
         <div class="mip-carousle-subtitle">这里是title2</div>
     </a>
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_02.jpg">
     </mip-img>
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_03.jpg">
     </mip-img>
 </mip-carousel>
@@ -183,19 +183,19 @@
 ```html
 <mip-carousel
     autoplay
-    defer="1000" 
-    layout="responsive" 
-    width="600" 
+    defer="1000"
+    layout="responsive"
+    width="600"
     height="400">
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_01.jpg">
     </mip-img>
     <a target="_blank" href="http://wenda.tianya.cn/m/question/1almfj0foas94gc7vtoq6ejbfbmdk3e78ehaa">
-        <mip-img 
+        <mip-img
             src="https://www.mipengine.org/static/img/sample_02.jpg" width="600" height="400">
         </mip-img>
     </a>
-    <mip-img 
+    <mip-img
         src="https://www.mipengine.org/static/img/sample_03.jpg">
     </mip-img>
 </mip-carousel>
@@ -205,41 +205,41 @@
 
 ### width
 
-说明：宽度，不是实际宽度，与高度属性配合来设置图片比例，详见[组件布局](/doc/3-widget/11-widget-layout.html)   
-必选项：是   
-类型：数字  
-单位：无  
+说明：宽度，不是实际宽度，与高度属性配合来设置图片比例，详见[组件布局](../layout.md)
+必选项：是
+类型：数字
+单位：无
 默认值：无
 
 ### height
 
-说明：高度，不是实际高度，与宽度属性配合来设置图片比例，详见[组件布局](/doc/3-widget/11-widget-layout.html)  
-必选项：是   
-类型：数字    
-单位：无  
+说明：高度，不是实际高度，与宽度属性配合来设置图片比例，详见[组件布局](../layout.md)
+必选项：是
+类型：数字
+单位：无
 默认值：无
 
 ### autoplay
 
-说明：自动轮播开关  
-必选项：否  
-类型：字符串或空  
-取值："", `autoplay`  
-单位：无  
-默认值：无  
+说明：自动轮播开关
+必选项：否
+类型：字符串或空
+取值："", `autoplay`
+单位：无
+默认值：无
 
 ### defer
 
-说明：每次轮播的时间间隔，如果设置了 `autoplay`，可以添加 `defer` 来指定轮播的时间间隔  
-必选项：否  
-类型：数字  
-单位：ms  
+说明：每次轮播的时间间隔，如果设置了 `autoplay`，可以添加 `defer` 来指定轮播的时间间隔
+必选项：否
+类型：数字
+单位：ms
 默认值：2000
 
-### indicatorId 
+### indicatorId
 
-说明：下方指示器功能字段，和指示器的父节点的 `id` 取值请保持一致，指示器的个数和轮播的 `item` 个数必须保持一致，指示器这块对 `id` 是强依赖，样式可以自行修改，示例中是官方默认样式，指示器可点击定位。  
-必选项：否  
-类型：字符串  
-单位：无  
+说明：下方指示器功能字段，和指示器的父节点的 `id` 取值请保持一致，指示器的个数和轮播的 `item` 个数必须保持一致，指示器这块对 `id` 是强依赖，样式可以自行修改，示例中是官方默认样式，指示器可点击定位。
+必选项：否
+类型：字符串
+单位：无
 默认值：无

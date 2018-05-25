@@ -23,7 +23,7 @@
 ```
 
 ### 页面浮动 ssp 广告
-浮动的 ssp 广告需使用 `<mip-fixed>` 元素和 `fixed-height` [布局](/doc/3-widget/11-widget-layout.html)。`height` 请根据广告实际宽高填写。
+浮动的 ssp 广告需使用 `<mip-fixed>` 元素和 `fixed-height` [布局](../layout.md)。`height` 请根据广告实际宽高填写。
 
 ```html
 <mip-fixed type="top" >
@@ -42,20 +42,20 @@
 
 ### type
 
-说明：广告类型  
-必选项：是  
-类型：字符串  
-取值：ad-ssp  
+说明：广告类型
+必选项：是
+类型：字符串
+取值：ad-ssp
 默认值：无
 
 ### data-site-id
 
-说明：网站 `id`，在 ssp 投放代码中可见  
-必选项：是  
-类型：字符串  
+说明：网站 `id`，在 ssp 投放代码中可见
+必选项：是
+类型：字符串
 
 ### data-block-id
 
-说明：广告 `id`，在 ssp 投放代码中可见  
-必选项：是  
-类型：字符串  
+说明：广告 `id`，在 ssp 投放代码中可见
+必选项：是
+类型：字符串
