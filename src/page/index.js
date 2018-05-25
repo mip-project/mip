@@ -54,7 +54,7 @@ class Page {
                     router.replace(data.location);
                 }
                 else if (type === 'router-force') {
-                    window.location.href = data.location.fullpath;
+                    window.location.href = data.location;
                 }
             });
         }
@@ -170,9 +170,12 @@ class Page {
         let targetPage = this.getPageById(targetPageId);
 
         if (!targetPage) {
-            let me = this;
+            this.appshell.showLoading();
             let targetFrame = util.createIFrame(targetPageId, {
-                onLoad: () => me.applyTransition(targetPageId)
+                onLoad: () => {
+                    this.appshell.hideLoading();
+                    this.applyTransition(targetPageId);
+                }
             });
 
             if (this.data.appshell

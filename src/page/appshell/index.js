@@ -1,5 +1,5 @@
 import Header from './header.js';
-// import Loading from './loading.js';
+import Loading from './loading.js';
 import {DEFAULT_SHELL_CONFIG} from '../const';
 
 export default class AppShell {
@@ -7,6 +7,7 @@ export default class AppShell {
         this.data = Object.assign(DEFAULT_SHELL_CONFIG, options.data);
         this.$wrapper = null;
         this.header = null;
+        this.loading = null;
 
         this.init();
     }
@@ -26,6 +27,11 @@ export default class AppShell {
             });
             this.header.init();
         }
+
+        this.loading = new Loading({
+            wrapper: this.$wrapper
+        });
+        this.loading.init();
 
         document.body.prepend(this.$wrapper);
     }
@@ -54,5 +60,13 @@ export default class AppShell {
                 this.header.toggleDropdown();
             }
         }
+    }
+
+    showLoading() {
+        this.loading.show();
+    }
+
+    hideLoading() {
+        this.loading.hide();
     }
 }
