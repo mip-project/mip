@@ -15,7 +15,7 @@ class Page {
             this.isRootPage = false;
         }
         else {
-            mip.MIP_ROOT_PAGE = window.MIP_ROOT_PAGE = true;
+            window.MIP_ROOT_PAGE = true;
             this.isRootPage = true;
         }
         this.data = {
@@ -95,6 +95,7 @@ class Page {
     start() {
         // Set global mark
         window.__MIP__ = 2;
+        mip.MIP_ROOT_PAGE = window.MIP_ROOT_PAGE;
 
         // Don't let browser restore scroll position.
         if ('scrollRestoration' in window.history) {
