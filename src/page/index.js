@@ -98,6 +98,7 @@ class Page {
     start() {
         // Set global mark
         window.__MIP__ = 2;
+        mip.MIP_ROOT_PAGE = window.MIP_ROOT_PAGE;
 
         // Don't let browser restore scroll position.
         if ('scrollRestoration' in window.history) {
