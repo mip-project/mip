@@ -16,8 +16,8 @@
 
 ```html
 <mip-img
-    layout="responsive" 
-    width="350" 
+    layout="responsive"
+    width="350"
     height="263"
     src="https://www.mipengine.org/static/img/sample_01.jpg">
 </mip-img>
@@ -27,9 +27,9 @@
 
 ```html
 <mip-img
-    layout="responsive" 
-    width="350" 
-    height="263" 
+    layout="responsive"
+    width="350"
+    height="263"
     popup
     src="https://www.mipengine.org/static/img/sample_01.jpg">
 </mip-img>
@@ -38,10 +38,10 @@
 ### 其他布局（以 `fixed` 为例）
 
 ```html
-<mip-img 
-    layout="fixed-height" 
+<mip-img
+    layout="fixed-height"
     height="263"
-    alt="baidu mip img" 
+    alt="baidu mip img"
     src="https://www.mipengine.org/static/img/sample_01.jpg">
 </mip-img>
 ```
@@ -51,12 +51,12 @@
 图片标题可添加在 `<mip-img>` 后用于说明，可在 `<style mip-custom>` 标签下自定义样式。
 
 ```html
-<mip-img 
-    layout="responsive" 
-    width="350" 
+<mip-img
+    layout="responsive"
+    width="350"
     height="263"
-    popup 
-    alt="baidu mip img" 
+    popup
+    alt="baidu mip img"
     src="https://www.mipengine.org/static/img/sample_01.jpg">
 </mip-img>
 <p class="mip-img-subtitle">带图片标题的类型</p>
@@ -66,38 +66,38 @@
 
 ### width
 
-说明：宽度，不是实际宽度，与高度属性配合来设置图片比例，详见[组件布局](/doc/3-widget/11-widget-layout.html)   
-必选项：否   
+说明：宽度，不是实际宽度，与高度属性配合来设置图片比例，详见[组件布局](../layout.md)  
+必选项：否  
 类型：数字  
 单位：无  
 默认值：无
 
 ### height
 
-说明：高度，不是实际高度，与宽度属性配合来设置图片比例，详见[组件布局](/doc/3-widget/11-widget-layout.html)  
-必选项：否   
-类型：数字    
+说明：高度，不是实际高度，与宽度属性配合来设置图片比例，详见[组件布局](../layout.md)  
+必选项：否  
+类型：数字  
 单位：无  
 默认值：无
 
 ### src
 
-说明：图片地址   
-必选项：是   
-格式：字符串  
+说明：图片地址	  
+必选项：是  
+格式：字符串
 
 ### popup
 
 说明：设置图片资源是否可以在被点击后弹出全屏浮层查看  
-必选项：否   
-取值：无  
+必选项：否  
+取值：无
 
 ### alt
 
-说明：与 `<img>` 标签的 `alt` 属性相同   
-必选项：否   
+说明：与 `<img>` 标签的 `alt` 属性相同  
+必选项：否
 
 ### class
 
-说明：与 `<img>` 标签的 `class` 属性相同，用于标识元素，设置元素样式   
-必选项：否   
+说明：与 `<img>` 标签的 `class` 属性相同，用于标识元素，设置元素样式	  
+必选项：否

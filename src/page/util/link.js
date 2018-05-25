@@ -6,9 +6,9 @@ function guardEvent(e, $a) {
         return;
     }
     // don't redirect when preventDefault called
-    if (e.defaultPrevented) {
-        return;
-    }
+    // if (e.defaultPrevented) {
+    //     return;
+    // }
     // don't redirect if `target="_blank"`
     if ($a.getAttribute) {
         const target = $a.getAttribute('target');
@@ -20,20 +20,42 @@ function guardEvent(e, $a) {
     return true;
 }
 
-export function installMipLink(router) {
+export function installMipLink(router, {isRootPage, postMessage}) {
     event.delegate(document, 'a', 'click', function (e) {
-        let $a = e.target;
-        if ($a.hasAttribute('mip') || ($a.dataset && $a.dataset.type === 'mip')) {
+        let $a = this;
+        if ($a.hasAttribute('mip-link') || $a.getAttribute('data-type') === 'mip') {
             let to = $a.getAttribute('href');
+            const location = router.resolve(to, router.currentRoute, false).location;
             if (guardEvent(e, $a)) {
-                const location = router.resolve(to, router.currentRoute, false).location;
                 if ($a.hasAttribute('replace')) {
-                    router.replace(location);
+                    if (isRootPage) {
+                        router.replace(location);
+                    }
+                    else {
+                        postMessage({
+                            type: 'router-replace',
+                            data: {location}
+                        });
+                    }
                 }
                 else {
-                    router.push(location);
+                    if (isRootPage) {
+                        router.push(location);
+                    }
+                    else {
+                        postMessage({
+                            type: 'router-push',
+                            data: {location}
+                        });
+                    }
                 }
             }
+        }
+        else {
+            postMessage({
+                type: 'router-force',
+                data: {location: to}
+            })
         }
     });
 }

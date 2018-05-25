@@ -16,10 +16,10 @@
 
 ```html
 <mip-iframe
-    allowfullscreen 
-    src="https://www.mipengine.org/article/instant-pageview.html" 
+    allowfullscreen
+    src="https://www.mipengine.org/article/instant-pageview.html"
     width="400"
-    height="300" 
+    height="300"
     allowtransparency="true">
 </mip-iframe>
 ```
@@ -28,8 +28,8 @@
 
 ```html
 <mip-iframe
-    layout="fixed-height" 
-    src="https://www.mipengine.org/article/instant-pageview.html" 
+    layout="fixed-height"
+    src="https://www.mipengine.org/article/instant-pageview.html"
     allowfullscreen
     width="400"
     height="300"
@@ -41,7 +41,7 @@
 
 ```html
 <mip-iframe
-    allowfullscreen 
+    allowfullscreen
     srcdoc="
         <div>You say that you love rain,</div>
         <div>but you open your umbrella when it rains.</div>
@@ -50,72 +50,72 @@
         <div>You say that you love the wind,</div>
         <div>but you close your windows when wind blows.</div>
         <div>This is why I am afraid,</div>
-        <div>because you say that you love me too.</div> 
+        <div>because you say that you love me too.</div>
         "
     width="400"
     height="300"
-    sandbox="" 
+    sandbox=""
     allowtransparency="true">
 </mip-iframe>
 ```
 
 ## 属性
 
-### src  
+### src
 
 说明：与原生 `<iframe>` 的 `src` 属性作用一致  
 必选项：是  
 类型：URL  
 单位：无  
 取值：必须要使用 HTTPS 地址  
-默认值：无  
+默认值：无
 
 ### width
 
-说明：宽度，不是实际宽度，与高度属性配合来设置图片比例，详见[组件布局](/doc/3-widget/11-widget-layout.html)   
-必选项：是   
+说明：宽度，不是实际宽度，与高度属性配合来设置图片比例，详见[组件布局](../layout.md)  
+必选项：是  
 类型：数字  
 单位：无  
 默认值：无
 
 ### height
 
-说明：高度，不是实际高度，与宽度属性配合来设置图片比例，详见[组件布局](/doc/3-widget/11-widget-layout.html)  
-必选项：是   
-类型：数字    
+说明：高度，不是实际高度，与宽度属性配合来设置图片比例，详见[组件布局](../layout.md)  
+必选项：是  
+类型：数字  
 单位：无  
 默认值：无
 
 ### allowfullscreen
 
-说明：与原生 `<iframe>` 的 `allowfullscreen` 属性作用一致   
+说明：与原生 `<iframe>` 的 `allowfullscreen` 属性作用一致  
 必选项：否  
 取值：空  
-默认值：无  
+默认值：无
 
 ### srcdoc
 
-说明：与原生 `<iframe>` 的 `srcdoc` 属性作用一致   
+说明：与原生 `<iframe>` 的 `srcdoc` 属性作用一致	  
 必选项：否  
 类型：HTML_code  
 单位：无  
 取值：要显示在 `<iframe>` 中的 HTML 内容。必需是有效的 HTML 语法  
-默认值：无  
+默认值：无
 
 ### sandbox
 
 说明：与原生 `<iframe>` 的 `sandbox` 属性作用一致  
 必选项：否  
-类型：字符串  
+类型：字符串  	
 单位：无  
 取值："", `allow-same-origin`, `allow-top-navigation`, `allow-forms`, `allow-script`  
-默认值：无  
+默认值：无
 
 ### allowtransparency
 
 说明：与原生 `<iframe>` 的 `allowtransparency` 属性作用一致  
 必选项：否  
-类型：字符串  
+类型：字符串  	
 单位：无  
 取值："", true, false  
-默认值：无  
+默认值：无

@@ -4,7 +4,7 @@
 
 `<mip-story>` 具有三个基本概念：段落（view），层（layer）和元素（element）。
 
-![](https://mip-extensions.bj.bcebos.com/mip-story/intro-view-layer-element.jpg)
+![](../../assets/intro-view-layer-element.jpg)
 
 - 每个小故事可以包含多个段落（view），每个段落充满屏幕。用户操作翻页后，会看到下一个段落。
 - 每个段落又可以包含多个层（layer），单个层可以设置布局模式，如多行布局，左右布局，图片拉伸布局等。
@@ -15,7 +15,8 @@
 | 类型   | 通用                                       |
 | 支持布局 | responsive,fixed-height,fill,container,fixed |
 
-所需脚本|https://c.mipcdn.com/static/v1/mip-story/mip-story.js<br>https://c.mipcdn.com/static/v1/mip-share/mip-share.js<br>https://c.mipcdn.com/static/v1/mip-stats-baidu/mip-stats-baidu.js<br>https://c.mipcdn.com/static/v1/mip-scrollbox/mip-scrollbox.js
+所需脚本<br>
+https://c.mipcdn.com/static/v1/mip-story/mip-story.js<br>https://c.mipcdn.com/static/v1/mip-share/mip-share.js<br>https://c.mipcdn.com/static/v1/mip-stats-baidu/mip-stats-baidu.js<br>https://c.mipcdn.com/static/v1/mip-scrollbox/mip-scrollbox.js
 
 ## 示例
 
@@ -125,7 +126,7 @@
               <h1>fade-in</h1>
               <div animate-in="fade-in" class="box"></div>
         </mip-story-layer>
-	</mip-story-view>
+    </mip-story-view>
 </mip-story>
 ```
 
@@ -206,6 +207,6 @@
 
 [notice] 页面中使用视频时，请注意两点：一、视频不建议作为背景填充，因为在 Android 中视频播放器优先级较高会遮住页面内容，导致用户操作不能正常进行。二、视频作为每个段落内容时，不建议设置自动播放，即添加 `autoplay` 属性，因为 iOS 下的部分浏览器会直接弹出系统的视频播放器，影响用户体验。如果需要播放视频，可以暂时使用 GIF + `background-audio` 进行设置。
 
-默认情况下会按照正常布局进行展示。   
+默认情况下会按照正常布局进行展示。
 
 必选项：否

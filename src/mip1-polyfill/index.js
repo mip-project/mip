@@ -13,7 +13,7 @@ import registerElement from './element';
 import customElement from './customElement';
 import performance from '../performance';
 import fixedElement from '../fixed-element';
-import Resources from './resources';
+import Resources from '../resources';
 // import naboo from './naboo';
 
  // 将 jquery 配置为远程的，需要时才引入

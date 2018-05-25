@@ -13,7 +13,7 @@
 ### 基本用法
 ```html
 <mip-history history="go, -1" class="mip-history-default">
-	go, -1 
+	go, -1
 </mip-history>
 <mip-history history="go, -2" class="mip-history-default">
 	go, -2
@@ -34,16 +34,16 @@
 
 ### 为 `<mip-history>` 按钮使用布局
 
-示例中的 `width` 和 `height` 不一定为最终渲染高度，请参考阅读[组件布局](/doc/3-widget/11-widget-layout.html)。
+示例中的 `width` 和 `height` 不一定为最终渲染高度，请参考阅读[组件布局](../layout.md)。
 
 ```html
 <!--宽高比3：1-->
-<mip-history history="go, -1" class="mip-history-default" 
+<mip-history history="go, -1" class="mip-history-default"
 	layout="responsive" width="3" height="1">
 	go, -1
 </mip-history>
 <!--定高30px-->
-<mip-history history="go, -1" class="mip-history-default" 
+<mip-history history="go, -1" class="mip-history-default"
 	layout="fixed-height" width="30">
 	go, -1
 </mip-history>
@@ -53,9 +53,9 @@
 
 ### history
 
-说明：填入对历史记录的操作方式，支持 `go`, `back`, `forward`  
-必选项：是  
-类型：字符串  
+说明：填入对历史记录的操作方式，支持 `go`, `back`, `forward`
+必选项：是
+类型：字符串
 取值范围：`back`, `forward`, `"go, -1"`
 
 ## 注意事项

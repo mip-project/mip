@@ -5,7 +5,7 @@
  * @modify wangpei07 2016-11-30
  */
 
-import resources from '../mip1-polyfill/resources';
+import resources from '../resources';
 import BaseElement from './base-element';
 
 let carouselParas = {

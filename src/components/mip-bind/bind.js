@@ -7,12 +7,9 @@ import Compile from './compile';
 import Observer from './observer';
 import Watcher from './watcher';
 import util from '../../util';
-import {
-    setGlobalState, setPageState,
-    destroyPageScope, assign
-} from './scope';
 
 /* global MIP */
+
 class Bind {
     constructor(id) {
         let me = this;
@@ -35,15 +32,6 @@ class Bind {
         };
         MIP.watch = function (target, cb) {
             me._bindWatch(target, cb);
-        };
-        MIP.unwatchAll = function () {
-            me._watchers.forEach(watcher => watcher.teardown());
-            me._watcherIds = [];
-            // 只保留 global 数据，并去掉 __ob__
-            destroyPageScope();
-            me._win.m = JSON.parse(
-                JSON.stringify(m).replace(/,"__ob__":\{\}/g, '')
-            );
         };
     }
 
@@ -76,48 +64,28 @@ class Bind {
             this._compile.upadteData(JSON.parse(origin));
             let classified = this._normalize(data);
             if (compile) {
-                setGlobalState(classified.globalData);
-                setPageState(classified.pageData);
+                this._setGlobalState(classified.globalData);
+                this._setPageState(classified.pageData);
                 this._observer.start(this._win.m);
                 this._compile.start(this._win.m);
             }
             else {
-                this._assign(window.m, data);
+                if (classified.globalData && notEmpty(classified.globalData)) {
+                    this._assign(this._win.parent.g, classified.globalData);
+                }
+                data = classified.pageData;
+                for (let field of Object.keys(data)) {
+                    if (this._win.m.hasOwnProperty(field)) {
+                        this._assign(this._win.m, {[field]: data[field]});
+                    }
+                    else {
+                        this._dispatch(field, data[field]);
+                    }
+                }
             }
         }
         else {
             console.error('setData method must accept an object!');
-        }
-    }
-
-    _normalize(data) {
-        let globalData = {};
-        let pageData = {};
-
-        for (let k of Object.keys(data)) {
-            if (/^#/.test(k)) {
-                globalData[k.substr(1)] = data[k];
-            }
-            else {
-                pageData[k] = data[k];
-            }
-        }
-
-        return {
-            globalData,
-            pageData: pageData || {}
-        }
-    }
-
-    // deepClone
-    _assign(oldData, newData) {
-        for (let k of Object.keys(newData)) {
-            if (isObj(newData[k]) && oldData[k]) {
-                this._assign(oldData[k], newData[k]);
-            }
-            else {
-                oldData[k] = newData[k];
-            }
         }
     }
 
@@ -135,7 +103,6 @@ class Bind {
             return;
         }
 
-        // TODO 去重
         let reg = target.split('.').reduce((total, current) => {
             if (total) {
                 total += '\{("[^\{\}:]+":\{[^\{\}]+\},)*';
@@ -157,8 +124,69 @@ class Bind {
             this._win.m,
             '',
             target,
-            cb // args: (dir, newVal, oldVal)
+            cb
         ));
+    }
+
+    _dispatch(key, val) {
+        let win = this._win;
+        if (win.g && win.g.hasOwnProperty(key)) {
+            this._assign(win.g, {[key]: val});
+        }
+        else if (!win.MIP_ROOT_PAGE && win.parent.g && win.parent.g.hasOwnProperty(key)) {
+            this._assign(win.parent.g, {[key]: val});
+        }
+        else {
+            Object.assign(win.m, {[key]: val});
+        }
+    }
+
+    _setGlobalState(data) {
+        let win = this._win;
+        if (win.MIP_ROOT_PAGE) {
+            win.g = win.g || {};
+            Object.assign(win.g, data);
+        }
+        else {
+            win.parent.g = win.parent.g || {};
+            Object.assign(win.parent.g, data);
+        }
+    }
+
+    _setPageState(data) {
+        let win = this._win;
+        Object.assign(win.m, data);
+        win.m.__proto__ = win.MIP_ROOT_PAGE ? win.g : win.parent.g;
+    }
+
+    _normalize(data) {
+        let globalData = {};
+        let pageData = {};
+
+        for (let k of Object.keys(data)) {
+            if (/^#/.test(k)) {
+                globalData[k.substr(1)] = data[k];
+            }
+            else {
+                pageData[k] = data[k];
+            }
+        }
+
+        return {
+            globalData,
+            pageData: pageData || {}
+        }
+    }
+
+    _assign(oldData, newData) {
+        for (let k of Object.keys(newData)) {
+            if (isObj(newData[k]) && oldData[k]) {
+                this._assign(oldData[k], newData[k]);
+            }
+            else {
+                oldData[k] = newData[k];
+            }
+        }
     }
 
     _eventEmit() {
@@ -170,6 +198,9 @@ class Bind {
 
 function isObj(obj) {
     return Object.prototype.toString.call(obj) === '[object Object]';
+}
+function notEmpty(obj) {
+    return isObj(obj) && Object.keys(obj).length !== 0;
 }
 
 export default Bind;

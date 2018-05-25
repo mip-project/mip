@@ -20,8 +20,8 @@ mip-example
 ## 代码风格规范
 
 - [MUST] 组件的脚本开发必须遵守 [JavaScript Style Guide](https://github.com/ecomfe/spec/blob/master/javascript-style-guide.md)
-- [MUST] 组件的样式开发必须遵守 [CSS Style Guide](https://github.com/ecomfe/spec/blob/master/css-style-guide.md)。如果你使用了 [LESS](http://lesscss.org/) ，还 **必须(MUST)** 遵守 [LESS Code Style](https://github.com/ecomfe/spec/blob/master/less-code-style.md)。
-- [SHOULD] 组件开发应该遵循 [vue-style-guide](https://cn.vuejs.org/v2/style-guide/index.html)
+- [MUST] 组件的样式开发必须遵守 [CSS Style Guide](https://github.com/ecomfe/spec/blob/master/css-style-guide.md)。如果你使用了 [LESS](http://lesscss.org/) ，还 必须遵守 [LESS Code Style](https://github.com/ecomfe/spec/blob/master/less-code-style.md)。
+- [SHOULD] 组件开发应该遵循 [Vue Style Guide](https://cn.vuejs.org/v2/style-guide/index.html)
 
 开发过程中可以通过 [FECS](http://fecs.baidu.com/) 工具检查，在组件校验和审核环节要求所有代码必须通过 FECS。
 
@@ -29,7 +29,7 @@ mip-example
 
 - [MUST] 组件所有样式必须 scoped
 - [MUST NOT] 组件样式禁止使用 `position: fixed`
-- [SHOULD] 组件样式选择器应该使用 mip-组件名，尽量避免对使用方页面产生影响。
+- [SHOULD] 组件样式选择器应该使用 `mip-组件名`，尽量避免对使用方页面产生影响。
 
 ## JavaScript 规范
 
