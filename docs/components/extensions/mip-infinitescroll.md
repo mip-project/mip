@@ -14,7 +14,7 @@
 异步获取 `number` 等数据，插入页面。
 
 - `data-src` 填写 HTTPS 异步请求数据接口（仅支持 JSONP 请求）。
-- 接口数据返回示例见文档下方[正常数据示例](/examples/mip-extensions/mip-infinitescroll.html#markdown-doc-%E6%AD%A3%E5%B8%B8%E6%95%B0%E6%8D%AE%E7%A4%BA%E4%BE%8B)。
+- 接口数据返回示例见文档下方[正常数据示例](#markdown-doc-%E6%AD%A3%E5%B8%B8%E6%95%B0%E6%8D%AE%E7%A4%BA%E4%BE%8B)。
 
 ```html
 <mip-infinitescroll data-src="xxx">
@@ -33,7 +33,7 @@
 ```
 
 ### 根据返回值判断请求结束
-如果数据量未知，可以填写 rn="[Infinity](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Infinity)"， 加载完所有数据后，服务端返回空数据自动停止请求。接口数据返回示例见文档下方[空数据示例](/examples/mip-extensions/mip-infinitescroll.html#markdown-doc-%E7%A9%BA%E6%95%B0%E6%8D%AE%E7%A4%BA%E4%BE%8B)。
+如果数据量未知，可以填写 rn="[Infinity](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Infinity)"， 加载完所有数据后，服务端返回空数据自动停止请求。接口数据返回示例见文档下方[空数据示例](#markdown-doc-%E7%A9%BA%E6%95%B0%E6%8D%AE%E7%A4%BA%E4%BE%8B)。
 
 [warning] 由于 `JSON.parse` 不能解析 `Infinity(number)`，配置需要写成字符串形式 `Infinity`。
 

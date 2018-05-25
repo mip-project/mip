@@ -19,7 +19,7 @@ import performance from './performance';
 
 import './log/monitor';
 
-import 'script-loader!zepto';
+import 'script-loader!deps/zepto';
 import 'script-loader!deps/fetch.js';
 import 'script-loader!fetch-jsonp';
 import 'script-loader!document-register-element/build/document-register-element';
