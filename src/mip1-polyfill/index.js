@@ -21,6 +21,7 @@ window.require.config({
     paths: {
         'searchbox/openjs/aio': '//m.baidu.com/static/searchbox/openjs/aio.js?v=201606',
         'jquery': '//mipcache.bdstatic.com/static/v1/deps/jquery',
+        // FIXME: zepto 是否需要外移，即使外移，也需要放在 mipcdn 同域名，避免多次的域名解析
         'zepto': '//apps.bdimg.com/libs/zepto/1.1.4/zepto.min'
     }
 });
@@ -38,6 +39,14 @@ window.define('fixed-element', () => fixedElement);
 
 export default function install(mip) {
     Object.assign(mip, {
+        /**
+         * register mip1 element
+         *
+         * @deprecated
+         * @param {string} name element tag name
+         * @param {string} customClass class
+         * @param {string} css css
+         */
         registerMipElement(name, customClass, css) {
             if (templates.isTemplateClass(customClass)) {
                 templates.register(name, customClass);
