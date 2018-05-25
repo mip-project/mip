@@ -6,6 +6,7 @@
 import 'script-loader!esljs';
 
 import util from '../util';
+import hash from '../util/hash';
 import viewer from '../viewer';
 import viewport from '../viewport';
 import templates from '../util/templates';
@@ -22,7 +23,7 @@ window.require.config({
         'searchbox/openjs/aio': '//m.baidu.com/static/searchbox/openjs/aio.js?v=201606',
         'jquery': '//mipcache.bdstatic.com/static/v1/deps/jquery',
         // FIXME: zepto 是否需要外移，即使外移，也需要放在 mipcdn 同域名，避免多次的域名解析
-        'zepto': '//apps.bdimg.com/libs/zepto/1.1.4/zepto.min'
+        // 'zepto': '//apps.bdimg.com/libs/zepto/1.1.4/zepto.min'
     }
 });
 
@@ -35,6 +36,11 @@ window.define('performance', () => performance);
 window.define('customStorage', () => util.customStorage);
 window.define('fetch-jsonp', () => window.fetchJsonp);
 window.define('fixed-element', () => fixedElement);
+window.define('zepto', () => window.$);
+window.define('hash', () => hash);
+window.define('dom', () => util.dom);
+window.define('dom/event', () => util.dom.event);
+window.define('mip', () => window.MIP);
 // window.define('naboo', () => naboo);
 
 export default function install(mip) {

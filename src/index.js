@@ -19,6 +19,7 @@ import performance from './performance';
 
 import './log/monitor';
 
+import 'script-loader!zepto';
 import 'script-loader!deps/fetch.js';
 import 'script-loader!fetch-jsonp';
 import 'script-loader!document-register-element/build/document-register-element';
@@ -29,6 +30,7 @@ import mip1PolyfillInstall from './mip1-polyfill';
 import './polyfills';
 
 let mip = {
+    version: '2',
     Vue,
     customElement(tag, component) {
         Vue.customElement(tag, component);
