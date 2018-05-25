@@ -39,6 +39,7 @@ window.define('fixed-element', () => fixedElement);
 
 export default function install(mip) {
     Object.assign(mip, {
+
         /**
          * register mip1 element
          *
