@@ -14,8 +14,9 @@
     display: none;
     overflow-y: auto;
 
-    &.mip-page__iframe-with-header {
+    &.with-header {
         top: @appshell-header-height;
+        height: calc(100% - 44px);
     }
 
     &.slide-enter {
@@ -46,14 +47,24 @@
 @appshell-header-dropdown-height: 30px;
 
 .mip-appshell-header-wrapper {
-    height: @appshell-header-height;
+    height: 0;
+
+
+    &.with-header {
+        height: @appshell-header-height;
+
+        .mip-appshell-header {
+            display: flex;
+        }
+    }
+
 }
 
 .mip-appshell-header {
     position: fixed;
     right: 0;
     left: 0;
-    display: flex;
+    display: none;
     align-items: center;
     z-index: 9998;
     height: @appshell-header-height;
@@ -190,7 +201,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: white;
+    background: rgba(255,255,255,0.8);
     z-index: 9997;
     display: none;
     justify-content: center;

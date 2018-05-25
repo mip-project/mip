@@ -1,6 +1,7 @@
 import Header from './header.js';
 import Loading from './loading.js';
 import {DEFAULT_SHELL_CONFIG} from '../const';
+import {getIFrame} from '../util';
 
 export default class AppShell {
     constructor(options) {
@@ -16,16 +17,20 @@ export default class AppShell {
         this.$wrapper = document.createElement('div');
         this.$wrapper.classList.add('mip-appshell-header-wrapper');
 
-        if (!this.data.header.hidden) {
-            this.header = new Header({
-                wrapper: this.$wrapper,
-                data: {
-                    ...this.data.header,
-                    showBackIcon: !this.data.view.isIndex
-                },
-                clickButtonCallback: this.handleClickHeaderButton.bind(this)
-            });
-            this.header.init();
+        this.header = new Header({
+            wrapper: this.$wrapper,
+            data: {
+                ...this.data.header,
+                showBackIcon: !this.data.view.isIndex
+            },
+            clickButtonCallback: this.handleClickHeaderButton.bind(this)
+        });
+        this.header.init();
+        if (this.data.header.show) {
+            this.$wrapper.classList.add('with-header');
+        }
+        else {
+            this.$wrapper.classList.remove('with-header');
         }
 
         this.loading = new Loading({
@@ -36,10 +41,20 @@ export default class AppShell {
         document.body.prepend(this.$wrapper);
     }
 
-    refresh(data) {
+    refresh(data, targetPageId) {
         let {header, view} = data;
         if (header.title) {
             document.title = header.title;
+        }
+
+        let targetIFrame = getIFrame(targetPageId);
+        if (header.show) {
+            this.$wrapper.classList.add('with-header');
+            targetIFrame && targetIFrame.classList.add('with-header');
+        }
+        else {
+            this.$wrapper.classList.remove('with-header');
+            targetIFrame && targetIFrame.classList.remove('with-header');
         }
         if (this.header) {
             this.header.update({

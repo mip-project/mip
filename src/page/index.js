@@ -76,9 +76,9 @@ class Page {
             this.data.appshell.header.title = document.querySelector('title').innerHTML;
         }
         if (this.isRootPage) {
-            this.messageHandlers.push((type, data) => {
+            this.messageHandlers.push((type, {appshellData, pageId}) => {
                 if (type === 'appshell-refresh') {
-                    this.refreshAppShell(data);
+                    this.refreshAppShell(appshellData, pageId);
                 }
             });
             this.refreshAppShell(this.data.appshell);
@@ -86,7 +86,10 @@ class Page {
         else {
             this.postMessage({
                 type: 'appshell-refresh',
-                data: this.data.appshell
+                data: {
+                    appshellData: this.data.appshell,
+                    pageId: this.pageId
+                }
             });
         }
     }
@@ -124,14 +127,14 @@ class Page {
 
     /**** Root Page methods ****/
 
-    refreshAppShell(appshellData) {
+    refreshAppShell(appshellData, targetPageId) {
         if (!this.appshell) {
             this.appshell = new AppShell({
                 data: appshellData
             });
         }
         else {
-            this.appshell.refresh(appshellData);
+            this.appshell.refresh(appshellData, targetPageId);
         }
     }
 
@@ -181,12 +184,12 @@ class Page {
 
             if (this.data.appshell
                 && this.data.appshell.header
-                && !this.data.appshell.header.hidden) {
+                && this.data.appshell.header.show) {
                 targetFrame.classList.add('mip-page__iframe-with-header');
             }
         }
         else {
-            this.refreshAppShell(targetPage.data.appshell);
+            this.refreshAppShell(targetPage.data.appshell, targetPageId);
             this.applyTransition(targetPageId);
         }
 

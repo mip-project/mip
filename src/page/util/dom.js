@@ -191,7 +191,7 @@ export function frameMoveOut(pageId, {onComplete} = {}) {
     }
 }
 
-function getIFrame(iframe) {
+export function getIFrame(iframe) {
     if (typeof iframe === 'string') {
         return document.querySelector(`.${MIP_IFRAME_CONTAINER}[data-page-id="${iframe}"]`);
     }
