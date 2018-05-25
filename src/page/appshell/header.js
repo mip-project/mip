@@ -170,10 +170,12 @@ export default class Header {
 
     _clickOutside(e) {
         let $dropdown = this.$el.querySelector('.mip-appshell-header-dropdown');
-        let elements = [$dropdown.parentNode];
-        !clickedInEls(e, elements) && setTimeout(() => {
-            this.isDropdownShow && this.hideDropdown();
-        }, 0);
+        if ($dropdown) {
+            let elements = [$dropdown.parentNode];
+            !clickedInEls(e, elements) && setTimeout(() => {
+                this.isDropdownShow && this.hideDropdown();
+            }, 0);
+        }
     }
 
     bindEvents() {
