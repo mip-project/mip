@@ -34,7 +34,7 @@
 
 <script>
 /* eslint-disable fecs-esnext-ext,fecs-valid-jsdoc */
-import resources from '../../custom-element/utils/resources';
+import resources from '../resources';
 
 const defaultDefer = 4000;
 const defaultTransDuration = '.3s';

@@ -6,7 +6,7 @@
 import cssLoader from '../util/dom/css-loader';
 import layout from '../layout';
 import performance from '../performance';
-import Resources from './resources';
+import resources from '../resources';
 
 /**
  * Storage of custom elements.
@@ -15,12 +15,6 @@ import Resources from './resources';
  */
 let customElements = {};
 
-/**
- * Save resources.
- * @inner
- * @type {Resources}
- */
-let resources;
 
 /**
  * Save the base element prototype to avoid duplicate initialization.
@@ -225,9 +219,6 @@ function registerElement(name, elementClass, css) {
         return;
     }
 
-    if (!resources) {
-        resources = new Resources();
-    }
     customElements[name] = elementClass;
     loadCss(css, name);
     document.registerElement(name, {
