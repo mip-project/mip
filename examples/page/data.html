@@ -105,6 +105,21 @@
     <p m-text="img.first"></p>
     <div on="tap:MIP.setData({img:{first:1}})" class="button">click change img.first</div>
 
+    <mip-data>
+        <script type="application/json">
+          {
+              "price": 20
+          }
+          </script>
+    </mip-data>
+    <div>
+        DOM.value*m.price =
+        <span m-text="price"></span>
+    </div>
+    <mip-form url="https://www.mipengine.org/">
+        <input type='text' on="change:MIP.setData({price:DOM.value*m.price})">
+    </mip-form>
+
     <br><br>
     <a href="./index.html" class="link" mip-link>Back to Index</a>
 
@@ -169,4 +184,5 @@
     <script src="../../dist/mip.js"></script>
     <script src="./components/mip-complevel2.js"></script>
     <script src="./components/mip-complevel1.js"></script>
+    <script src="https://c.mipcdn.com/static/v1/mip-form/mip-form.js"></script>
 </body>

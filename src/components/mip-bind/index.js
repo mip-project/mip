@@ -20,7 +20,8 @@ export default {
         }
         else {
             delete this.$root.$options.propsData.mipsrc;
-            this.postMessage(this.$root.$options.propsData);
+            // this.postMessage(this.$root.$options.propsData);
+            MIP.$set(this.$root.$options.propsData, 0);
         }
     },
     props: {

@@ -5,7 +5,7 @@
 
 import Vue from 'vue';
 import customElement from './custom-element/index';
-import customElementBuildInComponents from './components';
+// import customElementBuildInComponents from './components';
 import util from './util';
 import sandbox from './util/sandbox';
 import layout from './layout';
@@ -38,8 +38,7 @@ let mip = {
     viewer,
     viewport,
     hash,
-    // 当前是否在 iframe 中
-    isIframed: window !== top,
+    // 当前是否是独立站
     standalone: window === top,
     sandbox,
     css: {}
@@ -65,7 +64,7 @@ mip.push = function (extensions) {
 mip1PolyfillInstall(mip);
 
 Vue.use(customElement);
-Vue.use(customElementBuildInComponents);
+// Vue.use(customElementBuildInComponents);
 builtinComponents.register();
 
 util.dom.waitDocumentReady(() => {
