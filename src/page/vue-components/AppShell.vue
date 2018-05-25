@@ -64,7 +64,7 @@ export default {
             MIP_CONTAINER_ID,
             scrollPostionMap: {},
             showLoading: true
-        }
+        };
     },
     mounted() {
         document.documentElement.setAttribute('mip-ready', '');
@@ -99,7 +99,7 @@ export default {
             });
         }
     }
-}
+};
 </script>
 
 <style lang="less">

@@ -7,9 +7,8 @@ import Vue from 'vue';
 import customElement from './custom-element/index';
 // import customElementBuildInComponents from './components';
 import util from './util';
-import sandbox from './util/sandbox';
+import sandbox from './sandbox';
 import layout from './layout';
-import hash from './util/hash';
 import viewer from './viewer';
 import viewport from './viewport';
 import Router from './router/index';
@@ -41,7 +40,7 @@ let mip = {
     util,
     viewer,
     viewport,
-    hash,
+    hash: util.hash,
     // 当前是否是独立站
     standalone: window === top,
     sandbox,

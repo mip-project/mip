@@ -3,10 +3,10 @@
  * @author xx
  */
 
-import fn from '../util/fn';
-import Gesture from '../util/gesture';
-import viewport from '../viewport';
-import rect from '../util/dom/rect';
+import fn from './util/fn';
+import Gesture from './util/gesture';
+import viewport from './viewport';
+import rect from './util/dom/rect';
 
 
 /**
@@ -75,7 +75,7 @@ Resources.prototype = {
      */
     /* eslint-disable fecs-camelcase */
     _bindEvent() {
-    /* eslint-enable fecs-camelcase */
+        /* eslint-enable fecs-camelcase */
         let self = this;
         let timer;
         this._viewport.on('changed resize', this.updateState);
@@ -155,7 +155,7 @@ Resources.prototype = {
      */
     /* eslint-disable fecs-camelcase */
     _update() {
-    /* eslint-enable fecs-camelcase */
+        /* eslint-enable fecs-camelcase */
         let resources = this.getResources();
         let viewportRect = this._viewport.getRect();
 
@@ -166,18 +166,21 @@ Resources.prototype = {
                 || rect.overlapping(rect.getElementRect(resources[i]), viewportRect);
             this.setInViewport(resources[i], inViewport);
         }
+    },
+
+    /**
+     * Forced set the element's viewport state to 'true'.
+     *
+     * @param {MIPElement} element element
+     */
+    prerenderElement(element) {
+
+        if (element.inViewport && !element.inViewport()) {
+            element.viewportCallback && element.viewportCallback(true);
+        }
     }
+
 };
 
-/**
- * Forced set the element's viewport state to 'true'.
- *
- * @param {MIPElement} element element
- */
-Resources.prerenderElement = function (element) {
-    if (element.inViewport && !element.inViewport()) {
-        element.viewportCallback && element.viewportCallback(true);
-    }
-};
 
-export default Resources;
+export default new Resources();
