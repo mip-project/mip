@@ -53,15 +53,15 @@
 
 ## 3. 广告组件
 
-广告组件主要满足各类广告的投放，需要引入对应的 JS 脚本。阅读[广告文档](./extensions/mip-ad.md)来确定 MIP 广告类型。
+广告组件主要满足各类广告的投放，需要引入对应的 JS 脚本。阅读[广告文档](./mip-ad/mip-ad.md)来确定 MIP 广告类型。
 
 <span class="minw-125">广告组件</span>|<span class="minw-60">中文</span>|描述
 ----|----|----
-[mip-ad](./extensions/mip-ad.md) | 广告|mip-ad 用于在MIP页中引入广告脚本，投放广告。
-[mip-ad-comm](./extensions/mip-ad-comm.md) | 通用广告|mip-ad 的一种类型：通用广告。
-[mip-ad-baidu](./extensions/mip-ad-baidu.md) | 百度网盟推广合作|mip-ad 的一种类型：百度网盟推广合作。  产品介绍：http://union.baidu.com/product/prod-cpro.html
-[mip-ad-baidussp](./extensions/mip-ad-baidussp.md) | 百度ssp直投广告|mip-ad 的一种类型：百度ssp直投广告。  产品介绍：http://yingxiao.baidu.com/zhichi/knowledge/detail.action?channelId=24&classId=14547&knowledgeId=14745
-[mip-ad-imageplus](./extensions/mip-ad-imageplus.md) | 百度图+广告|mip-ad 的一种类型: 百度图+广告。   产品介绍：http://imageplus.baidu.com/
-[mip-ad-qwang](./extensions/mip-ad-qwang.md) | 百度搜索推广合作|mip-ad 的一种类型：百度搜索推广合作。  产品介绍：http://union.baidu.com/product/prod-search.html
-[mip-ad-ssp](./extensions/mip-ad-ssp.md) | 百度Feeds联盟广告|mip-ad 的一种类型：百度Feeds联盟广告。  在 https://ssp.baidu.com/ 后台选择资源管理/feeds联盟接入。
-[mip-baidu-wm-ext](./extensions/mip-baidu-wm-ext.md) | 百度联盟广告反屏蔽|mip-ad 的一种类型：百度联盟广告反屏蔽。  产品介绍：http://yingxiao.baidu.com/zhichi/knowledge/detail.action?channelId=4&classId=13484&knowledgeId=15198
+[mip-ad](./mip-ad/mip-ad.md) | 广告|mip-ad 用于在MIP页中引入广告脚本，投放广告。
+[mip-ad-comm](./mip-ad/mip-ad-comm.md) | 通用广告|mip-ad 的一种类型：通用广告。
+[mip-ad-baidu](./mip-ad/mip-ad-baidu.md) | 百度网盟推广合作|mip-ad 的一种类型：百度网盟推广合作。  产品介绍：http://union.baidu.com/product/prod-cpro.html
+[mip-ad-baidussp](./mip-ad/mip-ad-baidussp.md) | 百度ssp直投广告|mip-ad 的一种类型：百度ssp直投广告。  产品介绍：http://yingxiao.baidu.com/zhichi/knowledge/detail.action?channelId=24&classId=14547&knowledgeId=14745
+[mip-ad-imageplus](./mip-ad/mip-ad-imageplus.md) | 百度图+广告|mip-ad 的一种类型: 百度图+广告。   产品介绍：http://imageplus.baidu.com/
+[mip-ad-qwang](./mip-ad/mip-ad-qwang.md) | 百度搜索推广合作|mip-ad 的一种类型：百度搜索推广合作。  产品介绍：http://union.baidu.com/product/prod-search.html
+[mip-ad-ssp](./mip-ad/mip-ad-ssp.md) | 百度Feeds联盟广告|mip-ad 的一种类型：百度Feeds联盟广告。  在 https://ssp.baidu.com/ 后台选择资源管理/feeds联盟接入。
+[mip-baidu-wm-ext](./mip-ad/mip-baidu-wm-ext.md) | 百度联盟广告反屏蔽|mip-ad 的一种类型：百度联盟广告反屏蔽。  产品介绍：http://yingxiao.baidu.com/zhichi/knowledge/detail.action?channelId=4&classId=13484&knowledgeId=15198
