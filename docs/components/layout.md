@@ -35,14 +35,14 @@ MIP 元素添加属性 `layout`，取值参照上面的种类，如：
 - 适用场景：[图片](./builtin/mip-img.md)、[视频](./builtin/mip-video.md)、[图片轮播](./builtin/mip-carousel.md)等需要按比例自动缩放的元素。
 - 代码示例：
 
-    ```html
+```html
 <mip-img
     layout="responsive"
     width="350"
     height="263"
     src="/doc/image/layout/img.jpg">
 </mip-img>
-    ```
+```
 - 使用效果：
 <mip-video controls loop layout="fixed-height" height="350" class="white-bg"
     src="/doc/image/layout/responsive.mp4"
@@ -55,13 +55,13 @@ MIP 元素添加属性 `layout`，取值参照上面的种类，如：
 - 适用场景：高度固定的[广告位](./mip-ad/mip-ad.md)、[音频播放组件](./extensions/mip-audio.md)、[mip-fixed悬浮组件](./extensions/mip-fixed.md)。
 - 代码示例：
 
-    ```html
+```html
 <mip-img
     layout="fixed-height"
     height="263"
     src="/doc/image/layout/img.jpg">
 </mip-img>
-    ```
+```
 - 使用效果：
 <mip-video controls loop layout="fixed-height" height="350" class="white-bg"
     src="/doc/image/layout/fixed-height.mp4"
@@ -75,14 +75,14 @@ MIP 元素添加属性 `layout`，取值参照上面的种类，如：
 - 适用场景：头像[图片](./builtin/mip-img.md)、[表情GIF](./extensions/mip-anim.md)、[后退按钮](./extensions/mip-history.md) 等有固定大小的元素。
 - 代码示例：
 
-    ```html
+```html
 <mip-img
     layout="fixed"
     width="350"
     height="263"
     src="/doc/image/layout/img.jpg">
 </mip-img>
-    ```
+```
 - 使用效果：
 <mip-video controls loop layout="fixed-height" height="350" class="white-bg"
     src="/doc/image/layout/fixed.mp4"
@@ -95,7 +95,7 @@ MIP 元素添加属性 `layout`，取值参照上面的种类，如：
 - 适用场景：多图横向排列，左右内容对比布局。
 - 代码示例：
 
-    ```html
+```html
 <style>
     #container {
         display: flex;
@@ -107,7 +107,7 @@ MIP 元素添加属性 `layout`，取值参照上面的种类，如：
     <mip-img layout="flex-item" src="/doc/image/layout/img.jpg"></mip-img>
     <mip-img layout="flex-item" src="/doc/image/layout/img.jpg"></mip-img>
 </section>
-    ```
+```
 - 使用效果：
 <mip-video controls loop layout="fixed-height" height="350" class="white-bg"
     src="/doc/image/layout/flex-item.mp4"
@@ -120,7 +120,7 @@ MIP 元素添加属性 `layout`，取值参照上面的种类，如：
 - 适用场景：铺满父元素的背景图片。
 - 代码示例：
 
-    ```html
+```html
 <style>
     .container {
         position: relative;
@@ -134,7 +134,7 @@ MIP 元素添加属性 `layout`，取值参照上面的种类，如：
         src="img.jpg">
     </mip-img>
 </section>
-    ```
+```
 - 使用效果：
 <mip-video controls loop layout="fixed-height" height="350" class="white-bg"
     src="/doc/image/layout/fill.mp4"
@@ -147,12 +147,12 @@ MIP 元素添加属性 `layout`，取值参照上面的种类，如：
 - 适用场景：内容高度不固定的[表单](./extensions/mip-form.md)，[无限滚动](./extensions/mip-infinitescroll.md)组件。
 - 代码示例：
 
-    ```html
+```html
 <mip-history history="go, -1" layout="container">
     我说你是人间的四月天；笑声点亮了四面风；轻灵在春的光艳中交舞着变。你是四月早天里的云烟，黄昏吹着风的软，星子在无意中闪，细雨点洒在花前。那轻，那娉婷，你是，鲜妍百花的冠冕你戴着，你是天真，庄严，你是夜夜的月圆。
 </mip-history>
 <script src="https://c.mipcdn.com/static/v1/mip-history/mip-history.js"></script>
-    ```
+```
 - 使用效果：
 <mip-video controls loop layout="fixed-height" height="350" class="white-bg"
     src="/doc/image/layout/container.mp4"
@@ -165,7 +165,7 @@ MIP 元素添加属性 `layout`，取值参照上面的种类，如：
 - 适用场景：不需要显示在页面上的[mip-pix统计](./builtin/mip-pix.md)、[mip-analytics统计](./extensions/mip-analytics.md)、[百度统计](./extensions/mip-stats-baidu.md)组件，由用户点击触发的[mip-lightbox弹框](./extensions/mip-lightbox.md)组件。
 - 代码示例：
 
-    ```html
+```html
 <button on="tap:L1.toggle" id="btn-open" class="lightbox-btn">
     打开弹层
 </button>
@@ -174,7 +174,7 @@ MIP 元素添加属性 `layout`，取值参照上面的种类，如：
         <span on="tap:L1.toggle" class="lightbox-btn">关闭弹层</span>
     </div>
 </mip-lightbox>
-    ```
+```
 - 使用效果：
 <mip-video controls loop layout="fixed-height" height="350" class="white-bg"
     src="/doc/image/layout/nodisplay.mp4"
