@@ -37,14 +37,14 @@ const windowExcludeKey = [
     'confirm',
     'prompt',
     'eval',
-    'parent',
     'opener',
-    'top',
     // 特殊型
     'document',
     'setTimeout',
     'setInterval',
-    'self'
+    'self',
+    'top',
+    'parent'
 ];
 
 /**
@@ -181,6 +181,13 @@ function processWindowObj(win) {
     }
     else {
         win.top = window.top;
+    }
+
+    if (parent === window) {
+        win.parent = win;
+    }
+    else {
+        win.parent = window.parent;
     }
 }
 

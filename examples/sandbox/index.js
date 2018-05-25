@@ -8,7 +8,8 @@
         setTimeout,
         setInterval,
         self,
-        top
+        top,
+        parent
     } = window;
 
     // alert('a');
@@ -29,6 +30,7 @@
         'close: ', close, '\n',
         'confirm: ', confirm, '\n',
         'prompt: ', prompt, '\n',
+        'parent: ', parent, '\n',
         'document.createElement: ', document.createElement, '\n',
         'document.createElementNS: ', document.createElementNS, '\n',
         'document.write: ', document.write, '\n',

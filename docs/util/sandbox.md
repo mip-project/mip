@@ -17,13 +17,13 @@
 	* 限制使用 `confirm`、`window.confirm`
 	* 限制使用 `prompt`、`window.prompt`
 	* 限制使用 `eval`、`window.eval`
-	* 限制使用 `parent`、`window.parent`
 	* 限制使用 `opener`、`window.opener`
-	* 限制使用 `top`、`window.top`
+	* `parent` 对象如果指向当前页面 `window`、则被重写为指向局部的 `window` 对象
+	* `top` 对象如果指向当前页面 `window`、则被重写为指向局部的 `window` 对象
 	* `self` 被指向了局部的 `window` 对象
 	* `setTimeout`、	`window.setTimeout` 被重写过，内部的this指向了局部的 `window` 对象
 	* `setInterval`、`window.setInterval` 被重写过，内部的this指向了局部的 `window` 对象
-	
+
 * 限制访问全局 `document` 对象，沙盒中 `document` 对象是局部的
 	* 限制使用 `document.createElement`
 	* 限制使用 `document.createElementNS`
