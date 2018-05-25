@@ -4,42 +4,59 @@
  */
 
 import {generateScope, getScopedStyles} from './style';
+import {getPath} from './url';
+import css from '../../util/dom/css';
+import sandbox from '../../sandbox';
 
 import {
     MIP_CONTAINER_ID,
     MIP_VIEW_ID,
     MIP_CONTENT_IGNORE_TAG_LIST,
-    DEFAULT_SHELL_CONFIG
+    DEFAULT_SHELL_CONFIG,
+    MIP_IFRAME_CONTAINER
 } from '../const';
 
-export function createContainer (containerId) {
-    let container = document.querySelector(`#${containerId}`);
+let {window: sandWin, document: sandDoc} = sandbox;
+let activeZIndex = 10000;
+
+export function createIFrame(path, {onLoad, onError} = {}) {
+    let container = document.querySelector(`.${MIP_IFRAME_CONTAINER}[data-page-id="${path}"]`);
+
     if (!container) {
-        container = document.createElement('div');
-        container.id = containerId;
+        container = document.createElement('iframe');
+        if (typeof onLoad === 'function') {
+            container.onload = onLoad;
+        }
+        if (typeof onError === 'function') {
+            container.onerror = onError;
+        }
+        container.setAttribute('src', path);
+        container.setAttribute('class', MIP_IFRAME_CONTAINER);
+        container.setAttribute('data-page-id', path);
+        container.setAttribute('sandbox', 'allow-top-navigation allow-popups allow-scripts allow-forms allow-pointer-lock allow-popups-to-escape-sandbox allow-same-origin allow-modals')
         document.body.appendChild(container);
     }
     else {
-        // client hydrating
-        container.setAttribute('data-server-rendered', '');
-        // oldContainer.innerHTML = '';
+        if (typeof onLoad === 'function') {
+            onLoad();
+        }
     }
+
     return container;
 }
 
-export function getMIPShellConfig(rawHTML) {
-    let rawJSON;
-    if (rawHTML) {
-        let match = rawHTML.match(/<\bmip-shell\b.*>\s*<script.*>([\s\S]+)<\/script>\s*<\/mip-shell>/i);
-        if (match) {
-            rawJSON = match[1];
-        }
+export function removeIFrame(pageId) {
+    let container = document.querySelector(`.${MIP_IFRAME_CONTAINER}[data-page-id="${pageId}"]`);
+    if (container) {
+        container.parentNode.removeChild(container);
     }
-    else {
-        let $shell = document.body.querySelector('mip-shell');
-        if ($shell) {
-            rawJSON = $shell.children[0].innerHTML;
-        }
+}
+
+export function getMIPShellConfig() {
+    let rawJSON;
+    let $shell = document.body.querySelector('mip-shell');
+    if ($shell) {
+        rawJSON = $shell.children[0].innerHTML;
     }
     try {
         return JSON.parse(rawJSON);
@@ -49,143 +66,17 @@ export function getMIPShellConfig(rawHTML) {
     return DEFAULT_SHELL_CONFIG;
 }
 
-export function getMIPTitle(rawContent) {
-    let title;
-
-    if (!rawContent) {
-        let titleDom = document.querySelector('title');
-        if (titleDom) {
-            title = titleDom.innerHTML.trim();
-        }
-    }
-    else {
-        let match = rawContent.match(/<title>([\s\S]+)<\/title>/i);
-        if (match) {
-            title = match[1];
-        }
+export function addMIPCustomScript(win = window) {
+    let doc = win.document;
+    let script = doc.querySelector('script[type="application/mip-script"]');
+    if (!script) {
+        return;
     }
 
-    return title || '百度一下，你就知道';
-}
+    let customFunction = getSandboxFunction(script.innerHTML);
+    script.remove();
 
-export function getMIPContent(rawContent) {
-    let rawResult = rawContent;
-    let scope = generateScope();
-
-    // Process scoped styles
-    processMIPStyle(scope, rawResult);
-
-    if (!rawResult) {
-        let tmpArr = [];
-        let removeNode = [];
-        for (let i = 0; i < document.body.children.length; i++) {
-            let node = document.body.children[i];
-
-            if (MIP_CONTENT_IGNORE_TAG_LIST.indexOf(node.tagName.toLowerCase()) === -1
-                    && node.getAttribute('id') !== MIP_CONTAINER_ID) {
-                tmpArr.push(node.outerHTML);
-                removeNode.push(node);
-            }
-        }
-
-        removeNode.forEach(node => node.remove());
-        rawResult = tmpArr.join('');
-    }
-    else {
-        let match = rawResult.match(/<\bbody\b.*>([\s\S]+)<\/body>/i);
-
-        if (match) {
-            rawResult = match[1];
-        }
-
-        // Delete <mip-shell> & <script>
-        rawResult = rawResult.replace(/<mip-shell[\s\S]+?<\/mip-shell>/ig, '')
-            .replace(/<script[\s\S]+?<\/script>/ig, function (scriptTag) {
-                if (scriptTag.indexOf('application/json') !== -1) {
-                    return scriptTag;
-                }
-
-                return '';
-            });
-
-        // Add <mip-data> for global data
-        if (!/<\/mip-data>/.test(rawResult) && typeof window.m === 'object') {
-            let dataStr = JSON.stringify(window.m, (key, value) => {
-                if (key === '__ob__') {
-                    return;
-                }
-
-                return value;
-            });
-
-            rawResult += `<mip-data><script type="application/json">${dataStr}</script></mip-data>`;
-        }
-    }
-
-    return {
-        MIPContent: rawResult,
-        scope
-    };
-}
-
-export function processMIPStyle(scope, rawContent) {
-    let rawStyle = '';
-
-    if (!rawContent) {
-        let tmpNodeArr = document.querySelectorAll('style');
-        let removeNodes = [];
-
-        tmpNodeArr.forEach(style => {
-            if (style.getAttribute('mip-custom') !== null) {
-                removeNodes.push(style);
-                rawStyle += style.innerHTML.trim();
-            }
-        });
-
-        let customStyle = document.createElement('style');
-        customStyle.setAttribute('mip-custom', '');
-        customStyle.innerHTML = getScopedStyles(scope, rawStyle);
-        document.querySelector('head').appendChild(customStyle);
-
-        // in case of style tree shaking
-        removeNodes.forEach(node => node.remove());
-    }
-    else {
-        let reg = /<style[^>]*mip-custom[^>]*>([^<]*.*)<\/style>/i;
-        let match = rawContent.match(new RegExp(reg, 'g'));
-
-        if (match) {
-            match.forEach(styleStr => {
-                let innerMatch = styleStr.match(reg);
-
-                if (innerMatch && innerMatch[1]) {
-                    rawStyle += innerMatch[1];
-                }
-            });
-
-            document.querySelector('style[mip-custom]').innerHTML += getScopedStyles(scope, rawStyle);
-            // document.querySelector('style[mip-custom]').innerHTML += rawStyle;
-        }
-    }
-}
-
-export function getMIPCustomScript(rawContent) {
-    if (!rawContent) {
-        let script = document.querySelector('script[type="application/mip-script"]');
-        if (!script) {
-            return;
-        }
-
-        let scriptContent = getSandboxFunction(script.innerHTML);
-        script.remove();
-        return scriptContent;
-    }
-
-    let match = rawContent.match(/<script[\s\S]+?type=['"]?application\/mip-script['"]?>([\s\S]+?)<\/script>/i);
-    if (match) {
-        let scriptContent = match[1];
-        return getSandboxFunction(scriptContent);
-    }
+    win.addEventListener('ready-to-watch', () => customFunction(sandWin, sandDoc));
 }
 
 function getSandboxFunction(script) {
@@ -194,4 +85,133 @@ function getSandboxFunction(script) {
 
         ${script}
     `);
+}
+
+let transitionProp = 'transition';
+let transitionEndEvent = 'transitionend';
+let animationProp = 'animation';
+let animationEndEvent = 'animationend';
+
+if (window.ontransitionend === undefined
+    && window.onwebkittransitionend !== undefined) {
+    transitionProp = 'WebkitTransition';
+    transitionEndEvent = 'webkitTransitionEnd';
+}
+
+if (window.onanimationend === undefined
+    && window.onwebkitanimationend !== undefined) {
+    animationProp = 'WebkitAnimation';
+    animationEndEvent = 'webkitAnimationEnd';
+}
+
+const raf = inBrowser
+    ? window.requestAnimationFrame
+        ? window.requestAnimationFrame.bind(window)
+        : setTimeout
+    : fn => fn();
+
+export function nextFrame(fn) {
+    raf(() => {
+        raf(fn);
+    });
+}
+
+export function whenTransitionEnds(el, type, cb) {
+    if (!type) {
+        return cb();
+    }
+
+    const event = type === 'transition' ? transitionEndEvent : animationEndEvent;
+    const onEnd = e => {
+        if (e.target === el) {
+            end();
+        }
+    };
+    const end = () => {
+        el.removeEventListener(event, onEnd);
+        cb();
+    };
+    el.addEventListener(event, onEnd);
+}
+
+export function frameMoveIn(pageId, {onComplete} = {}) {
+    let iframe = getIFrame(pageId);
+
+    if (iframe) {
+        let width = window.innerWidth;
+
+        css(iframe, {
+            'z-index': activeZIndex++,
+            display: 'block'
+        });
+        iframe.classList.add('slide-enter');
+        iframe.classList.add('slide-enter-active');
+
+        // trigger layout
+        iframe.offsetWidth;
+
+        whenTransitionEnds(iframe, 'transition', () => {
+            iframe.classList.remove('slide-enter-to');
+            iframe.classList.remove('slide-enter-active');
+            onComplete && onComplete();
+        });
+
+        nextFrame(() => {
+            iframe.classList.add('slide-enter-to');
+            iframe.classList.remove('slide-enter');
+        });
+    }
+}
+
+export function frameMoveOut(pageId, {onComplete} = {}) {
+    let iframe = getIFrame(pageId);
+    if (iframe) {
+        let width = window.innerWidth;
+
+        iframe.classList.add('slide-leave');
+        iframe.classList.add('slide-leave-active');
+
+        // trigger layout
+        iframe.offsetWidth;
+
+        whenTransitionEnds(iframe, 'transition', () => {
+            css(iframe, {
+                display: 'none',
+                'z-index': 10000
+            })
+            iframe.classList.remove('slide-leave-to');
+            iframe.classList.remove('slide-leave-active');
+            onComplete && onComplete();
+        });
+
+        nextFrame(() => {
+            iframe.classList.add('slide-leave-to');
+            iframe.classList.remove('slide-leave');
+        });
+    }
+}
+
+export function getIFrame(iframe) {
+    if (typeof iframe === 'string') {
+        return document.querySelector(`.${MIP_IFRAME_CONTAINER}[data-page-id="${iframe}"]`);
+    }
+
+    return iframe;
+}
+
+export const inBrowser = typeof window !== 'undefined';
+
+function clickedInEl (el, x, y) {
+    const b = el.getBoundingClientRect();
+    return x >= b.left && x <= b.right && y >= b.top && y <= b.bottom;
+}
+
+export function clickedInEls (e, elements) {
+    const {clientX: x, clientY: y} = e;
+    for (const el of elements) {
+        if (clickedInEl(el, x, y)) {
+            return true;
+        }
+    }
+    return false;
 }

@@ -1,7 +1,3 @@
-
-
-import {warn} from './warn';
-
 const encodeReserveRE = /[!'()*]/g;
 const encodeReserveReplacer = c => '%' + c.charCodeAt(0).toString(16);
 const commaRE = /%2C/g;

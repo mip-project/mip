@@ -1,5 +1,3 @@
-
-
 export function resolvePath(relative, base, append) {
     const firstChar = relative.charAt(0);
     if (firstChar === '/') {
