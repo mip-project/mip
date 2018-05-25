@@ -9,32 +9,152 @@
 
 在讲解如何共享之前，我们首先来明晰两个概念：`页面数据(只有当前页面可以访问和使用)` 和 `共享数据(多页面使用)`
 
+#### 站的概念
+首次访问 mip2 页面 a.html 后，后续在 a.html 页面通过一定规则打开的其他 mip2 页面（假设为 b.html、c.html 等）都能读取和使用到 a 页面提供的共享数据， 同时b、c 页面也能够持续地丰富共享数据
+
 
 ### 具体使用方法
 
-1. 设置数据时，如在需要共享的数据前添加 # 标识（仅检测数据第一层），该数据将被提升成共享态：
-```javascript
-<mip-data>
-    <script type="application/json">
-        {
-            "#globalState": {},
-            "pageState": []
-        }
-     </script>
- </mip-data>
- ```
+1. 设置数据时，如在需要共享的数据前添加 # 标识（仅检测数据第一层），该数据将被提升成共享态， 如：
+    ```
+    // a.html
+    <mip-data>
+        <script type="application/json">
+            {
+                "#global": 1,
+                "#global2": 2,
+                "name": "a"
+            }
+        </script>
+    </mip-data>
+    ```
+    此时 a 页面可用的数据源为
+    ```json
+    {
+        "global": 1,
+        "global2": 2
+        "name": "a"
+    }
+    ```
+    此时共享数据源为：
+    ```json
+    {
+        "global": 1,
+        "global2": 2
+    }
+    ```
 
-2. 提升为共享态的数据源将在每个页面都能被读取和使用到：
+2. 提升为共享态的数据将在站内每个页面(b、c)都能被读取和使用到;
 
-    **如果**页面使用到了某个数据 a 而页面自身的初始数据源中不存在该数据 a，mip2 将向上查找共享数据；
+    **如果**b 页面使用到了某个数据 name 而页面自身的初始数据源中不存在该数据 a，mip2 将向上查找共享数据；
+    ```
+    // b.html
+    <mip-data>
+        <script type="application/json">
+            {
+                "name": "b",
+                "age": 1
+            }
+        </script>
+    </mip-data>
+    ```
+    此时 b 页面可用的数据源为
+    ```json
+    {
+        "global": 1,
+        "global2": 2,
+        "name": "b",
+        "age": 1
+    }
+    ```
+    此时共享数据源为：
+    ```json
+    {
+        "global": 1,
+        "global2": 2
+    }
+    ```
     
     **如果**页面自身的初始数据源存在与共享数据冲突的字段
 	1. 若页面自身的数据没有 `#` 标识，将优先读取页面数据，不影响共享数据
     2. 若页面自身的数据带有 `#` 标识，将提升为共享数据，覆盖共享数据中同样字段的数据
-
+    ```
+    // c.html
+    <mip-data>
+        <script type="application/json">
+            {
+                "#global": 2,
+                "global2": 2333,
+                "name": "c"
+            }
+        </script>
+    </mip-data>
+    ```
+    此时 c 页面可用的数据源为
+    ```json
+    {
+        "global": 2,
+        "global2": 2333,
+        "name": "c"
+    }
+    ```
+    此时共享数据源为：
+    ```json
+    {
+        "global": 2,
+        "global2": 2
+    }
 3. 调用 MIP.setData 方法修改数据时
-	1. 如果需要指定修改共享数据，则在数据前添加 `#` 标识，如 `MIP.setData({'#global': 1})`
+	1. 如果指定需要修改共享数据，则在数据前添加 `#` 标识，如：
+        
+        在 c 页面调用 `MIP.setData({'#global2': 3})`
+
+        此时 c 页面可用的数据源为
+        ```json
+        {
+            "global": 2,
+            "global2": 2333,
+            "name": "c"
+        }
+        ```
+        此时共享数据源为：
+        ```json
+        {
+            "global": 2,
+            "global2": 3
+        }
+
 	2. 其余情况，mip2 会自行判断该数据是共享数据还是当前页面的数据，如果要修改的数据字段既存在于共享也存在于页面的数据源，将优先修改页面的数据源
+
+        ① 如：在 c 页面调用 `MIP.setData({'global2': 3})`
+
+        此时 c 页面可用的数据源为
+        ```json
+        {
+            "global": 2,
+            "global2": 3,
+            "name": "c"
+        }
+        ```
+        此时共享数据源不变，为：
+        ```json
+        {
+            "global": 2,
+            "global2": 2
+        }
+        ```
+
+        ② 如：在 c 页面调用 `MIP.setData({'name': 'name-c'})`
+
+        此时 c 页面可用的数据源为
+        ```json
+        {
+            "global": 2,
+            "global2": 2333,
+            "name": "new-c"
+        }
+        ```
+        此时共享数据源不变
 
 4. 如果页面中元素用到了共享数据（绑定了共享数据数据或使用 `MIP.watch` 方法观察共享数据），而页面本身没有用 `<mip-data></mip-data>` 来设置初始数据，那么仍需要在页面添加 `mip-data` 的空标签方能正常运行
 
