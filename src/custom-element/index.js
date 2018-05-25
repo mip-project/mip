@@ -6,7 +6,7 @@
 import createVueInstance from './utils/create-vue-instance';
 import {getProps, convertAttributeValue} from './utils/props';
 import {camelize} from './utils/helpers';
-import resources from './utils/resources';
+import resources from '../resources';
 import layout from '../layout';
 import EventEmitter from '../util/event-emitter';
 
