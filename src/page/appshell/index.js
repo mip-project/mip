@@ -1,5 +1,5 @@
 import Header from './header.js';
-// import Loading from './loading.js';
+import Loading from './loading.js';
 import {DEFAULT_SHELL_CONFIG} from '../const';
 
 export default class AppShell {
@@ -7,6 +7,7 @@ export default class AppShell {
         this.data = Object.assign(DEFAULT_SHELL_CONFIG, options.data);
         this.$wrapper = null;
         this.header = null;
+        this.loading = null;
 
         this.init();
     }
@@ -22,10 +23,15 @@ export default class AppShell {
                     ...this.data.header,
                     showBackIcon: !this.data.view.isIndex
                 },
-                clickButtonCallback: this.handleClickHeaderButton
+                clickButtonCallback: this.handleClickHeaderButton.bind(this)
             });
             this.header.init();
         }
+
+        this.loading = new Loading({
+            wrapper: this.$wrapper
+        });
+        this.loading.init();
 
         document.body.prepend(this.$wrapper);
     }
@@ -35,10 +41,13 @@ export default class AppShell {
         if (header.title) {
             document.title = header.title;
         }
-        this.header.update({
-            ...header,
-            showBackIcon: !view.isIndex
-        });
+        if (this.header) {
+            this.header.update({
+                ...header,
+                showBackIcon: !view.isIndex
+            });
+            this.header.isDropdownShow = false;
+        }
     }
 
     handleClickHeaderButton(buttonName) {
@@ -46,5 +55,18 @@ export default class AppShell {
         if (buttonName === 'back') {
             window.MIP_ROUTER.go(-1);
         }
+        else if (buttonName === 'dropdown') {
+            if (this.header) {
+                this.header.toggleDropdown();
+            }
+        }
+    }
+
+    showLoading() {
+        this.loading.show();
+    }
+
+    hideLoading() {
+        this.loading.hide();
     }
 }

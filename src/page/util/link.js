@@ -53,7 +53,7 @@ export function installMipLink(router, {isRootPage, postMessage}) {
         else {
             postMessage({
                 type: 'router-force',
-                data: {location}
+                data: {location: to}
             })
         }
     });

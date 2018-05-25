@@ -116,7 +116,7 @@ export function nextFrame(fn) {
     });
 }
 
-function whenTransitionEnds(el, type, cb) {
+export function whenTransitionEnds(el, type, cb) {
     if (!type) {
         return cb();
     }
@@ -200,3 +200,18 @@ function getIFrame(iframe) {
 }
 
 export const inBrowser = typeof window !== 'undefined';
+
+function clickedInEl (el, x, y) {
+    const b = el.getBoundingClientRect();
+    return x >= b.left && x <= b.right && y >= b.top && y <= b.bottom;
+}
+
+export function clickedInEls (e, elements) {
+    const {clientX: x, clientY: y} = e;
+    for (const el of elements) {
+        if (clickedInEl(el, x, y)) {
+            return true;
+        }
+    }
+    return false;
+}

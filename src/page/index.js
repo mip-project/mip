@@ -54,7 +54,7 @@ class Page {
                     router.replace(data.location);
                 }
                 else if (type === 'router-force') {
-                    window.location.href = data.location.fullpath;
+                    window.location.href = data.location;
                 }
             });
         }
@@ -72,6 +72,9 @@ class Page {
 
     initAppShell() {
         this.data.appshell = util.getMIPShellConfig();
+        if (!this.data.appshell.header.title) {
+            this.data.appshell.header.title = document.querySelector('title').innerHTML;
+        }
         if (this.isRootPage) {
             this.messageHandlers.push((type, data) => {
                 if (type === 'appshell-refresh') {
@@ -168,9 +171,12 @@ class Page {
         let targetPage = this.getPageById(targetPageId);
 
         if (!targetPage) {
-            let me = this;
+            this.appshell.showLoading();
             let targetFrame = util.createIFrame(targetPageId, {
-                onLoad: () => me.applyTransition(targetPageId)
+                onLoad: () => {
+                    this.appshell.hideLoading();
+                    this.applyTransition(targetPageId);
+                }
             });
 
             if (this.data.appshell
