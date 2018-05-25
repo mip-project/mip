@@ -15,7 +15,7 @@ class Page {
             this.isRootPage = false;
         }
         else {
-            window.MIP_ROOT_PAGE = true;
+            mip.MIP_ROOT_PAGE = window.MIP_ROOT_PAGE = true;
             this.isRootPage = true;
         }
         this.data = {
