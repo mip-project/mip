@@ -10,7 +10,7 @@
 在讲解如何共享之前，我们首先来明晰两个概念：`页面数据(只有当前页面可以访问和使用)` 和 `共享数据(多页面使用)`
 
 
-### 具体使用方法如下：
+### 具体使用方法如下
 
 1. 设置数据时，如在需要共享的数据前添加 # 标识（仅检测数据第一层），该数据将被提升成共享态：
 ```javascript
@@ -50,8 +50,11 @@
 
 
 如：
+
 index.html：
-```<mip-a m-bind:globaldata="globalState"></mip-a>```
+```
+<mip-a m-bind:globaldata="globalState"></mip-a>
+```
 
 
 mip-a 组件内部：
