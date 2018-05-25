@@ -22,15 +22,6 @@ export default function createVueInstance(
     if (element && element.tagName.toLowerCase() === 'mip-template') {
         ComponentDefinition.template = `<div class="mip-template-wrap">${element.innerHTML}</div>`;
     }
-    // for mip-data syntax
-    if (element
-        && element.tagName.toLowerCase() === 'mip-data'
-        && element.getAttribute('src')
-    ) {
-        propsData.mipsrc = element.getAttribute('src');
-        element.setAttribute('mipsrc', element.getAttribute('src'));
-        element.removeAttribute('src');
-    }
 
     // Auto event handling based on $emit
     function beforeCreate() { // eslint-disable-line no-inner-declarations

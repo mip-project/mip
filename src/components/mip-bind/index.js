@@ -20,15 +20,13 @@ export default {
         }
         else {
             delete this.$root.$options.propsData.mipsrc;
-            this.postMessage(this.$root.$options.propsData);
+            // this.postMessage(this.$root.$options.propsData);
+            MIP.$set(this.$root.$options.propsData, 0);
         }
     },
     props: {
         mipsrc: String
     },
-    // mounted() {
-    //     this.bind.start();
-    // },
     methods: {
         getDataBySrc(url) {
             if (!url) {

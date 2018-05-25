@@ -133,7 +133,7 @@ class Bind {
         if (win.g && win.g.hasOwnProperty(key)) {
             this._assign(win.g, {[key]: val});
         }
-        else if (!win.MIP_ROOT_PAGE && win.parent.g && win.parent.g.hasOwnProperty(key)) {
+        else if (!win.mip.MIP_ROOT_PAGE && win.parent.g && win.parent.g.hasOwnProperty(key)) {
             this._assign(win.parent.g, {[key]: val});
         }
         else {
@@ -143,7 +143,7 @@ class Bind {
 
     _setGlobalState(data) {
         let win = this._win;
-        if (win.MIP_ROOT_PAGE) {
+        if (win.mip.MIP_ROOT_PAGE) {
             win.g = win.g || {};
             Object.assign(win.g, data);
         }
@@ -156,7 +156,7 @@ class Bind {
     _setPageState(data) {
         let win = this._win;
         Object.assign(win.m, data);
-        win.m.__proto__ = win.MIP_ROOT_PAGE ? win.g : win.parent.g;
+        win.m.__proto__ = win.mip.MIP_ROOT_PAGE ? win.g : win.parent.g;
     }
 
     _normalize(data) {

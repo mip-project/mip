@@ -12,9 +12,7 @@ import layout from './layout';
 import hash from './util/hash';
 import viewer from './viewer';
 import viewport from './viewport';
-import Router from './router/index';
-import {start} from './page/index';
-import createRouter from './page/create-router';
+import page from './page/index';
 import builtinComponents from './custom-element-components';
 
 import sleepWakeModule from './sleepWakeModule';
@@ -30,8 +28,6 @@ import 'script-loader!document-register-element/build/document-register-element'
 import mip1PolyfillInstall from './mip1-polyfill';
 
 import './polyfills';
-
-Vue.use(Router);
 
 let mip = {
     Vue,
@@ -67,9 +63,7 @@ mip.push = function (extensions) {
 // install mip1 polyfill
 mip1PolyfillInstall(mip);
 
-const router = createRouter(Router);
-
-Vue.use(customElement, router);
+Vue.use(customElement);
 // Vue.use(customElementBuildInComponents);
 builtinComponents.register();
 
@@ -98,7 +92,7 @@ util.dom.waitDocumentReady(() => {
     // Show page
     viewer.show();
 
-    start(mip, router);
+    page.start();
 
     // clear cookie
     let storage = util.customStorage(2);
