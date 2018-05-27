@@ -4,7 +4,7 @@
  */
 
 import Vue from 'vue';
-import customElement from './custom-element/index';
+import customElement from './vue-custom-element/index';
 // import customElementBuildInComponents from './components';
 import util from './util';
 import sandbox from './sandbox';
@@ -12,7 +12,7 @@ import layout from './layout';
 import viewer from './viewer';
 import viewport from './viewport';
 import page from './page/index';
-import builtinComponents from './custom-element-components';
+import builtinComponents from './components';
 
 import sleepWakeModule from './sleepWakeModule';
 import performance from './performance';

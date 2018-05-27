@@ -42,6 +42,9 @@ function createBaseElementProto() {
     proto.createdCallback = function () {
         let CustomEle = customElements[this.name];
         this.classList.add('mip-element');
+if (/mip-data/i.test(this.name)) {
+    console.log('createdCallback')
+}
 
         /**
          * Viewport state
@@ -83,6 +86,10 @@ function createBaseElementProto() {
      * When the element is inserted into the DOM, initialize the layout and add the element to the '_resources'.
      */
     proto.attachedCallback = function () {
+        if (this.tagName === 'MIP-DATA') {
+            console.log('attachedCallback');
+        }
+
         // Apply layout for this.
         this._layout = layout.applyLayout(this);
         this.customElement.attachedCallback();

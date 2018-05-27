@@ -4,11 +4,11 @@
  */
 
 import util from '../util';
-import BaseElement from './base-element';
+import CustomElement from '../custom-element';
 
 let attrList = ['allowfullscreen', 'allowtransparency', 'sandbox'];
 
-class MipIframe extends BaseElement {
+class MipIframe extends CustomElement {
 
     build() {
         let element = this.element;

@@ -4,7 +4,7 @@
  */
 
 import util from '../util';
-import BaseElement from './base-element';
+import CustomElement from '../custom-element';
 
 /**
  * 替换请求链接中的参数
@@ -34,7 +34,7 @@ function getBodyAttr(attr) {
     return body.getAttribute(attr) || 'default';
 }
 
-class MipPix extends BaseElement {
+class MipPix extends CustomElement {
 
     firstInviewCallback() {
         // 获取统计所需参数

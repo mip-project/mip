@@ -35,6 +35,8 @@ export default function createVueInstance(
 
     // let elementOriginalChildren = [].slice.call(element.childNodes).map(node => node.cloneNode(true)); // clone hack due to IE compatibility
 
+    element.innerHTML = '<div></div>';
+
     let rootElement = {
         propsData,
         router,
@@ -49,7 +51,7 @@ export default function createVueInstance(
                 return reactivePropsList;
             }
         },
-
+        el: element.children[0],
         render(createElement) {
             return createElement(
                 ComponentDefinition,

@@ -11,14 +11,14 @@ mip 自定义元素 (Custom Element) 本质上是基于 [Web Component](https://
 - 类型：Function
 - 详细：
 
-    vue 实例生命周期，在 vue 实例初始化之后，数据观测 (data observer) 和 event/watcher 事件配置之前被调用。在自定义元素的 constroctor 中执行。
+    vue 实例生命周期，在 vue 实例初始化之后，数据观测 (data observer) 和 event/watcher 事件配置之前被调用。如果 prerenderAllowed() 为真，在自定义元素的 connectedCallback 中执行， 反之在 firstInviewCallback 中执行。
 
 ### created
 
 - 类型：Function
 - 详细：
 
-    vue 实例生命周期，在 vue 实例创建完成后被立即调用。在这一步，实例已完成以下的配置：数据观测 (data observer)，属性和方法的运算，watch/event 事件回调。然而，挂载阶段还没开始，$el 属性目前不可见。在自定义元素的 constroctor 中执行。
+    vue 实例生命周期，在 vue 实例创建完成后被立即调用。在这一步，实例已完成以下的配置：数据观测 (data observer)，属性和方法的运算，watch/event 事件回调。然而，挂载阶段还没开始，$el 属性目前不可见。
 
 ### beforeMount
 
@@ -32,7 +32,7 @@ mip 自定义元素 (Custom Element) 本质上是基于 [Web Component](https://
 - 类型：Function
 - 详细：
 
-    vue 实例生命周期，el 被新创建的 vm.$el 替换，并挂载到实例上去之后调用该钩子。如果 root 实例挂载了一个文档内元素，当 mounted 被调用时 vm.$el 也在文档内。在自定义元素的 connectedCallback 钩子中执行，connectedCallback 可能会因为元素从 DOM 结构上移动而触发多次执行，但是 mounted 只会执行一次。所以如果有全局事件的绑定和解绑操作，应该放在 connectedCallback 和 disconnectedCallback 中执行。
+    vue 实例生命周期，el 被新创建的 vm.$el 替换，并挂载到实例上去之后调用该钩子。如果 root 实例挂载了一个文档内元素，当 mounted 被调用时 vm.$el 也在文档内。在自定义元素的 connectedCallback 钩子中执行，connectedCallback 可能会因为元素从 DOM 结构上移动而触发多次执行，但是 mounted 只会执行一次。
 
 ### beforeUpdate
 

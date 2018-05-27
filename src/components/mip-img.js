@@ -4,7 +4,7 @@
  */
 
 import util from '../util';
-import BaseElement from './base-element';
+import CustomElement from '../custom-element';
 import naboo from '../mip1-polyfill/naboo';
 import viewport from '../viewport';
 import viewer from '../viewer';
@@ -234,7 +234,11 @@ class Placeholder {
 
 }
 
-class MipImg extends BaseElement {
+class MipImg extends CustomElement {
+
+    static get observedAttributes() {
+        return ['src'];
+    }
 
     firstInviewCallback() {
         let ele = this.element.querySelector('img');
@@ -300,7 +304,8 @@ class MipImg extends BaseElement {
 
     attributeChangedCallback(attributeName, oldValue, newValue, namespace) {
         if (attributeName === 'src' && oldValue !== newValue) {
-            this.element.querySelector('img').src = newValue;
+            let img = this.element.querySelector('img');
+            img && (img.src = newValue);
         }
     }
 

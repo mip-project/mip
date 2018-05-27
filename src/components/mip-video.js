@@ -6,7 +6,7 @@
  */
 import util from '../util';
 import viewer from '../viewer';
-import BaseElement from './base-element';
+import CustomElement from '../custom-element';
 
 let windowInIframe = viewer.isIframed;
 let videoAttributes = [
@@ -45,7 +45,7 @@ function getAttributeSet(attributes) {
     return attrs;
 }
 
-class MipVideo extends BaseElement {
+class MipVideo extends CustomElement {
 
     firstInviewCallback() {
         this.attributes = getAttributeSet(this.element.attributes);

@@ -10,10 +10,10 @@ export default class AppShell {
         this.header = null;
         this.loading = null;
 
-        this.init();
+        this._init();
     }
 
-    init() {
+    _init() {
         this.$wrapper = document.createElement('div');
         this.$wrapper.classList.add('mip-appshell-header-wrapper');
 

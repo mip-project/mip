@@ -1,18 +1,16 @@
 
-import BaseElement from '../base-element';
-import Bind from './bind';
+import CustomElement from '../../custom-element';
+// import Bind from './bind';
 
 let uid = 0;
 
-class MipData extends BaseElement {
-
-    createdCallback() {
-        this.uid = uid++;
-        this.bind = new Bind(this.uid);
+class MipData extends CustomElement {
+    build() {
+        // this.uid = uid++;
+        // this.bind = new Bind(this.uid);
 
         let src = this.element.getAttribute('src');
         let ele = this.element.querySelector('script[type="application/json"]');
-
         if (src) {
             this.getData(src);
         }
@@ -24,9 +22,9 @@ class MipData extends BaseElement {
             }
             catch (e) {}
             if (result) {
-                window.m = window.m ? window.m : {};
-                MIP.$set(result, 0);
-                // this.postMessage(result);
+                // window.m = window.m ? window.m : {};
+                // MIP.$set(result, 0);
+                this.postMessage(result);
             }
         }
     }
@@ -53,9 +51,14 @@ class MipData extends BaseElement {
         let loc = window.location;
         let domain = loc.protocol + '//' + loc.host;
         window.postMessage({
-            type: 'bind' + this.uid,
+            // type: 'bind' + this.uid,
+            type: 'bind',
             m: data
         }, domain);
+    }
+
+    prerenderAllowed() {
+        return true;
     }
 }
 
