@@ -39,8 +39,6 @@ let mip = {
     viewer,
     viewport,
     hash: util.hash,
-    // 当前是否是独立站
-    standalone: window === top,
     sandbox,
     css: {}
 };
@@ -51,6 +49,10 @@ if (window.MIP) {
 }
 
 window.MIP = window.mip = mip;
+// 当前是否是独立站
+mip.standalone = typeof window.top.mip !== 'undefined';
+mip.viewer.isIframed = !mip.standalone;
+mip.viewport.init();
 
 // before document ready
 mip.push = function (extensions) {
