@@ -4,7 +4,7 @@
  */
 
 import * as util from './util';
-import {customEmit} from '../custom-element/utils/custom-event';
+import {customEmit} from '../vue-custom-element/utils/custom-event';
 import Router from './router';
 import AppShell from './appshell';
 import '../styles/mip.less';
