@@ -49,8 +49,6 @@ class BaseElement extends HTMLElement {
          */
         let customElement = this.customElement = new CustomElement(this);
 
-        customElement.createdCallback();
-
         // Add first-screen element to performance.
         if (customElement.hasResources()) {
             performance.addFsElement(this);
@@ -61,7 +59,6 @@ class BaseElement extends HTMLElement {
         // Apply layout for this.
         this.classList.add('mip-element');
         this._layout = layout.applyLayout(this);
-        this.customElement.attachedCallback(); // 兼容 v0
         this.customElement.connectedCallback();
 
         // Add to resource manager.
@@ -70,7 +67,6 @@ class BaseElement extends HTMLElement {
 
     disconnectedCallback() {
 
-        this.customElement.detachedCallback(); // 兼容 v0
         this.customElement.disconnectedCallback();
 
         this._resources.remove(this);

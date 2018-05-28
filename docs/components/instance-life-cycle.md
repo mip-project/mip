@@ -72,7 +72,7 @@ mip 自定义元素 (Custom Element) 本质上是基于 [Web Component](https://
 例子：
 
 ```js
-mip.customElement('mip-sample', {
+mip.registerVueCustomElement('mip-sample', {
     template: `<div> i am mip-sample </div>`,
     props: {
         name: 'sample'

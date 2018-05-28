@@ -5,7 +5,7 @@
 
 /* global mip */
 
-mip.customElement('mip-complevel2', {
+mip.registerVueCustomElement('mip-complevel2', {
     template: `
         <p>{{userinfo.name}}</p>
     `,

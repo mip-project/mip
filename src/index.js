@@ -13,6 +13,7 @@ import viewer from './viewer';
 import viewport from './viewport';
 import page from './page/index';
 import builtinComponents from './components';
+import registerElement from './register-element';
 
 import sleepWakeModule from './sleepWakeModule';
 import performance from './performance';
@@ -32,8 +33,13 @@ import './polyfills';
 let mip = {
     version: '2',
     Vue,
-    customElement(tag, component) {
+    // 暴露注册 Vue 组件的方法
+    registerVueCustomElement(tag, component) {
         Vue.customElement(tag, component);
+    },
+    // 暴露注册 mip 组件的方法
+    registerCustomElement(tag, component) {
+        registerElement(tag, component);
     },
     util,
     viewer,

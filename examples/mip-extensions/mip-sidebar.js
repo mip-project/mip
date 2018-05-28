@@ -13,7 +13,7 @@
         div
     `;
 
-    mip.customElement('mip-sidebar', {
+    mip.registerVueCustomElement('mip-sidebar', {
         props: {
             id: String,
             layout: String,

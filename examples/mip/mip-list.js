@@ -9,7 +9,7 @@ function mockMustacheRender(template, data) {
     return template.replace(/\{\{(\w+)\}\}/g, item => data[item.replace(/[\{\}]/ig, '')]);
 }
 
-mip.customElement('mip-list', {
+mip.registerVueCustomElement('mip-list', {
     template: `
         <div class="mip-list-wrap">
             <div

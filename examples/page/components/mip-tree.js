@@ -5,7 +5,7 @@
 
 /* global mip */
 
-mip.customElement('mip-tree', {
+mip.registerVueCustomElement('mip-tree', {
     template: `
         <li>
             <div :class="{ bold: isFolder }" @click="toggle" @dblclick="changeType">

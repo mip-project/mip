@@ -7,7 +7,7 @@
 
 
 
-mip.customElement('mip-a', {
+mip.registerVueCustomElement('mip-a', {
     template: `
         <div >
             haha a

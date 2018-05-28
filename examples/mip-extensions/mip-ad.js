@@ -5,7 +5,7 @@
 
 /* global mip */
 
-mip.customElement('mip-ad', {
+mip.registerVueCustomElement('mip-ad', {
     template: `
         <div>
             <slot></slot>

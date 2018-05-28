@@ -5,7 +5,7 @@
 
 /* global mip */
 
-mip.customElement('mip-complevel1', {
+mip.registerVueCustomElement('mip-complevel1', {
     template: `
         <div class="mip-complevel1">
             <mip-complevel2 :userinfo="userinfo"></mip-complevel2>

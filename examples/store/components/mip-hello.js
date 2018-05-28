@@ -4,7 +4,7 @@
  */
 
 /* global mip */
-mip.customElement('mip-hello', {
+mip.registerVueCustomElement('mip-hello', {
     template: '<h2 @click="getData">click me to get contacts data</h2>',
     methods: {
         ...mip.Store.mapMutations('global', ['setData']),
