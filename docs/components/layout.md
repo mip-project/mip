@@ -43,11 +43,15 @@ MIP 元素添加属性 `layout`，取值参照上面的种类，如：
     src="/doc/image/layout/img.jpg">
 </mip-img>
 ```
+
 - 使用效果：
+
+```html
 <mip-video controls loop layout="fixed-height" height="350" class="white-bg"
     src="/doc/image/layout/responsive.mp4"
     poster="/doc/image/layout/responsive.png">
 </mip-video>
+```
 
 ### 2. fixed-height
 
@@ -62,12 +66,15 @@ MIP 元素添加属性 `layout`，取值参照上面的种类，如：
     src="/doc/image/layout/img.jpg">
 </mip-img>
 ```
+
 - 使用效果：
+
+```html
 <mip-video controls loop layout="fixed-height" height="350" class="white-bg"
     src="/doc/image/layout/fixed-height.mp4"
     poster="/doc/image/layout/fixed-height.png">
 </mip-video>
-
+```
 
 ### 3. fixed
 
@@ -83,11 +90,15 @@ MIP 元素添加属性 `layout`，取值参照上面的种类，如：
     src="/doc/image/layout/img.jpg">
 </mip-img>
 ```
+
 - 使用效果：
+
+```html
 <mip-video controls loop layout="fixed-height" height="350" class="white-bg"
     src="/doc/image/layout/fixed.mp4"
     poster="/doc/image/layout/fixed.png">
 </mip-video>
+```
 
 ### 4. flex-item
 
@@ -108,11 +119,15 @@ MIP 元素添加属性 `layout`，取值参照上面的种类，如：
     <mip-img layout="flex-item" src="/doc/image/layout/img.jpg"></mip-img>
 </section>
 ```
+
 - 使用效果：
+
+```html
 <mip-video controls loop layout="fixed-height" height="350" class="white-bg"
     src="/doc/image/layout/flex-item.mp4"
     poster="/doc/image/layout/flex-item.png">
 </mip-video>
+```
 
 ### 5. fill
 
@@ -135,11 +150,15 @@ MIP 元素添加属性 `layout`，取值参照上面的种类，如：
     </mip-img>
 </section>
 ```
+
 - 使用效果：
+
+```html
 <mip-video controls loop layout="fixed-height" height="350" class="white-bg"
     src="/doc/image/layout/fill.mp4"
     poster="/doc/image/layout/fill.png">
 </mip-video>
+```
 
 ### 6. container
 
@@ -153,11 +172,15 @@ MIP 元素添加属性 `layout`，取值参照上面的种类，如：
 </mip-history>
 <script src="https://c.mipcdn.com/static/v1/mip-history/mip-history.js"></script>
 ```
+
 - 使用效果：
+
+```html
 <mip-video controls loop layout="fixed-height" height="350" class="white-bg"
     src="/doc/image/layout/container.mp4"
     poster="/doc/image/layout/container.png">
 </mip-video>
+```
 
 ### 7. nodisplay
 
@@ -175,11 +198,15 @@ MIP 元素添加属性 `layout`，取值参照上面的种类，如：
     </div>
 </mip-lightbox>
 ```
+
 - 使用效果：
+
+```html
 <mip-video controls loop layout="fixed-height" height="350" class="white-bg"
     src="/doc/image/layout/nodisplay.mp4"
     poster="/doc/image/layout/nodisplay.png">
 </mip-video>
+```
 
 ## layout 属性缺省规则
 

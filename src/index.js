@@ -4,22 +4,22 @@
  */
 
 import Vue from 'vue';
-import customElement from './custom-element/index';
+import customElement from './vue-custom-element/index';
 // import customElementBuildInComponents from './components';
 import util from './util';
-import sandbox from './util/sandbox';
+import sandbox from './sandbox';
 import layout from './layout';
-import hash from './util/hash';
 import viewer from './viewer';
 import viewport from './viewport';
 import page from './page/index';
-import builtinComponents from './custom-element-components';
+import builtinComponents from './components';
 
 import sleepWakeModule from './sleepWakeModule';
 import performance from './performance';
 
 import './log/monitor';
 
+import 'script-loader!deps/zepto';
 import 'script-loader!deps/fetch.js';
 import 'script-loader!fetch-jsonp';
 import 'script-loader!document-register-element/build/document-register-element';
@@ -30,6 +30,7 @@ import mip1PolyfillInstall from './mip1-polyfill';
 import './polyfills';
 
 let mip = {
+    version: '2',
     Vue,
     customElement(tag, component) {
         Vue.customElement(tag, component);
@@ -37,7 +38,7 @@ let mip = {
     util,
     viewer,
     viewport,
-    hash,
+    hash: util.hash,
     // 当前是否是独立站
     standalone: window === top,
     sandbox,

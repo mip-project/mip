@@ -7,6 +7,8 @@ import Compile from './compile';
 import Observer from './observer';
 import Watcher from './watcher';
 import util from '../../util';
+import mipData from './mip-data';
+import registerElement from '../../register-element';
 
 /* global MIP */
 
@@ -33,6 +35,15 @@ class Bind {
         MIP.watch = function (target, cb) {
             me._bindWatch(target, cb);
         };
+
+        window.m = window.m || {};
+
+        registerElement('mip-data', mipData);
+        this._dataSource = {
+            m: window.m
+        };
+
+        MIP.$set(this._dataSource.m);
     }
 
     // Bind event for post message when fetch data returned, then compile dom again
@@ -44,7 +55,8 @@ class Bind {
             let domain = loc.protocol + '//' + loc.host;
             if (event.origin === domain
                 && event.source && event.data
-                && event.data.type === 'bind' + me._id
+                && event.data.type === 'bind'
+                // && event.data.type === 'bind' + me._id
                 && event.source === me._win
             ) {
                 MIP.$set(event.data.m);
@@ -60,7 +72,7 @@ class Bind {
         }
 
         if (typeof data === 'object') {
-            let origin = JSON.stringify(window.m);
+            let origin = JSON.stringify(window.m || {});
             this._compile.upadteData(JSON.parse(origin));
             let classified = this._normalize(data);
             if (compile) {
@@ -133,7 +145,7 @@ class Bind {
         if (win.g && win.g.hasOwnProperty(key)) {
             this._assign(win.g, {[key]: val});
         }
-        else if (!win.MIP_ROOT_PAGE && win.parent.g && win.parent.g.hasOwnProperty(key)) {
+        else if (!win.mip.MIP_ROOT_PAGE && win.parent.g && win.parent.g.hasOwnProperty(key)) {
             this._assign(win.parent.g, {[key]: val});
         }
         else {
@@ -143,7 +155,7 @@ class Bind {
 
     _setGlobalState(data) {
         let win = this._win;
-        if (win.MIP_ROOT_PAGE) {
+        if (win.mip.MIP_ROOT_PAGE) {
             win.g = win.g || {};
             Object.assign(win.g, data);
         }
@@ -156,7 +168,7 @@ class Bind {
     _setPageState(data) {
         let win = this._win;
         Object.assign(win.m, data);
-        win.m.__proto__ = win.MIP_ROOT_PAGE ? win.g : win.parent.g;
+        win.m.__proto__ = win.mip.MIP_ROOT_PAGE ? win.g : win.parent.g; // eslint-disable-line no-proto
     }
 
     _normalize(data) {
@@ -175,7 +187,7 @@ class Bind {
         return {
             globalData,
             pageData: pageData || {}
-        }
+        };
     }
 
     _assign(oldData, newData) {

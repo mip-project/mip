@@ -12,7 +12,7 @@ let ATTRS = /^(checked|selected|autofocus|controls|disabled|hidden|multiple|read
 
 class Compile {
     constructor() {
-        this._el = document.body;
+        this._el = document.documentElement;
     }
 
     start(data) {
