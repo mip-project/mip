@@ -6,7 +6,7 @@
 import cssLoader from '../util/dom/css-loader';
 import layout from '../layout';
 import performance from '../performance';
-import Resources from './resources';
+import resources from '../resources';
 
 /**
  * Storage of custom elements.
@@ -15,12 +15,6 @@ import Resources from './resources';
  */
 let customElements = {};
 
-/**
- * Save resources.
- * @inner
- * @type {Resources}
- */
-let resources;
 
 /**
  * Save the base element prototype to avoid duplicate initialization.
@@ -48,6 +42,9 @@ function createBaseElementProto() {
     proto.createdCallback = function () {
         let CustomEle = customElements[this.name];
         this.classList.add('mip-element');
+if (/mip-data/i.test(this.name)) {
+    console.log('createdCallback')
+}
 
         /**
          * Viewport state
@@ -89,6 +86,10 @@ function createBaseElementProto() {
      * When the element is inserted into the DOM, initialize the layout and add the element to the '_resources'.
      */
     proto.attachedCallback = function () {
+        if (this.tagName === 'MIP-DATA') {
+            console.log('attachedCallback');
+        }
+
         // Apply layout for this.
         this._layout = layout.applyLayout(this);
         this.customElement.attachedCallback();
@@ -225,9 +226,6 @@ function registerElement(name, elementClass, css) {
         return;
     }
 
-    if (!resources) {
-        resources = new Resources();
-    }
     customElements[name] = elementClass;
     loadCss(css, name);
     document.registerElement(name, {

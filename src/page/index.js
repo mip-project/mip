@@ -4,39 +4,196 @@
  */
 
 import * as util from './util';
-import * as constants from './const';
-import AppShell from './vue-components/AppShell.vue';
+import Router from './router';
+import AppShell from './appshell';
+import '../styles/mip.less';
 
-const CONTAINER_ID = constants.MIP_CONTAINER_ID;
+class Page {
+    constructor() {
+        this.pageId = util.getPath(window.location.href);
+        if (window.parent && window.parent.MIP_ROOT_PAGE) {
+            this.isRootPage = false;
+        }
+        else {
+            window.MIP_ROOT_PAGE = true;
+            this.isRootPage = true;
+        }
+        this.data = {
+            appshell: {}
+        };
 
-export function start({Vue}, router) {
-    // Configure mip
-    Vue.config.ignoredElements = [
-      /^mip-/
-    ];
-
-    // Don't let browser restore scroll position.
-    if ('scrollRestoration' in window.history) {
-        window.history.scrollRestoration = 'manual';
+        // root page
+        this.appshell = null;
+        this.children = [];
+        this.currentChildPageId = null;
+        this.messageHandlers = [];
     }
 
-    // Create mip container
-    let $container = util.createContainer(CONTAINER_ID);
+    initRouter() {
+        let router;
+        // outside iframe
+        if (this.isRootPage) {
+            router = new Router({
+                routes: [
+                    {
+                        path: window.location.pathname
+                    }
+                ]
+            });
+            router.rootPage = this;
+            router.init();
+            router.listen(this.render.bind(this));
 
-    let app = new Vue({
-        ...AppShell,
-        router
-    });
+            window.MIP_ROUTER = router;
 
-    if ($container.hasAttribute('data-server-rendered')) {
-        router.onReady(() => {
-            console.log('ssr ready...')
-            app.$mount(`#${CONTAINER_ID}`);
+            this.messageHandlers.push((type, data) => {
+                if (type === 'router-push') {
+                    router.push(data.location);
+                }
+                else if (type === 'router-replace') {
+                    router.replace(data.location);
+                }
+                else if (type === 'router-force') {
+                    window.location.href = data.location;
+                }
+            });
+        }
+        // inside iframe
+        else {
+            router = window.parent.MIP_ROUTER;
+            router.addRoute({
+                path: window.location.pathname
+            });
+            router.rootPage.addChild(this);
+        }
+
+        util.installMipLink(router, this);
+    }
+
+    initAppShell() {
+        this.data.appshell = util.getMIPShellConfig();
+        if (!this.data.appshell.header.title) {
+            this.data.appshell.header.title = document.querySelector('title').innerHTML;
+        }
+        if (this.isRootPage) {
+            this.messageHandlers.push((type, {appshellData, pageId}) => {
+                if (type === 'appshell-refresh') {
+                    this.refreshAppShell(appshellData, pageId);
+                }
+            });
+            this.refreshAppShell(this.data.appshell);
+        }
+        else {
+            this.postMessage({
+                type: 'appshell-refresh',
+                data: {
+                    appshellData: this.data.appshell,
+                    pageId: this.pageId
+                }
+            });
+        }
+    }
+
+    postMessage(data) {
+        parent.postMessage(data, window.location.origin);
+    }
+
+    start() {
+        // Set global mark
+        window.__MIP__ = 2;
+        mip.MIP_ROOT_PAGE = window.MIP_ROOT_PAGE;
+
+        // Don't let browser restore scroll position.
+        if ('scrollRestoration' in window.history) {
+            window.history.scrollRestoration = 'manual';
+        }
+
+        this.initRouter();
+        this.initAppShell();
+        util.addMIPCustomScript();
+        document.body.setAttribute('mip-ready', '');
+
+        if (this.isRootPage) {
+            // listen message from iframes
+            window.addEventListener('message', (e) => {
+                if (e.source.origin === window.location.origin) {
+                    this.messageHandlers.forEach(handler => {
+                        handler.call(this, e.data.type, e.data.data || {});
+                    });
+                }
+            }, false);
+        }
+    }
+
+    /**** Root Page methods ****/
+
+    refreshAppShell(appshellData, targetPageId) {
+        if (!this.appshell) {
+            this.appshell = new AppShell({
+                data: appshellData
+            });
+        }
+        else {
+            this.appshell.refresh(appshellData, targetPageId);
+        }
+    }
+
+    applyTransition(targetPageId) {
+        if (this.currentChildPageId) {
+            util.frameMoveOut(this.currentChildPageId, {
+                onComplete: () => {
+                    // 没有引用 mip.js 的错误页
+                    if (!this.getPageById(this.currentChildPageId)) {
+                        util.removeIFrame(this.currentChildPageId);
+                    }
+                    this.currentChildPageId = targetPageId;
+                }
+            });
+        }
+
+        util.frameMoveIn(targetPageId, {
+            onComplete: () => {
+                this.currentChildPageId = targetPageId;
+            }
         });
     }
-    else {
-        app.$mount(`#${CONTAINER_ID}`);
+
+    addChild(page) {
+        if (this.isRootPage) {
+            this.children.push(page);
+        }
     }
 
-    util.installMipLink(router);
-};
+    getPageById(pageId) {
+        return pageId === this.pageId ?
+            this : this.children.find(child => child.pageId === pageId);
+    }
+
+    render(route) {
+        let targetPageId = route.fullPath;
+        let targetPage = this.getPageById(targetPageId);
+
+        if (!targetPage) {
+            this.appshell.showLoading();
+            let targetFrame = util.createIFrame(targetPageId, {
+                onLoad: () => {
+                    this.appshell.hideLoading();
+                    this.applyTransition(targetPageId);
+                }
+            });
+
+            if (this.data.appshell
+                && this.data.appshell.header
+                && this.data.appshell.header.show) {
+                targetFrame.classList.add('mip-page__iframe-with-header');
+            }
+        }
+        else {
+            this.refreshAppShell(targetPage.data.appshell, targetPageId);
+            this.applyTransition(targetPageId);
+        }
+
+    }
+}
+
+export default new Page();

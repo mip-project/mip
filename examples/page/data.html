@@ -81,25 +81,23 @@
         </script>
     </mip-data>
 
-    <mip-complevel1 m-bind:userinfo="userInfo"></mip-complevel1>
+    <!-- <mip-complevel1 m-bind:userinfo="userInfo"></mip-complevel1> -->
 
     <span>group.info.name will show below which is a global state shared from index.html:</span>
     <span m-text="group.info.name"></span>
+    <div on="tap:MIP.setData({group:{info:{name:'sfe2018'}}})" class="button">click change global group.info.name</div>
 
     <br><br>
     <h1 m-text="title"></h1>
 
+    <p m-text="size.small"></p>
+    <div on="tap:MIP.setData({size:{small:2}})" class="button">click change size.small</div>
+
     <p m-text="num"></p>
     <div on="tap:MIP.setData({num:2})" class="button">click change num</div>
 
-    <p m-text="num2"></p>
-    <div on="tap:MIP.setData({num2:4})" class="button">click change num2</div>
-
     <p m-text="sp.three"></p>
     <div on="tap:MIP.setData({sp:{three:'¥0'}})" class="button">click change sp.three</div>
-
-    <p m-text="basePrice"></p>
-    <div on="tap:MIP.setData({basePrice:3000})" class="button">click change basePrice</div>
 
     <p m-text="comments"></p>
     <div on="tap:MIP.setData({comments:'ckkk'})" class="button">click change comments</div>
@@ -107,8 +105,23 @@
     <p m-text="img.first"></p>
     <div on="tap:MIP.setData({img:{first:1}})" class="button">click change img.first</div>
 
+    <mip-data>
+        <script type="application/json">
+          {
+              "price": 20
+          }
+          </script>
+    </mip-data>
+    <div>
+        DOM.value*m.price =
+        <span m-text="price"></span>
+    </div>
+    <mip-form url="https://www.mipengine.org/">
+        <input type='text' on="change:MIP.setData({price:DOM.value*m.price})">
+    </mip-form>
+
     <br><br>
-    <a href="./index.html" class="link" mip>Back to Index</a>
+    <a href="./index.html" class="link" mip-link>Back to Index</a>
 
     <mip-shell>
         <script type="application/json">
@@ -143,17 +156,10 @@
     </mip-shell>
 
     <script type="application/mip-script">
-        console.log('watch data in data.html')
         MIP.watch('num', function () {
             console.log('num changed callback')
             MIP.setData({
                 title: 'ckkkk changing num'
-            });
-        });
-        MIP.watch('num2', function () {
-            console.log('num2 cb')
-            MIP.setData({
-                title: 'ckkkk changing num2'
             });
         });
         MIP.watch('sp.three', function () {
@@ -169,12 +175,14 @@
             });
         });
         MIP.watch(['basePrice', 'img.first'], function () {
+            console.log('multi')
             MIP.setData({
                 title: 'ckkkk changing multi'
             });
         });
     </script>
     <script src="../../dist/mip.js"></script>
-    <script src="./components/mip-complevel1.js"></script>
     <script src="./components/mip-complevel2.js"></script>
+    <script src="./components/mip-complevel1.js"></script>
+    <script src="https://c.mipcdn.com/static/v1/mip-form/mip-form.js"></script>
 </body>

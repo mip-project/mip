@@ -31,6 +31,24 @@ module.exports = {
                 loader: 'vue-loader'
             },
             {
+                test: /\.less$/,
+                use: [
+                    {
+                        loader: 'style-loader',
+                        options: {
+                            insertAt: 'top'
+                        }
+                    },
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 1
+                        }
+                    },
+                    'less-loader'
+                ]
+            },
+            {
                 test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {

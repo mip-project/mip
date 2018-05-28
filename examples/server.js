@@ -5,9 +5,11 @@
 
 const express = require('express');
 const rewrite = require('express-urlrewrite');
+const proxy = require('http-proxy-middleware');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware')
 const WebpackConfig = require('../build/webpack.config.dev');
+
 
 const app = express();
 const path = require('path');
@@ -21,6 +23,12 @@ app.use(webpackDevMiddleware(webpack(WebpackConfig), {
 }));
 
 app.use(express.static(path.join(__dirname, '../')));
+
+// wecoffee api proxy
+app.use('/api/store', proxy({
+    target: 'https://weecoffee-lighthouse.oott123.com',
+    changeOrigin: true
+}));
 
 const port = process.env.PORT || 8080;
 

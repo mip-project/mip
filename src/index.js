@@ -4,24 +4,22 @@
  */
 
 import Vue from 'vue';
-import customElement from './custom-element/index';
+import customElement from './vue-custom-element/index';
 // import customElementBuildInComponents from './components';
 import util from './util';
-import sandbox from './util/sandbox';
+import sandbox from './sandbox';
 import layout from './layout';
-import hash from './util/hash';
 import viewer from './viewer';
 import viewport from './viewport';
-import Router from './router/index';
-import {start} from './page/index';
-import createRouter from './page/create-router';
-import builtinComponents from './custom-element-components';
+import page from './page/index';
+import builtinComponents from './components';
 
 import sleepWakeModule from './sleepWakeModule';
 import performance from './performance';
 
 import './log/monitor';
 
+import 'script-loader!deps/zepto';
 import 'script-loader!deps/fetch.js';
 import 'script-loader!fetch-jsonp';
 import 'script-loader!document-register-element/build/document-register-element';
@@ -31,9 +29,8 @@ import mip1PolyfillInstall from './mip1-polyfill';
 
 import './polyfills';
 
-Vue.use(Router);
-
 let mip = {
+    version: '2',
     Vue,
     customElement(tag, component) {
         Vue.customElement(tag, component);
@@ -41,7 +38,7 @@ let mip = {
     util,
     viewer,
     viewport,
-    hash,
+    hash: util.hash,
     // 当前是否是独立站
     standalone: window === top,
     sandbox,
@@ -67,9 +64,7 @@ mip.push = function (extensions) {
 // install mip1 polyfill
 mip1PolyfillInstall(mip);
 
-const router = createRouter(Router);
-
-Vue.use(customElement, router);
+Vue.use(customElement);
 // Vue.use(customElementBuildInComponents);
 builtinComponents.register();
 
@@ -98,7 +93,7 @@ util.dom.waitDocumentReady(() => {
     // Show page
     viewer.show();
 
-    start(mip, router);
+    page.start();
 
     // clear cookie
     let storage = util.customStorage(2);

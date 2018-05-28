@@ -3,7 +3,7 @@
  * @author panyuqi@baidu.com (panyuqi)
  */
 
-import sandbox from '../util/sandbox';
+import sandbox from '../sandbox';
 import * as util from './util';
 import {
     MIP_ERROR_ROUTE_PATH,

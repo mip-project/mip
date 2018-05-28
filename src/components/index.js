@@ -1,46 +1,28 @@
 /**
- * @file index.js
- * @author huanghuiquan (huanghuiquan@baidu.com)
+ * @file index.js Builtins register
+ * @author zhangzhiqiang(zhiqiangzhang37@163.com)
  */
 
-import mipImg from './mip-img/MipImg.vue';
-import mipIframe from './mip-iframe/MipIframe.vue';
-import mipVideo from './mip-video/MipVideo.vue';
-import mipCarousel from './mip-carousel/MipCarousel.vue';
-import mipPix from './mip-pix/MipPix.vue';
-import mipData from './mip-bind';
+import MipImg from './mip-img';
+import MipVideo from './mip-video';
+import MipCarousel from './mip-carousel';
+import MipIframe from './mip-iframe';
+import MipPix from './mip-pix';
+import MipBind from './mip-bind/bind';
+import registerElement from '../register-element';
 
-function install(Vue) {
-    [
-        {
-            tag: 'mip-img',
-            component: mipImg
-        },
-        {
-            tag: 'mip-iframe',
-            component: mipIframe
-        },
-        {
-            tag: 'mip-pix',
-            component: mipPix
-        },
-        {
-            tag: 'mip-carousel',
-            component: mipCarousel
-        },
-        {
-            tag: 'mip-video',
-            component: mipVideo
-        },
-        {
-            tag: 'mip-template',
-            component: {props: ['data']}
-        },
-        {
-            tag: 'mip-data',
-            component: mipData
-        }
-    ].forEach(element => Vue.customElement(element.tag, element.component));
-}
+export default {
 
-export default install;
+    /**
+     * Register the builtin components.
+     */
+    register() {
+        registerElement('mip-pix', MipPix);
+        registerElement('mip-img', MipImg);
+        registerElement('mip-carousel', MipCarousel);
+        registerElement('mip-iframe', MipIframe);
+        registerElement('mip-video', MipVideo);
+        // registerElement('mip-bind', MipBind);
+        new MipBind();
+    }
+};

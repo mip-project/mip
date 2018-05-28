@@ -18,7 +18,7 @@ mip.customElement('mip-complevel2', {
         }
     },
     updated() {
-        console.log(this.userinfo)
+        // console.log(this.userinfo)
     },
     methods: {
     }

@@ -12,7 +12,7 @@ let ATTRS = /^(checked|selected|autofocus|controls|disabled|hidden|multiple|read
 
 class Compile {
     constructor() {
-        this._el = document.body;
+        this._el = document.documentElement;
     }
 
     start(data) {
@@ -113,7 +113,6 @@ class Compile {
         }
         let attr = result[1];
         if (attr !== 'disabled' && node.disabled) {
-            // fn.extend(window.m, this.origin);
             Object.assign(window.m, this.origin);
             return;
         }
