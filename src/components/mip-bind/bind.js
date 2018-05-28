@@ -32,7 +32,7 @@ class Bind {
             me._bindTarget(true, action, from);
             me._eventEmit();
         };
-        MIP.$recomplie = function () {
+        MIP.$recompile = function () {
             me._observer.start(me._win.m);
             me._compile.start(me._win.m);
         };
@@ -43,11 +43,10 @@ class Bind {
         window.m = window.m || {};
 
         registerElement('mip-data', mipData);
-        this._dataSource = {
-            m: window.m
-        };
-
-        MIP.$set(this._dataSource.m);
+        // this._dataSource = {
+        //     m: window.m
+        // };
+        // MIP.$set(this._dataSource.m);
     }
 
     // Bind event for post message when fetch data returned, then compile dom again
