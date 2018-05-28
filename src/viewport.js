@@ -23,6 +23,19 @@ const win = window;
 let viewport = {
 
     /**
+     * Initialize the viewport
+     *
+     * @return {Viewport}
+     */
+    init() {
+        fixedElement.init();
+        (platform.needSpecialScroll ? document.body : win)
+            .addEventListener('scroll', scrollHandle.bind(this), false);
+
+        win.addEventListener('resize', resizeEvent.bind(this));
+    },
+
+    /**
      * Get the current vertical position of the page
      *
      * @return {number}
@@ -132,22 +145,8 @@ let resizeEvent = fn.throttle(function (event) {
     this.trigger('resize', event);
 }, 200);
 
-/**
- * Initialize the viewport
- *
- * @return {Viewport}
- */
-function init() {
-    fixedElement.init();
-    (platform.needSpecialScroll ? document.body : win)
-        .addEventListener('scroll', scrollHandle.bind(this), false);
-
-    win.addEventListener('resize', resizeEvent.bind(this));
-
-    return this;
-}
-
 // Mix the methods and attributes of Event into the viewport.
 EventEmitter.mixin(viewport);
 
-export default init.call(viewport);
+// export default init.call(viewport);
+export default viewport;

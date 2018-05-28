@@ -1,4 +1,5 @@
 import event from '../../util/dom/event';
+import {MESSAGE_ROUTER_PUSH, MESSAGE_ROUTER_REPLACE, MESSAGE_ROUTER_FORCE} from '../const';
 
 function guardEvent(e, $a) {
     // don't redirect with control keys
@@ -23,8 +24,8 @@ function guardEvent(e, $a) {
 export function installMipLink(router, {isRootPage, postMessage}) {
     event.delegate(document, 'a', 'click', function (e) {
         let $a = this;
+        let to = $a.getAttribute('href');
         if ($a.hasAttribute('mip-link') || $a.getAttribute('data-type') === 'mip') {
-            let to = $a.getAttribute('href');
             const location = router.resolve(to, router.currentRoute, false).location;
             if (guardEvent(e, $a)) {
                 if ($a.hasAttribute('replace')) {
@@ -33,7 +34,7 @@ export function installMipLink(router, {isRootPage, postMessage}) {
                     }
                     else {
                         postMessage({
-                            type: 'router-replace',
+                            type: MESSAGE_ROUTER_REPLACE,
                             data: {location}
                         });
                     }
@@ -44,7 +45,7 @@ export function installMipLink(router, {isRootPage, postMessage}) {
                     }
                     else {
                         postMessage({
-                            type: 'router-push',
+                            type: MESSAGE_ROUTER_PUSH,
                             data: {location}
                         });
                     }
@@ -53,7 +54,7 @@ export function installMipLink(router, {isRootPage, postMessage}) {
         }
         else {
             postMessage({
-                type: 'router-force',
+                type: MESSAGE_ROUTER_FORCE,
                 data: {location: to}
             })
         }
