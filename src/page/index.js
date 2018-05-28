@@ -73,14 +73,22 @@ class Page {
             router.rootPage.addChild(this);
         }
 
+        // proxy <a mip-link>
         util.installMipLink(router, this);
     }
 
     initAppShell() {
+        // read <mip-shell> and save in `data`
         this.data.appshell = util.getMIPShellConfig();
         if (!this.data.appshell.header.title) {
             this.data.appshell.header.title = document.querySelector('title').innerHTML;
         }
+
+        /**
+         * in root page, we need to:
+         * 1. refresh appshell with current data in <mip-shell>
+         * 2. listen to a refresh event emited by current child iframe
+         */
         if (this.isRootPage) {
             this.messageHandlers.push((type, {appshellData, pageId}) => {
                 if (type === MESSAGE_APPSHELL_REFRESH) {
@@ -89,8 +97,13 @@ class Page {
             });
             this.refreshAppShell(this.data.appshell);
         }
+        /**
+         * in child page:
+         * 1. notify root page to refresh appshell at first time
+         * 2. listen to appshell events such as `click-button` emited by root page
+         */
         else {
-            this.postMessage({
+            this.notifyRootPage({
                 type: MESSAGE_APPSHELL_REFRESH,
                 data: {
                     appshellData: this.data.appshell,
@@ -99,13 +112,18 @@ class Page {
             });
             this.messageHandlers.push((type, event) => {
                 if (type === MESSAGE_APPSHELL_EVENT) {
-                    this.emit(event);
+                    this.emitEventInCurrentPage(event);
                 }
             });
         }
     }
 
-    postMessage(data) {
+    /**
+     * notify root page with an eventdata
+     *
+     * @param {Object} data eventdata
+     */
+    notifyRootPage(data) {
         parent.postMessage(data, window.location.origin);
     }
 
@@ -113,11 +131,6 @@ class Page {
         // Set global mark
         window.__MIP__ = 2;
         mip.MIP_ROOT_PAGE = window.MIP_ROOT_PAGE;
-
-        // Don't let browser restore scroll position.
-        if ('scrollRestoration' in window.history) {
-            window.history.scrollRestoration = 'manual';
-        }
 
         this.initRouter();
         this.initAppShell();
@@ -132,11 +145,21 @@ class Page {
                 });
             }
         }, false);
+
+        window.addEventListener('appheader:click-search', () => {console.log('receive...')})
     }
 
     /**** Root Page methods ****/
 
-    emit({name, data = {}}) {
+    /**
+     * emit a custom event in current page
+     *
+     * @param {Object} event event
+     * @param {string} event.name event name
+     * @param {Object} event.data event data
+     */
+    emitEventInCurrentPage({name, data = {}}) {
+        // notify current iframe
         if (this.currentChildPageId) {
             let $iframe = util.getIFrame(this.currentChildPageId);
             $iframe && $iframe.contentWindow.postMessage({
@@ -144,6 +167,7 @@ class Page {
                 data: {name, data}
             }, window.location.origin);
         }
+        // emit CustomEvent in current iframe
         else {
             customEmit(window, name, data);
         }
@@ -191,12 +215,23 @@ class Page {
         });
     }
 
+    /**
+     * add page to `children`
+     *
+     * @param {Page} page page
+     */
     addChild(page) {
         if (this.isRootPage) {
             this.children.push(page);
         }
     }
 
+    /**
+     * get page by pageId
+     *
+     * @param {string} pageId pageId
+     * @return {Page} page
+     */
     getPageById(pageId) {
         if (!pageId) {
             return this;
@@ -205,12 +240,18 @@ class Page {
             this : this.children.find(child => child.pageId === pageId);
     }
 
+    /**
+     * render with current route
+     *
+     * @param {Route} route route
+     */
     render(route) {
         let targetPageId = route.fullPath;
         let targetPage = this.getPageById(targetPageId);
 
         if (!targetPage) {
             this.appshell.showLoading();
+            // create an iframe and hide loading when finished
             let targetFrame = util.createIFrame(targetPageId, {
                 onLoad: () => {
                     this.appshell.hideLoading();

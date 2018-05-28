@@ -21,7 +21,7 @@ function guardEvent(e, $a) {
     return true;
 }
 
-export function installMipLink(router, {isRootPage, postMessage}) {
+export function installMipLink(router, {isRootPage, notifyRootPage}) {
     event.delegate(document, 'a', 'click', function (e) {
         let $a = this;
         let to = $a.getAttribute('href');
@@ -33,7 +33,7 @@ export function installMipLink(router, {isRootPage, postMessage}) {
                         router.replace(location);
                     }
                     else {
-                        postMessage({
+                        notifyRootPage({
                             type: MESSAGE_ROUTER_REPLACE,
                             data: {location}
                         });
@@ -44,7 +44,7 @@ export function installMipLink(router, {isRootPage, postMessage}) {
                         router.push(location);
                     }
                     else {
-                        postMessage({
+                        notifyRootPage({
                             type: MESSAGE_ROUTER_PUSH,
                             data: {location}
                         });
@@ -53,7 +53,7 @@ export function installMipLink(router, {isRootPage, postMessage}) {
             }
         }
         else {
-            postMessage({
+            notifyRootPage({
                 type: MESSAGE_ROUTER_FORCE,
                 data: {location: to}
             })
