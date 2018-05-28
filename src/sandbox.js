@@ -17,10 +17,13 @@
  *     close,
  *     confirm,
  *     prompt,
+ *     opener,
+ *     customElements,
  *     setTimeout,
  *     setInterval,
  *     self,
- *     top
+ *     top,
+ *     parent
  * } = window;
  *
  */
@@ -38,6 +41,7 @@ const windowExcludeKey = [
     'prompt',
     'eval',
     'opener',
+    'customElements',
     // 特殊型
     'document',
     'setTimeout',
@@ -58,6 +62,7 @@ const documentExcludeKey = [
     'createElementNS',
     'write',
     'writeln',
+    'registerElement',
     // 特殊型
     'cookie'
 ];
@@ -102,15 +107,6 @@ function getSafeObjCopy(obj, exclude) {
                 set(val) {
                     obj[key] = val;
                 }
-            };
-        }
-        else {
-            newObj[key] = () => {
-                let objName = obj.toString().slice(8, -1).replace(
-                    /[A-Z]+/g,
-                    $0 => $0[$0.length - 1].toLocaleLowerCase()
-                );
-                throw new Error(`组件内禁止使用${objName}.${key}`);
             };
         }
     }

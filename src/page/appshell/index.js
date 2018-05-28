@@ -81,7 +81,7 @@ export default class AppShell {
                 this.header.toggleDropdown();
             }
         }
-        this.page.emit({
+        this.page.emitEventInCurrentPage({
             name: `appheader:click-${buttonName}`
         });
     }

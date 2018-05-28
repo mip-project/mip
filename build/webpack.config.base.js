@@ -6,9 +6,11 @@
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const version = process.env.VERSION || require('../package.json').version;
 
 const resolve = p => path.resolve(__dirname, '../', p);
+const devMode = process.env.NODE_ENV === 'development';
 
 module.exports = {
 
@@ -31,19 +33,16 @@ module.exports = {
                 loader: 'vue-loader'
             },
             {
-                test: /\.less$/,
+                test: /\.(css|less)$/,
                 use: [
-                    {
-                        loader: 'style-loader',
-                        options: {
-                            insertAt: 'top'
-                        }
-                    },
+                    devMode
+                        ? {loader: 'style-loader', options: {insertAt: 'top'}}
+                        : MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
-                        options: {
-                            importLoaders: 1
-                        }
+                        options: devMode
+                            ? {importLoaders: 1}
+                            : {importLoaders: 1, minimize: true}
                     },
                     'less-loader'
                 ]

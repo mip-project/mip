@@ -6,29 +6,22 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const baseConfig = require('./webpack.config.base');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const resolve = p => path.resolve(__dirname, '../', p);
 
 module.exports = merge.smart(baseConfig, {
+    mode: 'production',
     entry: resolve('src/index.js'),
 
     module: {
-        rules: [
-            {
-                test: /\.vue$/,
-                loader: 'vue-loader',
-                options: {
-                    extractCSS: true
-                }
-            }
-        ]
+        rules: []
     },
 
     plugins: [
-        new ExtractTextPlugin('mip.css'),
+        new MiniCssExtractPlugin({filename: 'mip.css'}),
         new UglifyJsPlugin(),
         new BundleAnalyzerPlugin()
     ]

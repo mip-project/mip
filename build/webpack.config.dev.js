@@ -10,6 +10,7 @@ const baseConfig = require('./webpack.config.base');
 const resolve = p => path.resolve(__dirname, '../', p);
 
 module.exports = merge.smart(baseConfig, {
+    mode: 'development',
     devtool: 'inline-source-map',
     entry: resolve('src/index.js'),
     resolve: {
