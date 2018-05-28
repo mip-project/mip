@@ -5,7 +5,7 @@
 
 /* global mip */
 
-mip.customElement('mip-stats-baidu', {
+mip.registerVueCustomElement('mip-stats-baidu', {
     template: `
         <div>
             <slot></slot>

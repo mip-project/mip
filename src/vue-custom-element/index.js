@@ -6,8 +6,6 @@
 import createVueInstance from './utils/create-vue-instance';
 import {getProps, convertAttributeValue} from './utils/props';
 import {camelize} from './utils/helpers';
-import resources from '../resources';
-import layout from '../layout';
 import CustomElement from '../custom-element';
 import registerElement from '../register-element';
 

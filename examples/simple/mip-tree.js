@@ -6,7 +6,7 @@
 /* global mip */
 
 // define the item component
-mip.customElement('mip-item', {
+mip.registerVueCustomElement('mip-item', {
     template: '#item-template',
     props: {
         model: {

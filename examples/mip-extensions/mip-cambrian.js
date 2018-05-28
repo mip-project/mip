@@ -5,7 +5,7 @@
 
 /* global mip */
 
-mip.customElement('mip-cambrian', {
+mip.registerVueCustomElement('mip-cambrian', {
     template: `
         <div>
             <slot></slot>

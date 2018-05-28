@@ -183,7 +183,7 @@
 
     }
 
-    mip.customElement('mip-app-banner', {
+    mip.registerVueCustomElement('mip-app-banner', {
         props: {
             id: String,
             layout: String

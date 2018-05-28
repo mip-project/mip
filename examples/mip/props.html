@@ -44,7 +44,7 @@
 
 <script>
 /* global mip */
-mip.customElement('mip-a', {
+mip.registerVueCustomElement('mip-a', {
     template: '#mip-a-template',
     components: {
         'vue-c': {
@@ -71,7 +71,7 @@ mip.customElement('mip-a', {
     }
 });
 
-mip.customElement('mip-b', {
+mip.registerVueCustomElement('mip-b', {
     template: '#mip-b-template',
     props: {
         userinfo: {

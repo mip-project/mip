@@ -7,7 +7,7 @@
 
 let count = 0;
 
-mip.customElement('mip-init', {
+mip.registerVueCustomElement('mip-init', {
     template: `
         <div class="wrapper">
             <h2>moduleName: {{moduleName}}</h2>
