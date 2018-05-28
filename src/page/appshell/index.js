@@ -4,7 +4,8 @@ import {DEFAULT_SHELL_CONFIG} from '../const';
 import {getIFrame} from '../util';
 
 export default class AppShell {
-    constructor(options) {
+    constructor(options, page) {
+        this.page = page;
         this.data = Object.assign(DEFAULT_SHELL_CONFIG, options.data);
         this.$wrapper = null;
         this.header = null;
@@ -16,6 +17,12 @@ export default class AppShell {
     _init() {
         this.$wrapper = document.createElement('div');
         this.$wrapper.classList.add('mip-appshell-header-wrapper');
+        if (!this.page.data.appshell.header.show) {
+            this.$wrapper.classList.add('with-iframe');
+        }
+        if (this.data.header.show) {
+            this.$wrapper.classList.add('show');
+        }
 
         this.header = new Header({
             wrapper: this.$wrapper,
@@ -26,12 +33,6 @@ export default class AppShell {
             clickButtonCallback: this.handleClickHeaderButton.bind(this)
         });
         this.header.init();
-        if (this.data.header.show) {
-            this.$wrapper.classList.add('with-header');
-        }
-        else {
-            this.$wrapper.classList.remove('with-header');
-        }
 
         this.loading = new Loading({
             wrapper: this.$wrapper
@@ -43,19 +44,24 @@ export default class AppShell {
 
     refresh(data, targetPageId) {
         let {header, view} = data;
+
+        // set document title
         if (header.title) {
             document.title = header.title;
         }
 
+        // toggle iframe
         let targetIFrame = getIFrame(targetPageId);
         if (header.show) {
-            this.$wrapper.classList.add('with-header');
+            this.$wrapper.classList.add('show');
             targetIFrame && targetIFrame.classList.add('with-header');
         }
         else {
-            this.$wrapper.classList.remove('with-header');
             targetIFrame && targetIFrame.classList.remove('with-header');
+            this.$wrapper.classList.remove('show');
         }
+
+        // redraw entire header
         if (this.header) {
             this.header.update({
                 ...header,
@@ -75,6 +81,9 @@ export default class AppShell {
                 this.header.toggleDropdown();
             }
         }
+        this.page.emit({
+            name: `appheader:click-${buttonName}`
+        });
     }
 
     showLoading() {

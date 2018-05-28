@@ -48,16 +48,18 @@
 
 .mip-appshell-header-wrapper {
     height: 0;
+    width: 100%;
+    z-index: 20000;
+    height: @appshell-header-height;
 
-
-    &.with-header {
-        height: @appshell-header-height;
-
+    &.show {
         .mip-appshell-header {
             display: flex;
         }
     }
-
+    &.with-iframe {
+        position: absolute;
+    }
 }
 
 .mip-appshell-header {
@@ -66,7 +68,7 @@
     left: 0;
     display: none;
     align-items: center;
-    z-index: 100000;
+    z-index: 1;
     height: @appshell-header-height;
     line-height: @appshell-header-height;
     font-size: 16px;

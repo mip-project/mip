@@ -4,9 +4,15 @@
  */
 
 import * as util from './util';
+import {customEmit} from '../vue-custom-element/utils/custom-event';
 import Router from './router';
 import AppShell from './appshell';
 import '../styles/mip.less';
+
+import {
+    MESSAGE_APPSHELL_REFRESH, MESSAGE_APPSHELL_EVENT,
+    MESSAGE_ROUTER_PUSH, MESSAGE_ROUTER_REPLACE, MESSAGE_ROUTER_FORCE
+} from './const';
 
 class Page {
     constructor() {
@@ -47,13 +53,13 @@ class Page {
             window.MIP_ROUTER = router;
 
             this.messageHandlers.push((type, data) => {
-                if (type === 'router-push') {
+                if (type === MESSAGE_ROUTER_PUSH) {
                     router.push(data.location);
                 }
-                else if (type === 'router-replace') {
+                else if (type === MESSAGE_ROUTER_REPLACE) {
                     router.replace(data.location);
                 }
-                else if (type === 'router-force') {
+                else if (type === MESSAGE_ROUTER_FORCE) {
                     window.location.href = data.location;
                 }
             });
@@ -77,7 +83,7 @@ class Page {
         }
         if (this.isRootPage) {
             this.messageHandlers.push((type, {appshellData, pageId}) => {
-                if (type === 'appshell-refresh') {
+                if (type === MESSAGE_APPSHELL_REFRESH) {
                     this.refreshAppShell(appshellData, pageId);
                 }
             });
@@ -85,10 +91,15 @@ class Page {
         }
         else {
             this.postMessage({
-                type: 'appshell-refresh',
+                type: MESSAGE_APPSHELL_REFRESH,
                 data: {
                     appshellData: this.data.appshell,
                     pageId: this.pageId
+                }
+            });
+            this.messageHandlers.push((type, event) => {
+                if (type === MESSAGE_APPSHELL_EVENT) {
+                    this.emit(event);
                 }
             });
         }
@@ -108,31 +119,53 @@ class Page {
         util.addMIPCustomScript();
         document.body.setAttribute('mip-ready', '');
 
-        if (this.isRootPage) {
-            // listen message from iframes
-            window.addEventListener('message', (e) => {
-                if (e.source.origin === window.location.origin) {
-                    this.messageHandlers.forEach(handler => {
-                        handler.call(this, e.data.type, e.data.data || {});
-                    });
-                }
-            }, false);
-        }
+        // listen message from iframes
+        window.addEventListener('message', (e) => {
+            if (e.source.origin === window.location.origin) {
+                this.messageHandlers.forEach(handler => {
+                    handler.call(this, e.data.type, e.data.data || {});
+                });
+            }
+        }, false);
     }
 
     /**** Root Page methods ****/
 
+    emit({name, data = {}}) {
+        if (this.currentChildPageId) {
+            let $iframe = util.getIFrame(this.currentChildPageId);
+            $iframe && $iframe.contentWindow.postMessage({
+                type: MESSAGE_APPSHELL_EVENT,
+                data: {name, data}
+            }, window.location.origin);
+        }
+        else {
+            customEmit(window, name, data);
+        }
+    }
+
+    /**
+     * refresh appshell with data from <mip-shell>
+     *
+     * @param {Object} appshellData data
+     * @param {string} targetPageId targetPageId
+     */
     refreshAppShell(appshellData, targetPageId) {
         if (!this.appshell) {
             this.appshell = new AppShell({
                 data: appshellData
-            });
+            }, this);
         }
         else {
             this.appshell.refresh(appshellData, targetPageId);
         }
     }
 
+    /**
+     * apply transition effect to relative two pages
+     *
+     * @param {string} targetPageId targetPageId
+     */
     applyTransition(targetPageId) {
         if (this.currentChildPageId) {
             util.frameMoveOut(this.currentChildPageId, {
@@ -160,6 +193,9 @@ class Page {
     }
 
     getPageById(pageId) {
+        if (!pageId) {
+            return this;
+        }
         return pageId === this.pageId ?
             this : this.children.find(child => child.pageId === pageId);
     }
@@ -176,12 +212,6 @@ class Page {
                     this.applyTransition(targetPageId);
                 }
             });
-
-            if (this.data.appshell
-                && this.data.appshell.header
-                && this.data.appshell.header.show) {
-                targetFrame.classList.add('mip-page__iframe-with-header');
-            }
         }
         else {
             this.refreshAppShell(targetPage.data.appshell, targetPageId);
