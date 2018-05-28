@@ -9,10 +9,12 @@
         setInterval,
         self,
         top,
-        parent
+        parent,
+        customElements
     } = window;
 
-    // alert('a');
+    // alert('test');
+    // window.alert('test');
     // confirm('a');
     // document.createElement('a');
     // document.createElementNS('a');
@@ -31,10 +33,12 @@
         'confirm: ', confirm, '\n',
         'prompt: ', prompt, '\n',
         'parent: ', parent, '\n',
+        'customElements', customElements, '\n',
         'document.createElement: ', document.createElement, '\n',
         'document.createElementNS: ', document.createElementNS, '\n',
         'document.write: ', document.write, '\n',
-        'document.writeln: ', document.writeln
+        'document.writeln: ', document.writeln,
+        'document.registerElement: ', document.registerElement
     );
 
     setTimeout(function () {
