@@ -4,7 +4,7 @@
  */
 
 /* global mip */
-mip.customElement('mip-contacts', {
+mip.registerVueCustomElement('mip-contacts', {
     template: `
         <div class="wrapper">
             <div>hello {{group.info.name}}! </div>

@@ -18,6 +18,7 @@
 	* 限制使用 `prompt`、`window.prompt`
 	* 限制使用 `eval`、`window.eval`
 	* 限制使用 `opener`、`window.opener`
+	* 限制使用 `customElement`、`window.customElements`
 	* `parent` 对象如果指向当前页面 `window`、则被重写为指向局部的 `window` 对象
 	* `top` 对象如果指向当前页面 `window`、则被重写为指向局部的 `window` 对象
 	* `self` 被指向了局部的 `window` 对象
@@ -29,3 +30,28 @@
 	* 限制使用 `document.createElementNS`
 	* 限制使用 `document.write`
 	* 限制使用 `document.writeln`
+	* 限制使用 `document.registerElement`
+	
+### 使用详解
+
+在沙盒中使用了限制的API和正常使用没有区别，但是被限制的API取值是 `undefined`，所以不管是属性值还是函数都是无法使用的。而 `window` 对象和 `document` 对象则因为是局部的，所以无法往这两个原本是全局的对象上挂载全局的变量，其余未被限制的API可以正常使用，例如 `window.devicePixelRatio`、 `window.onresize = () => {}` 等
+
+示例：
+
+```javascript
+
+alert('test'); // Uncaught TypeError: alert is not a function
+
+window.alert('test'); // Uncaught TypeError: window.alert is not a function
+
+document.write('test'); // Uncaught TypeError: document.write is not a function
+
+// 可正常使用
+console.log(document.origin); // http://localhost:8080
+
+// 可正常使用
+window.onresize = (event) => {
+	console.log(event);
+};
+
+```

@@ -231,10 +231,22 @@ class Placeholder {
         }
         return imgType || 'other';
     }
-
 }
 
 class MipImg extends CustomElement {
+    constructor(element) {
+        super(element);
+        let layoutAttr = element.getAttribute('layout');
+        let heightAttr = element.getAttribute('height');
+        if (layoutAttr || heightAttr) {
+            // do nothing, use layout as placeholder: Layout.applyLayout
+        }
+        else {
+            // 如果没有layout，则增加默认占位
+            this.placeholder = new Placeholder(element);
+            this.placeholder.init();
+        }
+    }
 
     static get observedAttributes() {
         return ['src'];
@@ -286,20 +298,6 @@ class MipImg extends CustomElement {
         }
 
         bindLoad(ele, img, this);
-    }
-
-    createdCallback() {
-        let element = this.element;
-        let layoutAttr = element.getAttribute('layout');
-        let heightAttr = element.getAttribute('height');
-        if (layoutAttr || heightAttr) {
-            // do nothing, use layout as placeholder: Layout.applyLayout
-        }
-        else {
-            // 如果没有layout，则增加默认占位
-            this.placeholder = new Placeholder(element);
-            this.placeholder.init();
-        }
     }
 
     attributeChangedCallback(attributeName, oldValue, newValue, namespace) {

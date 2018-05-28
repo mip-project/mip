@@ -31,24 +31,9 @@ class CustomElement {
         }
     }
 
-    /**
-     * Called when the MIPElement is created.
-     */
-    createdCallback() {}
-
     connectedCallback() {}
 
-    /**
-     * Called when the MIPElement is inserted into the DOM.
-     */
-    attachedCallback() {}
-
     disconnectedCallback() {}
-
-    /**
-     * Called when the MIPElement is removed from the DOM.
-     */
-    detachedCallback() {}
 
     /**
      * Called when the MIPElement's attribute is changed.

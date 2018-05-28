@@ -5,7 +5,7 @@
 
 /* global mip */
 
-mip.customElement('mip-slide', {
+mip.registerVueCustomElement('mip-slide', {
     template: `
         <div>
             <transition name="fade">

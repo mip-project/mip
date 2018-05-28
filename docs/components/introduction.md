@@ -27,17 +27,17 @@
 在注册一个组件的时候，我们始终需要给它一个名字。
 
 ```js
-mip.customElement('mip-demo', {/* options */});
+mip.registerVueCustomElement('mip-demo', {/* options */});
 ```
 
-该组件名就是 `mip.customElement` 的第一个参数，组件名就是你在 MIP-HTML 中使用的 customElement 标签名，我们强烈推荐遵循 [W3C 规范](https://www.w3.org/TR/custom-elements/#concepts) 中的自定义组件名 (字母全小写且必须包含一个连字符)。这会帮助你避免和当前以及未来的 HTML 元素相冲突。
+该组件名就是 `mip.registerVueCustomElement` 的第一个参数，组件名就是你在 MIP-HTML 中使用的 customElement 标签名，我们强烈推荐遵循 [W3C 规范](https://www.w3.org/TR/custom-elements/#concepts) 中的自定义组件名 (字母全小写且必须包含一个连字符)。这会帮助你避免和当前以及未来的 HTML 元素相冲突。
 
 ### 组件注册
 
-我们用 `mip.customElement` 方法来创建组件：
+我们用 `mip.registerVueCustomElement` 方法来创建组件：
 
 ```js
-mip.customElement('my-component-name', {
+mip.registerVueCustomElement('my-component-name', {
     // ... 选项 ...
 });
 ```
@@ -45,9 +45,9 @@ mip.customElement('my-component-name', {
 这些组件是全局注册的。也就是说它们在注册之后在 MIP-HTML 中对应的 customElement 就会初始化一个实例，并开始渲染并执行实例生命周期回调：
 
 ```js
-mip.customElement('component-a', { /* ... */ });
-mip.customElement('component-b', { /* ... */ });
-mip.customElement('component-c', { /* ... */ });
+mip.registerVueCustomElement('component-a', { /* ... */ });
+mip.registerVueCustomElement('component-b', { /* ... */ });
+mip.registerVueCustomElement('component-c', { /* ... */ });
 ```
 
 ```html
@@ -62,7 +62,7 @@ mip.customElement('component-c', { /* ... */ });
 
 在 MIP 2.0 中，一个 MIP 组件本质上是一个拥有预定义选项的一个 Vue 实例。因为 MIP 2.0 的组件化方案是基于 Vue 实现的。
 
-从前面的注册方式可以看到，`mip.customElement` 和 `Vue.component` 接受的参数是一样的， 详见 [Vue 的组件注册](https://cn.vuejs.org/v2/guide/components-registration.html)。
+从前面的注册方式可以看到，`mip.registerVueCustomElement` 和 `Vue.component` 接受的参数是一样的， 详见 [Vue 的组件注册](https://cn.vuejs.org/v2/guide/components-registration.html)。
 
 ### 为什么选择 Vue
 
@@ -84,7 +84,7 @@ MIP 支持在 MIP-HTML 文档中使用 customElement 标签，customElement 标�
 注册 MIP 组件的方法如下：
 
 ```js
-mip.customElement(
+mip.registerVueCustomElement(
     'mip-hello-world',
     /**
      * 这里传入的对象就是 Vue 的实例对象（先不要蒙，后面我们会讲为什么会是一个 Vue 的实例）。

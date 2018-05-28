@@ -54,4 +54,4 @@ test-proj
 
 mip 在组件开发的时候限制使用 `window`、`document` 等对象或函数，在组件构建时，会将组件内使用诸如 `document.createElement()` 会被替换成 `mip.sandbox.document.createElement()`，在运行时会限制原有的能力，或者是直接抛出错误。
 
-详情请阅读 [mip 沙盒机制](path/to/sandbox) 进行了解。
+详情请阅读 [mip 沙盒机制](../util/sandbox.md) 进行了解。

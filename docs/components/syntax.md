@@ -64,7 +64,7 @@ customElement 其实就是和我们一只熟悉的 HTML 标签是一样的，但
 而对应的组件如下：
 
 ```js
-mip.customElement('mip-hello-world', {
+mip.registerVueCustomElement('mip-hello-world', {
     template: `
         <div class="mip-hello-world-wrap">
             {{ greet }}, {{ name }}
@@ -150,7 +150,7 @@ customElement 属性传值的方式很方便以及毫无违和感，但是属性
 无论是 props 传递 JSON 的方式，还是 script 标签的方式，组件接收的方式都是一样的，都是通过 props 属性来接受数据：
 
 ```js
-mip.customElement('mip-demo-list', {
+mip.registerVueCustomElement('mip-demo-list', {
     tempplate: `
         <div class="mip-demo-list-wrap">
             <div class="item" v-for="item in listdata">
@@ -192,7 +192,7 @@ mip.customElement('mip-demo-list', {
 在 customElement 标签用法上，这种用法太常见了，但是如果将 customElement 和 MIP 组件对应上，在组件开发的时候需要考虑一些问题，假如 `mip-demo` 对应的组件如下：
 
 ```js
-mip.customElement('mip-demo', {
+mip.registerVueCustomElement('mip-demo', {
     tempplate: `
         <div class="mip-demo-wrap">
             default component content
@@ -214,7 +214,7 @@ mip.customElement('mip-demo', {
 这显然不符合我们的预期，customElement 中的嵌套的内容全丢掉了，如果需要让 customElement 中嵌套的内容也展现出来，需要借助 slot 插槽机制，可以在 MIP 组件模版中假如一个匿名的 slot 标签，这个 slot 就可以控制 customElement 中内容需要最终渲染在什么地方，假设，我们需要将组件的默认内容渲染在 customElement 嵌套内容前面，只需要改动一下 `<mip-demo>` 组件的模版：
 
 ```js
-mip.customElement('mip-demo', {
+mip.registerVueCustomElement('mip-demo', {
     tempplate: `
         <div class="mip-demo-wrap">
             default component content
@@ -260,7 +260,7 @@ mip.customElement('mip-demo', {
 而 MIP 组件中，则需要有对应的具名 slot 在正确的位置：
 
 ```js
-mip.customElement('mip-demo', {
+mip.registerVueCustomElement('mip-demo', {
     tempplate: `
         <div class="mip-demo-wrap">
             <slot name="header"></slot>

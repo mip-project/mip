@@ -5,7 +5,7 @@
 
 /* global mip */
 
-mip.customElement('mip-store', {
+mip.registerVueCustomElement('mip-store', {
     template: '<!-- mip-store -->',
     props: {
         src: String,

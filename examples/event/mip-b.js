@@ -7,7 +7,7 @@
 
 
 
-mip.customElement('mip-b', {
+mip.registerVueCustomElement('mip-b', {
     template: `<div @click="onClick"> haha b </div>`,
     created() {
         console.log('b: created');
