@@ -12,9 +12,9 @@
 
 `git clone` 出来的项目结构与 `mip2 init` 命令初始化的项目结构类似，我们可以在 `components` 目录新增组件。
 
-    - [组件开发](./start-writing-first-mip.md#编写-mip-组件)
-    - [调试](./cli-usage.md#启动调试服务器)
-    - [校验](./cli-usage.md#组件和页面校验)
+- [组件开发](./start-writing-first-mip.md#编写-mip-组件)
+- [调试](./cli-usage.md#启动调试服务器)
+- [校验](./cli-usage.md#组件和页面校验)
 
 3.**发起 Pull Request**
 
